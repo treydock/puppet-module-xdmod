@@ -9,7 +9,6 @@ describe 'xdmod::database' do
 
   it { should create_class('xdmod::database') }
   it { should contain_class('xdmod::params') }
-  it { should contain_class('xdmod') }
   it { should contain_class('mysql::server') }
 
   [

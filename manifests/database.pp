@@ -9,7 +9,6 @@ class xdmod::database (
   $password = 'changeme',
 ) inherits xdmod::params {
 
-  include xdmod
   include mysql::server
 
   Mysql::Db {
