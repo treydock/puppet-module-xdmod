@@ -4,7 +4,11 @@
 #
 class xdmod::params {
 
-  $package_ensure = 'present'
+  $package_ensure     = 'present'
+  $database_host      = 'localhost'
+  $database_port      = '3306'
+  $database_user      = 'xdmod'
+  $database_password  = 'changeme'
 
   case $::osfamily {
     'RedHat': {

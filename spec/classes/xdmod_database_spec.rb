@@ -26,7 +26,7 @@ describe 'xdmod::database' do
         :password     => 'changeme',
         :host         => 'localhost',
         :charset      => 'utf8',
-        :collate      => 'utf8_bin',
+        :collate      => 'utf8_general_ci',
         :grant        => ['ALL'],
       })
     end

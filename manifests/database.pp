@@ -3,10 +3,10 @@
 # Public class.
 #
 class xdmod::database (
-  $host = 'localhost',
-  $port = '3306',
-  $user = 'xdmod',
-  $password = 'changeme',
+  $host     = $xdmod::params::database_host,
+  $port     = $xdmod::params::database_port,
+  $user     = $xdmod::params::database_user,
+  $password = $xdmod::params::database_password,
 ) inherits xdmod::params {
 
   include mysql::server
@@ -17,7 +17,7 @@ class xdmod::database (
     password  => $password,
     host      => $host,
     charset   => 'utf8',
-    collate   => 'utf8_bin',
+    collate   => 'utf8_general_ci',
     grant     => ['ALL'],
   }
 
