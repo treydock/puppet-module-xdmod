@@ -1,0 +1,17 @@
+{
+  "name": "treydock-xdmod",
+  "version": "0.0.1",
+  "author": "treydock",
+  "summary": "xdmod Puppet module",
+  "license": "Apache 2.0",
+  "source": "git://github.com/treydock/puppet-xdmod.git",
+  "issues_url": "https://github.com/treydock/puppet-xdmod/issues",
+  "project_page": "https://github.com/treydock/puppet-xdmod",
+  "dependencies": [
+    {
+      "version_range": ">= 3.2.0 <5.0.0",
+      "name": "puppetlabs-stdlib"
+    }
+  ]
+}
+
