@@ -12,7 +12,7 @@ Puppet::Type.type(:xdmod_portal_setting).provide(
   end
 
   def separator
-    '='
+    ' = '
   end
 
   def self.file_path

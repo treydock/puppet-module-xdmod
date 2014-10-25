@@ -10,7 +10,7 @@ shared_examples_for "xdmod::config" do
     it { should contain_xdmod_portal_setting("#{section}/host").with_value('localhost') }
     it { should contain_xdmod_portal_setting("#{section}/port").with_value('3306') }
     it { should contain_xdmod_portal_setting("#{section}/user").with_value('xdmod') }
-    it { should contain_xdmod_portal_setting("#{section}/password").with_value('changeme') }
+    it { should contain_xdmod_portal_setting("#{section}/pass").with_value('changeme') }
   end
 
   it do
