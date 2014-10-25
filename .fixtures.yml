@@ -12,5 +12,8 @@ fixtures:
     mysql: 
       repo: git://github.com/puppetlabs/puppetlabs-mysql.git
       ref: 2.3.1
+    inifile:
+      repo: git://github.com/puppetlabs/puppetlabs-inifile
+      ref: 1.1.3
   symlinks:
     xdmod: "#{source_dir}"

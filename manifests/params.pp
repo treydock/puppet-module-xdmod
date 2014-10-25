@@ -8,6 +8,8 @@ class xdmod::params {
     'slurm' => '/usr/bin/xdmod-slurm-helper --quiet',
   }
 
+  $portal_settings = hiera('xdmod_portal_settings', {})
+
   case $::osfamily {
     'RedHat': {
       $package_name = 'xdmod'

@@ -8,10 +8,7 @@
   "issues_url": "https://github.com/treydock/puppet-xdmod/issues",
   "project_page": "https://github.com/treydock/puppet-xdmod",
   "dependencies": [
-    {
-      "version_range": ">= 3.2.0 <5.0.0",
-      "name": "puppetlabs-stdlib"
-    }
+    { "version_range": ">= 3.2.0 <5.0.0", "name": "puppetlabs-stdlib" }
   ]
 }
 

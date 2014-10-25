@@ -1,4 +1,18 @@
 shared_examples_for "xdmod::config" do
+
+  [
+    'logger',
+    'database',
+    'datawarehouse',
+    'shredder',
+    'hpcdb',
+  ].each do |section|
+    it { should contain_xdmod_portal_setting("#{section}/host").with_value('localhost') }
+    it { should contain_xdmod_portal_setting("#{section}/port").with_value('3306') }
+    it { should contain_xdmod_portal_setting("#{section}/user").with_value('xdmod') }
+    it { should contain_xdmod_portal_setting("#{section}/password").with_value('changeme') }
+  end
+
   it do
     should contain_file('/etc/xdmod/portal_settings.ini').with({
       :ensure  => 'file',

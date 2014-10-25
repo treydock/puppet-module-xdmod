@@ -14,6 +14,7 @@ class xdmod (
   $web_host             = undef,
   $scheduler            = 'slurm',
   $shredder_command     = undef,
+  $portal_settings      = $xdmod::params::portal_settings,
 ) inherits xdmod::params {
 
   validate_bool($database, $web)
