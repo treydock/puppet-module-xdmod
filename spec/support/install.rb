@@ -1,4 +1,4 @@
-shared_context "xdmod::install" do
+shared_examples_for "xdmod::install" do
   it { should contain_class('epel') }
 
   it do

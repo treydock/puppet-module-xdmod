@@ -1,16 +1,4 @@
-require 'spec_helper'
-
-describe 'xdmod::database' do
-  let :facts do
-    {
-      :osfamily => 'RedHat',
-    }
-  end
-
-  it { should create_class('xdmod::database') }
-  it { should contain_class('xdmod::params') }
-  it { should contain_class('mysql::server') }
-
+shared_examples_for 'xdmod::database' do
   [
     'mod_hpcdb',
     'mod_logger',

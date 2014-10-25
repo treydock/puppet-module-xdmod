@@ -1,0 +1,19 @@
+#!/bin/bash
+
+host=<%= @database_host %>
+port=<%= @database_port %>
+user=<%= @database_user %>
+password=<%= @database_password %>
+
+databases=(
+mod_hpcdb
+mod_logger
+mod_shredder
+moddb
+modw
+modw_aggregates
+)
+
+for database in "${databases[@]}"; do
+  mysql -u ${user} -p${password} --host ${host} --port ${port} ${database} < /usr/share/xdmod/ddl/${database}.sql
+done

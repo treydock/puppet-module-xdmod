@@ -1,7 +1,4 @@
-# == Class: xdmod::install
-#
-# Private class.
-#
+# Private class
 class xdmod::install {
 
   case $::osfamily {
@@ -15,9 +12,9 @@ class xdmod::install {
   }
 
   package { 'xdmod':
-    ensure    => $xdmod::package_ensure,
-    name      => $xdmod::package_name,
-    require   => $package_require,
+    ensure  => $xdmod::package_ensure,
+    name    => $xdmod::package_name,
+    require => $package_require,
   }
 
 }

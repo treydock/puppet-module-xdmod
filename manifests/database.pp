@@ -1,21 +1,13 @@
-# == Class: xdmod::database
-#
-# Public class.
-#
-class xdmod::database (
-  $host     = $xdmod::params::database_host,
-  $port     = $xdmod::params::database_port,
-  $user     = $xdmod::params::database_user,
-  $password = $xdmod::params::database_password,
-) inherits xdmod::params {
+# Private class
+class xdmod::database {
 
   include mysql::server
 
   Mysql::Db {
     ensure    => 'present',
-    user      => $user,
-    password  => $password,
-    host      => $host,
+    user      => $xdmod::database_user,
+    password  => $xdmod::database_password,
+    host      => $xdmod::web_host_real,
     charset   => 'utf8',
     collate   => 'utf8_general_ci',
     grant     => ['ALL'],
