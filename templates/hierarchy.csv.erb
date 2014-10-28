@@ -1,5 +1,5 @@
 <% hierarchies = scope.lookupvar('xdmod::hierarchies') || [] -%>
 <% hierarchies.each do |hierarchy| -%>
-<% values = hierarchy.split(',', -1).map { |h| h.include?('"') ? h : "\"#{h}\"" }%>
+<% values = hierarchy.split(',', -1).map { |h| h.include?('"') ? h : "\"#{h}\"" } -%>
 <%= values.join(',') %>
 <% end -%>
