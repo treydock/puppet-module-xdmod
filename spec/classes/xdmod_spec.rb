@@ -4,6 +4,9 @@ describe 'xdmod' do
   let :facts do
     {
       :osfamily => 'RedHat',
+      :operatingsystemrelease => '6.5',
+      :domain => 'example.com',
+      :concat_basedir => '/dne',
     }
   end
 
@@ -13,12 +16,14 @@ describe 'xdmod' do
   it { should contain_anchor('xdmod::start').that_comes_before('Class[xdmod::install]') }
   it { should contain_class('xdmod::install').that_comes_before('Class[xdmod::database]') }
   it { should contain_class('xdmod::database').that_comes_before('Class[xdmod::config]') }
-  it { should contain_class('xdmod::config').that_comes_before('Anchor[xdmod::end]') }
+  it { should contain_class('xdmod::config').that_comes_before('Class[xdmod::apache]') }
+  it { should contain_class('xdmod::apache').that_comes_before('Anchor[xdmod::end]') }
   it { should contain_anchor('xdmod::end') }
 
   it_behaves_like 'xdmod::install'
   it_behaves_like 'xdmod::database'
   it_behaves_like 'xdmod::config'
+  it_behaves_like 'xdmod::apache'
 
   context 'when web => false' do
     let(:params) {{ :web => false }}
@@ -38,13 +43,15 @@ describe 'xdmod' do
 
     it { should contain_anchor('xdmod::start').that_comes_before('Class[xdmod::install]') }
     it { should contain_class('xdmod::install').that_comes_before('Class[xdmod::config]') }
-    it { should contain_class('xdmod::config').that_comes_before('Anchor[xdmod::end]') }
+    it { should contain_class('xdmod::config').that_comes_before('Class[xdmod::apache]') }
+    it { should contain_class('xdmod::apache').that_comes_before('Anchor[xdmod::end]') }
     it { should contain_anchor('xdmod::end') }
 
     it { should_not contain_class('xdmod::database') }
 
     it_behaves_like 'xdmod::install'
     it_behaves_like 'xdmod::config'
+    it_behaves_like 'xdmod::apache'
   end
 
   # Test validate_bool parameters

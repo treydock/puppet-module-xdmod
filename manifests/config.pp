@@ -35,6 +35,36 @@ class xdmod::config {
     mode   => '0644',
   }
 
+  file { '/etc/xdmod/hierarchy.csv':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('xdmod/hierarchy.csv.erb'),
+    notify  => Exec['xdmod-import-csv-hierarchy'],
+  }
+
+  exec { 'xdmod-import-csv-hierarchy':
+    path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+    command     => 'xdmod-import-csv -t hierarchy -i /etc/xdmod/hierarchy.csv',
+    refreshonly => true,
+  }
+
+  file { '/etc/xdmod/group-to-hierarchy.csv':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('xdmod/group-to-hierarchy.csv.erb'),
+    notify  => Exec['xdmod-import-csv-group-to-hierarchy'],
+  }
+
+  exec { 'xdmod-import-csv-group-to-hierarchy':
+    path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+    command     => 'xdmod-import-csv -t group-to-hierarchy -i /etc/xdmod/group-to-hierarchy.csv',
+    refreshonly => true,
+  }
+
   file { '/root/xdmod-database-setup.sh':
     ensure  => 'file',
     owner   => 'root',

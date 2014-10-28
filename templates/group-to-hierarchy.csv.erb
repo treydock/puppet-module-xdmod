@@ -1,0 +1,4 @@
+<% group_to_hierarchy = scope.lookupvar('xdmod::group_to_hierarchy') || {} -%>
+<% group_to_hierarchy.keys.sort.each do |group| -%>
+"<%= group %>","<%= group_to_hierarchy[group] %>"
+<% end -%>

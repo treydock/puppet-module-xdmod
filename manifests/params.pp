@@ -8,7 +8,10 @@ class xdmod::params {
     'slurm' => '/usr/bin/xdmod-slurm-helper --quiet',
   }
 
-  $portal_settings = hiera('xdmod_portal_settings', {})
+  $apache_vhost_name  = "xdmod.${::domain}"
+  $portal_settings    = hiera('xdmod_portal_settings', {})
+  $hierarchies        = hiera('xdmod_hierarchies', [])
+  $group_to_hierarchy = hiera('xdmod_group_to_hierarchy', {})
 
   case $::osfamily {
     'RedHat': {
