@@ -48,7 +48,7 @@ describe 'Puppet::Type.type(:xdmod_portal_setting)' do
   end
 
   describe 'autorequire File resources' do
-    it 'should autorequire /etc/nfsmount.conf' do
+    it 'should autorequire /etc/xdmod/portal_settings.ini' do
       conf = Puppet::Type.type(:file).new(:name => '/etc/xdmod/portal_settings.ini')
       catalog = Puppet::Resource::Catalog.new
       catalog.add_resource @xdmod_portal_setting
