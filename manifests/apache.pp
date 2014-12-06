@@ -29,7 +29,7 @@ class xdmod::apache {
           {
             path           => '/usr/share/xdmod/html',
             options        => ['FollowSymLinks'],
-            override       => ['All'],
+            allow_override => ['All'],
             directoryindex => 'index.php',
           },
           {
