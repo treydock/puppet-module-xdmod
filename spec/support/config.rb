@@ -67,6 +67,17 @@ shared_examples_for "xdmod::config" do
   end
 
   it do
+    should contain_file('/root/xdmod-database-setup.sh').with({
+      :ensure => 'file',
+      :owner  => 'root',
+      :group  => 'root',
+      :mode   => '0700',
+    })
+  end
+
+  #TODO: Test content of /root/xdmod-database-setup.sh
+
+  it do
     should contain_file('/etc/cron.d/xdmod').with({
       :ensure => 'file',
       :owner  => 'root',
@@ -80,7 +91,7 @@ shared_examples_for "xdmod::config" do
       '# Every morning at 3:00 AM -- run the report scheduler',
       '0 3 * * * root /usr/bin/php /usr/lib/xdmod/report_schedule_manager.php >/dev/null',
       '# Shred and ingest:',
-      '0 1 * * * root /usr/bin/xdmod-slurm-helper --quiet && /usr/bin/xdmod-ingestor --quiet',
+      '0 1 * * * root /usr/bin/xdmod-slurm-helper --quiet -r example && /usr/bin/xdmod-ingestor --quiet',
     ])
   end
 

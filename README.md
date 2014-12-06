@@ -1,10 +1,11 @@
 # puppet-module-xdmod
 
-[![Build Status](https://travis-ci.org/treydock/puppet-module-xdmod.png)](https://travis-ci.org/treydock/puppet-module-xdmod)
+[![Build Status](https://travis-ci.org/treydock/puppet-module-xdmod.svg?branch=master)](https://travis-ci.org/treydock/puppet-module-xdmod)
 
 ####Table of Contents
 
 1. [Overview](#overview)
+    * [Open XDMoD Compatibility](#open-xdmod-compatibility)
 2. [Usage - Configuration options](#usage)
 3. [Reference - Parameter and detailed reference to all options](#reference)
 4. [Limitations - OS compatibility, etc.](#limitations)
@@ -15,6 +16,13 @@
 ## Overview
 
 TODO
+
+### Open XDMoD Compatibility
+
+Open XDMoD Versions         | 3.5.0    |  4.5.0  | > 4.5.0 |
+:---------------------------|:--------:|:-------:|:--------:
+**puppet-module-xdmod 0.x** | **yes**  | no      | no      
+**puppet-module-xdmod 1.x** | no       | **yes** | **unknown** 
 
 ## Usage
 
@@ -35,7 +43,9 @@ TODO
 #### Private classes
 
 * `xdmod::install`: Installs xdmod packages.
+* `xdmod::database`: Manage XDMoD databases.
 * `xdmod::config`: Configures xdmod.
+* `xdmod::apache`: Manage Apache configurations.
 * `xdmod::params`: Sets parameter defaults based on fact values.
 
 ### Parameters
@@ -72,6 +82,8 @@ If you have Vagrant >= 1.2.0 installed you can run system tests
     bundle exec rake beaker
 
 ## TODO
+
+* Support multiple XDMoD resources/clusters
 
 ## Further Information
 

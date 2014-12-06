@@ -15,5 +15,15 @@ modw_aggregates
 )
 
 for database in "${databases[@]}"; do
-  mysql -u ${user} -p${password} --host ${host} --port ${port} ${database} < /usr/share/xdmod/ddl/${database}.sql
+  schema="/usr/share/xdmod/db/schema/${database}.sql"
+  data="/usr/share/xdmod/db/data/${database}.sql"
+
+  if [ -f ${schema} ]; then
+    mysql -u ${user} -p${password} --host ${host} --port ${port} ${database} < ${schema}
+  fi
+
+  if [ -f ${data} ]; then
+    mysql -u ${user} -p${password} --host ${host} --port ${port} ${database} < ${data}
+  fi
+
 done

@@ -5,6 +5,7 @@
 class xdmod (
   $database             = true,
   $web                  = true,
+  $resource_name        = $xdmod::params::resource_name,
   $package_ensure       = 'present',
   $package_name         = $xdmod::params::package_name,
   $database_host        = 'localhost',
@@ -14,15 +15,21 @@ class xdmod (
   $web_host             = undef,
   $scheduler            = 'slurm',
   $shredder_command     = undef,
+  $enable_update_check  = true,
   $manage_apache_vhost  = true,
   $apache_vhost_name    = $xdmod::params::apache_vhost_name,
-  $apache_port          = '8080',
+  $apache_port          = '80',
+  $apache_ssl           = true,
+  $apache_ssl_port      = '443',
+  $apache_ssl_cert      = undef,
+  $apache_ssl_key       = undef,
+  $apache_ssl_chain     = undef,
   $portal_settings      = $xdmod::params::portal_settings,
   $hierarchies          = $xdmod::params::hierarchies,
   $group_to_hierarchy   = $xdmod::params::group_to_hierarchy,
 ) inherits xdmod::params {
 
-  validate_bool($database, $web, $manage_apache_vhost)
+  validate_bool($database, $web, $enable_update_check, $apache_ssl, $manage_apache_vhost)
 
   validate_re($scheduler, ['^slurm$'])
 
@@ -31,7 +38,22 @@ class xdmod (
   validate_array($hierarchies)
 
   $web_host_real = pick($web_host, $database_host)
-  $scheduler_shredder_command = $xdmod::params::shredder_commands[$scheduler]
+
+  case $scheduler {
+    'slurm': {
+      $scheduler_shredder_command = "/usr/bin/xdmod-slurm-helper --quiet -r ${resource_name}"
+    }
+    'pbs': {
+      $scheduler_shredder_command = "/usr/bin/xdmod-shredder --quiet -r ${resource_name} -f pbs -d /var/spool/pbs/server_priv/accounting"
+    }
+    'sge': {
+      $scheduler_shredder_command = "/usr/bin/xdmod-shredder --quiet -r ${resource_name} -f sge -i /var/lib/gridengine/default/common/accounting"
+    }
+    default: {
+      fail("Module ${module_name}: Supported scheduler value is either slurm, pbs or sge.")
+    }
+  }
+
   $shredder_command_real = pick($shredder_command, $scheduler_shredder_command)
 
   anchor { 'xdmod::start': }

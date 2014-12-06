@@ -17,6 +17,7 @@ fixtures:
       ref: 1.1.3
     apache:
       repo: git://github.com/puppetlabs/puppetlabs-apache
+      ref: 1.2.0
     concat:
       repo: git://github.com/puppetlabs/puppetlabs-concat.git
   symlinks:
