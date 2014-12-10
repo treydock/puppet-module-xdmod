@@ -27,6 +27,7 @@ class xdmod (
   $portal_settings      = $xdmod::params::portal_settings,
   $hierarchies          = $xdmod::params::hierarchies,
   $group_to_hierarchy   = $xdmod::params::group_to_hierarchy,
+  $user_pi_names        = $xdmod::params::user_pi_names,
 ) inherits xdmod::params {
 
   validate_bool($database, $web, $enable_update_check, $apache_ssl, $manage_apache_vhost)
@@ -35,7 +36,7 @@ class xdmod (
 
   validate_hash($portal_settings, $group_to_hierarchy)
 
-  validate_array($hierarchies)
+  validate_array($hierarchies, $user_pi_names)
 
   $web_host_real = pick($web_host, $database_host)
 

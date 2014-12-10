@@ -67,6 +67,37 @@ shared_examples_for "xdmod::config" do
   end
 
   it do
+    should contain_file('/etc/xdmod/names.csv').with({
+      :ensure  => 'file',
+      :owner   => 'root',
+      :group   => 'root',
+      :mode    => '0644',
+      :notify  => 'Exec[xdmod-import-csv-names]',
+    })
+  end
+
+  it do
+    verify_exact_contents(catalogue, '/etc/xdmod/names.csv', [])
+  end
+
+  it do
+    should contain_exec('xdmod-import-csv-names').with({
+      :path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+      :command     => 'xdmod-import-csv -t names -i /etc/xdmod/names.csv',
+      :refreshonly => 'true',
+    })
+  end
+
+  it do
+    should contain_file('/etc/xdmod/portal_settings.ini').with({
+      :ensure  => 'file',
+      :owner   => 'root',
+      :group   => 'root',
+      :mode    => '0644',
+    })
+  end
+
+  it do
     should contain_file('/root/xdmod-database-setup.sh').with({
       :ensure => 'file',
       :owner  => 'root',
@@ -149,6 +180,24 @@ shared_examples_for "xdmod::config" do
         '"group1","dept1"',
         '"group2","dept1"',
         '"group3","dept2"',
+      ])
+    end
+  end
+
+  context 'when user_pi_names defined' do
+    let(:params) do
+      {
+        :user_pi_names => [
+          'jdoe,John,Doe',
+          'mygroup,,"My Group"',
+        ]
+      }
+    end
+
+    it do
+      verify_exact_contents(catalogue, '/etc/xdmod/names.csv', [
+        'jdoe,John,Doe',
+        'mygroup,,"My Group"',
       ])
     end
   end

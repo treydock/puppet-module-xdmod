@@ -10,6 +10,7 @@ class xdmod::params {
   $portal_settings    = hiera('xdmod_portal_settings', {})
   $hierarchies        = hiera('xdmod_hierarchies', [])
   $group_to_hierarchy = hiera('xdmod_group_to_hierarchy', {})
+  $user_pi_names      = hiera('xdmod_user_pi_names', [])
 
   case $::osfamily {
     'RedHat': {

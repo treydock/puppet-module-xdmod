@@ -65,6 +65,21 @@ class xdmod::config {
     refreshonly => true,
   }
 
+  file { '/etc/xdmod/names.csv':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('xdmod/names.csv.erb'),
+    notify  => Exec['xdmod-import-csv-names'],
+  }
+
+  exec { 'xdmod-import-csv-names':
+    path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+    command     => 'xdmod-import-csv -t names -i /etc/xdmod/names.csv',
+    refreshonly => true,
+  }
+
   file { '/root/xdmod-database-setup.sh':
     ensure  => 'file',
     owner   => 'root',
