@@ -19,7 +19,7 @@ TODO
 
 ### Open XDMoD Compatibility
 
-Open XDMoD Versions         |  4.5.0   | 5.0.0   | >5.0.0      |
+Open XDMoD Versions         |  4.5.x   | 5.0.x   | >5.0.x      |
 :---------------------------|:--------:|:-------:|:-----------:|
 **puppet-module-xdmod 0.x** | **yes**  | no      | **unknown** |
 **puppet-module-xdmod 1.x** | no       | **yes** | **unknown** |

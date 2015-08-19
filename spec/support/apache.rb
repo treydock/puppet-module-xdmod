@@ -48,6 +48,7 @@ shared_examples_for "xdmod::apache" do
     let(:params) {{ :manage_apache_vhost => false }}
 
     it { should_not contain_class('apache') }
-    it { should_not contain_apache__vhost('xdmod.example.com') }
+    it { should_not contain_apache__vhost('xdmod_ssl') }
+    it { should_not contain_apache__vhost('xdmod') }
   end
 end

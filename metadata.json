@@ -2,13 +2,32 @@
   "name": "treydock-xdmod",
   "version": "0.0.1",
   "author": "treydock",
-  "summary": "xdmod Puppet module",
-  "license": "Apache 2.0",
-  "source": "git://github.com/treydock/puppet-xdmod.git",
-  "issues_url": "https://github.com/treydock/puppet-xdmod/issues",
-  "project_page": "https://github.com/treydock/puppet-xdmod",
+  "summary": "XDMoD Puppet module",
+  "license": "Apache-2.0",
+  "source": "git://github.com/treydock/puppet-module-xdmod.git",
+  "issues_url": "https://github.com/treydock/puppet-module-xdmod/issues",
+  "project_page": "https://github.com/treydock/puppet-module-xdmod",
+  "tags": [ "xdmod", "hpc" ],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "RedHat",
+      "operatingsystemrelease": [ "6", "7" ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [ "6", "7" ]
+    },
+    {
+      "operatingsystem": "Scientific",
+      "operatingsystemrelease": [ "6", "7" ]
+    }
+  ],
   "dependencies": [
-    { "version_range": ">= 3.2.0 <5.0.0", "name": "puppetlabs-stdlib" }
+    { "name": "puppetlabs/stdlib", "version_range": ">= 3.2.0 <5.0.0" }
+    { "name": "puppetlabs/apache", "version_range": ">= 1.2.0 <2.0.0" }
+    { "name": "puppetlabs/inifile", "version_range": "1.x" }
+    { "name": "puppetlabs/mysql", "version_range": "3.x" }
+    { "name": "rodjek/logrotate", "version_range": "1.x" }
   ]
 }
 
