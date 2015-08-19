@@ -23,10 +23,10 @@
     }
   ],
   "dependencies": [
-    { "name": "puppetlabs/stdlib", "version_range": ">= 3.2.0 <5.0.0" }
-    { "name": "puppetlabs/apache", "version_range": ">= 1.2.0 <2.0.0" }
-    { "name": "puppetlabs/inifile", "version_range": "1.x" }
-    { "name": "puppetlabs/mysql", "version_range": "3.x" }
+    { "name": "puppetlabs/stdlib", "version_range": ">= 3.2.0 <5.0.0" },
+    { "name": "puppetlabs/apache", "version_range": ">= 1.2.0 <2.0.0" },
+    { "name": "puppetlabs/inifile", "version_range": "1.x" },
+    { "name": "puppetlabs/mysql", "version_range": "3.x" },
     { "name": "rodjek/logrotate", "version_range": "1.x" }
   ]
 }

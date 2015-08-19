@@ -99,7 +99,7 @@ class xdmod::config {
   logrotate::rule { 'xdmod':
     ensure       => 'present',
     path         => '/var/log/xdmod/*.log',
-    rotate       => 4,
+    rotate       => '4',
     rotate_every => 'week',
     missingok    => true,
     compress     => true,
