@@ -70,6 +70,7 @@ describe 'xdmod' do
       [
         :database,
         :web,
+        :enable_appkernel,
       ].each do |param|
         context "with #{param} => 'foo'" do
           let(:params) {{ param => 'foo' }}

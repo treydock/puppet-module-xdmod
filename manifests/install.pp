@@ -17,4 +17,12 @@ class xdmod::install {
     require => $package_require,
   }
 
+  if $xdmod::enable_appkernel {
+    package { 'xdmod-appkernels':
+      ensure  => $xdmod::package_ensure,
+      name    => $xdmod::appkernels_package_name,
+      require => $package_require,
+    }
+  }
+
 }

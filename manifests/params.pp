@@ -14,7 +14,8 @@ class xdmod::params {
 
   case $::osfamily {
     'RedHat': {
-      $package_name = 'xdmod'
+      $package_name             = 'xdmod'
+      $appkernels_package_name  = 'xdmod-appkernels'
     }
 
     default: {

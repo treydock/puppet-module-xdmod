@@ -28,6 +28,42 @@ class xdmod::config {
   xdmod_portal_setting { 'hpcdb/user': value => $xdmod::database_user }
   xdmod_portal_setting { 'hpcdb/pass': value => $xdmod::database_password }
 
+  $_appkernels = $xdmod::enable_appkernel ? {
+    true  => 'on',
+    false => 'off',
+  }
+
+  xdmod_portal_setting { 'features/appkernels': value => $_appkernels }
+
+  #[features]
+  #xsede = "off"
+  #+appkernels = "off"
+  #+singlejobviewer = "off"
+
+  #+[rest]
+  #+base = "/rest/"
+  #+version = "v1"
+
+  #+[auto_login]
+  #+; tabs is a comma delimmited list of tab ids that will trigger the login
+  #+; page to show up if presented in an non-authenticated state.
+  #+tabs = "app_kernels"
+
+  if $xdmod::enable_appkernel {
+    file { '/etc/xdmod/portal_settings.d/appkernels.ini':
+      ensure => 'file',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+    }
+
+    xdmod_appkernel_setting { 'features/appkernels': value => $_appkernels }
+    xdmod_appkernel_setting { 'appkernel/host': value => $xdmod::database_host }
+    xdmod_appkernel_setting { 'appkernel/port': value => $xdmod::database_port }
+    xdmod_appkernel_setting { 'appkernel/user': value => $xdmod::database_user }
+    xdmod_appkernel_setting { 'appkernel/pass': value => $xdmod::database_password }
+  }
+
   file { '/etc/xdmod/portal_settings.ini':
     ensure => 'file',
     owner  => 'root',

@@ -13,6 +13,14 @@ shared_examples_for "xdmod::config" do
     it { should contain_xdmod_portal_setting("#{section}/pass").with_value('changeme') }
   end
 
+  it { should contain_xdmod_portal_setting('features/appkernels').with_value('off') }
+  it { should_not contain_file('/etc/xdmod/portal_settings.d/appkernels.ini') }
+  it { should_not contain_xdmod_appkernel_setting('features/appkernels') }
+  it { should_not contain_xdmod_appkernel_setting('appkernel/host') }
+  it { should_not contain_xdmod_appkernel_setting('appkernel/port') }
+  it { should_not contain_xdmod_appkernel_setting('appkernel/user') }
+  it { should_not contain_xdmod_appkernel_setting('appkernel/pass') }
+
   it do
     should contain_file('/etc/xdmod/portal_settings.ini').with({
       :ensure  => 'file',
@@ -136,6 +144,27 @@ shared_examples_for "xdmod::config" do
       :compress      => 'true',
       :dateext       => 'true',
     })
+  end
+
+  context 'when enable_appkernel => true' do
+    let(:params) {{ :enable_appkernel => true }}
+
+    it { should contain_xdmod_portal_setting('features/appkernels').with_value('on') }
+
+    it do
+      should contain_file('/etc/xdmod/portal_settings.d/appkernels.ini').with({
+        :ensure => 'file',
+        :owner  => 'root',
+        :group  => 'root',
+        :mode   => '0644',
+      })
+    end
+
+    it { should contain_xdmod_appkernel_setting('features/appkernels').with_value('on') }
+    it { should contain_xdmod_appkernel_setting('appkernel/host').with_value('localhost') }
+    it { should contain_xdmod_appkernel_setting('appkernel/port').with_value('3306') }
+    it { should contain_xdmod_appkernel_setting('appkernel/user').with_value('xdmod') }
+    it { should contain_xdmod_appkernel_setting('appkernel/pass').with_value('changeme') }
   end
 
   context 'when hierarchies defined' do

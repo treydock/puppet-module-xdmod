@@ -20,4 +20,8 @@ class xdmod::database {
   mysql::db { 'modw': }
   mysql::db { 'modw_aggregates': }
 
+  if $xdmod::enable_appkernel {
+    mysql::db { 'mod_appkernel': }
+  }
+
 }
