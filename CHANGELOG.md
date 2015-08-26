@@ -6,13 +6,21 @@ Support for XDMoD 5.0.0
 
 ### Changes
 
-* Add support for Application Kernel
+* Add support for Application Kernels
+* Add support for Application Kernels Remote Runner (AKRR)
 
 ### Detailed Changes
 
-* Add `enable_appkernel` parameter
-* Add `appkernels_package_name` parameter
+* Parameters added:
+  * `enable_appkernel`
+  * `appkernels_package_name`
+  * `akrr_database_user`
+  * `akrr_database_password`
+  * `akrr_restapi_port`
+  * `akrr_restapi_rw_password`
+  * `akrr_restapi_ro_password`
 * Update XDMoD Apache::Vhost
+* Change default value for `web_host` to be `localhost`
 
 ## 0.0.1 - 2015-08-19
 
