@@ -60,8 +60,16 @@ class xdmod::config {
     xdmod_appkernel_setting { 'features/appkernels': value => $_appkernels }
     xdmod_appkernel_setting { 'appkernel/host': value => $xdmod::database_host }
     xdmod_appkernel_setting { 'appkernel/port': value => $xdmod::database_port }
-    xdmod_appkernel_setting { 'appkernel/user': value => $xdmod::database_user }
-    xdmod_appkernel_setting { 'appkernel/pass': value => $xdmod::database_password }
+    xdmod_appkernel_setting { 'appkernel/user': value => $xdmod::akrr_database_user }
+    xdmod_appkernel_setting { 'appkernel/pass': value => $xdmod::akrr_database_password }
+    xdmod_appkernel_setting { 'akrr-db/host': value => $xdmod::database_host }
+    xdmod_appkernel_setting { 'akrr-db/port': value => $xdmod::database_port }
+    xdmod_appkernel_setting { 'akrr-db/user': value => $xdmod::akrr_database_user }
+    xdmod_appkernel_setting { 'akrr-db/pass': value => $xdmod::akrr_database_password }
+    xdmod_appkernel_setting { 'akrr/host': value => 'localhost' }
+    xdmod_appkernel_setting { 'akrr/port': value => $xdmod::akrr_restapi_port }
+    xdmod_appkernel_setting { 'akrr/username': value => 'rw' }
+    xdmod_appkernel_setting { 'akrr/password': value => $xdmod::akrr_restapi_rw_password }
   }
 
   file { '/etc/xdmod/portal_settings.ini':

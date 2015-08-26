@@ -11,6 +11,8 @@ class xdmod::params {
   $hierarchies        = hiera('xdmod_hierarchies', [])
   $group_to_hierarchy = hiera('xdmod_group_to_hierarchy', {})
   $user_pi_names      = hiera('xdmod_user_pi_names', [])
+  $akrr_restapi_rw_password = fqdn_rand_string(16, undef, 'rw')
+  $akrr_restapi_ro_password = fqdn_rand_string(16, undef, 'ro')
 
   case $::osfamily {
     'RedHat': {

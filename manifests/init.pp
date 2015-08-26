@@ -14,7 +14,9 @@ class xdmod (
   $database_port            = '3306',
   $database_user            = 'xdmod',
   $database_password        = 'changeme',
-  $web_host                 = undef,
+  $akrr_database_user       = 'akrr',
+  $akrr_database_password   = 'changeme',
+  $web_host                 = 'localhost',
   $scheduler                = 'slurm',
   $shredder_command         = undef,
   $enable_update_check      = true,
@@ -30,6 +32,9 @@ class xdmod (
   $hierarchies              = $xdmod::params::hierarchies,
   $group_to_hierarchy       = $xdmod::params::group_to_hierarchy,
   $user_pi_names            = $xdmod::params::user_pi_names,
+  $akrr_restapi_port        = '8091',
+  $akrr_restapi_rw_password = $xdmod::params::akrr_restapi_rw_password,
+  $akrr_restapi_ro_password = $xdmod::params::akrr_restapi_ro_password,
 ) inherits xdmod::params {
 
   validate_bool($database, $web, $enable_appkernel, $enable_update_check, $apache_ssl, $manage_apache_vhost)
@@ -39,8 +44,6 @@ class xdmod (
   validate_hash($portal_settings, $group_to_hierarchy)
 
   validate_array($hierarchies, $user_pi_names)
-
-  $web_host_real = pick($web_host, $database_host)
 
   case $scheduler {
     'slurm': {
@@ -90,6 +93,12 @@ class xdmod (
     Class['xdmod::config']->
     Class['xdmod::apache']->
     Anchor['xdmod::end']
+
+    if $enable_appkernel {
+      include mysql::bindings::python
+
+      Class['mysql::bindings::python']->Class['xdmod::install']
+    }
   }
 
 }

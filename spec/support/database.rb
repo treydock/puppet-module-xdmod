@@ -20,6 +20,8 @@ shared_examples_for 'xdmod::database' do
     end
 
     it { should_not contain_mysql__db('mod_appkernel') }
+    it { should_not contain_mysql__db('mod_akrr') }
+    it { should_not contain_mysql_grant('akrr@localhost/modw.resourcefact') }
   end
 
   context 'when enable_appkernel => true' do
@@ -28,12 +30,34 @@ shared_examples_for 'xdmod::database' do
     it do
       should contain_mysql__db('mod_appkernel').with({
         :ensure       => 'present',
-        :user         => 'xdmod',
+        :user         => 'akrr',
         :password     => 'changeme',
         :host         => 'localhost',
         :charset      => 'utf8',
         :collate      => 'utf8_general_ci',
         :grant        => ['ALL'],
+      })
+    end
+
+    it do
+      should contain_mysql__db('mod_appkernel').with({
+        :ensure       => 'present',
+        :user         => 'akrr',
+        :password     => 'changeme',
+        :host         => 'localhost',
+        :charset      => 'utf8',
+        :collate      => 'utf8_general_ci',
+        :grant        => ['ALL'],
+      })
+    end
+
+    it do
+      should contain_mysql_grant('akrr@localhost/modw.resourcefact').with({
+        :ensure     => 'present',
+        :privileges => ['SELECT'],
+        :table      => 'modw.resourcefact',
+        :user       => 'akrr@localhost',
+        :require    => 'Mysql::Db[mod_akrr]',
       })
     end
   end
