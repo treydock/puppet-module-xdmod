@@ -3,6 +3,7 @@ class xdmod::apache {
 
   if $xdmod::manage_apache_vhost {
     include ::apache
+    include ::apache::mod::php
 
     $_default_directories = [
       {

@@ -3,6 +3,14 @@ class xdmod::config {
 
   create_resources('xdmod_portal_setting', $xdmod::portal_settings)
 
+  Xdmod_portal_setting {
+    before => [
+      File['/etc/xdmod/hierarchy.csv'],
+      File['/etc/xdmod/group-to-hierarchy.csv'],
+      File['/etc/xdmod/names.csv'],
+    ]
+  }
+
   xdmod_portal_setting { 'logger/host': value => $xdmod::database_host }
   xdmod_portal_setting { 'logger/port': value => $xdmod::database_port }
   xdmod_portal_setting { 'logger/user': value => $xdmod::database_user }
@@ -35,19 +43,7 @@ class xdmod::config {
 
   xdmod_portal_setting { 'features/appkernels': value => $_appkernels }
 
-  #[features]
-  #xsede = "off"
-  #+appkernels = "off"
-  #+singlejobviewer = "off"
-
-  #+[rest]
-  #+base = "/rest/"
-  #+version = "v1"
-
-  #+[auto_login]
-  #+; tabs is a comma delimmited list of tab ids that will trigger the login
-  #+; page to show up if presented in an non-authenticated state.
-  #+tabs = "app_kernels"
+  xdmod_portal_setting { 'reporting/java_path': value => '/usr/bin/java' }
 
   if $xdmod::enable_appkernel {
     file { '/etc/xdmod/portal_settings.d/appkernels.ini':
@@ -77,6 +73,22 @@ class xdmod::config {
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
+  }
+
+  if $xdmod::database_host != 'localhost' {
+    file { '/root/xdmod-database-setup.sh':
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0700',
+      content => template('xdmod/xdmod-database-setup.sh.erb'),
+    }
+
+    exec { 'xdmod-database-setup.sh':
+      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+      command => '/root/xdmod-database-setup.sh && touch /etc/xdmod/.database-setup',
+      creates => '/etc/xdmod/.database-setup',
+    }
   }
 
   file { '/etc/xdmod/hierarchy.csv':
@@ -122,14 +134,6 @@ class xdmod::config {
     path        => '/sbin:/bin:/usr/sbin:/usr/bin',
     command     => 'xdmod-import-csv -t names -i /etc/xdmod/names.csv',
     refreshonly => true,
-  }
-
-  file { '/root/xdmod-database-setup.sh':
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0700',
-    content => template('xdmod/xdmod-database-setup.sh.erb'),
   }
 
   file { '/etc/cron.d/xdmod':

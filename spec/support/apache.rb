@@ -1,6 +1,7 @@
 shared_examples_for "xdmod::apache" do
 
   it { should contain_class('apache') }
+  it { should contain_class('apache::mod::php') }
 
   it do
     puts catalogue.resource('concat::fragment', 'xdmod-apache-header').send(:parameters)[:content]

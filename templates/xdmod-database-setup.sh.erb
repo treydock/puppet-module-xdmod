@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 host=<%= scope.lookupvar('xdmod::database_host') %>
 port=<%= scope.lookupvar('xdmod::database_port') %>
 user=<%= scope.lookupvar('xdmod::database_user') %>

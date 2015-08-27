@@ -1,6 +1,6 @@
 {
   "name": "treydock-xdmod",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "author": "treydock",
   "summary": "XDMoD Puppet module",
   "license": "Apache-2.0",
@@ -11,15 +11,15 @@
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
-      "operatingsystemrelease": [ "6", "7" ]
+      "operatingsystemrelease": [ "6" ]
     },
     {
       "operatingsystem": "CentOS",
-      "operatingsystemrelease": [ "6", "7" ]
+      "operatingsystemrelease": [ "6" ]
     },
     {
       "operatingsystem": "Scientific",
-      "operatingsystemrelease": [ "6", "7" ]
+      "operatingsystemrelease": [ "6" ]
     }
   ],
   "dependencies": [
@@ -27,7 +27,10 @@
     { "name": "puppetlabs/apache", "version_range": ">= 1.2.0 <2.0.0" },
     { "name": "puppetlabs/inifile", "version_range": "1.x" },
     { "name": "puppetlabs/mysql", "version_range": "3.x" },
-    { "name": "rodjek/logrotate", "version_range": "1.x" }
+    { "name": "stahnma/epel", "version_range": "1.x" },
+    { "name": "rodjek/logrotate", "version_range": "1.x" },
+    { "name": "nanliu/staging", "version_range": "1.x" },
+    { "name": "herculesteam/augeasproviders_shellvar", "version_range": "2.x" }
   ]
 }
 

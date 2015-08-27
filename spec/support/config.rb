@@ -7,13 +7,50 @@ shared_examples_for "xdmod::config" do
     'shredder',
     'hpcdb',
   ].each do |section|
-    it { should contain_xdmod_portal_setting("#{section}/host").with_value('localhost') }
-    it { should contain_xdmod_portal_setting("#{section}/port").with_value('3306') }
-    it { should contain_xdmod_portal_setting("#{section}/user").with_value('xdmod') }
-    it { should contain_xdmod_portal_setting("#{section}/pass").with_value('changeme') }
+    it do
+      should contain_xdmod_portal_setting("#{section}/host").with({
+        :value  => 'localhost',
+        :before => [
+          'File[/etc/xdmod/hierarchy.csv]',
+          'File[/etc/xdmod/group-to-hierarchy.csv]',
+          'File[/etc/xdmod/names.csv]',
+        ]
+      })
+    end
+    it do
+      should contain_xdmod_portal_setting("#{section}/port").with({
+        :value  => '3306',
+        :before => [
+          'File[/etc/xdmod/hierarchy.csv]',
+          'File[/etc/xdmod/group-to-hierarchy.csv]',
+          'File[/etc/xdmod/names.csv]',
+        ]
+      })
+    end
+    it do
+      should contain_xdmod_portal_setting("#{section}/user").with({
+        :value  => 'xdmod',
+        :before => [
+          'File[/etc/xdmod/hierarchy.csv]',
+          'File[/etc/xdmod/group-to-hierarchy.csv]',
+          'File[/etc/xdmod/names.csv]',
+        ]
+      })
+    end
+    it do
+      should contain_xdmod_portal_setting("#{section}/pass").with({
+        :value  => 'changeme',
+        :before => [
+          'File[/etc/xdmod/hierarchy.csv]',
+          'File[/etc/xdmod/group-to-hierarchy.csv]',
+          'File[/etc/xdmod/names.csv]',
+        ]
+      })
+    end
   end
 
   it { should contain_xdmod_portal_setting('features/appkernels').with_value('off') }
+  it { should contain_xdmod_portal_setting('reporting/java_path').with_value('/usr/bin/java') }
   it { should_not contain_file('/etc/xdmod/portal_settings.d/appkernels.ini') }
   it { should_not contain_xdmod_appkernel_setting('features/appkernels') }
   it { should_not contain_xdmod_appkernel_setting('appkernel/host') }
@@ -113,16 +150,9 @@ shared_examples_for "xdmod::config" do
     })
   end
 
-  it do
-    should contain_file('/root/xdmod-database-setup.sh').with({
-      :ensure => 'file',
-      :owner  => 'root',
-      :group  => 'root',
-      :mode   => '0700',
-    })
-  end
+  it { should_not contain_file('/root/xdmod-database-setup.sh') }
+  it { should_not contain_exec('xdmod-database-setup.sh') }
 
-  #TODO: Test content of /root/xdmod-database-setup.sh
 
   it do
     should contain_file('/etc/cron.d/xdmod').with({
@@ -152,6 +182,29 @@ shared_examples_for "xdmod::config" do
       :compress      => 'true',
       :dateext       => 'true',
     })
+  end
+
+  context 'when database_host => host.domain' do
+    let(:params) {{ :database_host => 'host.domain' }}
+
+    it do
+      should contain_file('/root/xdmod-database-setup.sh').with({
+        :ensure => 'file',
+        :owner  => 'root',
+        :group  => 'root',
+        :mode   => '0700',
+      })
+    end
+
+    #TODO: Test content of /root/xdmod-database-setup.sh
+
+    it do
+      should contain_exec('xdmod-database-setup.sh').with({
+        :path     => '/usr/bin:/bin:/usr/sbin:/sbin',
+        :command  => '/root/xdmod-database-setup.sh && touch /etc/xdmod/.database-setup',
+        :creates  => '/etc/xdmod/.database-setup',
+      })
+    end
   end
 
   context 'when enable_appkernel => true' do

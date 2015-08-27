@@ -14,5 +14,11 @@ fixtures:
       repo: git://github.com/puppetlabs/puppetlabs-apache
     concat:
       repo: git://github.com/puppetlabs/puppetlabs-concat.git
+    staging:
+      repo: https://github.com/nanliu/puppet-staging
+    augeasproviders_core:
+      repo: https://github.com/hercules-team/augeasproviders_core
+    augeasproviders_shellvar:
+      repo: https://github.com/hercules-team/augeasproviders_shellvar
   symlinks:
     xdmod: "#{source_dir}"

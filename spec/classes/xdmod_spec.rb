@@ -4,8 +4,8 @@ describe 'xdmod' do
   on_supported_os({
     :supported_os => [
       {
-        'operatingsystem' => 'CentOS',
-        'operatingsystemrelease' => ['6', '7'],
+        "operatingsystem" => "CentOS",
+        "operatingsystemrelease" => ["6"],
       }
     ]
   }).each do |os, facts|
@@ -32,6 +32,13 @@ describe 'xdmod' do
       it_behaves_like 'xdmod::database'
       it_behaves_like 'xdmod::config'
       it_behaves_like 'xdmod::apache'
+
+      context 'when akrr => true' do
+        let(:params) {{ :akrr => true }}
+
+        it { is_expected.to compile.with_all_deps }
+        it { should compile }
+      end
 
       context 'when web => false' do
         let(:params) {{ :web => false }}
