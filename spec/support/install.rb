@@ -8,7 +8,7 @@ shared_examples_for "xdmod::install" do
     should contain_staging__file('xdmod-5.0.0-1.0.el6.noarch.rpm').with({
       :source   => 'http://downloads.sourceforge.net/project/xdmod/xdmod/5.0.0/xdmod-5.0.0-1.0.el6.noarch.rpm',
       :target   => '/opt/xdmod-repo/xdmod-5.0.0-1.0.el6.noarch.rpm',
-      :notify   => 'Exec[createrepo-xdmod-repo]',
+      :notify   => ['Exec[createrepo-xdmod-repo]', 'Exec[refresh-xdmod-repo]'],
       :require  => 'File[/opt/xdmod-repo]',
     })
   end
@@ -21,6 +21,15 @@ shared_examples_for "xdmod::install" do
       :refreshonly  => 'true',
       :before       => 'Yumrepo[xdmod-local]',
       :require      => 'Package[createrepo]',
+    })
+  end
+
+  it do
+    should contain_exec('refresh-xdmod-repo').with({
+      :command      => '/usr/bin/yum clean metadata --disablerepo=* --enablerepo=xdmod-local',
+      :refreshonly  => 'true',
+      :before       => 'Package[xdmod]',
+      :require      => 'Yumrepo[xdmod-local]',
     })
   end
 
@@ -47,19 +56,23 @@ shared_examples_for "xdmod::install" do
     let(:params) {{ :enable_appkernel => true }}
 
     it do
-      should contain_package('xdmod-appkernels').only_with({
-        :ensure   => 'present',
-        :name     => 'xdmod-appkernels',
-        :require  => ['Yumrepo[xdmod-local]', 'Yumrepo[epel]'],
+      should contain_staging__file('xdmod-appkernels-5.0.0-1.0.el6.noarch.rpm').with({
+        :source   => 'http://downloads.sourceforge.net/project/xdmod/xdmod/5.0.0/xdmod-appkernels-5.0.0-1.0.el6.noarch.rpm',
+        :target   => '/opt/xdmod-repo/xdmod-appkernels-5.0.0-1.0.el6.noarch.rpm',
+        :notify   => ['Exec[createrepo-xdmod-repo]', 'Exec[refresh-xdmod-repo]'],
+        :require  => 'File[/opt/xdmod-repo]',
       })
     end
 
     it do
-      should contain_staging__file('xdmod-appkernels-5.0.0-1.0.el6.noarch.rpm').with({
-        :source   => 'http://downloads.sourceforge.net/project/xdmod/xdmod/5.0.0/xdmod-appkernels-5.0.0-1.0.el6.noarch.rpm',
-        :target   => '/opt/xdmod-repo/xdmod-appkernels-5.0.0-1.0.el6.noarch.rpm',
-        :notify   => 'Exec[createrepo-xdmod-repo]',
-        :require  => 'File[/opt/xdmod-repo]',
+      should contain_exec('refresh-xdmod-repo').with_before(['Package[xdmod]', 'Package[xdmod-appkernels]'])
+    end
+
+    it do
+      should contain_package('xdmod-appkernels').only_with({
+        :ensure   => 'present',
+        :name     => 'xdmod-appkernels',
+        :require  => ['Yumrepo[xdmod-local]', 'Yumrepo[epel]'],
       })
     end
   end
@@ -81,10 +94,6 @@ shared_examples_for "xdmod::install" do
         "yumrepo { 'local': descr => 'local', baseurl => 'http://local.domain', gpgcheck => '0', enabled => '1' }"
       end
 
-      it do
-        repo = catalogue.resource('package', 'xdmod').send(:parameters)
-        pp repo
-      end
       it { should contain_package('xdmod').that_requires('Yumrepo[epel]') }
       it { should contain_package('xdmod').that_requires('Yumrepo[local]') }
     end
