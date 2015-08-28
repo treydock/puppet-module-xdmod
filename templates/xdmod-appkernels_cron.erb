@@ -1,0 +1,7 @@
+# This file is managed by Puppet, do not edit!
+
+# Application kernels report generator
+0 5 * * * root /usr/bin/php /usr/lib/xdmod/appkernel_reports_manager.php >/dev/null
+
+# Application kernels ingest
+0 2 * * * root /usr/bin/xdmod-akrr-ingestor -l load -r -c

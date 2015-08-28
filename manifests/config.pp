@@ -66,6 +66,14 @@ class xdmod::config {
     xdmod_appkernel_setting { 'akrr/port': value => $xdmod::akrr_restapi_port }
     xdmod_appkernel_setting { 'akrr/username': value => 'rw' }
     xdmod_appkernel_setting { 'akrr/password': value => $xdmod::akrr_restapi_rw_password }
+
+    file { '/etc/cron.d/xdmod-appkernels':
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('xdmod/xdmod-appkernels_cron.erb'),
+    }
   }
 
   file { '/etc/xdmod/portal_settings.ini':

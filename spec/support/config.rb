@@ -65,6 +65,7 @@ shared_examples_for "xdmod::config" do
   it { should_not contain_xdmod_appkernel_setting('akrr/port') }
   it { should_not contain_xdmod_appkernel_setting('akrr/username') }
   it { should_not contain_xdmod_appkernel_setting('akrr/password') }
+  it { should_not contain_file('/etc/cron.d/xdmod-appkernels') }
 
   it do
     should contain_file('/etc/xdmod/portal_settings.ini').with({
@@ -234,6 +235,15 @@ shared_examples_for "xdmod::config" do
     it { should contain_xdmod_appkernel_setting('akrr/port').with_value('8091') }
     it { should contain_xdmod_appkernel_setting('akrr/username').with_value('rw') }
     it { should contain_xdmod_appkernel_setting('akrr/password').with_value(/.*/) }
+
+    it do
+      should contain_file('/etc/cron.d/xdmod-appkernels').with({
+        :ensure => 'file',
+        :owner  => 'root',
+        :group  => 'root',
+        :mode   => '0644',
+      })
+    end
   end
 
   context 'when hierarchies defined' do
