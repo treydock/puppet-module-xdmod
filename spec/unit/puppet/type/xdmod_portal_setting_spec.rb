@@ -29,11 +29,11 @@ describe 'Puppet::Type.type(:xdmod_portal_setting)' do
   end
   it 'should accept a valid value' do
     @xdmod_portal_setting[:value] = 'bar'
-    @xdmod_portal_setting[:value].should == 'bar'
+    @xdmod_portal_setting[:value].should == '"bar"'
   end
   it 'should not accept a value with whitespace' do
     @xdmod_portal_setting[:value] = 'b ar'
-    @xdmod_portal_setting[:value].should == 'b ar'
+    @xdmod_portal_setting[:value].should == '"b ar"'
   end
   it 'should accept valid ensure values' do
     @xdmod_portal_setting[:ensure] = :present

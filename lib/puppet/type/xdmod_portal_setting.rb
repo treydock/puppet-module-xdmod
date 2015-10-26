@@ -15,7 +15,7 @@ Puppet::Type.newtype(:xdmod_portal_setting) do
   newproperty(:value) do
     desc 'The value of the setting to be defined.'
     munge do |v|
-      v.to_s.strip
+      '"' + v.to_s.strip + '"'
     end
   end
 
