@@ -1,4 +1,4 @@
-## 1.0.0 - TBD
+## 1.0.0 - 2015-12-18
 
 ### Summary
 
@@ -13,6 +13,8 @@ Support for XDMoD 5.0.0
 
 * Parameters added:
   * `version` - Defines XDMoD version which is used to construct URL for downloading RPMs
+  * `create_local_repo` - Sets if a local yum repo should be created for XDMoD
+  * `local_repo_name` - Name of local or remote repo containing XDMoD
   * `package_url` - URL used to download XDMoD RPM
   * `apkernels_package_url` - URL used to download XDMoD appkernels RPM
   * `akrr` - Manage AKRR
