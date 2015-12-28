@@ -41,7 +41,13 @@ class xdmod::config {
     false => 'off',
   }
 
+  $_singlejobviewer = $xdmod::enable_supremm ? {
+    true  => 'on',
+    false => 'off',
+  }
+
   xdmod_portal_setting { 'features/appkernels': value => $_appkernels }
+  xdmod_portal_setting { 'features/singlejobviewer': value => $_singlejobviewer }
 
   xdmod_portal_setting { 'reporting/java_path': value => '/usr/bin/java' }
 
@@ -73,6 +79,74 @@ class xdmod::config {
       group   => 'root',
       mode    => '0644',
       content => template('xdmod/xdmod-appkernels_cron.erb'),
+    }
+  }
+
+  if $xdmod::enable_supremm {
+    exec { 'xdmod-supremm-npm-install':
+      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+      cwd     => '/usr/share/xdmod/etl/js',
+      command => 'npm install',
+      unless  => [
+        'test -d /usr/share/xdmod/etl/js/node_modules/cloneextend',
+        'test -d /usr/share/xdmod/etl/js/node_modules/ini',
+        'test -d /usr/share/xdmod/etl/js/node_modules/minimist',
+        'test -d /usr/share/xdmod/etl/js/node_modules/mongodb',
+        'test -d /usr/share/xdmod/etl/js/node_modules/mysql',
+        'test -d /usr/share/xdmod/etl/js/node_modules/winston',
+        'test -d /usr/share/xdmod/etl/js/node_modules/winston-mysql-transport',
+      ],
+      before  => Exec['generate-etl-config'],
+    }
+
+    file { '/etc/xdmod/portal_settings.d/supremm.ini':
+      ensure => 'file',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+    }
+
+    xdmod_supremm_setting { 'features/singlejobviewer': value => $_singlejobviewer }
+
+    $_configure_etl_cmd = [
+      'sed -i',
+      "-e 's|<MONGO_HOSTNAME>|${xdmod::supremm_mongodb_host}|g'",
+      "-e 's|<MONGO_COLLECTION_NAME>|resource_${xdmod::resource_id}|g'",
+      "-e 's|<SHORT_NAME>|${xdmod::_resource_short_name}|g'",
+      "-e 's|<LONG_NAME>|${xdmod::_resource_long_name}|g'",
+      "-e 's|<ID>|${xdmod::resource_id}|g'",
+      '/usr/share/xdmod/etl/js/config/supremm/etl.profile.js'
+    ]
+
+    exec { 'configure-etl':
+      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+      command => join($_configure_etl_cmd, ' '),
+      onlyif  => 'egrep -v "^\*|^\s+\*"  /usr/share/xdmod/etl/js/config/supremm/etl.profile.js | egrep "<MONGO_HOSTNAME>|<SHORT_NAME>|<LONG_NAME>|<ID>|<MONGO_COLLECTION_NAME>"',
+      notify  => Exec['generate-etl-config'],
+    }
+
+    exec { 'generate-etl-config':
+      path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+      cwd         => '/usr/share/xdmod/etl/js',
+      command     => 'node etl.cli.js -i',
+      refreshonly => true,
+    }
+
+    if $xdmod::database_host != 'localhost' {
+      exec { 'modw_supremm-schema':
+        path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+        command => "mysql ${xdmod::_mysql_remote_args} -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql",
+        onlyif  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
+        unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^jobstatus$'",
+      }
+      exec { 'modw_etl-schema':
+        path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+        command => "mysql ${xdmod::_mysql_remote_args} -D modw_etl < /usr/share/xdmod/db/schema/modw_etl.sql",
+        onlyif  => [
+          "mysql ${xdmod::_mysql_remote_args} -BN -e 'SHOW DATABASES' | egrep -q '^modw_etl$'",
+          "mysql ${xdmod::_mysql_remote_args} -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'",
+        ],
+      }
     }
   }
 

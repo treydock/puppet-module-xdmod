@@ -1,4 +1,4 @@
-shared_examples_for "xdmod::apache" do
+shared_examples_for "xdmod::apache" do |facts|
 
   it { should contain_class('apache') }
   it { should contain_class('apache::mod::php') }

@@ -1,0 +1,7 @@
+#!/bin/sh
+
+mytime=`/bin/date`
+myhost=`/bin/hostname`
+
+echo "Proc PMDA died at $mytime on $myhost" >> <%= @_procpmda_log_path %> 2>&1
+sudo <%= @_pcp_restart_path %> >> /var/log/pcp/pmie/pcpsudo.out 2>&1

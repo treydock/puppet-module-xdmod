@@ -1,0 +1,64 @@
+#
+# Check whether we are called from the standard pmlogger or at job prolog/epilog
+# On prolog we specify 10 second intervals and the script ends after N samples
+# On epilog we log once
+#
+
+%shell '[ -n "$PMLOGGER_PROLOG" ] && echo %define PMLOGGER_PROLOG; exit 0'
+%shell '[ -n "$PMLOGGER_EPILOG" ] && echo %define PMLOGGER_EPILOG; exit 0'
+
+# elif and nested ifdefs not supported, so just overwrite
+
+%define static_freq '<%= scope.lookupvar('xdmod::pcp_logging_static_freq') %>'
+%define standard_freq '<%= scope.lookupvar('xdmod::pcp_logging_standard_freq') %>'
+%define environ_freq 'once'
+
+%ifdef PMLOGGER_PROLOG
+%undef static_freq
+%undef standard_freq
+%undef environ_freq
+%define static_freq '10 sec'
+%define standard_freq '10 sec'
+%define environ_freq '10 sec'
+%endif
+
+%ifdef PMLOGGER_EPILOG
+%undef static_freq
+%undef standard_freq
+%undef environ_freq
+%define static_freq 'once'
+%define standard_freq 'once'
+%define environ_freq 'once'
+%endif
+
+#
+# Metrics expected to rarely change.
+#
+
+log mandatory on %{static_freq} {
+<% scope.lookupvar('xdmod::pcp_static_metrics').each do |metric| -%>
+  <%= metric %>
+<% end -%>
+}
+
+#
+# Metrics expected to frequently change.
+#
+log mandatory on %{standard_freq} {
+<% scope.lookupvar('xdmod::pcp_standard_metrics').each do |metric| -%>
+  <%= metric %>
+<% end -%>
+}
+
+# Recorded less frequently than other hotproc metrics due to size.
+log mandatory on %{environ_freq} {
+<% scope.lookupvar('xdmod::pcp_environ_metrics').each do |metric| -%>
+  <%= metric %>
+<% end -%>
+}
+
+# Access Control Section
+# The following settings should disallow all settings changes from anywhere,
+# but allow setting queries from anywhere.
+[access]
+disallow * : all except enquire;

@@ -1,4 +1,4 @@
-shared_examples_for "xdmod::config" do
+shared_examples_for "xdmod::config" do |facts|
 
   [
     'logger',
@@ -243,6 +243,55 @@ shared_examples_for "xdmod::config" do
         :group  => 'root',
         :mode   => '0644',
       })
+    end
+  end
+
+  context 'when enable_supremm => true' do
+    let(:params) {{ :enable_supremm => true }}
+
+    it do
+      is_expected.to contain_exec('xdmod-supremm-npm-install')
+    end
+
+    it do
+      is_expected.to contain_file('/etc/xdmod/portal_settings.d/supremm.ini')
+    end
+
+    it do
+      is_expected.to contain_xdmod_supremm_setting('features/singlejobviewer').with_value('on')
+    end
+
+    it do
+      is_expected.to contain_exec('configure-etl').with({
+        :command  => "sed -i -e 's|<MONGO_HOSTNAME>|localhost|g' -e 's|<MONGO_COLLECTION_NAME>|resource_1|g' -e 's|<SHORT_NAME>|example|g' -e 's|<LONG_NAME>|Example|g' -e 's|<ID>|1|g' /usr/share/xdmod/etl/js/config/supremm/etl.profile.js",
+        :onlyif   => 'egrep -v "^\\*|^\\s+\\*"  /usr/share/xdmod/etl/js/config/supremm/etl.profile.js | egrep "<MONGO_HOSTNAME>|<SHORT_NAME>|<LONG_NAME>|<ID>|<MONGO_COLLECTION_NAME>"',
+      })
+    end
+
+    it do
+      is_expected.to contain_exec('generate-etl-config')
+    end
+
+    context 'when database_host => dbhost' do
+      let(:params) {{ :enable_supremm => true, :database_host => 'dbhost' }}
+
+      it do
+        is_expected.to contain_exec('modw_supremm-schema').with({
+          :command  => 'mysql -h dbhost -u xdmod -pchangeme -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql',
+          :onlyif   => "mysql -BN -h dbhost -u xdmod -pchangeme -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
+          :unless   => "mysql -BN -h dbhost -u xdmod -pchangeme -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^jobstatus$'",
+        })
+      end
+
+      it do
+        is_expected.to contain_exec('modw_etl-schema').with({
+          :command  => 'mysql -h dbhost -u xdmod -pchangeme -D modw_etl < /usr/share/xdmod/db/schema/modw_etl.sql',
+          :onlyif   => [
+            "mysql -h dbhost -u xdmod -pchangeme -BN -e 'SHOW DATABASES' | egrep -q '^modw_etl$'",
+            "mysql -h dbhost -u xdmod -pchangeme -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'",
+          ],
+        })
+      end
     end
   end
 

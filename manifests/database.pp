@@ -19,8 +19,9 @@ class xdmod::database {
     $_mod_shredder_sql    = ['/usr/share/xdmod/db/schema/mod_shredder.sql', '/usr/share/xdmod/db/data/mod_shredder.sql']
     $_moddb_sql           = ['/usr/share/xdmod/db/schema/moddb.sql', '/usr/share/xdmod/db/data/moddb.sql']
     $_modw_sql            = ['/usr/share/xdmod/db/schema/modw.sql', '/usr/share/xdmod/db/data/modw.sql']
-    #$_modw_aggregates_sql = ['/usr/share/xdmod/db/schema/modw_aggregates.sql', '/usr/share/xdmod/db/data/modw_aggregates.sql']
     $_modw_aggregates_sql = '/usr/share/xdmod/db/schema/modw_aggregates.sql'
+    $_modw_etl_sql        = '/usr/share/xdmod/db/schema/modw_etl.sql'
+    $_modw_supremm_sql    = '/usr/share/xdmod/db/schema/modw_supremm.sql'
   } else {
     $_mod_hpcdb_sql       = undef
     $_mod_logger_sql      = undef
@@ -66,6 +67,15 @@ class xdmod::database {
       table      => 'modw.resourcefact',
       user       => "${xdmod::akrr_database_user}@${xdmod::web_host}",
       require    => [Mysql::Db['modw'], Mysql::Db['mod_akrr']],
+    }
+  }
+
+  if $xdmod::enable_supremm {
+    mysql::db { 'mod_etl':
+      sql => $_modw_etl_sql,
+    }
+    mysql::db { 'modw_supremm':
+      sql => $_modw_supremm_sql,
     }
   }
 

@@ -1,0 +1,55 @@
+{
+    // Configuration settings for job data input
+    // The database configuration below assumes everything
+    //   is running on localhost.  A more complex configuration
+    //   could have multiple hosts and different credentials.
+    "xdmodroot": "/etc/xdmod",
+    "accountdatabase": {
+        //"db_engine": "MySQLDB",
+        //"dbhost": "localhost",
+        //"dbname": "modw_pcp",
+        //"defaultsfile": "~/.my.cnf"
+        "include": "xdmod://logger"
+    },
+    "datawarehouse": {
+<% if scope.lookupvar('xdmod::_supremm_mysql_access') == 'defaultsfile' -%>
+        "db_engine": "MySQLDB",
+        "host": "<%= scope.lookupvar('xdmod::database_host') %>",
+        "defaultsfile": "/root/.supremm.my.cnf"
+<% end -%>
+<% if scope.lookupvar('xdmod::_supremm_mysql_access') == 'include' -%>
+        "include": "xdmod://datawarehouse"
+<% end -%>
+    },
+    // Configuration setting for summary document output
+    "outputdatabase": {
+        "db_engine": "mongodb",
+        "dbhost": "<%= scope.lookupvar('xdmod::supremm_mongodb_host') %>",
+        "dbname": "supremm"
+    },
+    "summary": {
+        // The archive out directory should be writable by the process that runs
+        // the summaries.
+        "archive_out_dir": "/dev/shm/supremm_test",
+        // The following substitutions are defined for the job archive subdirectory:
+        //  %r means the resource name
+        //  %j the local job id
+        //  the rest is sent to strftime with the end time of the job
+        //  Common examples:
+        //  %Y-%m-%d/%r/%j  includes the date/resource/jobid in the path
+        "subdir_out_format": "%r/%j"
+    },
+    "resources": {
+        // Edit the below to match your cluster name and data locations
+        "my_cluster_name": {
+            "enabled": true,
+            "resource_id": 1,
+            "batch_system": "XDMoD",
+            "hostname_mode": "hostname",
+            "pcp_log_dir": "<%= scope.lookupvar('xdmod::pcp_log_base_dir') %>",
+<% if scope.lookupvar('xdmod::job_scripts_dir') -%>
+            "script_dir": "<%= scope.lookupvar('xdmod::job_scripts_dir') %>"
+<% end -%>
+        }
+    }
+}

@@ -21,23 +21,39 @@ describe 'xdmod' do
       it { should create_class('xdmod') }
       it { should contain_class('xdmod::params') }
 
-      it { should contain_anchor('xdmod::start').that_comes_before('Class[xdmod::install]') }
+      it { should contain_anchor('xdmod::start').that_comes_before('Class[xdmod::repo]') }
+      it { should contain_class('xdmod::repo').that_comes_before('Class[xdmod::install]') }
       it { should contain_class('xdmod::install').that_comes_before('Class[xdmod::database]') }
       it { should contain_class('xdmod::database').that_comes_before('Class[xdmod::config]') }
       it { should contain_class('xdmod::config').that_comes_before('Class[xdmod::apache]') }
       it { should contain_class('xdmod::apache').that_comes_before('Anchor[xdmod::end]') }
       it { should contain_anchor('xdmod::end') }
 
-      it_behaves_like 'xdmod::install'
-      it_behaves_like 'xdmod::database'
-      it_behaves_like 'xdmod::config'
-      it_behaves_like 'xdmod::apache'
+      it_behaves_like 'xdmod::repo', facts
+      it_behaves_like 'xdmod::install', facts
+      it_behaves_like 'xdmod::database', facts
+      it_behaves_like 'xdmod::config', facts
+      it_behaves_like 'xdmod::apache', facts
 
       context 'when akrr => true' do
         let(:params) {{ :akrr => true }}
 
         it { is_expected.to compile.with_all_deps }
-        it { should compile }
+        it { is_expected.to compile }
+      end
+
+      context 'when supremm => true' do
+        let(:params) {{ :supremm => true, :pcp_log_base_dir => '/data/supremm/pmlogger' }}
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to compile }
+      end
+
+      context 'when supremm_database => true' do
+        let(:params) {{ :supremm_database => true }}
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to compile }
       end
 
       context 'when web => false' do
@@ -52,7 +68,7 @@ describe 'xdmod' do
         it { should_not contain_class('xdmod::install') }
         it { should_not contain_class('xdmod::config') }
 
-        it_behaves_like 'xdmod::database'
+        it_behaves_like 'xdmod::database', facts
       end
 
       context 'when database => false' do
@@ -60,7 +76,8 @@ describe 'xdmod' do
 
         it { is_expected.to compile.with_all_deps }
 
-        it { should contain_anchor('xdmod::start').that_comes_before('Class[xdmod::install]') }
+        it { should contain_anchor('xdmod::start').that_comes_before('Class[xdmod::repo]') }
+        it { should contain_class('xdmod::repo').that_comes_before('Class[xdmod::install]') }
         it { should contain_class('xdmod::install').that_comes_before('Class[xdmod::config]') }
         it { should contain_class('xdmod::config').that_comes_before('Class[xdmod::apache]') }
         it { should contain_class('xdmod::apache').that_comes_before('Anchor[xdmod::end]') }
@@ -68,9 +85,36 @@ describe 'xdmod' do
 
         it { should_not contain_class('xdmod::database') }
 
-        it_behaves_like 'xdmod::install'
-        it_behaves_like 'xdmod::config'
-        it_behaves_like 'xdmod::apache'
+        it_behaves_like 'xdmod::repo', facts
+        it_behaves_like 'xdmod::install', facts
+        it_behaves_like 'xdmod::config', facts
+        it_behaves_like 'xdmod::apache', facts
+      end
+
+      context 'when compute => true only' do
+        let(:params) {{
+          :web              => false,
+          :database         => false,
+          :compute          => true,
+          :pcp_log_base_dir => '/data/supremm/pmlogger'
+        }}
+
+        it { is_expected.to compile.with_all_deps }
+
+        it { should create_class('xdmod::supremm::compute::pcp') }
+        it { should contain_class('xdmod::params') }
+
+        context 'when pcp_log_base_dir is undefined' do
+          let(:params) {{
+            :web          => false,
+            :database     => false,
+            :compute      => true,
+          }}
+
+          it 'should raise an error' do
+            expect { is_expected.to compile }.to raise_error(/pcp_log_base_dir must be defined/)
+          end
+        end
       end
 
       # Test validate_bool parameters
