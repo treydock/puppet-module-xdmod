@@ -5,14 +5,21 @@ describe 'xdmod' do
     :supported_os => [
       {
         "operatingsystem" => "CentOS",
-        "operatingsystemrelease" => ["6"],
+        "operatingsystemrelease" => ["6", "7"],
       }
     ]
   }).each do |os, facts|
     context "on #{os}" do
+      case facts[:operatingsystemmajrelease]
+      when '6'
+        sudoversion = '1.8.6p3'
+      when '7'
+        sudoversion = '1.8.6p7'
+      end
       let(:facts) do
         facts.merge({
           :concat_basedir => '/dne',
+          :sudoversion    => sudoversion,
         })
       end
 

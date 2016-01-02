@@ -23,21 +23,21 @@ class xdmod::params {
     'RedHat': {
       case $::operatingsystemmajrelease {
         '7': {
-          # Nothing
+          $rpm_release = 'el7.centos'
         }
         '6': {
-          # Nothing
+          $rpm_release = 'el6'
         }
         default: {
           fail("Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 6 and 7")
         }
       }
       $package_name               = 'xdmod'
-      $package_url                = "http://downloads.sourceforge.net/project/xdmod/xdmod/VERSION/xdmod-VERSION-1.0.el${::operatingsystemmajrelease}.noarch.rpm"
+      $package_url                = "http://downloads.sourceforge.net/project/xdmod/xdmod/VERSION/xdmod-VERSION-1.0.${rpm_release}.noarch.rpm"
       $appkernels_package_name    = 'xdmod-appkernels'
-      $appkernels_package_url     = "http://downloads.sourceforge.net/project/xdmod/xdmod/VERSION/xdmod-appkernels-VERSION-1.0.el${::operatingsystemmajrelease}.noarch.rpm"
+      $appkernels_package_url     = "http://downloads.sourceforge.net/project/xdmod/xdmod/VERSION/xdmod-appkernels-VERSION-1.0.${rpm_release}.noarch.rpm"
       $xdmod_supremm_package_name = 'xdmod-supremm'
-      $xdmod_supremm_package_url  = "http://downloads.sourceforge.net/project/xdmod/xdmod/VERSION/xdmod-supremm-VERSION-0.6.beta1.el${::operatingsystemmajrelease}.noarch.rpm"
+      $xdmod_supremm_package_url  = "http://downloads.sourceforge.net/project/xdmod/xdmod/VERSION/xdmod-supremm-VERSION-0.6.beta1.${rpm_release}.noarch.rpm"
     }
 
     default: {

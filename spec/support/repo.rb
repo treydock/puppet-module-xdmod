@@ -1,4 +1,11 @@
 shared_examples_for "xdmod::repo" do |facts|
+  case facts[:operatingsystemmajrelease]
+  when '6'
+    rpm_release = 'el6'
+  when '7'
+    rpm_release = 'el7.centos'
+  end
+
   it { should contain_class('epel') }
 
   it { should contain_package('createrepo').with_ensure('present') }
@@ -6,8 +13,8 @@ shared_examples_for "xdmod::repo" do |facts|
 
   it do
     should contain_staging__file('xdmod-5.5.0').with({
-      :source   => "http://downloads.sourceforge.net/project/xdmod/xdmod/5.5.0/xdmod-5.5.0-1.0.el#{facts[:operatingsystemmajrelease]}.noarch.rpm",
-      :target   => "/opt/xdmod-repo/xdmod-5.5.0-1.0.el#{facts[:operatingsystemmajrelease]}.noarch.rpm",
+      :source   => "http://downloads.sourceforge.net/project/xdmod/xdmod/5.5.0/xdmod-5.5.0-1.0.#{rpm_release}.noarch.rpm",
+      :target   => "/opt/xdmod-repo/xdmod-5.5.0-1.0.#{rpm_release}.noarch.rpm",
       :notify   => ['Exec[createrepo-xdmod-repo]', 'Exec[refresh-xdmod-repo]'],
       :require  => 'File[/opt/xdmod-repo]',
     })
@@ -15,8 +22,8 @@ shared_examples_for "xdmod::repo" do |facts|
 
   it do
     should contain_staging__file('xdmod-appkernels-5.5.0').with({
-      :source   => "http://downloads.sourceforge.net/project/xdmod/xdmod/5.5.0/xdmod-appkernels-5.5.0-1.0.el#{facts[:operatingsystemmajrelease]}.noarch.rpm",
-      :target   => "/opt/xdmod-repo/xdmod-appkernels-5.5.0-1.0.el#{facts[:operatingsystemmajrelease]}.noarch.rpm",
+      :source   => "http://downloads.sourceforge.net/project/xdmod/xdmod/5.5.0/xdmod-appkernels-5.5.0-1.0.#{rpm_release}.noarch.rpm",
+      :target   => "/opt/xdmod-repo/xdmod-appkernels-5.5.0-1.0.#{rpm_release}.noarch.rpm",
       :notify   => ['Exec[createrepo-xdmod-repo]', 'Exec[refresh-xdmod-repo]'],
       :require  => 'File[/opt/xdmod-repo]',
     })
@@ -24,8 +31,8 @@ shared_examples_for "xdmod::repo" do |facts|
 
   it do
     should contain_staging__file('xdmod-supremm-5.5.0').with({
-      :source   => "http://downloads.sourceforge.net/project/xdmod/xdmod/5.5.0/xdmod-supremm-5.5.0-0.6.beta1.el#{facts[:operatingsystemmajrelease]}.noarch.rpm",
-      :target   => "/opt/xdmod-repo/xdmod-supremm-5.5.0-0.6.beta1.el#{facts[:operatingsystemmajrelease]}.noarch.rpm",
+      :source   => "http://downloads.sourceforge.net/project/xdmod/xdmod/5.5.0/xdmod-supremm-5.5.0-0.6.beta1.#{rpm_release}.noarch.rpm",
+      :target   => "/opt/xdmod-repo/xdmod-supremm-5.5.0-0.6.beta1.#{rpm_release}.noarch.rpm",
       :notify   => ['Exec[createrepo-xdmod-repo]', 'Exec[refresh-xdmod-repo]'],
       :require  => 'File[/opt/xdmod-repo]',
     })
@@ -44,9 +51,12 @@ shared_examples_for "xdmod::repo" do |facts|
     should contain_exec('refresh-xdmod-repo').with({
       :command      => '/usr/bin/yum clean metadata --disablerepo=* --enablerepo=xdmod-local',
       :refreshonly  => 'true',
-      :before       => 'Package[xdmod]',
       :require      => 'Yumrepo[xdmod-local]',
     })
+  end
+
+  it do
+    should contain_exec('refresh-xdmod-repo').that_comes_before('Package[xdmod]')
   end
 
   it do
