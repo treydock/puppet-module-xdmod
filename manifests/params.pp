@@ -296,7 +296,7 @@ class xdmod::params {
     '#gpfs.fsios',
     '',
     '# slurm',
-    'slurm.node',
+    '#slurm.node',
     '',
     '# Intel MIC cards',
     '#mic',
