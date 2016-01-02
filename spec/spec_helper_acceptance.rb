@@ -29,7 +29,7 @@ RSpec.configure do |c|
       on host, puppet('module', 'install', 'nanliu-staging'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'herculesteam-augeasproviders_shellvar'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'saz-sudo'), { :acceptable_exit_codes => [0,1] }
-      on host, 'git clone https://github.com/treydock/puppet-module-pcp.git /etc/puppet/modules/pcp'
+      on host, puppet('module', 'install', 'treydock-pcp'), { :acceptable_exit_codes => [0,1] }
     end
   end
 end
