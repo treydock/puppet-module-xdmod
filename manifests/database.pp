@@ -22,6 +22,7 @@ class xdmod::database {
     $_modw_aggregates_sql = '/usr/share/xdmod/db/schema/modw_aggregates.sql'
     $_modw_etl_sql        = '/usr/share/xdmod/db/schema/modw_etl.sql'
     $_modw_supremm_sql    = '/usr/share/xdmod/db/schema/modw_supremm.sql'
+    $_modw_notify         = undef
   } else {
     $_mod_hpcdb_sql       = undef
     $_mod_logger_sql      = undef
@@ -29,6 +30,13 @@ class xdmod::database {
     $_moddb_sql           = undef
     $_modw_sql            = undef
     $_modw_aggregates_sql = undef
+    $_modw_etl_sql        = undef
+    $_modw_supremm_sql    = undef
+    if $xdmod::enable_appkernel {
+      $_modw_notify = Exec['create-modw.resourcefact']
+    } else {
+      $_modw_notify = undef
+    }
   }
 
   mysql::db { 'mod_hpcdb':
@@ -44,7 +52,8 @@ class xdmod::database {
     sql => $_moddb_sql,
   }
   mysql::db { 'modw':
-    sql => $_modw_sql,
+    sql    => $_modw_sql,
+    notify => $_modw_notify,
   }
   mysql::db { 'modw_aggregates':
     sql => $_modw_aggregates_sql,
@@ -54,18 +63,59 @@ class xdmod::database {
     mysql::db { 'mod_appkernel':
       user     => $xdmod::akrr_database_user,
       password => $xdmod::akrr_database_password,
+      host     => $xdmod::akrr_host,
     }
 
     mysql::db { 'mod_akrr':
       user     => $xdmod::akrr_database_user,
       password => $xdmod::akrr_database_password,
+      host     => $xdmod::akrr_host,
     }
 
-    mysql_grant { "${xdmod::akrr_database_user}@${xdmod::web_host}/modw.resourcefact":
+    if $xdmod::web_host != $xdmod::akrr_host {
+      mysql::db { 'mod_appkernel-xdmod':
+        dbname   => 'mod_appkernel',
+        user     => $xdmod::akrr_database_user,
+        password => $xdmod::akrr_database_password,
+      }
+
+      mysql::db { 'mod_akrr-xdmod':
+        dbname   => 'mod_akrr',
+        user     => $xdmod::akrr_database_user,
+        password => $xdmod::akrr_database_password,
+      }
+      #mysql_grant { "${xdmod::akrr_database_user}@${xdmod::akrr_host}/mod_appkernel.*":
+      #  ensure     => 'present',
+      #  privileges => ['ALL'],
+      #  table      => 'mod_appkernel.*',
+      #  user       => "${xdmod::akrr_database_user}@${xdmod::akrr_host}",
+      #  require    => Mysql::Db['mod_appkernel'],
+      #}
+
+      #mysql_grant { "${xdmod::akrr_database_user}@${xdmod::akrr_host}/mod_akrr.*":
+      #  ensure     => 'present',
+      #  privileges => ['ALL'],
+      #  table      => 'mod_akrr.*',
+      #  user       => "${xdmod::akrr_database_user}@${xdmod::akrr_host}",
+      #  require    => Mysql::Db['mod_akrr'],
+      #}
+    }
+
+    # Hack to ensure modw.resourcefact exists for mysql_grant
+    exec { 'create-modw.resourcefact':
+      path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+      command     => "mysql modw -e \"CREATE TABLE resourcefact (id int(11) NOT NULL COMMENT 'The id of the resource record')\"",
+      refreshonly => true,
+      #unless  => "mysql -BN modw -e 'SHOW TABLES' | egrep -q '^resourcefact$'",
+      #require => Mysql::Db['modw'],
+      before      => Mysql_grant["${xdmod::akrr_database_user}@${xdmod::akrr_host}/modw.resourcefact"],
+    }
+
+    mysql_grant { "${xdmod::akrr_database_user}@${xdmod::akrr_host}/modw.resourcefact":
       ensure     => 'present',
       privileges => ['SELECT'],
       table      => 'modw.resourcefact',
-      user       => "${xdmod::akrr_database_user}@${xdmod::web_host}",
+      user       => "${xdmod::akrr_database_user}@${xdmod::akrr_host}",
       require    => [Mysql::Db['modw'], Mysql::Db['mod_akrr']],
     }
   }
@@ -80,3 +130,4 @@ class xdmod::database {
   }
 
 }
+  

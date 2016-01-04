@@ -9,6 +9,13 @@ class xdmod::supremm::config {
     require => Package['mysql_client'],
   }
 
+  # Hack to fix mongo_setup.js
+  exec { 'fix-mongo_setup.js':
+    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command => "sed -i -e 's|Mongo()|Mongo(\"${xdmod::supremm_mongodb_host}\")|' /usr/share/supremm/setup/mongo_setup.js",
+    onlyif  => 'grep -q "Mongo()" /usr/share/supremm/setup/mongo_setup.js',
+    before  => Exec['mongodb-supremm-schema'],
+  }
   exec { 'mongodb-supremm-schema':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
     command => "mongo ${xdmod::supremm_mongodb_host} /usr/share/supremm/setup/mongo_setup.js",

@@ -14,25 +14,7 @@ describe 'xdmod class:' do
       apply_manifest(pp, :catch_changes => true)
     end
 
-    describe package('xdmod') do
-      it { should be_installed }
-    end
-
-    describe package('xdmod-appkernels') do
-      it { should_not be_installed }
-    end
-
-    describe file('/etc/xdmod/portal_settings.ini') do
-      its(:content) { should match /^appkernels = "off"$/ }
-    end
-
-    describe file('/etc/xdmod/portal_settings.d/appkernels.ini') do
-      it { should_not exist }
-    end
-
-    describe command('curl -L --insecure http://xdmod.localdomain') do
-      its(:stdout) { should match /Open XDMoD/ }
-    end
+    it_behaves_like 'xdmod-default', default
   end
 
   context 'create_local_repo => false' do

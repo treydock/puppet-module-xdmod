@@ -1,0 +1,70 @@
+HOSTS:
+  web:
+    roles:
+      - master
+      - agent
+      - web
+    platform: el-7-x86_64
+    hypervisor: docker
+    image: centos:7
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y tar wget cronie'
+    docker_container_name: 'xdmod-web'
+  db:
+    roles:
+      - agent
+      - db
+    platform: el-7-x86_64
+    hypervisor: docker
+    image: centos:7
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y tar wget cronie'
+    docker_container_name: 'xdmod-db'
+  akrr:
+    roles:
+      - agent
+      - akrr
+    platform: el-7-x86_64
+    hypervisor: docker
+    image: centos:7
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y tar wget cronie'
+    docker_container_name: 'xdmod-akrr'
+  supremm:
+    roles:
+      - agent
+      - supremm
+    platform: el-7-x86_64
+    hypervisor: docker
+    image: centos:7
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y tar wget cronie'
+    docker_container_name: 'xdmod-supremm'
+  compute:
+    roles:
+      - agent
+      - compute
+    platform: el-7-x86_64
+    hypervisor: docker
+    image: centos:7
+    docker_preserve_image: true
+    docker_cmd:
+      - '/usr/sbin/init'
+    docker_image_commands:
+      - 'yum install -y tar wget cronie'
+    docker_container_name: 'xdmod-compute'
+CONFIG:
+  log_level: debug
+  type: foss

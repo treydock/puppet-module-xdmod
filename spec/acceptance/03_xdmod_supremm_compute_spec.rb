@@ -18,8 +18,6 @@ describe 'xdmod class:' do
       apply_manifest(pp, :catch_changes => true)
     end
 
-    describe package('pcp') do
-      it { should be_installed }
-    end
+    it_behaves_like 'compute', default
   end
 end

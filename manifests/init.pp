@@ -32,6 +32,7 @@ class xdmod (
   $akrr_database_user       = 'akrr',
   $akrr_database_password   = 'changeme',
   $web_host                 = 'localhost',
+  $akrr_host                = 'localhost',
   $scheduler                = 'slurm',
   $shredder_command         = undef,
   $enable_update_check      = true,

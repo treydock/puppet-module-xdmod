@@ -12,6 +12,12 @@ task :test => [:syntax, :lint, :spec]
 desc "Run syntax, lint and spec_standalone tasks."
 task :test_standalone => [:spec_prep, :syntax, :lint, :spec_standalone]
 
+desc 'Run beaker full acceptance tests'
+RSpec::Core::RakeTask.new(:beaker_full) do |t|
+  t.rspec_opts = ['--color']
+  t.pattern = 'spec/acceptance_full'
+end
+
 exclude_paths = [
   "pkg/**/*",
   "vendor/**/*",

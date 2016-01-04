@@ -2,6 +2,12 @@ HOSTS:
   centos-6-x64-docker:
     roles:
       - master
+      - agent
+      - compute
+      - db
+      - akrr
+      - supremm
+      - web
     platform: el-6-x86_64
     hypervisor: docker
     image: centos:6
@@ -10,6 +16,7 @@ HOSTS:
       - '/sbin/init'
     docker_image_commands:
       - 'yum install -y tar wget'
+    docker_container_name: 'xdmod'
 CONFIG:
   log_level: debug
   type: foss

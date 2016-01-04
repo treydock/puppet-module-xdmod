@@ -33,6 +33,22 @@ RSpec.configure do |c|
       on host, puppet('module', 'install', 'herculesteam-augeasproviders_shellvar'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'saz-sudo'), { :acceptable_exit_codes => [0,1] }
       on host, puppet('module', 'install', 'treydock-pcp'), { :acceptable_exit_codes => [0,1] }
+
+      host_pp = <<-EOS
+        host { 'web': ip => '#{find_only_one(:web).ip}' }
+        host { 'db': ip => '#{find_only_one(:db).ip}' }
+        host { 'akrr': ip => '#{find_only_one(:akrr).ip}' }
+      EOS
+      apply_manifest_on(host, host_pp, :catch_failures => true)
+      on host, puppet('resource service iptables ensure=stopped'), { :acceptable_exit_codes => [0,1] }
     end
+
+    apply_manifest_on(find_only_one(:web), "host { 'xdmod.localdomain': ip => '127.0.0.1' }", :catch_failures => true)
+  end
+
+  c.before(:all) do
+    @web_ip ||= find_only_one(:web).ip
+    @db_ip ||= find_only_one(:db).ip
+    @akrr_ip ||= find_only_one(:akrr).ip
   end
 end

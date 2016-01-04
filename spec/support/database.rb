@@ -47,7 +47,7 @@ shared_examples_for 'xdmod::database' do |facts|
     end
 
     it do
-      should contain_mysql__db('mod_appkernel').with({
+      should contain_mysql__db('mod_akrr').with({
         :ensure       => 'present',
         :user         => 'akrr',
         :password     => 'changeme',
@@ -66,6 +66,13 @@ shared_examples_for 'xdmod::database' do |facts|
         :user       => 'akrr@localhost',
         :require    => ['Mysql::Db[modw]', 'Mysql::Db[mod_akrr]'],
       })
+    end
+
+    context 'when akrr_host != web_host' do
+      let(:params) {{ :enable_appkernel => true, :akrr_host => 'foo' }}
+
+      it { should contain_mysql__db('mod_appkernel').with_host('foo') }
+      it { should contain_mysql__db('mod_akrr').with_host('foo') }
     end
   end
 
