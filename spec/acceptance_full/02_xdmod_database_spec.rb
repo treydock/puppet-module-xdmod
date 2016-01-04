@@ -1,4 +1,4 @@
-require 'spec_helper_acceptance'
+require 'spec_helper_acceptance_full'
 
 describe 'xdmod class: databases' do
   node = find_only_one(:db)

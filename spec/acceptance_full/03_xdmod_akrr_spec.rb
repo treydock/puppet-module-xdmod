@@ -1,4 +1,4 @@
-require 'spec_helper_acceptance'
+require 'spec_helper_acceptance_full'
 
 describe 'xdmod class: akrr' do
   node = find_only_one(:akrr)
