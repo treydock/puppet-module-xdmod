@@ -41,7 +41,7 @@
     },
     "resources": {
         // Edit the below to match your cluster name and data locations
-        "my_cluster_name": {
+        "<%= scope.lookupvar('xdmod::resource_name') %>": {
             "enabled": true,
             "resource_id": 1,
             "batch_system": "XDMoD",

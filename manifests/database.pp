@@ -121,7 +121,7 @@ class xdmod::database {
   }
 
   if $xdmod::enable_supremm {
-    mysql::db { 'mod_etl':
+    mysql::db { 'modw_etl':
       sql => $_modw_etl_sql,
     }
     mysql::db { 'modw_supremm':
