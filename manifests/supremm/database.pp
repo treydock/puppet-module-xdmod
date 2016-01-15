@@ -11,6 +11,7 @@ class xdmod::supremm::database {
   mongodb::db { 'supremm':
     user     => 'supremm',
     password => $xdmod::supremm_mongodb_password,
+    roles    => ['dbAdmin', 'readWrite'],
   }
 
 }
