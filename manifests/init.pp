@@ -45,6 +45,7 @@ class xdmod (
   $apache_ssl_key           = undef,
   $apache_ssl_chain         = undef,
   $portal_settings          = $xdmod::params::portal_settings,
+  $hierarchy_levels         = $xdmod::params::hierarchy_levels,
   $hierarchies              = $xdmod::params::hierarchies,
   $group_to_hierarchy       = $xdmod::params::group_to_hierarchy,
   $user_pi_names            = $xdmod::params::user_pi_names,

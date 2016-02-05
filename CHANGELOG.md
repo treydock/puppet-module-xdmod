@@ -18,6 +18,7 @@ XDMoD 5.5.0 and SUPReMM support
   * akrr_host - Hostname of IP of AKRR host
   * xdmod_supremm_package_name - name of the xdmod-supremm package
   * xdmod_supremm_package_url - URL to xdmod-supremm package
+  * hierarchy_levels - Defines hierarchy.json contents
   * supremm_version - Version of supremm package (supremm=true)
   * supremm_package_url - URL to supremm package
   * supremm_mongodb_password - Currently does not get used in SUPReMM
@@ -40,6 +41,7 @@ XDMoD 5.5.0 and SUPReMM support
   * pcp_install_pmie_config - Determines if SUPReMM pmie configuration for PCP is managed
   * pcp_pmie_config_template - Config template used for pmie
   * pcp_pmie_config_source - Config source used for pmie
+* Manage /etc/xdmod/hierarchy.json
 * Add classes to support SUPReMM - all are private classes
 * Move local repo resources to xdmod::repo - not used if create_local_repo=false
 * Add support for EL7

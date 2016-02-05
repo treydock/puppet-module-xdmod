@@ -77,6 +77,28 @@ shared_examples_for "xdmod::config" do |facts|
   end
 
   it do
+    should contain_file('/etc/xdmod/hierarchy.json').with({
+      :ensure   => 'file',
+      :owner    => 'root',
+      :group    => 'root',
+      :mode     => '0644',
+    })
+  end
+
+  it do
+    verify_exact_contents(catalogue, '/etc/xdmod/hierarchy.json', [
+      '{',
+      '    "top_level_label": "Hierarchy Top Level",',
+      '    "top_level_info": "",',
+      '    "middle_level_label": "Hierarchy Middle Level",',
+      '    "middle_level_info": "",',
+      '    "bottom_level_label": "Hierarchy Bottom Level",',
+      '    "bottom_level_info": ""',
+      '}',
+    ])
+  end
+
+  it do
     should contain_file('/etc/xdmod/hierarchy.csv').with({
       :ensure  => 'file',
       :owner   => 'root',

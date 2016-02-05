@@ -9,6 +9,12 @@ class xdmod::params {
   $resource_name      = $domain_split[0]
   $apache_vhost_name  = "xdmod.${::domain}"
   $portal_settings    = hiera('xdmod_portal_settings', {})
+  $_hierarchy_levels  = {
+    'top'     => {'label' => 'Hierarchy Top Level', 'info' => ''},
+    'middle'  => {'label' => 'Hierarchy Middle Level', 'info' => ''},
+    'bottom'  => {'label' => 'Hierarchy Bottom Level', 'info' => ''}
+  }
+  $hierarchy_levels   = hiera('xdmod_hierarchy_levels', $_hierarchy_levels)
   $hierarchies        = hiera('xdmod_hierarchies', [])
   $group_to_hierarchy = hiera('xdmod_group_to_hierarchy', {})
   $user_pi_names      = hiera('xdmod_user_pi_names', [])

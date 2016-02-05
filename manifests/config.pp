@@ -173,6 +173,16 @@ class xdmod::config {
     }
   }
 
+  # Template uses:
+  # - $hierarchy_levels
+  file { '/etc/xdmod/hierarchy.json':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('xdmod/hierarchy.json.erb'),
+  }
+
   file { '/etc/xdmod/hierarchy.csv':
     ensure  => 'file',
     owner   => 'root',
@@ -186,6 +196,7 @@ class xdmod::config {
     path        => '/sbin:/bin:/usr/sbin:/usr/bin',
     command     => 'xdmod-import-csv -t hierarchy -i /etc/xdmod/hierarchy.csv',
     refreshonly => true,
+    before      => Exec['xdmod-import-csv-group-to-hierarchy'],
   }
 
   file { '/etc/xdmod/group-to-hierarchy.csv':
