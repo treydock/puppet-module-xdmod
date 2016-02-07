@@ -14,10 +14,10 @@ describe 'xdmod class: supremm' do
         enable_supremm        => true,
         supremm_package_url   => 'http://yum.tamu.edu/xdmod/supremm-0.9.0-1.el#{fact('operatingsystemmajrelease')}.x86_64.rpm',
         apache_vhost_name     => 'xdmod.localdomain',
-        web_host              => '#{@web_ip}',
-        akrr_host             => '#{@akrr_ip}',
-        database_host         => '#{@db_ip}',
-        supremm_mongodb_host  => '#{@db_ip}',
+        web_host              => 'web',
+        akrr_host             => 'akrr',
+        database_host         => 'db',
+        supremm_mongodb_host  => 'db',
         pcp_log_base_dir      => '/opt/supremm/pmlogger',
       }
       EOS
