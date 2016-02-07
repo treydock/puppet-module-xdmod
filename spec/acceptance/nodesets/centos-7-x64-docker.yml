@@ -15,7 +15,7 @@ HOSTS:
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
-      - 'yum install -y tar wget'
+      - 'yum install -y tar wget cronie openssl'
     docker_container_name: 'xdmod'
 CONFIG:
   log_level: debug

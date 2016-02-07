@@ -6,11 +6,11 @@ This function determines if a substring variable is a member of an array.
 
     member(['nfsclient.bytes.write.server','infiniband.hca.type'], '^nfsclient')
 
-Would return: true
+Would return: 'present'
 
     member(['nfsclient.bytes.write.server','nfsclient.bytes.write.server'], '^infiniband')
 
-Would return: false
+Would return: 'absent'
     EOS
   ) do |args|
 
