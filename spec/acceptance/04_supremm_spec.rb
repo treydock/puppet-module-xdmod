@@ -10,8 +10,12 @@ describe 'xdmod class:' do
         enable_supremm      => true,
         apache_vhost_name   => 'xdmod.localdomain',
         supremm_database    => true,
-        supremm_package_url => 'http://yum.tamu.edu/xdmod/supremm-0.9.0-1.el#{fact('operatingsystemmajrelease')}.x86_64.rpm',
-        pcp_log_base_dir    => '/opt/supremm/pmlogger',
+        resources           => [{
+          'resource' => 'example',
+          'name' => 'Example',
+          'resource_id' => 1,
+          'pcp_log_dir' => '/data/pcp-data/example',
+        }],
       }
       EOS
 

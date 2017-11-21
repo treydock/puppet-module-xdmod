@@ -28,12 +28,35 @@ class xdmod::supremm::compute::pcp {
     }
   }
 
+  $resource = $xdmod::resources.filter |$r| {
+    $r['resource'] == $xdmod::pcp_resource
+  }
+  if $resource[0] {
+    $log_dir = "${resource[0]['pcp_log_dir']}/LOCALHOSTNAME"
+  } else {
+    fail('xdmod::supremm::compute::pcp unable to determine resource')
+  }
+
+  file { '/etc/pcp/pmlogger/control.d/timeouts':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => join([
+      '# File managed by Puppet',
+      '$PMCD_CONNECT_TIMEOUT=150; export PMCD_CONNECT_TIMEOUT',
+      '$PMCD_REQUEST_TIMEOUT=120; export PMCD_REQUEST_TIMEOUT',
+    ], "\n"),
+    require => Class['::pcp::config'],
+    notify  => Service['pmlogger'],
+  }
+
   pcp::pmlogger { 'supremm':
     ensure         => 'present',
     hostname       => 'LOCALHOSTNAME',
     primary        => true,
     socks          => false,
-    log_dir        => $xdmod::_pcp_log_dir,
+    log_dir        => $log_dir,
     args           => '-r',
     config_path    => '/etc/pcp/pmlogger/pmlogger-supremm.config',
     config_content => $_pcp_pmlogger_config_content,
@@ -63,7 +86,18 @@ class xdmod::supremm::compute::pcp {
   }
 
   pcp::pmda { 'nvidia':
-    ensure => member_substring($_all_metrics, '^nvidia'),
+    ensure       => member_substring($_all_metrics, '^nvidia'),
+    package_name => 'pcp-pmda-nvidia-gpu',
+  }
+
+  pcp::pmda { 'gpfs':
+    ensure => member_substring($_all_metrics, '^gpfs')
+  }
+
+  pcp::pmda { 'proc':
+    has_package    => false,
+    config_path    => '/var/lib/pcp/pmdas/proc/hotproc.conf',
+    config_content => template('xdmod/supremm/compute/pcp/hotproc.conf.erb')
   }
 
   if $xdmod::pcp_install_pmie_config {
@@ -83,8 +117,9 @@ class xdmod::supremm::compute::pcp {
     pcp::pmie { 'supremm':
       ensure         => 'present',
       hostname       => 'LOCALHOSTNAME',
+      primary        => true,
       socks          => false,
-      log_file       => "PCP_LOG_DIR/pmie/${::hostname}/pmie.log",
+      log_file       => 'PCP_LOG_DIR/pmie/LOCALHOSTNAME/pmie.log',
       config_path    => '/etc/pcp/pmie/pmie-supremm.config',
       config_content => $_pcp_pmie_config_content,
       config_source  => $_pcp_pmie_config_source,

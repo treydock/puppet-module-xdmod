@@ -13,12 +13,17 @@ describe 'xdmod class: compute' do
         enable_appkernel      => true,
         enable_supremm        => true,
         apache_vhost_name     => 'xdmod.localdomain',
-        web_host              => 'web',
-        akrr_host             => 'akrr',
+        web_host              => 'web.#{fact('domain')}',
+        akrr_host             => 'akrr.#{fact('domain')}',
         database_host         => 'db',
         supremm_mongodb_host  => 'db',
-        supremm_package_url   => 'http://yum.tamu.edu/xdmod/supremm-0.9.0-1.el#{fact('operatingsystemmajrelease')}.x86_64.rpm',
-        pcp_log_base_dir      => '/opt/supremm/pmlogger',
+        resources             => [{
+          'resource' => 'example',
+          'name' => 'Example',
+          'resource_id' => 1,
+          'pcp_log_dir' => '/data/pcp-data/example',
+        }],
+        pcp_resource          => 'example',
       }
       EOS
 

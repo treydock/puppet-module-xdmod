@@ -189,9 +189,8 @@ shared_examples_for "xdmod::config" do |facts|
   it do
     verify_contents(catalogue, '/etc/cron.d/xdmod', [
       '# Every morning at 3:00 AM -- run the report scheduler',
-      '0 3 * * * root /usr/bin/php /usr/lib/xdmod/report_schedule_manager.php >/dev/null',
+      '0 3 * * * root /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
       '# Shred and ingest:',
-      '0 1 * * * root /usr/bin/xdmod-slurm-helper --quiet -r example && /usr/bin/xdmod-ingestor --quiet',
     ])
   end
 
@@ -205,6 +204,25 @@ shared_examples_for "xdmod::config" do |facts|
       :compress      => 'true',
       :dateext       => 'true',
     })
+  end
+
+  context 'when resources defined' do
+    let(:params) do
+      {
+        :resources => [
+          {'resource' => 'example', 'resource_id' => 1, 'name' => 'Example'}
+        ]
+      }
+    end
+
+    it do
+      verify_contents(catalogue, '/etc/cron.d/xdmod', [
+        '# Every morning at 3:00 AM -- run the report scheduler',
+        '0 3 * * * root /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
+        '# Shred and ingest:',
+        '0 1 * * * root /usr/bin/xdmod-slurm-helper --quiet -r example && /usr/bin/xdmod-ingestor --quiet'
+      ])
+    end
   end
 
   context 'when database_host => host.domain' do
@@ -281,17 +299,6 @@ shared_examples_for "xdmod::config" do |facts|
 
     it do
       is_expected.to contain_xdmod_supremm_setting('features/singlejobviewer').with_value('on')
-    end
-
-    it do
-      is_expected.to contain_exec('configure-etl').with({
-        :command  => "sed -i -e 's|<MONGO_HOSTNAME>|localhost|g' -e 's|<MONGO_COLLECTION_NAME>|resource_1|g' -e 's|<SHORT_NAME>|example|g' -e 's|<LONG_NAME>|Example|g' -e 's|<ID>|1|g' /usr/share/xdmod/etl/js/config/supremm/etl.profile.js",
-        :onlyif   => 'egrep -v "^\\*|^\\s+\\*"  /usr/share/xdmod/etl/js/config/supremm/etl.profile.js | egrep "<MONGO_HOSTNAME>|<SHORT_NAME>|<LONG_NAME>|<ID>|<MONGO_COLLECTION_NAME>"',
-      })
-    end
-
-    it do
-      is_expected.to contain_exec('generate-etl-config')
     end
 
     context 'when database_host => dbhost' do

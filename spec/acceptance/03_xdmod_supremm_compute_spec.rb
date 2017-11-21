@@ -8,7 +8,13 @@ describe 'xdmod class:' do
         web               => false,
         database          => false,
         compute           => true,
-        pcp_log_base_dir  => '/opt/supremm/pmlogger',
+        resources         => [{
+          'resource' => 'example',
+          'name' => 'Example',
+          'resource_id' => 1,
+          'pcp_log_dir' => '/data/pcp-data/example',
+        }],
+        pcp_resource      => 'example',
       }
       EOS
 

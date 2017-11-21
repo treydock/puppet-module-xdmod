@@ -9,6 +9,12 @@ describe 'xdmod class:' do
         apache_vhost_name => 'xdmod.localdomain',
         enable_appkernel  => true,
         akrr              => true,
+        resources         => [{
+          'resource' => 'example',
+          'name' => 'Example',
+          'resource_id' => 1,
+          'pcp_log_dir' => '/data/pcp-data/example',
+        }],
       }
       EOS
 

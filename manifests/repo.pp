@@ -45,36 +45,32 @@ class xdmod::repo {
 
     $__xdmod_package_basename = split($xdmod::_package_url, '[/]')
     $_xdmod_package_basename = $__xdmod_package_basename[-1]
-    staging::file { "xdmod-${xdmod::version}":
+    archive { "/opt/xdmod-repo/${_xdmod_package_basename}":
       source  => $xdmod::_package_url,
-      target  => "/opt/xdmod-repo/${_xdmod_package_basename}",
       notify  => [Exec['createrepo-xdmod-repo'], Exec['refresh-xdmod-repo']],
       require => File['/opt/xdmod-repo'],
     }
 
     $__xdmod_appkernels_package_basename = split($xdmod::_appkernels_package_url, '[/]')
     $_xdmod_appkernels_package_basename = $__xdmod_appkernels_package_basename[-1]
-    staging::file { "xdmod-appkernels-${xdmod::version}":
+    archive { "/opt/xdmod-repo/${_xdmod_appkernels_package_basename}":
       source  => $xdmod::_appkernels_package_url,
-      target  => "/opt/xdmod-repo/${_xdmod_appkernels_package_basename}",
       notify  => [Exec['createrepo-xdmod-repo'], Exec['refresh-xdmod-repo']],
       require => File['/opt/xdmod-repo'],
     }
 
     $__xdmod_supremm_package_basename = split($xdmod::_xdmod_supremm_package_url, '[/]')
     $_xdmod_supremm_package_basename = $__xdmod_supremm_package_basename[-1]
-    staging::file { "xdmod-supremm-${xdmod::version}":
+    archive { "/opt/xdmod-repo/${_xdmod_supremm_package_basename}":
       source  => $xdmod::_xdmod_supremm_package_url,
-      target  => "/opt/xdmod-repo/${_xdmod_supremm_package_basename}",
       notify  => [Exec['createrepo-xdmod-repo'], Exec['refresh-xdmod-repo']],
       require => File['/opt/xdmod-repo'],
     }
 
     $__supremm_package_basename = split($xdmod::_supremm_package_url, '[/]')
     $_supremm_package_basename = $__supremm_package_basename[-1]
-    staging::file { "supremm-${xdmod::supremm_version}":
+    archive { "/opt/xdmod-repo/${_supremm_package_basename}":
       source  => $xdmod::_supremm_package_url,
-      target  => "/opt/xdmod-repo/${_supremm_package_basename}",
       notify  => [Exec['createrepo-xdmod-repo'], Exec['refresh-xdmod-repo']],
       require => File['/opt/xdmod-repo'],
     }

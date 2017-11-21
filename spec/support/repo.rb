@@ -12,27 +12,24 @@ shared_examples_for "xdmod::repo" do |facts|
   it { should contain_file('/opt/xdmod-repo').with_ensure('directory') }
 
   it do
-    should contain_staging__file('xdmod-5.5.0').with({
-      :source   => "http://downloads.sourceforge.net/project/xdmod/xdmod/5.5.0/xdmod-5.5.0-1.0.#{rpm_release}.noarch.rpm",
-      :target   => "/opt/xdmod-repo/xdmod-5.5.0-1.0.#{rpm_release}.noarch.rpm",
+    should contain_archive("/opt/xdmod-repo/xdmod-7.0.1-1.0.#{rpm_release}.noarch.rpm").with({
+      :source   => "https://github.com/ubccr/xdmod/releases/download/v7.0.1/xdmod-7.0.1-1.0.#{rpm_release}.noarch.rpm",
       :notify   => ['Exec[createrepo-xdmod-repo]', 'Exec[refresh-xdmod-repo]'],
       :require  => 'File[/opt/xdmod-repo]',
     })
   end
 
   it do
-    should contain_staging__file('xdmod-appkernels-5.5.0').with({
-      :source   => "http://downloads.sourceforge.net/project/xdmod/xdmod/5.5.0/xdmod-appkernels-5.5.0-1.0.#{rpm_release}.noarch.rpm",
-      :target   => "/opt/xdmod-repo/xdmod-appkernels-5.5.0-1.0.#{rpm_release}.noarch.rpm",
+    should contain_archive("/opt/xdmod-repo/xdmod-appkernels-7.0.0-1.0.#{rpm_release}.noarch.rpm").with({
+      :source   => "https://github.com/ubccr/xdmod-appkernels/releases/download/v7.0.0/xdmod-appkernels-7.0.0-1.0.#{rpm_release}.noarch.rpm",
       :notify   => ['Exec[createrepo-xdmod-repo]', 'Exec[refresh-xdmod-repo]'],
       :require  => 'File[/opt/xdmod-repo]',
     })
   end
 
   it do
-    should contain_staging__file('xdmod-supremm-5.5.0').with({
-      :source   => "http://downloads.sourceforge.net/project/xdmod/xdmod/5.5.0/xdmod-supremm-5.5.0-0.6.beta1.#{rpm_release}.noarch.rpm",
-      :target   => "/opt/xdmod-repo/xdmod-supremm-5.5.0-0.6.beta1.#{rpm_release}.noarch.rpm",
+    should contain_archive("/opt/xdmod-repo/xdmod-supremm-7.0.0-1.0.#{rpm_release}.noarch.rpm").with({
+      :source   => "https://github.com/ubccr/xdmod-supremm/releases/download/v7.0.0/xdmod-supremm-7.0.0-1.0.#{rpm_release}.noarch.rpm",
       :notify   => ['Exec[createrepo-xdmod-repo]', 'Exec[refresh-xdmod-repo]'],
       :require  => 'File[/opt/xdmod-repo]',
     })

@@ -50,7 +50,7 @@ describe 'xdmod' do
       end
 
       context 'when supremm => true' do
-        let(:params) {{ :supremm => true, :pcp_log_base_dir => '/data/supremm/pmlogger' }}
+        let(:params) {{ :supremm => true, :web => true }}
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to compile }
@@ -103,7 +103,13 @@ describe 'xdmod' do
           :web              => false,
           :database         => false,
           :compute          => true,
-          :pcp_log_base_dir => '/data/supremm/pmlogger'
+          :resources        => [{
+            'resource' => 'example',
+            'name' => 'Example',
+            'resource_id' => 1,
+            'pcp_log_dir' => '/data/pcp-data/example',
+          }],
+          :pcp_resource     => 'example',
         }}
 
         it { is_expected.to compile.with_all_deps }
@@ -111,7 +117,9 @@ describe 'xdmod' do
         it { should create_class('xdmod::supremm::compute::pcp') }
         it { should contain_class('xdmod::params') }
 
-        context 'when pcp_log_base_dir is undefined' do
+        it_behaves_like 'xdmod::supremm::compute::pcp'
+
+        context 'when pcp_resource is undefined' do
           let(:params) {{
             :web          => false,
             :database     => false,
@@ -119,7 +127,7 @@ describe 'xdmod' do
           }}
 
           it 'should raise an error' do
-            expect { is_expected.to compile }.to raise_error(/pcp_log_base_dir must be defined/)
+            expect { is_expected.to compile }.to raise_error(/pcp_resource must be defined/)
           end
         end
       end

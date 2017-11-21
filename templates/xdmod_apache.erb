@@ -1,10 +1,80 @@
-Listen 8080
-<VirtualHost *:8080>
-   DocumentRoot /usr/share/xdmod/html
-   <Directory /usr/share/xdmod/html>
-       Options FollowSymLinks
-       AllowOverride All
-       DirectoryIndex index.php
-       RewriteEngine On
-   </Directory>
+<VirtualHost *:80>
+  ServerName <%= scope['xdmod::apache_vhost_name'] %>
+
+  DocumentRoot /usr/share/xdmod/html
+
+  <Directory "/usr/share/xdmod/html">
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride None
+    <IfModule mod_authz_core.c>
+      Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+      Order allow,deny
+      Allow from all
+    </IfModule>
+  </Directory>
+
+  ErrorLog /var/log/xdmod/apache-error.log
+  CustomLog /var/log/xdmod/apache-access.log combined
+
+  ## Redirect rules
+  Redirect permanent / https://<%= scope['xdmod::apache_vhost_name'] %>:443/
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName <%= scope['xdmod::apache_vhost_name'] %>
+
+  # Customize this section using your SSL certificate.
+  SSLEngine on
+<%- if scope['xdmod::apache_ssl_cert'] -%>
+  SSLCertificateFile <%= scope['xdmod::apache_ssl_cert'] %>
+<%- end -%>
+<%- if scope['xdmod::apache_ssl_key'] -%>
+  SSLCertificateKeyFile <%= scope['xdmod::apache_ssl_key'] %>
+<%- end -%>
+<%- if scope['xdmod::apache_ssl_chain'] -%>
+  SSLCertificateChainFile <%= scope['xdmod::apache_ssl_chain'] %>
+<%- end -%>
+  <FilesMatch "\.(cgi|shtml|phtml|php)$">
+    SSLOptions +StdEnvVars
+  </FilesMatch>
+
+  DocumentRoot /usr/share/xdmod/html
+  <Directory /usr/share/xdmod/html>
+    Options FollowSymLinks
+    AllowOverride All
+    DirectoryIndex index.php
+    # Apache 2.4 access controls.
+    <IfModule mod_authz_core.c>
+      Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+      Order allow,deny
+      Allow from all
+    </IfModule>
+  </Directory>
+  <Directory /usr/share/xdmod/html/rest>
+    RewriteEngine On
+    RewriteRule (.*) index.php [L]
+  </Directory>
+
+  ## SimpleSAML federated authentication.
+  SetEnv SIMPLESAMLPHP_CONFIG_DIR /etc/xdmod/simplesamlphp/config
+  Alias /simplesaml /usr/share/xdmod/vendor/simplesamlphp/simplesamlphp/www
+  <Directory /usr/share/xdmod/vendor/simplesamlphp/simplesamlphp/www>
+    Options FollowSymLinks
+    AllowOverride All
+    <IfModule mod_authz_core.c>
+      Require all granted
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+      Order allow,deny
+      Allow from all
+    </IfModule>
+  </Directory>
+
+  ErrorLog /var/log/xdmod/apache-ssl-error.log
+  CustomLog /var/log/xdmod/apache-ssl-access.log combined
+
 </VirtualHost>

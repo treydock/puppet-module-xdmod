@@ -86,17 +86,8 @@ class xdmod::config {
     exec { 'xdmod-supremm-npm-install':
       path    => '/usr/bin:/bin:/usr/sbin:/sbin',
       cwd     => '/usr/share/xdmod/etl/js',
-      command => 'npm install',
-      unless  => [
-        'test -d /usr/share/xdmod/etl/js/node_modules/cloneextend',
-        'test -d /usr/share/xdmod/etl/js/node_modules/ini',
-        'test -d /usr/share/xdmod/etl/js/node_modules/minimist',
-        'test -d /usr/share/xdmod/etl/js/node_modules/mongodb',
-        'test -d /usr/share/xdmod/etl/js/node_modules/mysql',
-        'test -d /usr/share/xdmod/etl/js/node_modules/winston',
-        'test -d /usr/share/xdmod/etl/js/node_modules/winston-mysql-transport',
-      ],
-      before  => Exec['generate-etl-config'],
+      command => 'npm install && touch .npm-installed',
+      creates => '/usr/share/xdmod/etl/js/.npm-installed',
     }
 
     file { '/etc/xdmod/portal_settings.d/supremm.ini':
@@ -106,30 +97,16 @@ class xdmod::config {
       mode   => '0644',
     }
 
-    xdmod_supremm_setting { 'features/singlejobviewer': value => $_singlejobviewer }
+    xdmod_supremm_setting { 'features/singlejobviewer': value => 'on' }
+    xdmod_supremm_setting { 'jobsummarydb/db_engine': value => 'MongoDB' }
+    xdmod_supremm_setting { 'jobsummarydb/uri': value => $xdmod::_supremm_mongodb_uri }
+    xdmod_supremm_setting { 'jobsummarydb/db': value => 'supremm' }
 
-    $_configure_etl_cmd = [
-      'sed -i',
-      "-e 's|<MONGO_HOSTNAME>|${xdmod::supremm_mongodb_host}|g'",
-      "-e 's|<MONGO_COLLECTION_NAME>|resource_${xdmod::resource_id}|g'",
-      "-e 's|<SHORT_NAME>|${xdmod::_resource_short_name}|g'",
-      "-e 's|<LONG_NAME>|${xdmod::_resource_long_name}|g'",
-      "-e 's|<ID>|${xdmod::resource_id}|g'",
-      '/usr/share/xdmod/etl/js/config/supremm/etl.profile.js'
-    ]
-
-    exec { 'configure-etl':
-      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-      command => join($_configure_etl_cmd, ' '),
-      onlyif  => 'egrep -v "^\*|^\s+\*"  /usr/share/xdmod/etl/js/config/supremm/etl.profile.js | egrep "<MONGO_HOSTNAME>|<SHORT_NAME>|<LONG_NAME>|<ID>|<MONGO_COLLECTION_NAME>"',
-      notify  => Exec['generate-etl-config'],
-    }
-
-    exec { 'generate-etl-config':
-      path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-      cwd         => '/usr/share/xdmod/etl/js',
-      command     => 'node etl.cli.js -i',
-      refreshonly => true,
+    file { '/etc/xdmod/supremm_resources.json':
+      ensure => 'file',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
     }
 
     if $xdmod::database_host != 'localhost' {
@@ -137,14 +114,14 @@ class xdmod::config {
         path    => '/usr/bin:/bin:/usr/sbin:/sbin',
         command => "mysql ${xdmod::_mysql_remote_args} -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql",
         onlyif  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
-        unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^jobstatus$'",
+        unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^jobstatus$'",# lint:ignore:140chars
       }
       exec { 'modw_etl-schema':
         path    => '/usr/bin:/bin:/usr/sbin:/sbin',
         command => "mysql ${xdmod::_mysql_remote_args} -D modw_etl < /usr/share/xdmod/db/schema/modw_etl.sql",
         onlyif  => [
           "mysql ${xdmod::_mysql_remote_args} -BN -e 'SHOW DATABASES' | egrep -q '^modw_etl$'",
-          "mysql ${xdmod::_mysql_remote_args} -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'",
+          "mysql ${xdmod::_mysql_remote_args} -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'",# lint:ignore:140chars
         ],
       }
     }
@@ -170,7 +147,69 @@ class xdmod::config {
       path    => '/usr/bin:/bin:/usr/sbin:/sbin',
       command => '/root/xdmod-database-setup.sh && touch /etc/xdmod/.database-setup',
       creates => '/etc/xdmod/.database-setup',
+      require => File['/root/xdmod-database-setup.sh'],
+      before  => Exec['acl-xdmod-management'],
     }
+  }
+
+  exec { 'acl-xdmod-management':
+    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command => '/usr/bin/acl-xdmod-management && touch /etc/xdmod/.acl-xdmod-management',
+    creates => '/etc/xdmod/.acl-xdmod-management'
+  }
+  -> exec { 'acl-config':
+    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command => '/usr/bin/acl-config && touch /etc/xdmod/.acl-config',
+    creates => '/etc/xdmod/.acl-config'
+  }
+  -> exec { 'acl-import':
+    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command => '/usr/bin/acl-import && touch /etc/xdmod/.acl-import',
+    creates => '/etc/xdmod/.acl-import'
+  }
+
+  if $xdmod::organization_name and $xdmod::organization_abbrev {
+    $organization = {
+      'name'   => $xdmod::organization_name,
+      'abbrev' => $xdmod::organization_abbrev
+    }
+    file { '/etc/xdmod/organization.json':
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => to_json_pretty($organization),
+      #content => join([
+      #  '{',
+      #  "    \"name\": \"${xdmod::organization_name}\",",
+      #  "    \"abbrev\": \"${xdmod::organization_abbrev}\"",
+      #  '}',
+      #], "\n"),
+    }
+  }
+
+  $resources = $xdmod::resources.map |$r| {
+    {
+      'resource' => $r['resource'],
+      'resource_id' => $r['resource_id'],
+      'name' => $r['name'],
+      'pi_column' => $r['pi_column'],
+    }
+  }
+
+  file { '/etc/xdmod/resources.json':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => to_json_pretty($resources),
+  }
+  file { '/etc/xdmod/resource_specs.json':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => to_json_pretty($xdmod::resource_specs),
   }
 
   # Template uses:
@@ -240,7 +279,7 @@ class xdmod::config {
   logrotate::rule { 'xdmod':
     ensure       => 'present',
     path         => '/var/log/xdmod/*.log',
-    rotate       => '4',
+    rotate       => 4,
     rotate_every => 'week',
     missingok    => true,
     compress     => true,

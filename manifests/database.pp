@@ -20,6 +20,7 @@ class xdmod::database {
     $_moddb_sql           = ['/usr/share/xdmod/db/schema/moddb.sql', '/usr/share/xdmod/db/data/moddb.sql']
     $_modw_sql            = ['/usr/share/xdmod/db/schema/modw.sql', '/usr/share/xdmod/db/data/modw.sql']
     $_modw_aggregates_sql = '/usr/share/xdmod/db/schema/modw_aggregates.sql'
+    $_modw_filters_sql    = '/usr/share/xdmod/db/schema/modw_filters.sql'
     $_modw_etl_sql        = '/usr/share/xdmod/db/schema/modw_etl.sql'
     $_modw_supremm_sql    = '/usr/share/xdmod/db/schema/modw_supremm.sql'
     $_modw_notify         = undef
@@ -30,6 +31,7 @@ class xdmod::database {
     $_moddb_sql           = undef
     $_modw_sql            = undef
     $_modw_aggregates_sql = undef
+    $_modw_filters_sql    = undef
     $_modw_etl_sql        = undef
     $_modw_supremm_sql    = undef
     if $xdmod::enable_appkernel {
@@ -57,6 +59,9 @@ class xdmod::database {
   }
   mysql::db { 'modw_aggregates':
     sql => $_modw_aggregates_sql,
+  }
+  mysql::db { 'modw_filters':
+    sql => $_modw_filters_sql,
   }
 
   if $xdmod::enable_appkernel {
@@ -103,12 +108,11 @@ class xdmod::database {
 
     # Hack to ensure modw.resourcefact exists for mysql_grant
     exec { 'create-modw.resourcefact':
-      path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-      command     => "mysql modw -e \"CREATE TABLE resourcefact (id int(11) NOT NULL COMMENT 'The id of the resource record')\"",
-      refreshonly => true,
-      #unless  => "mysql -BN modw -e 'SHOW TABLES' | egrep -q '^resourcefact$'",
-      #require => Mysql::Db['modw'],
-      before      => Mysql_grant["${xdmod::akrr_database_user}@${xdmod::akrr_host}/modw.resourcefact"],
+      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+      command => "mysql modw -e \"CREATE TABLE resourcefact (id int(11) NOT NULL COMMENT 'The id of the resource record')\"",
+      unless  => "mysql -BN modw -e 'SHOW TABLES' | egrep -q '^resourcefact$'",
+      require => Mysql::Db['modw'],
+      before  => Mysql_grant["${xdmod::akrr_database_user}@${xdmod::akrr_host}/modw.resourcefact"],
     }
 
     mysql_grant { "${xdmod::akrr_database_user}@${xdmod::akrr_host}/modw.resourcefact":
@@ -130,4 +134,3 @@ class xdmod::database {
   }
 
 }
-  

@@ -9,15 +9,46 @@ describe 'xdmod class: web' do
       class { 'xdmod':
         web                   => true,
         database              => false,
+        apache_vhost_name     => 'xdmod.localdomain',
+        web_host              => 'web.#{fact('domain')}',
+        akrr_host             => 'akrr.#{fact('domain')}',
+        database_host         => 'db',
+        supremm_mongodb_host  => 'db',
+        resources             => [{
+          'resource' => 'example',
+          'name' => 'Example',
+          'resource_id' => 1,
+          'pcp_log_dir' => '/data/pcp-data/example',
+        }],
+      }
+      EOS
+
+      apply_manifest_on(node, pp, :catch_failures => true)
+      apply_manifest_on(node, pp, :catch_changes => true)
+    end
+
+    it_behaves_like 'xdmod-default', node
+  end
+
+  context 'web only - all' do
+    it 'should run successfully' do
+      pp =<<-EOS
+      class { 'xdmod':
+        web                   => true,
+        database              => false,
         enable_appkernel      => true,
         enable_supremm        => true,
         apache_vhost_name     => 'xdmod.localdomain',
-        web_host              => 'web',
-        akrr_host             => 'akrr',
+        web_host              => 'web.#{fact('domain')}',
+        akrr_host             => 'akrr.#{fact('domain')}',
         database_host         => 'db',
         supremm_mongodb_host  => 'db',
-        supremm_package_url   => 'http://yum.tamu.edu/xdmod/supremm-0.9.0-1.el#{fact('operatingsystemmajrelease')}.x86_64.rpm',
-        pcp_log_base_dir      => '/opt/supremm/pmlogger',
+        resources             => [{
+          'resource' => 'example',
+          'name' => 'Example',
+          'resource_id' => 1,
+          'pcp_log_dir' => '/data/pcp-data/example',
+        }],
       }
       EOS
 
@@ -26,28 +57,5 @@ describe 'xdmod class: web' do
     end
 
     it_behaves_like 'xdmod-full', node
-  end
-
-  context 'create_local_repo => false' do
-    it 'should require no changes' do
-      pp =<<-EOS
-      class { 'xdmod':
-        web                   => true,
-        database              => false,
-        enable_appkernel      => true,
-        enable_supremm        => true,
-        create_local_repo     => false,
-        apache_vhost_name     => 'xdmod.localdomain',
-        web_host              => 'web',
-        akrr_host             => 'akrr',
-        database_host         => 'db',
-        supremm_mongodb_host  => 'db',
-        supremm_package_url   => 'http://yum.tamu.edu/xdmod/supremm-0.9.0-1.el#{fact('operatingsystemmajrelease')}.x86_64.rpm',
-        pcp_log_base_dir      => '/opt/supremm/pmlogger',
-      }
-      EOS
-
-      apply_manifest_on(node, pp, :catch_changes => true)
-    end
   end
 end

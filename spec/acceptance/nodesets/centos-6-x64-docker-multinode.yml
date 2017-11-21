@@ -11,7 +11,7 @@ HOSTS:
     docker_cmd:
       - '/sbin/init'
     docker_image_commands:
-      - 'yum install -y tar wget cronie'
+      - 'yum install -y tar wget cronie which'
     docker_container_name: 'xdmod-web'
   db:
     roles:
@@ -24,7 +24,7 @@ HOSTS:
     docker_cmd:
       - '/sbin/init'
     docker_image_commands:
-      - 'yum install -y tar wget cronie'
+      - 'yum install -y tar wget cronie which'
     docker_container_name: 'xdmod-db'
   akrr:
     roles:
@@ -37,7 +37,7 @@ HOSTS:
     docker_cmd:
       - '/sbin/init'
     docker_image_commands:
-      - 'yum install -y tar wget cronie'
+      - 'yum install -y tar wget cronie which'
     docker_container_name: 'xdmod-akrr'
   supremm:
     roles:
@@ -50,7 +50,7 @@ HOSTS:
     docker_cmd:
       - '/sbin/init'
     docker_image_commands:
-      - 'yum install -y tar wget cronie'
+      - 'yum install -y tar wget cronie which'
     docker_container_name: 'xdmod-supremm'
   compute:
     roles:
@@ -63,7 +63,7 @@ HOSTS:
     docker_cmd:
       - '/sbin/init'
     docker_image_commands:
-      - 'yum install -y tar wget cronie'
+      - 'yum install -y tar wget cronie which'
     docker_container_name: 'xdmod-compute'
 CONFIG:
   log_level: debug

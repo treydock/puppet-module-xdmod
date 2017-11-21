@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/treydock/puppet-module-xdmod.svg?branch=master)](https://travis-ci.org/treydock/puppet-module-xdmod)
 
-####Table of Contents
+#### Table of Contents
 
 1. [Overview](#overview)
     * [Open XDMoD Compatibility](#open-xdmod-compatibility)
@@ -19,34 +19,50 @@ This module is designed so that different hosts can run the various components o
 
 ### Open XDMoD Compatibility
 
-Open XDMoD Versions         |  4.5.x   | 5.0.x   | 5.5.0       | >5.5.0      |
-:---------------------------|:--------:|:-------:|:-----------:|:-----------:|
-**puppet-module-xdmod 0.x** | **yes**  | no      | no          | **unknown** |
-**puppet-module-xdmod 1.x** | no       | **yes** | no          | **unknown** |
-**puppet-module-xdmod 2.x** | no       | **yes** | **yes**     | **unknown** |
+Open XDMoD Versions         |  4.5.x   | 5.0.x   | 7.0.x   |
+:---------------------------|:--------:|:-------:|:-------:|
+**puppet-module-xdmod 0.x** | **yes**  | no      | no      |
+**puppet-module-xdmod 1.x** | no       | **yes** | no      |
+**puppet-module-xdmod 2.x** | no       | **yes** | **yes** |
 
 ## Usage
 
 Examples of some hiera values that may be useful to set globally
 
-    xdmod::version: '5.5.0'
+    xdmod::version: '7.0.1'
     # Disable roles that are enabled by default
     xdmod::web: false
     xdmod::database: false
     # Define which features of XDMoD are enabled
     xdmod::enable_appkernel: true
     xdmod::enable_supremm: true
+    # Define site information
+    xdmod::organization_name: My Org
+    xdmod::organization_abbrev: MO
+    # Define resources
+    xdmod::resources:
+      - resource: example
+        name: Example
+        resource_id: 1
+        pcp_log_dir: /data/pcp-data/example
+        script_dir: /data/job-scripts/example
+    xdmod::resource_specs:
+      - resource: example
+        processors: 12000
+        nodes: 500
+        ppn: 24
     # Set parameters used by multiple roles
-    xdmod::resource_name: 'cluster-name-here'
-    xdmod::web_host: 'ip-of-web-host'
-    xdmod::akrr_host: 'ip-of-akrr-host'
+    xdmod::web_host: 'xdmod.domain'
+    xdmod::akrr_host: 'akrr.domain'
     xdmod::database_password: 'xdmod-db-password-here'
     xdmod::database_host: 'dbhost.domain'
     xdmod::akrr_restapi_rw_password: 'some-password'
     xdmod::akrr_restapi_ro_password: 'some-password'
     xdmod::akrr_database_password: 'some-password'
     xdmod::supremm_mongodb_password: 'some-password'
-    xdmod::supremm_mongodb_host: 'xdmod-mongodb-host'
+    xdmod::supremm_mongodb_host: 'mongodb.domain'
+    xdmod::pcp_resource:
+      - example
 
 If you run a local yum repo for XDMoD packages
 
@@ -70,6 +86,8 @@ Host the MySQL databases for XDMoD, AKRR and SUPReMM
       - 'xdmod'
     xdmod::web: false
     xdmod::database: true
+    xdmod::enable_appkernel: true
+    xdmod::enable_supremm: true
 
 A compute node that will collect PCP data for SUPReMM.  The xdmod::supremm::compute::pcp class will declare the pcp class by default.  The metrics defined in `pcp_static_metrics` and `pcp_standard_metrics` will also define `pcp::pmda` resources based on which metrics are enabled.  See `xdmod::params` for some defaults.  The infiniband, perfevent, nvidia, gpfs, slurm, and mic metrics are commented out.
 
@@ -78,7 +96,6 @@ A compute node that will collect PCP data for SUPReMM.  The xdmod::supremm::comp
     xdmod::web: false
     xdmod::database: false
     xdmod::compute: true
-    xdmod::pcp_log_base_dir: '/data/supremm/pmlogger'
     xdmod::pcp_static_metrics:
       - 'metrics that don't change often go here'
       - '#comments can be defined too and will be present in config file as comments'
@@ -99,7 +116,6 @@ If you wish to use `include` style class declaration for the pcp class then the 
     xdmod::database: false
     xdmod::compute: true
     xdmod::pcp_declare_method: 'include'
-    xdmod::pcp_log_base_dir: '/data/supremm/pmlogger'
     xdmod::pcp_static_metrics:
       - 'metrics that don't change often go here'
       - '#comments can be defined too and will be present in config file as comments'
@@ -109,15 +125,11 @@ If you wish to use `include` style class declaration for the pcp class then the 
       - '#comments can be defined too and will be present in config file as comments'
       - 'more standard metrics'
 
-A host that needs to run the SUPReMM job summarization and disable PCP that is a dependency of SUPReMM.
+A host that needs to run the SUPReMM job summarization.
 
     classes:
-      - 'pcp'
       - 'xdmod'
-    pcp::ensure: 'stopped'
     xdmod::supremm:: true
-    xdmod::job_scripts_dir: '/data/supremm/job_scripts'
-    xdmod::pcp_log_base_dir: '/data/supremm/pmlogger'
 
 A MongoDB host needs to be setup for SUPReMM
 
@@ -160,7 +172,8 @@ TODO
 
 This module has been tested on:
 
-* CentOS 6
+* CentOS 6 & 7
+* RedHat 7
 
 ## Development
 

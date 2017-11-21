@@ -7,6 +7,12 @@ describe 'xdmod class:' do
       host { 'xdmod.localdomain': ip => '127.0.0.1' }
       class { 'xdmod':
         apache_vhost_name => 'xdmod.localdomain',
+        resources         => [{
+          'resource' => 'example',
+          'name' => 'Example',
+          'resource_id' => 1,
+          'pcp_log_dir' => '/data/pcp-data/example',
+        }],
       }
       EOS
 
@@ -24,6 +30,12 @@ describe 'xdmod class:' do
       class { 'xdmod':
         create_local_repo => false,
         apache_vhost_name => 'xdmod.localdomain',
+        resources         => [{
+          'resource' => 'example',
+          'name' => 'Example',
+          'resource_id' => 1,
+          'pcp_log_dir' => '/data/pcp-data/example',
+        }],
       }
       EOS
 

@@ -4,9 +4,9 @@
 #
 class xdmod::params {
 
-  $version            = '5.5.0'
-  $domain_split       = split($::domain, '[.]')
-  $resource_name      = $domain_split[0]
+  $version            = '7.0.1'
+  $xdmod_appkernels_version = '7.0.0'
+  $xdmod_supremm_version    = '7.0.0'
   $apache_vhost_name  = "xdmod.${::domain}"
   $portal_settings    = hiera('xdmod_portal_settings', {})
   $_hierarchy_levels  = {
@@ -21,9 +21,8 @@ class xdmod::params {
   $akrr_restapi_rw_password = fqdn_rand_string(16, undef, 'rw')
   $akrr_restapi_ro_password = fqdn_rand_string(16, undef, 'ro')
   $akrr_version             = '1.0.0'
-  $akrr_source_url          = 'http://downloads.sourceforge.net/project/xdmod/akrr/AKRR_VERSION/akrr-AKRR_VERSION.tar.gz'
-  $supremm_version          = '0.9.0'
-  $supremm_package_url      = 'http://downloads.sourceforge.net/project/xdmod/supremm/SUPREMM_VERSION/supremm-SUPREMM_VERSION-1.x86_64.rpm'
+  $akrr_source_url          = 'https://github.com/ubccr/akrr/releases/download/vAKRR_VERSION/akrr-AKRR_VERSION.tar.gz'
+  $supremm_version          = '1.0.3'
 
   case $::osfamily {
     'RedHat': {
@@ -39,11 +38,12 @@ class xdmod::params {
         }
       }
       $package_name               = 'xdmod'
-      $package_url                = "http://downloads.sourceforge.net/project/xdmod/xdmod/VERSION/xdmod-VERSION-1.0.${rpm_release}.noarch.rpm"
+      $package_url                = "https://github.com/ubccr/xdmod/releases/download/vVERSION/xdmod-VERSION-1.0.${rpm_release}.noarch.rpm"
       $appkernels_package_name    = 'xdmod-appkernels'
-      $appkernels_package_url     = "http://downloads.sourceforge.net/project/xdmod/xdmod/VERSION/xdmod-appkernels-VERSION-1.0.${rpm_release}.noarch.rpm"
+      $appkernels_package_url     = "https://github.com/ubccr/xdmod-appkernels/releases/download/vVERSION/xdmod-appkernels-VERSION-1.0.${rpm_release}.noarch.rpm"
       $xdmod_supremm_package_name = 'xdmod-supremm'
-      $xdmod_supremm_package_url  = "http://downloads.sourceforge.net/project/xdmod/xdmod/VERSION/xdmod-supremm-VERSION-0.6.beta1.${rpm_release}.noarch.rpm"
+      $xdmod_supremm_package_url  = "https://github.com/ubccr/xdmod-supremm/releases/download/vVERSION/xdmod-supremm-VERSION-1.0.${rpm_release}.noarch.rpm"
+      $supremm_package_url        = "https://github.com/ubccr/supremm/releases/download/SUPREMM_VERSION/supremm-SUPREMM_VERSION-1.${rpm_release}.x86_64.rpm"
     }
 
     default: {
@@ -177,7 +177,7 @@ class xdmod::params {
     'mem.numa.util.inactive_anon',
     'mem.numa.util.inactive_file',
     'mem.numa.util.mapped',
-    'mem.numa.util.NFS_unstable',
+    'mem.numa.util.NFS_Unstable',
     'mem.numa.util.pageTables',
     'mem.numa.util.slab',
     'mem.numa.util.used',
@@ -316,6 +316,26 @@ class xdmod::params {
 
   $supremm_pcp_environ_metrics = [
     'hotproc.psinfo.environ',
+  ]
+
+  $supremm_pcp_hotproc_exclude_users = [
+    'root',
+    'rpc',
+    'rpcuser',
+    'dbus',
+    'avahi',
+    'munge',
+    'ntp',
+    'nagios',
+    'zabbix',
+    'postfix',
+    'pcp',
+    'libstoragemgmt',
+    'chrony',
+    'polkitd',
+    'haldaemon',
+    'nobody',
+    'ganglia',
   ]
 
 }

@@ -5,25 +5,18 @@ class xdmod::supremm::config {
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
     command => "mysql ${xdmod::_mysql_remote_args} -D modw_supremm < /usr/share/supremm/setup/modw_supremm.sql",
     onlyif  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
-    unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^archive$'",
+    unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^archive$'", # lint:ignore:140chars
     require => Package['mysql_client'],
   }
 
-  # Hack to fix mongo_setup.js
-  exec { 'fix-mongo_setup.js':
-    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => "sed -i -e 's|Mongo()|Mongo(\"${xdmod::supremm_mongodb_host}\")|' /usr/share/supremm/setup/mongo_setup.js",
-    onlyif  => 'grep -q "Mongo()" /usr/share/supremm/setup/mongo_setup.js',
-    before  => Exec['mongodb-supremm-schema'],
-  }
   exec { 'mongodb-supremm-schema':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => "mongo ${xdmod::supremm_mongodb_host} /usr/share/supremm/setup/mongo_setup.js",
-    onlyif  => "test `mongo --quiet ${xdmod::supremm_mongodb_host}/supremm --eval 'db.schema.count()'` -eq 0",
+    command => "mongo ${xdmod::supremm_mongo_args} /usr/share/supremm/setup/mongo_setup.js",
+    onlyif  => "test `mongo --quiet ${xdmod::supremm_mongo_args} --eval 'db.schema.count()'` -eq 0",
     require => Package['mongodb_client'],
   }
 
-  if $xdmod::_supremm_mysql_access == 'defaultsfile' {
+  if $xdmod::supremm_mysql_access == 'defaultsfile' {
     $_defaults_file_ensure = 'file'
   } else {
     $_defaults_file_ensure = 'absent'

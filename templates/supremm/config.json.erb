@@ -1,16 +1,12 @@
 {
     // Configuration settings for job data input
-    // The database configuration below assumes everything
-    //   is running on localhost.  A more complex configuration
-    //   could have multiple hosts and different credentials.
+    // The database configuration below assumes everything on the same host and
+    // XDMoD is installed on the host too.
+    //
+    // It is not necessary for all databases to run locally. A more complex
+    // configuration could have multiple hosts and different credentials for
+    // each DB.
     "xdmodroot": "/etc/xdmod",
-    "accountdatabase": {
-        //"db_engine": "MySQLDB",
-        //"dbhost": "localhost",
-        //"dbname": "modw_pcp",
-        //"defaultsfile": "~/.my.cnf"
-        "include": "xdmod://logger"
-    },
     "datawarehouse": {
 <% if scope.lookupvar('xdmod::_supremm_mysql_access') == 'defaultsfile' -%>
         "db_engine": "MySQLDB",
@@ -24,7 +20,10 @@
     // Configuration setting for summary document output
     "outputdatabase": {
         "db_engine": "mongodb",
-        "dbhost": "<%= scope.lookupvar('xdmod::supremm_mongodb_host') %>",
+        "uri": "<%= scope['xdmod::_supremm_mongodb_uri'] %>",
+        //"uri": "mongodb://username:password@localhost/supremm",
+        //"uri": "mongodb://mongodb-server1:27017,mongodb-server2:27017/supremm?replicaSet=foo",
+        //"uri": "mongodb://username:password@mongodb-server1:27017,mongodb-server2:27017/supremm?replicaSet=foo",
         "dbname": "supremm"
     },
     "summary": {
@@ -40,16 +39,19 @@
         "subdir_out_format": "%r/%j"
     },
     "resources": {
-        // Edit the below to match your cluster name and data locations
-        "<%= scope.lookupvar('xdmod::resource_name') %>": {
+<%- scope['xdmod::resources'].each_with_index do |resource, i| -%>
+        "<%= resource['resource'] %>": {
             "enabled": true,
-            "resource_id": 1,
+            "resource_id": <%= resource['resource_id'] %>,
             "batch_system": "XDMoD",
             "hostname_mode": "hostname",
-            "pcp_log_dir": "<%= scope.lookupvar('xdmod::pcp_log_base_dir') %>",
-<% if scope.lookupvar('xdmod::job_scripts_dir') -%>
-            "script_dir": "<%= scope.lookupvar('xdmod::job_scripts_dir') %>"
-<% end -%>
-        }
+            "pcp_log_dir": "<%= resource['pcp_log_dir'] %>",
+<%- if resource['script_dir'] -%>
+            "script_dir": "<%= resource['script_dir'] %>"
+<%- else -%>
+            "script_dir": ""
+<%- end -%>
+        }<%= (scope['xdmod::resources'].size - 1) == i ? ',' : '' %>
+<%- end -%>
     }
 }
