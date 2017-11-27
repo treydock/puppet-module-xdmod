@@ -65,6 +65,7 @@ class xdmod (
     nodes => Integer,
     ppn => Integer,
   }]] $resource_specs       = [],
+  String $sender_email      = "xdmod@xdmod.${::domain}",
 
   # AKRR Install
   $akrr_source_url          = $xdmod::params::akrr_source_url,
