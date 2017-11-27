@@ -18,6 +18,8 @@ fixtures:
       repo: https://github.com/puppetlabs/puppetlabs-concat.git
     archive:
       repo: https://github.com/voxpupuli/puppet-archive
+    yum:
+      repo: https://github.com/voxpupuli/puppet-yum.git
     augeasproviders_core:
       repo: https://github.com/hercules-team/augeasproviders_core
     augeasproviders_shellvar:

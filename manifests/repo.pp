@@ -1,4 +1,4 @@
-# Private class
+# UNUSED Private class
 class xdmod::repo {
 
   case $::osfamily {

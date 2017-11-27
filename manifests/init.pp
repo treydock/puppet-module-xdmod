@@ -17,8 +17,7 @@ class xdmod (
 
   $enable_appkernel         = false,
   $enable_supremm           = false,
-  $create_local_repo        = true,
-  $local_repo_name          = 'xdmod-local',
+  $local_repo_name          = undef,
   $package_ensure           = 'present',
   $package_name             = $xdmod::params::package_name,
   $package_url              = $xdmod::params::package_url,
@@ -126,7 +125,6 @@ class xdmod (
     $supremm_database,
     $enable_appkernel,
     $enable_supremm,
-    $create_local_repo,
     $enable_update_check,
     $manage_apache_vhost,
     $use_pcp,
@@ -200,24 +198,28 @@ class xdmod (
   $_supremm_mongodb_uri = pick($supremm_mongodb_uri, "mongodb://supremm:${supremm_mongodb_password}@${_supremm_mongodb_host}/supremm${mongodb_uri_replica_set}")
   $supremm_mongo_args = "-u supremm -p ${supremm_mongodb_password} --host ${mongodb_args_replica_set}${_supremm_mongodb_host} supremm"
 
-  if $create_local_repo {
-    $_package_require = [Yumrepo[$xdmod::local_repo_name], Yumrepo['epel']]
+  if $local_repo_name {
+    $_package_require = [Yumrepo[$local_repo_name], Yumrepo['epel']]
   } else  {
-    if defined(Yumrepo[$xdmod::local_repo_name]) {
-      $_package_require = [Yumrepo[$xdmod::local_repo_name], Yumrepo['epel']]
-    } else {
-      $_package_require = Yumrepo['epel']
-    }
+    $_package_require = Yumrepo['epel']
   }
 
   $_mysql_remote_args = "-h ${database_host} -u ${database_user} -p${database_password}"
+
+  case $::osfamily {
+    'RedHat': {
+      include ::epel
+    }
+    default: {
+      # Do nothing
+    }
+  }
 
   anchor { 'xdmod::start': }
   anchor { 'xdmod::end': }
 
   if $database and $web {
     include ::phantomjs
-    include xdmod::repo
     include xdmod::install
     include xdmod::database
     include xdmod::config
@@ -225,7 +227,6 @@ class xdmod (
 
     Anchor['xdmod::start']
     -> Class['::phantomjs']
-    -> Class['xdmod::repo']
     -> Class['xdmod::install']
     -> Class['xdmod::database']
     -> Class['xdmod::config']
@@ -239,14 +240,12 @@ class xdmod (
     -> Anchor['xdmod::end']
   } elsif $web {
     include ::phantomjs
-    include xdmod::repo
     include xdmod::install
     include xdmod::config
     include xdmod::apache
 
     Anchor['xdmod::start']
     -> Class['::phantomjs']
-    -> Class['xdmod::repo']
     -> Class['xdmod::install']
     -> Class['xdmod::config']
     -> Class['xdmod::apache']
@@ -289,10 +288,8 @@ class xdmod (
       $supremm_mysql_access = 'defaultsfile'
     }
 
-    include epel
     include mysql::client
     include mongodb::client
-    include xdmod::repo
     include xdmod::supremm::install
     include xdmod::supremm::config
 
@@ -314,7 +311,6 @@ class xdmod (
 
     Anchor['xdmod::start']
     -> Class['::pcp']
-    -> Class['xdmod::repo']
     -> Class['xdmod::supremm::install']
     -> Class['xdmod::supremm::config']
     -> Anchor['xdmod::end']
