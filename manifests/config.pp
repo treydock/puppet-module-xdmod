@@ -12,6 +12,9 @@ class xdmod::config {
     ]
   }
 
+  xdmod_portal_setting { 'general/site_address': value => "https://${xdmod::apache_vhost_name}/" }
+  xdmod_portal_setting { 'general/user_manual': value => "https://${xdmod::apache_vhost_name}/user_manual/" }
+
   xdmod_portal_setting { 'reporting/phantomjs_path': value => $::phantomjs::path }
   xdmod_portal_setting { 'reporting/java_path': value => '/usr/bin/java' }
   xdmod_portal_setting { 'reporting/javac_path': value => '/usr/bin/javac' }
