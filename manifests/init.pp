@@ -215,6 +215,7 @@ class xdmod (
   anchor { 'xdmod::end': }
 
   if $database and $web {
+    include ::phantomjs
     include xdmod::repo
     include xdmod::install
     include xdmod::database
@@ -222,6 +223,7 @@ class xdmod (
     include xdmod::apache
 
     Anchor['xdmod::start']
+    -> Class['::phantomjs']
     -> Class['xdmod::repo']
     -> Class['xdmod::install']
     -> Class['xdmod::database']
@@ -235,12 +237,14 @@ class xdmod (
     -> Class['xdmod::database']
     -> Anchor['xdmod::end']
   } elsif $web {
+    include ::phantomjs
     include xdmod::repo
     include xdmod::install
     include xdmod::config
     include xdmod::apache
 
     Anchor['xdmod::start']
+    -> Class['::phantomjs']
     -> Class['xdmod::repo']
     -> Class['xdmod::install']
     -> Class['xdmod::config']

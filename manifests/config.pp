@@ -8,8 +8,13 @@ class xdmod::config {
       File['/etc/xdmod/hierarchy.csv'],
       File['/etc/xdmod/group-to-hierarchy.csv'],
       File['/etc/xdmod/names.csv'],
+      Exec['acl-xdmod-management'],
     ]
   }
+
+  xdmod_portal_setting { 'reporting/phantomjs_path': value => $::phantomjs::path }
+  xdmod_portal_setting { 'reporting/java_path': value => '/usr/bin/java' }
+  xdmod_portal_setting { 'reporting/javac_path': value => '/usr/bin/javac' }
 
   xdmod_portal_setting { 'logger/host': value => $xdmod::database_host }
   xdmod_portal_setting { 'logger/port': value => $xdmod::database_port }
@@ -48,8 +53,6 @@ class xdmod::config {
 
   xdmod_portal_setting { 'features/appkernels': value => $_appkernels }
   xdmod_portal_setting { 'features/singlejobviewer': value => $_singlejobviewer }
-
-  xdmod_portal_setting { 'reporting/java_path': value => '/usr/bin/java' }
 
   if $xdmod::enable_appkernel {
     file { '/etc/xdmod/portal_settings.d/appkernels.ini':

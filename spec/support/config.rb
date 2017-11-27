@@ -14,6 +14,7 @@ shared_examples_for "xdmod::config" do |facts|
           'File[/etc/xdmod/hierarchy.csv]',
           'File[/etc/xdmod/group-to-hierarchy.csv]',
           'File[/etc/xdmod/names.csv]',
+          'Exec[acl-xdmod-management]',
         ]
       })
     end
@@ -24,6 +25,7 @@ shared_examples_for "xdmod::config" do |facts|
           'File[/etc/xdmod/hierarchy.csv]',
           'File[/etc/xdmod/group-to-hierarchy.csv]',
           'File[/etc/xdmod/names.csv]',
+          'Exec[acl-xdmod-management]',
         ]
       })
     end
@@ -34,6 +36,7 @@ shared_examples_for "xdmod::config" do |facts|
           'File[/etc/xdmod/hierarchy.csv]',
           'File[/etc/xdmod/group-to-hierarchy.csv]',
           'File[/etc/xdmod/names.csv]',
+          'Exec[acl-xdmod-management]',
         ]
       })
     end
@@ -44,6 +47,7 @@ shared_examples_for "xdmod::config" do |facts|
           'File[/etc/xdmod/hierarchy.csv]',
           'File[/etc/xdmod/group-to-hierarchy.csv]',
           'File[/etc/xdmod/names.csv]',
+          'Exec[acl-xdmod-management]',
         ]
       })
     end
