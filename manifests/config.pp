@@ -144,11 +144,12 @@ class xdmod::config {
 
   if $xdmod::database_host != 'localhost' {
     file { '/root/xdmod-database-setup.sh':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0700',
-      content => template('xdmod/xdmod-database-setup.sh.erb'),
+      ensure    => 'file',
+      owner     => 'root',
+      group     => 'root',
+      mode      => '0700',
+      content   => template('xdmod/xdmod-database-setup.sh.erb'),
+      show_diff => false,
     }
 
     exec { 'xdmod-database-setup.sh':

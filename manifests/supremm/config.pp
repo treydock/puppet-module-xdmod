@@ -23,19 +23,21 @@ class xdmod::supremm::config {
   }
 
   file { '/root/.supremm.my.cnf':
-    ensure  => $_defaults_file_ensure,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0600',
-    content => template('xdmod/supremm/supremm.my.cnf.erb'),
+    ensure    => $_defaults_file_ensure,
+    owner     => 'root',
+    group     => 'root',
+    mode      => '0600',
+    content   => template('xdmod/supremm/supremm.my.cnf.erb'),
+    show_diff => false,
   }
 
   file { '/etc/supremm/config.json':
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0640',
-    content => template('xdmod/supremm/config.json.erb'),
+    ensure    => 'file',
+    owner     => 'root',
+    group     => 'root',
+    mode      => '0640',
+    content   => template('xdmod/supremm/config.json.erb'),
+    show_diff => false,
   }
 
 }

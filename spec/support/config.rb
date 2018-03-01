@@ -270,10 +270,11 @@ shared_examples_for "xdmod::config" do |facts|
 
     it do
       should contain_file('/root/xdmod-database-setup.sh').with({
-        :ensure => 'file',
-        :owner  => 'root',
-        :group  => 'root',
-        :mode   => '0700',
+        :ensure    => 'file',
+        :owner     => 'root',
+        :group     => 'root',
+        :mode      => '0700',
+        :show_diff => 'false',
       })
     end
 
