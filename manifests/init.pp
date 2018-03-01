@@ -28,19 +28,19 @@ class xdmod (
   String $xdmod_supremm_package_name            = $xdmod::params::xdmod_supremm_package_name,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
     $xdmod_supremm_package_url                  = $xdmod::params::xdmod_supremm_package_url,
-  Stdlib::Host $database_host                   = 'localhost',
-  Stdlib::Port $database_port                   = 3306,
+  String $database_host                   = 'localhost',
+  Integer $database_port                   = 3306,
   String $database_user                         = 'xdmod',
   String $database_password                     = 'changeme',
   String $akrr_database_user                    = 'akrr',
   String $akrr_database_password                = 'changeme',
-  Stdlib::Host $web_host                        = 'localhost',
-  Stdlib::Host $akrr_host                       = 'localhost',
+  String $web_host                        = 'localhost',
+  String $akrr_host                       = 'localhost',
   Enum['slurm','torque','pbs','sge'] $scheduler = 'slurm',
   Optional[String] $shredder_command            = undef,
   Boolean $enable_update_check                  = true,
   Boolean $manage_apache_vhost                  = true,
-  Stdlib::Host $apache_vhost_name               = $xdmod::params::apache_vhost_name,
+  String $apache_vhost_name               = $xdmod::params::apache_vhost_name,
   Stdlib::Unixpath $apache_ssl_cert             = '/etc/pki/tls/certs/localhost.crt',
   Stdlib::Unixpath $apache_ssl_key              = '/etc/pki/tls/private/localhost.key',
   Optional[Stdlib::Unixpath] $apache_ssl_chain  = undef,
@@ -74,7 +74,7 @@ class xdmod (
   Boolean $akrr_user_system                   = true,
 
   # AKRR config
-  Stdlib::Port $akrr_restapi_port     = 8091,
+  Integer $akrr_restapi_port     = 8091,
   String $akrr_restapi_rw_password    = $xdmod::params::akrr_restapi_rw_password,
   String $akrr_restapi_ro_password    = $xdmod::params::akrr_restapi_ro_password,
   Optional[String] $akrr_cron_mailto  = undef,
@@ -87,7 +87,7 @@ class xdmod (
 
   # SUPReMM config
   String $supremm_mongodb_password              = 'changeme',
-  Stdlib::Host $supremm_mongodb_host            = 'localhost',
+  String $supremm_mongodb_host            = 'localhost',
   Optional[String] $supremm_mongodb_uri         = undef,
   Optional[String] $supremm_mongodb_replica_set = undef,
 
