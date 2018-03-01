@@ -37,7 +37,8 @@ class xdmod (
   String $web_host                        = 'localhost',
   String $akrr_host                       = 'localhost',
   Enum['slurm','torque','pbs','sge'] $scheduler = 'slurm',
-  Optional[String] $shredder_command            = undef,
+  Optional[Variant[String, Array]]
+    $shredder_command                           = undef,
   Boolean $enable_update_check                  = true,
   Boolean $manage_apache_vhost                  = true,
   String $apache_vhost_name               = $xdmod::params::apache_vhost_name,

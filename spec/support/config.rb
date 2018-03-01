@@ -205,6 +205,65 @@ shared_examples_for "xdmod::config" do |facts|
     end
   end
 
+  context 'when multiple resources defined' do
+    let(:params) do
+      {
+        :resources => [
+          {'resource' => 'example1', 'resource_id' => 1, 'name' => 'Example1'},
+          {'resource' => 'example2', 'resource_id' => 2, 'name' => 'Example2'},
+        ]
+      }
+    end
+
+    it do
+      verify_contents(catalogue, '/etc/cron.d/xdmod', [
+        '# Every morning at 3:00 AM -- run the report scheduler',
+        '0 3 * * * root /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
+        '# Shred and ingest:',
+        '0 1 * * * root /usr/bin/xdmod-slurm-helper --quiet -r example1 && /usr/bin/xdmod-ingestor --quiet',
+        '0 2 * * * root /usr/bin/xdmod-slurm-helper --quiet -r example2 && /usr/bin/xdmod-ingestor --quiet',
+      ])
+    end
+  end
+
+  context 'when shredder_command defined as String' do
+    let(:params) do
+      {
+        :shredder_command => '/usr/bin/xdmod-slurm-helper --quiet -r example'
+      }
+    end
+
+    it do
+      verify_contents(catalogue, '/etc/cron.d/xdmod', [
+        '# Every morning at 3:00 AM -- run the report scheduler',
+        '0 3 * * * root /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
+        '# Shred and ingest:',
+        '0 1 * * * root /usr/bin/xdmod-slurm-helper --quiet -r example && /usr/bin/xdmod-ingestor --quiet'
+      ])
+    end
+  end
+
+  context 'when shredder_command defined as Array' do
+    let(:params) do
+      {
+        :shredder_command => [
+          '/usr/bin/xdmod-slurm-helper --quiet -r example1',
+          '/usr/bin/xdmod-slurm-helper --quiet -r example2',
+        ]
+      }
+    end
+
+    it do
+      verify_contents(catalogue, '/etc/cron.d/xdmod', [
+        '# Every morning at 3:00 AM -- run the report scheduler',
+        '0 3 * * * root /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
+        '# Shred and ingest:',
+        '0 1 * * * root /usr/bin/xdmod-slurm-helper --quiet -r example1 && /usr/bin/xdmod-ingestor --quiet',
+        '0 2 * * * root /usr/bin/xdmod-slurm-helper --quiet -r example2 && /usr/bin/xdmod-ingestor --quiet',
+      ])
+    end
+  end
+
   context 'when database_host => host.domain' do
     let(:params) {{ :database_host => 'host.domain' }}
 
