@@ -43,6 +43,7 @@ shared_examples_for "xdmod::config" do |facts|
     it do
       should contain_xdmod_portal_setting("#{section}/pass").with({
         :value  => 'changeme',
+        :secret => 'true',
         :before => [
           'File[/etc/xdmod/hierarchy.csv]',
           'File[/etc/xdmod/group-to-hierarchy.csv]',
@@ -305,15 +306,15 @@ shared_examples_for "xdmod::config" do |facts|
     it { should contain_xdmod_appkernel_setting('appkernel/host').with_value('localhost') }
     it { should contain_xdmod_appkernel_setting('appkernel/port').with_value('3306') }
     it { should contain_xdmod_appkernel_setting('appkernel/user').with_value('akrr') }
-    it { should contain_xdmod_appkernel_setting('appkernel/pass').with_value('changeme') }
+    it { should contain_xdmod_appkernel_setting('appkernel/pass').with_value('changeme').with_secret('true') }
     it { should contain_xdmod_appkernel_setting('akrr-db/host').with_value('localhost') }
     it { should contain_xdmod_appkernel_setting('akrr-db/port').with_value('3306') }
     it { should contain_xdmod_appkernel_setting('akrr-db/user').with_value('akrr') }
-    it { should contain_xdmod_appkernel_setting('akrr-db/pass').with_value('changeme') }
+    it { should contain_xdmod_appkernel_setting('akrr-db/pass').with_value('changeme').with_secret('true') }
     it { should contain_xdmod_appkernel_setting('akrr/host').with_value('localhost') }
     it { should contain_xdmod_appkernel_setting('akrr/port').with_value('8091') }
     it { should contain_xdmod_appkernel_setting('akrr/username').with_value('rw') }
-    it { should contain_xdmod_appkernel_setting('akrr/password').with_value(/.*/) }
+    it { should contain_xdmod_appkernel_setting('akrr/password').with_value(/.*/).with_secret('true') }
 
     it do
       should contain_file('/etc/cron.d/xdmod-appkernels').with({

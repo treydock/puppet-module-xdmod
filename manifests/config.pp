@@ -24,27 +24,27 @@ class xdmod::config {
   xdmod_portal_setting { 'logger/host': value => $xdmod::database_host }
   xdmod_portal_setting { 'logger/port': value => $xdmod::database_port }
   xdmod_portal_setting { 'logger/user': value => $xdmod::database_user }
-  xdmod_portal_setting { 'logger/pass': value => $xdmod::database_password }
+  xdmod_portal_setting { 'logger/pass': value => $xdmod::database_password, secret => true }
 
   xdmod_portal_setting { 'database/host': value => $xdmod::database_host }
   xdmod_portal_setting { 'database/port': value => $xdmod::database_port }
   xdmod_portal_setting { 'database/user': value => $xdmod::database_user }
-  xdmod_portal_setting { 'database/pass': value => $xdmod::database_password }
+  xdmod_portal_setting { 'database/pass': value => $xdmod::database_password, secret => true }
 
   xdmod_portal_setting { 'datawarehouse/host': value => $xdmod::database_host }
   xdmod_portal_setting { 'datawarehouse/port': value => $xdmod::database_port }
   xdmod_portal_setting { 'datawarehouse/user': value => $xdmod::database_user }
-  xdmod_portal_setting { 'datawarehouse/pass': value => $xdmod::database_password }
+  xdmod_portal_setting { 'datawarehouse/pass': value => $xdmod::database_password, secret => true }
 
   xdmod_portal_setting { 'shredder/host': value => $xdmod::database_host }
   xdmod_portal_setting { 'shredder/port': value => $xdmod::database_port }
   xdmod_portal_setting { 'shredder/user': value => $xdmod::database_user }
-  xdmod_portal_setting { 'shredder/pass': value => $xdmod::database_password }
+  xdmod_portal_setting { 'shredder/pass': value => $xdmod::database_password, secret => true }
 
   xdmod_portal_setting { 'hpcdb/host': value => $xdmod::database_host }
   xdmod_portal_setting { 'hpcdb/port': value => $xdmod::database_port }
   xdmod_portal_setting { 'hpcdb/user': value => $xdmod::database_user }
-  xdmod_portal_setting { 'hpcdb/pass': value => $xdmod::database_password }
+  xdmod_portal_setting { 'hpcdb/pass': value => $xdmod::database_password, secret => true }
 
   $_appkernels = $xdmod::enable_appkernel ? {
     true  => 'on',
@@ -71,15 +71,15 @@ class xdmod::config {
     xdmod_appkernel_setting { 'appkernel/host': value => $xdmod::database_host }
     xdmod_appkernel_setting { 'appkernel/port': value => $xdmod::database_port }
     xdmod_appkernel_setting { 'appkernel/user': value => $xdmod::akrr_database_user }
-    xdmod_appkernel_setting { 'appkernel/pass': value => $xdmod::akrr_database_password }
+    xdmod_appkernel_setting { 'appkernel/pass': value => $xdmod::akrr_database_password, secret => true }
     xdmod_appkernel_setting { 'akrr-db/host': value => $xdmod::database_host }
     xdmod_appkernel_setting { 'akrr-db/port': value => $xdmod::database_port }
     xdmod_appkernel_setting { 'akrr-db/user': value => $xdmod::akrr_database_user }
-    xdmod_appkernel_setting { 'akrr-db/pass': value => $xdmod::akrr_database_password }
+    xdmod_appkernel_setting { 'akrr-db/pass': value => $xdmod::akrr_database_password, secret => true }
     xdmod_appkernel_setting { 'akrr/host': value => 'localhost' }
     xdmod_appkernel_setting { 'akrr/port': value => $xdmod::akrr_restapi_port }
     xdmod_appkernel_setting { 'akrr/username': value => 'rw' }
-    xdmod_appkernel_setting { 'akrr/password': value => $xdmod::akrr_restapi_rw_password }
+    xdmod_appkernel_setting { 'akrr/password': value => $xdmod::akrr_restapi_rw_password, secret => true }
 
     file { '/etc/cron.d/xdmod-appkernels':
       ensure  => 'file',
@@ -107,7 +107,7 @@ class xdmod::config {
 
     xdmod_supremm_setting { 'features/singlejobviewer': value => 'on' }
     xdmod_supremm_setting { 'jobsummarydb/db_engine': value => 'MongoDB' }
-    xdmod_supremm_setting { 'jobsummarydb/uri': value => $xdmod::_supremm_mongodb_uri }
+    xdmod_supremm_setting { 'jobsummarydb/uri': value => $xdmod::_supremm_mongodb_uri, secret => true }
     xdmod_supremm_setting { 'jobsummarydb/db': value => 'supremm' }
 
     file { '/etc/xdmod/supremm_resources.json':

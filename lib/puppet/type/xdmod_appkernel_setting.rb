@@ -17,6 +17,30 @@ Puppet::Type.newtype(:xdmod_appkernel_setting) do
     munge do |v|
       '"' + v.to_s.strip + '"'
     end
+
+    def is_to_s( currentvalue )
+      if resource.secret?
+        return '[old secret redacted]'
+      else
+        return currentvalue
+      end
+    end
+
+    def should_to_s( newvalue )
+      if resource.secret?
+        return '[new secret redacted]'
+      else
+        return newvalue
+      end
+    end
+  end
+
+  newparam(:secret, :boolean => true) do
+    desc 'Whether to hide the value from Puppet logs. Defaults to `false`.'
+
+    newvalues(:true, :false)
+
+    defaultto false
   end
 
   validate do
