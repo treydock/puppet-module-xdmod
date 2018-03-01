@@ -31,4 +31,4 @@ else
   gem 'facter', :require => false
 end
 
-gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 4.x', :require => false
+gem 'puppet', ENV['PUPPET_GEM_VERSION'] || '~> 5.x', :require => false
