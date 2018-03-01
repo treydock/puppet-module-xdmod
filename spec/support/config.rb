@@ -108,20 +108,12 @@ shared_examples_for "xdmod::config" do |facts|
       :owner   => 'root',
       :group   => 'root',
       :mode    => '0644',
-      :notify  => 'Exec[xdmod-import-csv-hierarchy]',
+      :content => nil,
     })
   end
 
   it do
-    verify_exact_contents(catalogue, '/etc/xdmod/hierarchy.csv', [])
-  end
-
-  it do
-    should contain_exec('xdmod-import-csv-hierarchy').with({
-      :path        => '/sbin:/bin:/usr/sbin:/usr/bin',
-      :command     => 'xdmod-import-csv -t hierarchy -i /etc/xdmod/hierarchy.csv',
-      :refreshonly => 'true',
-    })
+    should_not contain_exec('xdmod-import-csv-hierarchy')
   end
 
   it do
@@ -130,20 +122,12 @@ shared_examples_for "xdmod::config" do |facts|
       :owner   => 'root',
       :group   => 'root',
       :mode    => '0644',
-      :notify  => 'Exec[xdmod-import-csv-group-to-hierarchy]',
+      :content => nil,
     })
   end
 
   it do
-    verify_exact_contents(catalogue, '/etc/xdmod/group-to-hierarchy.csv', [])
-  end
-
-  it do
-    should contain_exec('xdmod-import-csv-group-to-hierarchy').with({
-      :path        => '/sbin:/bin:/usr/sbin:/usr/bin',
-      :command     => 'xdmod-import-csv -t group-to-hierarchy -i /etc/xdmod/group-to-hierarchy.csv',
-      :refreshonly => 'true',
-    })
+    should_not contain_exec('xdmod-import-csv-group-to-hierarchy')
   end
 
   it do
@@ -152,20 +136,12 @@ shared_examples_for "xdmod::config" do |facts|
       :owner   => 'root',
       :group   => 'root',
       :mode    => '0644',
-      :notify  => 'Exec[xdmod-import-csv-names]',
+      :content => nil,
     })
   end
 
   it do
-    verify_exact_contents(catalogue, '/etc/xdmod/names.csv', [])
-  end
-
-  it do
-    should contain_exec('xdmod-import-csv-names').with({
-      :path        => '/sbin:/bin:/usr/sbin:/usr/bin',
-      :command     => 'xdmod-import-csv -t names -i /etc/xdmod/names.csv',
-      :refreshonly => 'true',
-    })
+    should_not contain_exec('xdmod-import-csv-names')
   end
 
   it do
@@ -352,6 +328,36 @@ shared_examples_for "xdmod::config" do |facts|
         '"dept2","Department 2","div2"',
       ])
     end
+
+    it do
+      should contain_exec('xdmod-import-csv-hierarchy').with({
+        :path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+        :command     => 'xdmod-import-csv -t hierarchy -i /etc/xdmod/hierarchy.csv',
+        :refreshonly => 'true',
+        :subscribe   => 'File[/etc/xdmod/hierarchy.csv]',
+      })
+    end
+
+    context 'when group_to_hierarchy defined' do
+      let(:params) do
+        {
+          :hierarchies => [
+            'ou1,Unit 1,',
+            '"ou2","Unit 2",""',
+            'div1,Division 1,ou1',
+            '"div2","Division 2","ou2"',
+            'dept1,Department 1,div1',
+            '"dept2","Department 2","div2"',
+          ],
+          :group_to_hierarchy => {
+            'group1' => 'dept1',
+            'group2' => 'dept1',
+            'group3' => 'dept2',
+          }
+        }
+      end
+      it { should contain_exec('xdmod-import-csv-hierarchy').that_comes_before('Exec[xdmod-import-csv-group-to-hierarchy]') }
+    end
   end
 
   context 'when group_to_hierarchy defined' do
@@ -372,6 +378,15 @@ shared_examples_for "xdmod::config" do |facts|
         '"group3","dept2"',
       ])
     end
+
+    it do
+      should contain_exec('xdmod-import-csv-group-to-hierarchy').with({
+        :path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+        :command     => 'xdmod-import-csv -t group-to-hierarchy -i /etc/xdmod/group-to-hierarchy.csv',
+        :refreshonly => 'true',
+        :subscribe   => 'File[/etc/xdmod/group-to-hierarchy.csv]',
+      })
+    end
   end
 
   context 'when user_pi_names defined' do
@@ -389,6 +404,15 @@ shared_examples_for "xdmod::config" do |facts|
         'jdoe,John,Doe',
         'mygroup,,"My Group"',
       ])
+    end
+
+    it do
+      should contain_exec('xdmod-import-csv-names').with({
+        :path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+        :command     => 'xdmod-import-csv -t names -i /etc/xdmod/names.csv',
+        :refreshonly => 'true',
+        :subscribe   => 'File[/etc/xdmod/names.csv]',
+      })
     end
   end
 end

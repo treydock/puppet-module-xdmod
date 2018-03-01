@@ -230,20 +230,41 @@ class xdmod::config {
     content => template('xdmod/hierarchy.json.erb'),
   }
 
+  if ! empty($xdmod::hierarchies) {
+    $hierarchies_content = template('xdmod/hierarchy.csv.erb')
+
+    exec { 'xdmod-import-csv-hierarchy':
+      path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+      command     => 'xdmod-import-csv -t hierarchy -i /etc/xdmod/hierarchy.csv',
+      refreshonly => true,
+      subscribe   => File['/etc/xdmod/hierarchy.csv'],
+    }
+    if ! empty($xdmod::group_to_hierarchy) {
+      Exec['xdmod-import-csv-hierarchy'] -> Exec['xdmod-import-csv-group-to-hierarchy']
+    }
+  } else {
+    $hierarchies_content = undef
+  }
+
   file { '/etc/xdmod/hierarchy.csv':
     ensure  => 'file',
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('xdmod/hierarchy.csv.erb'),
-    notify  => Exec['xdmod-import-csv-hierarchy'],
+    content => $hierarchies_content,
   }
 
-  exec { 'xdmod-import-csv-hierarchy':
-    path        => '/sbin:/bin:/usr/sbin:/usr/bin',
-    command     => 'xdmod-import-csv -t hierarchy -i /etc/xdmod/hierarchy.csv',
-    refreshonly => true,
-    before      => Exec['xdmod-import-csv-group-to-hierarchy'],
+  if ! empty($xdmod::group_to_hierarchy) {
+    $group_to_hierarchy_content = template('xdmod/group-to-hierarchy.csv.erb')
+
+    exec { 'xdmod-import-csv-group-to-hierarchy':
+      path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+      command     => 'xdmod-import-csv -t group-to-hierarchy -i /etc/xdmod/group-to-hierarchy.csv',
+      refreshonly => true,
+      subscribe   => File['/etc/xdmod/group-to-hierarchy.csv'],
+    }
+  } else {
+    $group_to_hierarchy_content = undef
   }
 
   file { '/etc/xdmod/group-to-hierarchy.csv':
@@ -251,14 +272,20 @@ class xdmod::config {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('xdmod/group-to-hierarchy.csv.erb'),
-    notify  => Exec['xdmod-import-csv-group-to-hierarchy'],
+    content => $group_to_hierarchy_content,
   }
 
-  exec { 'xdmod-import-csv-group-to-hierarchy':
-    path        => '/sbin:/bin:/usr/sbin:/usr/bin',
-    command     => 'xdmod-import-csv -t group-to-hierarchy -i /etc/xdmod/group-to-hierarchy.csv',
-    refreshonly => true,
+  if ! empty($xdmod::user_pi_names) {
+    $user_pi_names_content = template('xdmod/names.csv.erb')
+
+    exec { 'xdmod-import-csv-names':
+      path        => '/sbin:/bin:/usr/sbin:/usr/bin',
+      command     => 'xdmod-import-csv -t names -i /etc/xdmod/names.csv',
+      refreshonly => true,
+      subscribe   => File['/etc/xdmod/names.csv'],
+    }
+  } else {
+    $user_pi_names_content = undef
   }
 
   file { '/etc/xdmod/names.csv':
@@ -266,14 +293,7 @@ class xdmod::config {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => template('xdmod/names.csv.erb'),
-    notify  => Exec['xdmod-import-csv-names'],
-  }
-
-  exec { 'xdmod-import-csv-names':
-    path        => '/sbin:/bin:/usr/sbin:/usr/bin',
-    command     => 'xdmod-import-csv -t names -i /etc/xdmod/names.csv',
-    refreshonly => true,
+    content => $user_pi_names_content,
   }
 
   file { '/etc/cron.d/xdmod':
