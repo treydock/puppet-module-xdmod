@@ -4,9 +4,10 @@
 #
 class xdmod::params {
 
-  $version            = '7.0.1'
+  $version                  = '7.0.1'
   $xdmod_appkernels_version = '7.0.0'
   $xdmod_supremm_version    = '7.0.0'
+  $sender_email       = "xdmod@xdmod.${::domain}"
   $apache_vhost_name  = "xdmod.${::domain}"
   $portal_settings    = hiera('xdmod_portal_settings', {})
   $_hierarchy_levels  = {

@@ -125,7 +125,7 @@ describe 'xdmod' do
       ].each do |param|
         context "with #{param} => 'foo'" do
           let(:params) {{ param => 'foo' }}
-          it { expect { should create_class('xdmod') }.to raise_error(Puppet::Error, /is not a boolean/) }
+          it { expect { should create_class('xdmod') }.to raise_error(Puppet::Error, /expects a Boolean value/) }
         end
       end
     end
