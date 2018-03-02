@@ -292,8 +292,6 @@ class xdmod (
 
   if $compute {
     if $use_pcp {
-      validate_re($pcp_declare_method, ['^include$', '^resource$'], 'pcp_declare_method only supports include and resource')
-
       include xdmod::supremm::compute::pcp
 
       Anchor['xdmod::start']
