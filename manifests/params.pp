@@ -9,16 +9,15 @@ class xdmod::params {
   $xdmod_supremm_version    = '7.0.0'
   $sender_email       = "xdmod@xdmod.${::domain}"
   $apache_vhost_name  = "xdmod.${::domain}"
-  $portal_settings    = hiera('xdmod_portal_settings', {})
-  $_hierarchy_levels  = {
+  $portal_settings    = {}
+  $hierarchy_levels  = {
     'top'     => {'label' => 'Hierarchy Top Level', 'info' => ''},
     'middle'  => {'label' => 'Hierarchy Middle Level', 'info' => ''},
     'bottom'  => {'label' => 'Hierarchy Bottom Level', 'info' => ''}
   }
-  $hierarchy_levels   = hiera('xdmod_hierarchy_levels', $_hierarchy_levels)
-  $hierarchies        = hiera('xdmod_hierarchies', [])
-  $group_to_hierarchy = hiera('xdmod_group_to_hierarchy', {})
-  $user_pi_names      = hiera('xdmod_user_pi_names', [])
+  $hierarchies        = []
+  $group_to_hierarchy = {}
+  $user_pi_names      = []
   $akrr_restapi_rw_password = fqdn_rand_string(16, undef, 'rw')
   $akrr_restapi_ro_password = fqdn_rand_string(16, undef, 'ro')
   $akrr_version             = '1.0.0'
