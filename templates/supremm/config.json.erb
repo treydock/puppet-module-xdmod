@@ -8,12 +8,12 @@
     // each DB.
     "xdmodroot": "/etc/xdmod",
     "datawarehouse": {
-<% if scope.lookupvar('xdmod::_supremm_mysql_access') == 'defaultsfile' -%>
+<% if scope.lookupvar('xdmod::supremm_mysql_access') == 'defaultsfile' -%>
         "db_engine": "MySQLDB",
         "host": "<%= scope.lookupvar('xdmod::database_host') %>",
         "defaultsfile": "/root/.supremm.my.cnf"
 <% end -%>
-<% if scope.lookupvar('xdmod::_supremm_mysql_access') == 'include' -%>
+<% if scope.lookupvar('xdmod::supremm_mysql_access') == 'include' -%>
         "include": "xdmod://datawarehouse"
 <% end -%>
     },
