@@ -10,8 +10,6 @@ describe 'xdmod class:' do
         resources         => [{
           'resource' => 'example',
           'name' => 'Example',
-          'resource_id' => 1,
-          'pcp_log_dir' => '/data/pcp-data/example',
         }],
       }
       EOS

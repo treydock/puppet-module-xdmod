@@ -110,11 +110,35 @@ class xdmod::config {
     xdmod_supremm_setting { 'jobsummarydb/uri': value => $xdmod::_supremm_mongodb_uri, secret => true }
     xdmod_supremm_setting { 'jobsummarydb/db': value => 'supremm' }
 
+    $supremm_resources = $xdmod::supremm_resources.map |$r| {
+      $enabled = $r['enabled'] ? {
+        Undef   => true,
+        default => $r['enabled'],
+      }
+      $datasetmap = $r['datasetmap'] ? {
+        Undef   => 'pcp',
+        default => $r['datasetmap'],
+      }
+      if $r['hardware'] {
+        $hardware = $r['hardware']
+      } else {
+        $hardware = {'gpfs' => ''}
+      }
+      $d = {
+        'resource'    => $r['resource'],
+        'resource_id' => $r['resource_id'],
+        'enabled'     => $enabled,
+        'datasetmap'  => $datasetmap,
+        'hardware'    => $hardware,
+      }
+    }
+
     file { '/etc/xdmod/supremm_resources.json':
-      ensure => 'file',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => to_json_pretty({'resources' => $supremm_resources}),
     }
 
     if $xdmod::database_host != 'localhost' {
@@ -198,12 +222,22 @@ class xdmod::config {
   }
 
   $resources = $xdmod::resources.map |$r| {
-    {
-      'resource' => $r['resource'],
-      'resource_id' => $r['resource_id'],
-      'name' => $r['name'],
-      'pi_column' => $r['pi_column'],
+    $resource_type_id = $r['resource_type_id'] ? {
+      Undef   => 1,
+      default => $r['resource_type_id'],
     }
+    $pi_column = $r['pi_column'] ? {
+      Undef   => $xdmod::pi_column,
+      default => $r['pi_column'],
+    }
+    delete_undef_values({
+      'resource' => $r['resource'],
+      'name' => $r['name'],
+      'description' => $r['description'],
+      'resource_type_id' => $resource_type_id,
+      'pi_column' => $pi_column,
+      'timezone' => $r['timezone'],
+    })
   }
 
   file { '/etc/xdmod/resources.json':

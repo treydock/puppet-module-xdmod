@@ -1,8 +1,8 @@
 type Xdmod::Resource = Struct[{
   resource => String,
-  resource_id => Integer,
   name => String,
-  pi_column => Optional[String],
-  pcp_log_dir => Optional[Stdlib::Unixpath],
-  script_dir => Optional[Stdlib::Unixpath],
+  Optional[description] => String,
+  Optional[resource_type_id] => Integer,
+  Optional[pi_column] => String,
+  Optional[timezone] => String,
 }]

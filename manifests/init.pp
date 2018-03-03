@@ -91,6 +91,7 @@ class xdmod (
   String $supremm_mongodb_host            = 'localhost',
   Optional[String] $supremm_mongodb_uri         = undef,
   Optional[String] $supremm_mongodb_replica_set = undef,
+  Array[Xdmod::Supremm_Resource] $supremm_resources = [],
 
   # SUPReMM compute
   Boolean $use_pcp                                = true,
@@ -112,15 +113,19 @@ class xdmod (
   case $scheduler {
     'slurm': {
       $scheduler_shredder_command = '/usr/bin/xdmod-slurm-helper --quiet -r RESOURCE'
+      $pi_column = 'account_name'
     }
     'pbs': {
       $scheduler_shredder_command = '/usr/bin/xdmod-shredder --quiet -r RESOURCE -f pbs -d /var/spool/pbs/server_priv/accounting'
+      $pi_column = 'account'
     }
     'torque': {
       $scheduler_shredder_command = '/usr/bin/xdmod-shredder --quiet -r RESOURCE -f pbs -d /var/spool/torque/server_priv/accounting'
+      $pi_column = 'account'
     }
     'sge': {
       $scheduler_shredder_command = '/usr/bin/xdmod-shredder --quiet -r RESOURCE -f sge -i /var/lib/gridengine/default/common/accounting'
+      $pi_column = undef
     }
     default: {
       fail("Module ${module_name}: Supported scheduler value is either slurm, pbs, torque or sge.")

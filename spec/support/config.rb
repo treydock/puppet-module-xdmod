@@ -191,9 +191,21 @@ shared_examples_for "xdmod::config" do |facts|
     let(:params) do
       {
         :resources => [
-          {'resource' => 'example', 'resource_id' => 1, 'name' => 'Example'}
+          {'resource' => 'example', 'name' => 'Example'}
         ]
       }
+    end
+
+    it do
+      content = catalogue.resource('file', '/etc/xdmod/resources.json').send(:parameters)[:content]
+      value = JSON.parse(content)
+      expected = [{
+        "resource" => "example",
+        "resource_type_id" => 1,
+        "name" => "Example",
+        "pi_column" => "account_name",
+      }]
+      expect(value).to eq(expected)
     end
 
     it do
@@ -210,10 +222,30 @@ shared_examples_for "xdmod::config" do |facts|
     let(:params) do
       {
         :resources => [
-          {'resource' => 'example1', 'resource_id' => 1, 'name' => 'Example1'},
-          {'resource' => 'example2', 'resource_id' => 2, 'name' => 'Example2'},
+          {'resource' => 'example1', 'name' => 'Example1'},
+          {'resource' => 'example2', 'name' => 'Example2'},
         ]
       }
+    end
+
+    it do
+      content = catalogue.resource('file', '/etc/xdmod/resources.json').send(:parameters)[:content]
+      value = JSON.parse(content)
+      expected = [
+        {
+          "resource" => "example1",
+          "resource_type_id" => 1,
+          "name" => "Example1",
+          "pi_column" => "account_name",
+        },
+        {
+          "resource" => "example2",
+          "resource_type_id" => 1,
+          "name" => "Example2",
+          "pi_column" => "account_name",
+        },
+      ]
+      expect(value).to eq(expected)
     end
 
     it do
@@ -224,6 +256,28 @@ shared_examples_for "xdmod::config" do |facts|
         '0 1 * * * root /usr/bin/xdmod-slurm-helper --quiet -r example1 && /usr/bin/xdmod-ingestor --quiet',
         '0 2 * * * root /usr/bin/xdmod-slurm-helper --quiet -r example2 && /usr/bin/xdmod-ingestor --quiet',
       ])
+    end
+  end
+
+  context 'when resource_specs defined' do
+    let(:params) do
+      {
+        :resource_specs => [
+          {'resource' => 'example', 'processors' => 2, 'nodes' => 1, 'ppn' => 2}
+        ]
+      }
+    end
+
+    it do
+      content = catalogue.resource('file', '/etc/xdmod/resource_specs.json').send(:parameters)[:content]
+      value = JSON.parse(content)
+      expected = [
+        "resource" => "example",
+        "processors" => 2,
+        "nodes" => 1,
+        "ppn" => 2,
+      ]
+      expect(value).to eq(expected)
     end
   end
 
@@ -328,7 +382,12 @@ shared_examples_for "xdmod::config" do |facts|
   end
 
   context 'when enable_supremm => true' do
-    let(:params) {{ :enable_supremm => true }}
+    let(:params) do
+      {
+        :enable_supremm => true,
+        :supremm_resources => [{'resource' => 'example', 'resource_id' => 1, 'pcp_log_dir' => '/dne'}],
+      }
+    end
 
     it do
       is_expected.to contain_exec('xdmod-supremm-npm-install')
@@ -340,6 +399,21 @@ shared_examples_for "xdmod::config" do |facts|
 
     it do
       is_expected.to contain_xdmod_supremm_setting('features/singlejobviewer').with_value('on')
+    end
+
+    it do
+      content = catalogue.resource('file', '/etc/xdmod/supremm_resources.json').send(:parameters)[:content]
+      value = JSON.parse(content)
+      expected = {
+        "resources" => [
+          "resource"    => "example",
+          "resource_id" => 1,
+          "enabled"     => true,
+          "datasetmap"  => "pcp",
+          "hardware"    => {"gpfs" => ""},
+        ]
+      }
+      expect(value).to eq(expected)
     end
 
     context 'when database_host => dbhost' do

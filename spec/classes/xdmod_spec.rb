@@ -88,10 +88,11 @@ describe 'xdmod' do
           :web              => false,
           :database         => false,
           :compute          => true,
-          :resources        => [{
+          :supremm_resources => [{
             'resource' => 'example',
-            'name' => 'Example',
             'resource_id' => 1,
+            'enabled' => true,
+            'datasetmap' => 'pcp',
             'pcp_log_dir' => '/data/pcp-data/example',
           }],
           :pcp_resource     => 'example',

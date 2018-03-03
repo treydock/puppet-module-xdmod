@@ -11,7 +11,12 @@ describe 'xdmod class:' do
         resources         => [{
           'resource' => 'example',
           'name' => 'Example',
+        }],
+        supremm_resources => [{
+          'resource' => 'example',
           'resource_id' => 1,
+          'enabled' => true,
+          'datasetmap' => 'pcp',
           'pcp_log_dir' => '/data/pcp-data/example',
         }],
         pcp_resource      => 'example',

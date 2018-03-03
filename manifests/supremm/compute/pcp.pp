@@ -28,7 +28,7 @@ class xdmod::supremm::compute::pcp {
     }
   }
 
-  $resource = $xdmod::resources.filter |$r| {
+  $resource = $xdmod::supremm_resources.filter |$r| {
     $r['resource'] == $xdmod::pcp_resource
   }
   if $resource[0] {

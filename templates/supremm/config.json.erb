@@ -39,7 +39,7 @@
         "subdir_out_format": "%r/%j"
     },
     "resources": {
-<%- scope['xdmod::resources'].each_with_index do |resource, i| -%>
+<%- scope['xdmod::supremm_resources'].each_with_index do |resource, i| -%>
         "<%= resource['resource'] %>": {
             "enabled": true,
             "resource_id": <%= resource['resource_id'] %>,
@@ -51,7 +51,7 @@
 <%- else -%>
             "script_dir": ""
 <%- end -%>
-        }<%= (scope['xdmod::resources'].size - 1) == i ? ',' : '' %>
+        }<%= (scope['xdmod::supremm_resources'].size - 1) == i ? ',' : '' %>
 <%- end -%>
     }
 }

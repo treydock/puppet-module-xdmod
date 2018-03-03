@@ -43,14 +43,21 @@ Examples of some hiera values that may be useful to set globally
     xdmod::resources:
       - resource: example
         name: Example
-        resource_id: 1
-        pcp_log_dir: /data/pcp-data/example
-        script_dir: /data/job-scripts/example
+        resource_type_id: 1
     xdmod::resource_specs:
       - resource: example
         processors: 12000
         nodes: 500
         ppn: 24
+    xdmod::supremm_resources:
+      - resource: example
+        resource_id: 1
+        enabled: true
+        datasetmap: pcp
+        hardware:
+          gpfs: /gpfs
+        pcp_log_dir: /data/pcp-data/example
+        script_dir: /data/job-scripts/example
     # Set parameters used by multiple roles
     xdmod::web_host: 'xdmod.domain'
     xdmod::akrr_host: 'akrr.domain'
