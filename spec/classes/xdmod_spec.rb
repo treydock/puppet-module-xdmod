@@ -17,13 +17,15 @@ describe 'xdmod' do
       it { should create_class('xdmod') }
       it { should contain_class('xdmod::params') }
 
-      it { should contain_anchor('xdmod::start').that_comes_before('Class[xdmod::install]') }
+      it { should contain_anchor('xdmod::start').that_comes_before('Class[xdmod::user]') }
+      it { should contain_class('xdmod::user').that_comes_before('Class[xdmod::install]') }
       it { should contain_class('xdmod::install').that_comes_before('Class[xdmod::database]') }
       it { should contain_class('xdmod::database').that_comes_before('Class[xdmod::config]') }
       it { should contain_class('xdmod::config').that_comes_before('Class[xdmod::apache]') }
       it { should contain_class('xdmod::apache').that_comes_before('Anchor[xdmod::end]') }
       it { should contain_anchor('xdmod::end') }
 
+      it_behaves_like 'xdmod::user', facts
       it_behaves_like 'xdmod::install', facts
       it_behaves_like 'xdmod::database', facts
       it_behaves_like 'xdmod::config', facts
@@ -70,7 +72,8 @@ describe 'xdmod' do
 
         it { is_expected.to compile.with_all_deps }
 
-        it { should contain_anchor('xdmod::start').that_comes_before('Class[xdmod::install]') }
+        it { should contain_anchor('xdmod::start').that_comes_before('Class[xdmod::user]') }
+        it { should contain_class('xdmod::user').that_comes_before('Class[xdmod::install]') }
         it { should contain_class('xdmod::install').that_comes_before('Class[xdmod::config]') }
         it { should contain_class('xdmod::config').that_comes_before('Class[xdmod::apache]') }
         it { should contain_class('xdmod::apache').that_comes_before('Anchor[xdmod::end]') }
@@ -78,6 +81,7 @@ describe 'xdmod' do
 
         it { should_not contain_class('xdmod::database') }
 
+        it_behaves_like 'xdmod::user', facts
         it_behaves_like 'xdmod::install', facts
         it_behaves_like 'xdmod::config', facts
         it_behaves_like 'xdmod::apache', facts

@@ -56,6 +56,11 @@ class xdmod (
   Array[Xdmod::Resource_Spec] $resource_specs   = [],
   String $sender_email                          = $xdmod::params::sender_email,
 
+  # XDMoD user/group
+  Boolean $manage_user = true,
+  Optional[Integer] $user_uid = undef,
+  Optional[Integer] $group_gid = undef,
+
   # AKRR Install
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
     $akrr_source_url                    = $xdmod::params::akrr_source_url,
@@ -191,6 +196,7 @@ class xdmod (
 
   if $database and $web {
     include ::phantomjs
+    include xdmod::user
     include xdmod::install
     include xdmod::database
     include xdmod::config
@@ -198,6 +204,7 @@ class xdmod (
 
     Anchor['xdmod::start']
     -> Class['::phantomjs']
+    -> Class['xdmod::user']
     -> Class['xdmod::install']
     -> Class['xdmod::database']
     -> Class['xdmod::config']
@@ -211,12 +218,14 @@ class xdmod (
     -> Anchor['xdmod::end']
   } elsif $web {
     include ::phantomjs
+    include xdmod::user
     include xdmod::install
     include xdmod::config
     include xdmod::apache
 
     Anchor['xdmod::start']
     -> Class['::phantomjs']
+    -> Class['xdmod::user']
     -> Class['xdmod::install']
     -> Class['xdmod::config']
     -> Class['xdmod::apache']

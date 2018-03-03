@@ -51,7 +51,7 @@
 <%- else -%>
             "script_dir": ""
 <%- end -%>
-        }<%= (scope['xdmod::supremm_resources'].size - 1) == i ? ',' : '' %>
+        }<%= (scope['xdmod::supremm_resources'].size - 1) == i ? '' : ',' %>
 <%- end -%>
     }
 }
