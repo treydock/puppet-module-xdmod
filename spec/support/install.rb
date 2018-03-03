@@ -9,7 +9,7 @@ shared_examples_for "xdmod::install" do |facts|
   it do
     should contain_yum__install('xdmod').with(
       :ensure  => 'present',
-      :source  => "https://github.com/ubccr/xdmod/releases/download/v7.0.1/xdmod-7.0.1-1.0.#{rpm_release}.noarch.rpm",
+      :source  => "https://github.com/ubccr/xdmod/releases/download/v7.5.0/xdmod-7.5.0-1.0.#{rpm_release}.noarch.rpm",
       :require => 'Yumrepo[epel]'
     )
   end
@@ -23,7 +23,7 @@ shared_examples_for "xdmod::install" do |facts|
     it do
       should contain_yum__install('xdmod-appkernels').with(
         :ensure  => 'present',
-        :source  => "https://github.com/ubccr/xdmod-appkernels/releases/download/v7.0.0/xdmod-appkernels-7.0.0-1.0.#{rpm_release}.noarch.rpm",
+        :source  => "https://github.com/ubccr/xdmod-appkernels/releases/download/v7.5.0/xdmod-appkernels-7.5.0-1.0.#{rpm_release}.noarch.rpm",
         :require => 'Yumrepo[epel]'
       )
     end
@@ -35,7 +35,7 @@ shared_examples_for "xdmod::install" do |facts|
     it do
       should contain_yum__install('xdmod-supremm').with(
         :ensure  => 'present',
-        :source  => "https://github.com/ubccr/xdmod-supremm/releases/download/v7.0.0/xdmod-supremm-7.0.0-1.0.#{rpm_release}.noarch.rpm",
+        :source  => "https://github.com/ubccr/xdmod-supremm/releases/download/v7.5.0/xdmod-supremm-7.5.0-1.0.#{rpm_release}.noarch.rpm",
         :require => 'Yumrepo[epel]'
       )
     end
