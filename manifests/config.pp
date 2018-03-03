@@ -63,8 +63,8 @@ class xdmod::config {
     file { '/etc/xdmod/portal_settings.d/appkernels.ini':
       ensure => 'file',
       owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
+      group  => 'xdmod',
+      mode   => '0640',
     }
 
     xdmod_appkernel_setting { 'features/appkernels': value => $_appkernels }
@@ -101,8 +101,8 @@ class xdmod::config {
     file { '/etc/xdmod/portal_settings.d/supremm.ini':
       ensure => 'file',
       owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
+      group  => 'xdmod',
+      mode   => '0640',
     }
 
     xdmod_supremm_setting { 'features/singlejobviewer': value => 'on' }
@@ -162,8 +162,8 @@ class xdmod::config {
   file { '/etc/xdmod/portal_settings.ini':
     ensure => 'file',
     owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    group  => 'xdmod',
+    mode   => '0640',
   }
 
   if $xdmod::database_host != 'localhost' {

@@ -76,8 +76,8 @@ shared_examples_for "xdmod::config" do |facts|
     should contain_file('/etc/xdmod/portal_settings.ini').with({
       :ensure  => 'file',
       :owner   => 'root',
-      :group   => 'root',
-      :mode    => '0644',
+      :group   => 'xdmod',
+      :mode    => '0640',
     })
   end
 
@@ -143,15 +143,6 @@ shared_examples_for "xdmod::config" do |facts|
 
   it do
     should_not contain_exec('xdmod-import-csv-names')
-  end
-
-  it do
-    should contain_file('/etc/xdmod/portal_settings.ini').with({
-      :ensure  => 'file',
-      :owner   => 'root',
-      :group   => 'root',
-      :mode    => '0644',
-    })
   end
 
   it { should_not contain_file('/root/xdmod-database-setup.sh') }
@@ -352,8 +343,8 @@ shared_examples_for "xdmod::config" do |facts|
       should contain_file('/etc/xdmod/portal_settings.d/appkernels.ini').with({
         :ensure => 'file',
         :owner  => 'root',
-        :group  => 'root',
-        :mode   => '0644',
+        :group  => 'xdmod',
+        :mode   => '0640',
       })
     end
 
