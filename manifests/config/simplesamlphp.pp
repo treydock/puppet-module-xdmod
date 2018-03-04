@@ -25,21 +25,23 @@ class xdmod::config::simplesamlphp {
     }
 
     file { '/etc/xdmod/simplesamlphp/config/config.php':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => $xdmod::simplesamlphp_config_content,
-      source  => $xdmod::simplesamlphp_config_source,
+      ensure    => 'file',
+      owner     => 'xdmod',
+      group     => 'apache',
+      mode      => '0640',
+      content   => $xdmod::simplesamlphp_config_content,
+      source    => $xdmod::simplesamlphp_config_source,
+      show_diff => false,
     }
 
     file { '/etc/xdmod/simplesamlphp/config/authsources.php':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => $xdmod::simplesamlphp_authsources_content,
-      source  => $xdmod::simplesamlphp_authsources_source,
+      ensure    => 'file',
+      owner     => 'xdmod',
+      group     => 'apache',
+      mode      => '0640',
+      content   => $xdmod::simplesamlphp_authsources_content,
+      source    => $xdmod::simplesamlphp_authsources_source,
+      show_diff => false,
     }
 
     file { '/etc/xdmod/simplesamlphp/metadata/saml20-idp-remote.php':
