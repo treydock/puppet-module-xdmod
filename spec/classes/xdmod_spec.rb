@@ -47,8 +47,8 @@ describe 'xdmod' do
         it { is_expected.to compile }
       end
 
-      context 'when supremm_database => true' do
-        let(:params) {{ :supremm_database => true }}
+      context 'when database => true && supremm_database => true' do
+        let(:params) {{ :database => true, :supremm_database => true }}
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to compile }

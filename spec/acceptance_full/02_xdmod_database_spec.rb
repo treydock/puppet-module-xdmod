@@ -70,10 +70,15 @@ describe 'xdmod class: databases' do
         akrr_host             => 'akrr.#{fact('domain')}',
         database_host         => 'db',
         supremm_mongodb_host  => 'db',
-        resources             => [{
+        resources         => [{
           'resource' => 'example',
           'name' => 'Example',
+        }],
+        supremm_resources => [{
+          'resource' => 'example',
           'resource_id' => 1,
+          'enabled' => true,
+          'datasetmap' => 'pcp',
           'pcp_log_dir' => '/data/pcp-data/example',
         }],
       }
