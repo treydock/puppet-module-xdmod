@@ -75,8 +75,8 @@ shared_examples_for "xdmod::config" do |facts|
   it do
     should contain_file('/etc/xdmod/portal_settings.ini').with({
       :ensure  => 'file',
-      :owner   => 'root',
-      :group   => 'xdmod',
+      :owner   => 'xdmod',
+      :group   => 'apache',
       :mode    => '0640',
     })
   end
@@ -342,8 +342,8 @@ shared_examples_for "xdmod::config" do |facts|
     it do
       should contain_file('/etc/xdmod/portal_settings.d/appkernels.ini').with({
         :ensure => 'file',
-        :owner  => 'root',
-        :group  => 'xdmod',
+        :owner  => 'xdmod',
+        :group  => 'apache',
         :mode   => '0640',
       })
     end

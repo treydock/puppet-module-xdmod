@@ -12,6 +12,13 @@ class xdmod::config {
     ]
   }
 
+  file { '/etc/xdmod/portal_settings.ini':
+    ensure => 'file',
+    owner  => 'xdmod',
+    group  => 'apache',
+    mode   => '0640',
+  }
+
   xdmod_portal_setting { 'general/site_address': value => "https://${xdmod::apache_vhost_name}/" }
   xdmod_portal_setting { 'general/user_manual': value => "https://${xdmod::apache_vhost_name}/user_manual/" }
 
@@ -62,8 +69,8 @@ class xdmod::config {
   if $xdmod::enable_appkernel {
     file { '/etc/xdmod/portal_settings.d/appkernels.ini':
       ensure => 'file',
-      owner  => 'root',
-      group  => 'xdmod',
+      owner  => 'xdmod',
+      group  => 'apache',
       mode   => '0640',
     }
 
@@ -100,8 +107,8 @@ class xdmod::config {
 
     file { '/etc/xdmod/portal_settings.d/supremm.ini':
       ensure => 'file',
-      owner  => 'root',
-      group  => 'xdmod',
+      owner  => 'xdmod',
+      group  => 'apache',
       mode   => '0640',
     }
 
@@ -157,13 +164,6 @@ class xdmod::config {
         ],
       }
     }
-  }
-
-  file { '/etc/xdmod/portal_settings.ini':
-    ensure => 'file',
-    owner  => 'root',
-    group  => 'xdmod',
-    mode   => '0640',
   }
 
   if $xdmod::database_host != 'localhost' {
