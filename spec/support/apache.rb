@@ -11,6 +11,6 @@ shared_examples_for "xdmod::apache" do |facts|
     let(:params) {{ :manage_apache_vhost => false }}
 
     it { should_not contain_class('apache') }
-    it { should_not contain_apache__vhost__custom('xdmod_ssl') }
+    it { should_not contain_apache__vhost__custom('xdmod') }
   end
 end
