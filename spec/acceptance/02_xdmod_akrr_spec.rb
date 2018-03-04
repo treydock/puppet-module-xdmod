@@ -13,6 +13,7 @@ describe 'xdmod class:' do
           'resource' => 'example',
           'name' => 'Example',
         }],
+        manage_simplesamlphp => true,
       }
       EOS
 

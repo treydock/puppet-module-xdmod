@@ -61,6 +61,18 @@ class xdmod (
   Optional[Integer] $user_uid = undef,
   Optional[Integer] $group_gid = undef,
 
+  # simplesamlphp
+  Boolean $manage_simplesamlphp = false,
+  Optional[String] $simplesamlphp_config_content = undef,
+  Optional[String] $simplesamlphp_config_source = undef,
+  Optional[String] $simplesamlphp_authsources_content = undef,
+  Optional[String] $simplesamlphp_authsources_source = undef,
+  Optional[String] $simplesamlphp_metadata_content = undef,
+  Optional[String] $simplesamlphp_metadata_source = undef,
+  String $simplesamlphp_cert_country = 'US',
+  Optional[String] $simplesamlphp_cert_organization = undef,
+  Optional[String] $simplesamlphp_cert_commonname = undef,
+
   # AKRR Install
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
     $akrr_source_url                    = $xdmod::params::akrr_source_url,
@@ -200,6 +212,7 @@ class xdmod (
     include xdmod::install
     include xdmod::database
     include xdmod::config
+    include xdmod::config::simplesamlphp
     include xdmod::apache
 
     Anchor['xdmod::start']
@@ -208,6 +221,7 @@ class xdmod (
     -> Class['xdmod::install']
     -> Class['xdmod::database']
     -> Class['xdmod::config']
+    -> Class['xdmod::config::simplesamlphp']
     -> Class['xdmod::apache']
     -> Anchor['xdmod::end']
   } elsif $database {
@@ -221,6 +235,7 @@ class xdmod (
     include xdmod::user
     include xdmod::install
     include xdmod::config
+    include xdmod::config::simplesamlphp
     include xdmod::apache
 
     Anchor['xdmod::start']
@@ -228,6 +243,7 @@ class xdmod (
     -> Class['xdmod::user']
     -> Class['xdmod::install']
     -> Class['xdmod::config']
+    -> Class['xdmod::config::simplesamlphp']
     -> Class['xdmod::apache']
     -> Anchor['xdmod::end']
   }

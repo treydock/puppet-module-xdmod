@@ -30,5 +30,7 @@ fixtures:
       repo: https://github.com/treydock/puppet-module-phantomjs.git
     sudo:
       repo: https://github.com/saz/puppet-sudo.git
+    openssl:
+      repo: https://github.com/camptocamp/puppet-openssl
   symlinks:
     xdmod: "#{source_dir}"

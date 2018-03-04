@@ -21,6 +21,7 @@ describe 'xdmod class:' do
           'datasetmap' => 'pcp',
           'pcp_log_dir' => '/data/pcp-data/example',
         }],
+        manage_simplesamlphp => true,
       }
       EOS
 

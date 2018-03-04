@@ -21,7 +21,8 @@ describe 'xdmod' do
       it { should contain_class('xdmod::user').that_comes_before('Class[xdmod::install]') }
       it { should contain_class('xdmod::install').that_comes_before('Class[xdmod::database]') }
       it { should contain_class('xdmod::database').that_comes_before('Class[xdmod::config]') }
-      it { should contain_class('xdmod::config').that_comes_before('Class[xdmod::apache]') }
+      it { should contain_class('xdmod::config').that_comes_before('Class[xdmod::config::simplesamlphp]') }
+      it { should contain_class('xdmod::config::simplesamlphp').that_comes_before('Class[xdmod::apache]') }
       it { should contain_class('xdmod::apache').that_comes_before('Anchor[xdmod::end]') }
       it { should contain_anchor('xdmod::end') }
 
@@ -29,6 +30,7 @@ describe 'xdmod' do
       it_behaves_like 'xdmod::install', facts
       it_behaves_like 'xdmod::database', facts
       it_behaves_like 'xdmod::config', facts
+      it_behaves_like 'xdmod::config::simplesamlphp', facts
       it_behaves_like 'xdmod::apache', facts
 
       context 'when akrr => true' do
@@ -75,7 +77,8 @@ describe 'xdmod' do
         it { should contain_anchor('xdmod::start').that_comes_before('Class[xdmod::user]') }
         it { should contain_class('xdmod::user').that_comes_before('Class[xdmod::install]') }
         it { should contain_class('xdmod::install').that_comes_before('Class[xdmod::config]') }
-        it { should contain_class('xdmod::config').that_comes_before('Class[xdmod::apache]') }
+        it { should contain_class('xdmod::config').that_comes_before('Class[xdmod::config::simplesamlphp]') }
+        it { should contain_class('xdmod::config::simplesamlphp').that_comes_before('Class[xdmod::apache]') }
         it { should contain_class('xdmod::apache').that_comes_before('Anchor[xdmod::end]') }
         it { should contain_anchor('xdmod::end') }
 
@@ -84,6 +87,7 @@ describe 'xdmod' do
         it_behaves_like 'xdmod::user', facts
         it_behaves_like 'xdmod::install', facts
         it_behaves_like 'xdmod::config', facts
+        it_behaves_like 'xdmod::config::simplesamlphp', facts
         it_behaves_like 'xdmod::apache', facts
       end
 

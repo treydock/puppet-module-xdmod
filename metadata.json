@@ -35,7 +35,8 @@
     { "name": "herculesteam/augeasproviders_shellvar", "version_requirement": ">= 2.0.0 <3.0.0" },
     { "name": "saz/sudo", "version_requirement": ">= 3.0.0 <6.0.0" },
     { "name": "treydock/pcp", "version_requirement": ">= 1.0.0 <2.0.0" },
-    { "name": "treydock/phantomjs", "version_requirement": ">= 0.0.1 <1.0.0" }
+    { "name": "treydock/phantomjs", "version_requirement": ">= 0.0.1 <1.0.0" },
+    { "name": "camptocamp/openssl", "version_requirement": ">= 1.10.0 <2.0.0" }
   ],
   "requirements": [
     {"name": "puppet", "version_requirement": ">= 4.7.0 < 6.0.0" }
