@@ -58,6 +58,8 @@ class xdmod::config::simplesamlphp {
       organization => $simplesamlphp_cert_organization,
       commonname   => $simplesamlphp_cert_commonname,
       base_dir     => '/etc/xdmod/simplesamlphp/cert',
+      key_owner    => 'apache',
+      key_mode     => '0400',
       require      => File['/etc/xdmod/simplesamlphp/cert'],
     }
   }
