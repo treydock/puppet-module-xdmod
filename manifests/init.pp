@@ -19,6 +19,8 @@ class xdmod (
   Boolean $enable_supremm                       = false,
   Optional[String] $local_repo_name             = undef,
   String $package_ensure                        = 'present',
+  String $xdmod_supremm_package_ensure          = 'present',
+  String $xdmod_appkernels_package_ensure       = 'present',
   String $package_name                          = $xdmod::params::package_name,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
     $package_url                                = $xdmod::params::package_url,
@@ -99,6 +101,7 @@ class xdmod (
 
   # SUPReMM install
   String $supremm_version         = $xdmod::params::supremm_version,
+  String $supremm_package_ensure  = 'present',
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
     $supremm_package_url          = $xdmod::params::supremm_package_url,
   String $supremm_package_name    = 'supremm',

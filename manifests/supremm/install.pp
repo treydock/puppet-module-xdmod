@@ -3,7 +3,7 @@ class xdmod::supremm::install {
 
   if $xdmod::local_repo_name {
     package { 'supremm':
-      ensure  => $xdmod::package_ensure,
+      ensure  => $xdmod::supremm_package_ensure,
       name    => $xdmod::supremm_package_name,
       require => $xdmod::_package_require,
     }
