@@ -347,6 +347,8 @@ class xdmod::config {
     missingok    => true,
     compress     => true,
     dateext      => true,
+    su_owner     => 'apache',
+    su_group     => 'xdmod',
   }
 
 }
