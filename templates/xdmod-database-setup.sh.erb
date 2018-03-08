@@ -8,26 +8,19 @@ port=<%= scope.lookupvar('xdmod::database_port') %>
 user=<%= scope.lookupvar('xdmod::database_user') %>
 password=<%= scope.lookupvar('xdmod::database_password') %>
 
-databases=(
-mod_hpcdb
-mod_logger
-mod_shredder
-moddb
-modw
-modw_aggregates
-modw_filters
-)
-
-for database in "${databases[@]}"; do
-  schema="/usr/share/xdmod/db/schema/${database}.sql"
-  data="/usr/share/xdmod/db/data/${database}.sql"
-
-  if [ -f ${schema} ]; then
-    mysql -u ${user} -p${password} --host ${host} --port ${port} ${database} < ${schema}
+for schema in /usr/share/xdmod/db/schema/*.sql; do
+  file=$(basename $schema)
+  database="${file%.*}"
+  tables=$(mysql -u ${user} -p${password} --host ${host} --port ${port} -NB ${database} -e "SHOW TABLES")
+  if [[ -n "$tables" ]]; then
+    echo "Schema ${schema} already imported...skipping"
+    continue
   fi
-
-  if [ -f ${data} ]; then
+  echo "Importing schema ${schema}"
+  mysql -u ${user} -p${password} --host ${host} --port ${port} ${database} < ${schema}
+  data=/usr/share/xdmod/db/data/${database}.sql
+  if [[ -f $data ]]; then
+    echo "Importing data ${data}"
     mysql -u ${user} -p${password} --host ${host} --port ${port} ${database} < ${data}
   fi
-
 done

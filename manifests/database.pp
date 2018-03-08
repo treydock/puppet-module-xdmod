@@ -110,9 +110,21 @@ class xdmod::database {
     exec { 'create-modw.resourcefact':
       path    => '/usr/bin:/bin:/usr/sbin:/sbin',
       command => "mysql modw -e \"CREATE TABLE resourcefact (id int(11) NOT NULL COMMENT 'The id of the resource record')\"",
-      unless  => "mysql -BN modw -e 'SHOW TABLES' | egrep -q '^resourcefact$'",
+      unless  => [
+        "mysql -BN modw -e 'SHOW TABLES' | egrep -q '^resourcefact$'",
+        "mysql -BN mysql -e \"SELECT * FROM tables_priv WHERE User='${xdmod::akrr_database_user}' AND Host='${xdmod::akrr_host}' AND Table_name='resourcefact' AND Table_priv='Select'\" | grep -q 'resourcefact'"
+      ],
       require => Mysql::Db['modw'],
       before  => Mysql_grant["${xdmod::akrr_database_user}@${xdmod::akrr_host}/modw.resourcefact"],
+      notify  => Exec['drop-modw.resourcefact'],
+    }
+    exec { 'drop-modw.resourcefact':
+      path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+      command     => "mysql modw -e \"DROP TABLE resourcefact\"",
+      onlyif      => "mysql -BN modw -e 'SHOW TABLES' | egrep -q '^resourcefact$'",
+      unless      => "mysql -BN modw -e 'SHOW TABLES' | egrep -q '^account$'",
+      refreshonly => true,
+      require     => Mysql_grant["${xdmod::akrr_database_user}@${xdmod::akrr_host}/modw.resourcefact"],
     }
 
     mysql_grant { "${xdmod::akrr_database_user}@${xdmod::akrr_host}/modw.resourcefact":
