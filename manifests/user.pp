@@ -17,10 +17,17 @@ class xdmod::user {
       gid        => 'xdmod',
       shell      => '/sbin/nologin',
       home       => '/var/lib/xdmod',
-      managehome => false,
+      managehome => true,
       comment    => 'Open XDMoD',
       system     => true,
       forcelocal => true,
+    }
+
+    file { '/var/lib/xdmod':
+      ensure => 'directory',
+      owner  => 'xdmod',
+      group  => 'xdmod',
+      mode   => '0700',
     }
   }
 

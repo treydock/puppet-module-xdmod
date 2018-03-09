@@ -17,10 +17,19 @@ shared_examples_for "xdmod::user" do |facts|
       :gid        => 'xdmod',
       :shell      => '/sbin/nologin',
       :home       => '/var/lib/xdmod',
-      :managehome => 'false',
+      :managehome => 'true',
       :comment    => 'Open XDMoD',
       :system     => 'true',
       :forcelocal => 'true',
+    )
+  end
+
+  it do
+    is_expected.to contain_file('/var/lib/xdmod').with(
+      :ensure => 'directory',
+      :owner  => 'xdmod',
+      :group  => 'xdmod',
+      :mode   => '0700',
     )
   end
 
