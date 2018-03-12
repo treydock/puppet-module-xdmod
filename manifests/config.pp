@@ -348,7 +348,11 @@ class xdmod::config {
     compress     => true,
     dateext      => true,
     su_owner     => 'apache',
-    su_group     => 'xdmod',
+    su_group     => 'apache',
+    create       => true,
+    create_mode  => '0640',
+    create_owner => 'apache',
+    create_group => 'apache',
   }
 
 }
