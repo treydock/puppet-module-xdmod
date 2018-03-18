@@ -345,6 +345,7 @@ class xdmod::config {
     rotate       => 4,
     rotate_every => 'week',
     missingok    => true,
+    ifempty      => false,
     compress     => true,
     dateext      => true,
     su_owner     => 'apache',
