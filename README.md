@@ -19,17 +19,17 @@ This module is designed so that different hosts can run the various components o
 
 ### Open XDMoD Compatibility
 
-Open XDMoD Versions         |  4.5.x   | 5.0.x   | 7.0.x   |
+Open XDMoD Versions         |  4.5.x   | 5.0.x   | 7.5.x   |
 :---------------------------|:--------:|:-------:|:-------:|
 **puppet-module-xdmod 0.x** | **yes**  | no      | no      |
 **puppet-module-xdmod 1.x** | no       | **yes** | no      |
-**puppet-module-xdmod 2.x** | no       | **yes** | **yes** |
+**puppet-module-xdmod 2.x** | no       | no      | **yes** |
 
 ## Usage
 
 Examples of some hiera values that may be useful to set globally
 
-    xdmod::version: '7.0.1'
+    xdmod::version: '7.5.0'
     # Disable roles that are enabled by default
     xdmod::web: false
     xdmod::database: false
@@ -73,8 +73,14 @@ Examples of some hiera values that may be useful to set globally
 
 If you run a local yum repo for XDMoD packages
 
-    xdmod::create_local_repo: false
     xdmod::local_repo_name: 'local-repo-name-here'
+
+Enable Federated logins for XDMoD web host
+
+    xdmod::web: true
+    xdmod::manage_simplesamlphp: true
+    xdmod::simplesamlphp_config_source: 'puppet:///modules/site_xdmod/simplesamlphp/config.php'
+    xdmod::simplesamlphp_authsources_source: 'puppet:///modules/site_xdmod/simplesamlphp/authsources.php'
 
 Run the XDMoD web interface and AKRR web service with SUPReMM support
 
@@ -156,10 +162,10 @@ A MongoDB host needs to be setup for SUPReMM
 
 #### Private classes
 
-* `xdmod::repo`: Creates local repo for XDMoD packages
 * `xdmod::install`: Installs xdmod packages.
 * `xdmod::database`: Manage XDMoD databases.
 * `xdmod::config`: Configures xdmod.
+* `xdmod::config::simplesamlphp`: Configures federated logins
 * `xdmod::apache`: Manage Apache configurations.
 * `xdmod::params`: Sets parameter defaults.
 * `xdmod::akrr::user`: Create AKRR user and group
@@ -205,8 +211,8 @@ If you have Vagrant >= 1.2.0 installed you can run system tests
 
 Docker based acceptance tests can also be run to test default behavior
 
-    BEAKER_set=centos-6-x64-docker BEAKER_destroy=no bundle exec rake beaker
+    BEAKER_set=centos-7-x64-docker BEAKER_destroy=no bundle exec rake beaker
 
 Docker acceptance tests can also be run to test full funtionality of multiple systems hosting various XDMoD components
 
-    BEAKER_set=centos-6-x64-docker-multinode BEAKER_destroy=no bundle exec rake beaker_full
+    BEAKER_set=centos-7-x64-docker-multinode BEAKER_destroy=no bundle exec rake beaker_full

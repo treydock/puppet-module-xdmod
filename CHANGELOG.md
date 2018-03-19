@@ -2,15 +2,22 @@
 
 ### Summary
 
-XDMoD 5.5.0 and SUPReMM support
+XDMoD 7.5.0 and SUPReMM support
+
+Major overhaul to support XDMoD 7.5.0, below changes is not complete
 
 ### Changes
 
+* Removed parameters
+  * `resource_name` - See `resources`
 * Modified parameters
-  * version default is now 5.5.0
+  * version default is now 7.5.0
   * `akrr_source_url` updated
-  * The use of web\_host is split into web\_host and akrr_host - previous module behavvior prevented running AKRR on a different host than XDMoD
+  * The use of web\_host is split into web\_host and akrr_host - previous module behavior prevented running AKRR on a different host than XDMoD
+  * `local_repo_name` now defaults to `undef` - If defined install from repo. Default behavior is to install from URLs
 * Added parameters
+  * `xdmod_appkernels_version` - Version of xdmod-appkernels
+  * `xdmod_supremm_version` - Version of xdmod-supremm
   * `supremm` - Enable SUPReMM job summarization
   * `supremm_database` - Manage SUPReMM MongoDB database
   * `compute` - Enable SUPReMM compute compontents (currently PCP)
@@ -43,13 +50,20 @@ XDMoD 5.5.0 and SUPReMM support
   * `pcp_pmie_config_source` - Config source used for pmie
   * `pcp_hotproc_exclude_users` - Define usernames to exclude from PCP's hotproc metrics
 * Manage /etc/xdmod/hierarchy.json
+* Manage /etc/xdmod/resources.json and /etc/xdmod/resource_specs.json
+* Manage /etc/xdmod/organization.json
+* Always assume Apache is SSL
 * Add classes to support SUPReMM - all are private classes
 * Move local repo resources to xdmod::repo - not used if create\_local\_repo=false
 * Add support for EL7
+* Require Puppet >= 4.7.0
 * Added dependencies
   * puppetlabs/mongodb
   * saz/sudo
   * treydock/pcp
+  * treydock/phantomjs
+  * puppet/archive (replaces nanliu/staging)
+  * puppet/yum
 * Expanded acceptance tests to include tests for distributed setup
 
 ## 1.0.0 - 2015-12-18
