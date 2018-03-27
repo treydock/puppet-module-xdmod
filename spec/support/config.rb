@@ -145,9 +145,25 @@ shared_examples_for "xdmod::config" do |facts|
     should_not contain_exec('xdmod-import-csv-names')
   end
 
-  it { should_not contain_file('/root/xdmod-database-setup.sh') }
-  it { should_not contain_exec('xdmod-database-setup.sh') }
+  it do
+    should contain_file('/root/xdmod-database-setup.sh').with({
+      :ensure    => 'file',
+      :owner     => 'root',
+      :group     => 'root',
+      :mode      => '0700',
+      :show_diff => 'false',
+    })
+  end
 
+  #TODO: Test content of /root/xdmod-database-setup.sh
+
+  it do
+    should contain_exec('xdmod-database-setup.sh').with({
+      :path     => '/usr/bin:/bin:/usr/sbin:/sbin',
+      :command  => '/root/xdmod-database-setup.sh && touch /etc/xdmod/.database-setup',
+      :creates  => '/etc/xdmod/.database-setup',
+    })
+  end
 
   it do
     should contain_file('/etc/cron.d/xdmod').with({
@@ -310,30 +326,6 @@ shared_examples_for "xdmod::config" do |facts|
     end
   end
 
-  context 'when database_host => host.domain' do
-    let(:params) {{ :database_host => 'host.domain' }}
-
-    it do
-      should contain_file('/root/xdmod-database-setup.sh').with({
-        :ensure    => 'file',
-        :owner     => 'root',
-        :group     => 'root',
-        :mode      => '0700',
-        :show_diff => 'false',
-      })
-    end
-
-    #TODO: Test content of /root/xdmod-database-setup.sh
-
-    it do
-      should contain_exec('xdmod-database-setup.sh').with({
-        :path     => '/usr/bin:/bin:/usr/sbin:/sbin',
-        :command  => '/root/xdmod-database-setup.sh && touch /etc/xdmod/.database-setup',
-        :creates  => '/etc/xdmod/.database-setup',
-      })
-    end
-  end
-
   context 'when enable_appkernel => true' do
     let(:params) {{ :enable_appkernel => true }}
 
@@ -407,26 +399,22 @@ shared_examples_for "xdmod::config" do |facts|
       expect(value).to eq(expected)
     end
 
-    context 'when database_host => dbhost' do
-      let(:params) {{ :enable_supremm => true, :database_host => 'dbhost' }}
+    it do
+      is_expected.to contain_exec('modw_supremm-schema').with({
+        :command  => 'mysql -h localhost -u xdmod -pchangeme -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql',
+        :onlyif   => "mysql -BN -h localhost -u xdmod -pchangeme -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
+        :unless   => "mysql -BN -h localhost -u xdmod -pchangeme -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^jobstatus$'",
+      })
+    end
 
-      it do
-        is_expected.to contain_exec('modw_supremm-schema').with({
-          :command  => 'mysql -h dbhost -u xdmod -pchangeme -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql',
-          :onlyif   => "mysql -BN -h dbhost -u xdmod -pchangeme -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
-          :unless   => "mysql -BN -h dbhost -u xdmod -pchangeme -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^jobstatus$'",
-        })
-      end
-
-      it do
-        is_expected.to contain_exec('modw_etl-schema').with({
-          :command  => 'mysql -h dbhost -u xdmod -pchangeme -D modw_etl < /usr/share/xdmod/db/schema/modw_etl.sql',
-          :onlyif   => [
-            "mysql -h dbhost -u xdmod -pchangeme -BN -e 'SHOW DATABASES' | egrep -q '^modw_etl$'",
-            "mysql -h dbhost -u xdmod -pchangeme -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'",
-          ],
-        })
-      end
+    it do
+      is_expected.to contain_exec('modw_etl-schema').with({
+        :command  => 'mysql -h localhost -u xdmod -pchangeme -D modw_etl < /usr/share/xdmod/db/schema/modw_etl.sql',
+        :onlyif   => [
+          "mysql -h localhost -u xdmod -pchangeme -BN -e 'SHOW DATABASES' | egrep -q '^modw_etl$'",
+          "mysql -h localhost -u xdmod -pchangeme -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'",
+        ],
+      })
     end
   end
 

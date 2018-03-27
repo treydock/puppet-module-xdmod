@@ -148,41 +148,37 @@ class xdmod::config {
       content => to_json_pretty({'resources' => $supremm_resources}),
     }
 
-    if $xdmod::database_host != 'localhost' {
-      exec { 'modw_supremm-schema':
-        path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-        command => "mysql ${xdmod::_mysql_remote_args} -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql",
-        onlyif  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
-        unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^jobstatus$'",# lint:ignore:140chars
-      }
-      exec { 'modw_etl-schema':
-        path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-        command => "mysql ${xdmod::_mysql_remote_args} -D modw_etl < /usr/share/xdmod/db/schema/modw_etl.sql",
-        onlyif  => [
-          "mysql ${xdmod::_mysql_remote_args} -BN -e 'SHOW DATABASES' | egrep -q '^modw_etl$'",
-          "mysql ${xdmod::_mysql_remote_args} -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'",# lint:ignore:140chars
-        ],
-      }
+    exec { 'modw_supremm-schema':
+      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+      command => "mysql ${xdmod::_mysql_remote_args} -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql",
+      onlyif  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
+      unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^jobstatus$'",# lint:ignore:140chars
+    }
+    exec { 'modw_etl-schema':
+      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+      command => "mysql ${xdmod::_mysql_remote_args} -D modw_etl < /usr/share/xdmod/db/schema/modw_etl.sql",
+      onlyif  => [
+        "mysql ${xdmod::_mysql_remote_args} -BN -e 'SHOW DATABASES' | egrep -q '^modw_etl$'",
+        "mysql ${xdmod::_mysql_remote_args} -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'",# lint:ignore:140chars
+      ],
     }
   }
 
-  if $xdmod::database_host != 'localhost' {
-    file { '/root/xdmod-database-setup.sh':
-      ensure    => 'file',
-      owner     => 'root',
-      group     => 'root',
-      mode      => '0700',
-      content   => template('xdmod/xdmod-database-setup.sh.erb'),
-      show_diff => false,
-    }
+  file { '/root/xdmod-database-setup.sh':
+    ensure    => 'file',
+    owner     => 'root',
+    group     => 'root',
+    mode      => '0700',
+    content   => template('xdmod/xdmod-database-setup.sh.erb'),
+    show_diff => false,
+  }
 
-    exec { 'xdmod-database-setup.sh':
-      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-      command => '/root/xdmod-database-setup.sh && touch /etc/xdmod/.database-setup',
-      creates => '/etc/xdmod/.database-setup',
-      require => File['/root/xdmod-database-setup.sh'],
-      before  => Exec['acl-xdmod-management'],
-    }
+  exec { 'xdmod-database-setup.sh':
+    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command => '/root/xdmod-database-setup.sh && touch /etc/xdmod/.database-setup',
+    creates => '/etc/xdmod/.database-setup',
+    require => File['/root/xdmod-database-setup.sh'],
+    before  => Exec['acl-xdmod-management'],
   }
 
   exec { 'acl-xdmod-management':
