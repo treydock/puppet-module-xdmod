@@ -3,11 +3,11 @@ type Xdmod::Hierarchy_Levels = Struct[{
     label => String,
     info  => String,
   }],
-  middle => Struct[{
+  Optional[middle] => Struct[{
     label => String,
     info  => String,
   }],
-  bottom => Struct[{
+  Optional[bottom] => Struct[{
     label => String,
     info  => String,
   }],

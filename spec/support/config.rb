@@ -93,12 +93,12 @@ shared_examples_for "xdmod::config" do |facts|
   it do
     verify_exact_contents(catalogue, '/etc/xdmod/hierarchy.json', [
       '{',
-      '    "top_level_label": "Hierarchy Top Level",',
-      '    "top_level_info": "",',
-      '    "middle_level_label": "Hierarchy Middle Level",',
-      '    "middle_level_info": "",',
-      '    "bottom_level_label": "Hierarchy Bottom Level",',
-      '    "bottom_level_info": ""',
+      '  "top_level_label": "Hierarchy Top Level",',
+      '  "top_level_info": "",',
+      '  "middle_level_label": "Hierarchy Middle Level",',
+      '  "middle_level_info": "",',
+      '  "bottom_level_label": "Hierarchy Bottom Level",',
+      '  "bottom_level_info": ""',
       '}',
     ])
   end
@@ -427,6 +427,28 @@ shared_examples_for "xdmod::config" do |facts|
           ],
         })
       end
+    end
+  end
+
+  context 'partial hierarchy levels defined' do
+    let(:params) do
+      {
+        :hierarchy_levels => {
+          'top' => {'label' => 'Top', 'info' => 'Top'},
+          'middle' => {'label' => 'Middle', 'info' => 'Middle'},
+        }
+      }
+    end
+
+    it do
+      verify_exact_contents(catalogue, '/etc/xdmod/hierarchy.json', [
+        '{',
+        '  "top_level_label": "Top",',
+        '  "top_level_info": "Top",',
+        '  "middle_level_label": "Middle",',
+        '  "middle_level_info": "Middle"',
+        '}',
+      ])
     end
   end
 

@@ -1,9 +1,10 @@
-<% levels = scope.lookupvar('xdmod::hierarchy_levels') || {} -%>
-{
-    "top_level_label": "<%= levels['top']['label'] %>",
-    "top_level_info": "<%= levels['top']['info'] %>",
-    "middle_level_label": "<%= levels['middle']['label'] %>",
-    "middle_level_info": "<%= levels['middle']['info'] %>",
-    "bottom_level_label": "<%= levels['bottom']['label'] %>",
-    "bottom_level_info": "<%= levels['bottom']['info'] %>"
-}
+<% hierarchy_levels = scope.lookupvar('xdmod::hierarchy_levels') || {} -%>
+<%-
+levels = {}
+hierarchy_levels.each_pair do |level, data|
+  data.each_pair do |k, v|
+    levels["#{level}_level_#{k}"] = v
+  end
+end
+%>
+<%= JSON.pretty_generate(levels) %>
