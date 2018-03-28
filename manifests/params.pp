@@ -6,7 +6,7 @@ class xdmod::params {
 
   $version                  = '7.5.0'
   $xdmod_appkernels_version = '7.5.0'
-  $xdmod_supremm_version    = '7.5.0'
+  $xdmod_supremm_version    = '7.5.1'
   $sender_email       = "xdmod@xdmod.${::domain}"
   $apache_vhost_name  = "xdmod.${::domain}"
   $portal_settings    = {}

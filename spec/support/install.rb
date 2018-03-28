@@ -35,7 +35,7 @@ shared_examples_for "xdmod::install" do |facts|
     it do
       should contain_yum__install('xdmod-supremm').with(
         :ensure  => 'present',
-        :source  => "https://github.com/ubccr/xdmod-supremm/releases/download/v7.5.0/xdmod-supremm-7.5.0-1.0.#{rpm_release}.noarch.rpm",
+        :source  => "https://github.com/ubccr/xdmod-supremm/releases/download/v7.5.1/xdmod-supremm-7.5.1-1.0.#{rpm_release}.noarch.rpm",
         :require => 'Yumrepo[epel]'
       )
     end
