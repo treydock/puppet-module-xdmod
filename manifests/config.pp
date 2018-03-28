@@ -14,9 +14,9 @@ class xdmod::config {
 
   file { '/etc/xdmod/portal_settings.ini':
     ensure => 'file',
-    owner  => 'xdmod',
-    group  => 'apache',
-    mode   => '0640',
+    owner  => 'apache',
+    group  => 'xdmod',
+    mode   => '0440',
   }
 
   xdmod_portal_setting { 'general/site_address': value => "https://${xdmod::apache_vhost_name}/" }
