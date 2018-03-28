@@ -75,9 +75,9 @@ shared_examples_for "xdmod::config" do |facts|
   it do
     should contain_file('/etc/xdmod/portal_settings.ini').with({
       :ensure  => 'file',
-      :owner   => 'xdmod',
-      :group   => 'apache',
-      :mode    => '0640',
+      :owner   => 'apache',
+      :group   => 'xdmod',
+      :mode    => '0440',
     })
   end
 
@@ -434,7 +434,9 @@ shared_examples_for "xdmod::config" do |facts|
         '  "top_level_label": "Top",',
         '  "top_level_info": "Top",',
         '  "middle_level_label": "Middle",',
-        '  "middle_level_info": "Middle"',
+        '  "middle_level_info": "Middle",',
+        '  "bottom_level_label": "Hierarchy Bottom Level",',
+        '  "bottom_level_info": ""',
         '}',
       ])
     end

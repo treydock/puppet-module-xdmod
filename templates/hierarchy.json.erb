@@ -1,4 +1,4 @@
-<% hierarchy_levels = scope.lookupvar('xdmod::hierarchy_levels') || {} -%>
+<% hierarchy_levels = @hierarchy_levels || {} -%>
 <%-
 levels = {}
 hierarchy_levels.each_pair do |level, data|

@@ -251,6 +251,7 @@ class xdmod::config {
     content => to_json_pretty($xdmod::resource_specs),
   }
 
+  $hierarchy_levels = $xdmod::params::hierarchy_levels + $xdmod::hierarchy_levels
   # Template uses:
   # - $hierarchy_levels
   file { '/etc/xdmod/hierarchy.json':
