@@ -280,7 +280,7 @@ class xdmod::config {
 
   file { '/etc/xdmod/hierarchy.csv':
     ensure  => 'file',
-    owner   => 'root',
+    owner   => 'xdmod',
     group   => 'root',
     mode    => '0644',
     content => $hierarchies_content,
@@ -301,7 +301,7 @@ class xdmod::config {
 
   file { '/etc/xdmod/group-to-hierarchy.csv':
     ensure  => 'file',
-    owner   => 'root',
+    owner   => 'xdmod',
     group   => 'root',
     mode    => '0644',
     content => $group_to_hierarchy_content,
@@ -322,7 +322,7 @@ class xdmod::config {
 
   file { '/etc/xdmod/names.csv':
     ensure  => 'file',
-    owner   => 'root',
+    owner   => 'xdmod',
     group   => 'root',
     mode    => '0644',
     content => $user_pi_names_content,

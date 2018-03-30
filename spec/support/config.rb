@@ -106,7 +106,7 @@ shared_examples_for "xdmod::config" do |facts|
   it do
     should contain_file('/etc/xdmod/hierarchy.csv').with({
       :ensure  => 'file',
-      :owner   => 'root',
+      :owner   => 'xdmod',
       :group   => 'root',
       :mode    => '0644',
       :content => nil,
@@ -120,7 +120,7 @@ shared_examples_for "xdmod::config" do |facts|
   it do
     should contain_file('/etc/xdmod/group-to-hierarchy.csv').with({
       :ensure  => 'file',
-      :owner   => 'root',
+      :owner   => 'xdmod',
       :group   => 'root',
       :mode    => '0644',
       :content => nil,
@@ -134,7 +134,7 @@ shared_examples_for "xdmod::config" do |facts|
   it do
     should contain_file('/etc/xdmod/names.csv').with({
       :ensure  => 'file',
-      :owner   => 'root',
+      :owner   => 'xdmod',
       :group   => 'root',
       :mode    => '0644',
       :content => nil,
