@@ -41,10 +41,10 @@
     "resources": {
 <%- scope['xdmod::supremm_resources'].each_with_index do |resource, i| -%>
         "<%= resource['resource'] %>": {
-            "enabled": true,
+            "enabled": <%= resource['enabled'] || true %>,
             "resource_id": <%= resource['resource_id'] %>,
             "batch_system": "XDMoD",
-            "hostname_mode": "hostname",
+            "hostname_mode": "<%= resource['hostname_mode'] || 'hostname' %>",
             "pcp_log_dir": "<%= resource['pcp_log_dir'] %>",
 <%- if resource['script_dir'] -%>
             "script_dir": "<%= resource['script_dir'] %>"
