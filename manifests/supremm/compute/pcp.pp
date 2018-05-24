@@ -32,7 +32,11 @@ class xdmod::supremm::compute::pcp {
     $r['resource'] == $xdmod::pcp_resource
   }
   if $resource[0] {
-    $log_dir = "${resource[0]['pcp_log_dir']}/LOCALHOSTNAME"
+    if $xdmod::pcp_pmlogger_path_suffix {
+      $log_dir = "${resource[0]['pcp_log_dir']}/LOCALHOSTNAME/${xdmod::pcp_pmlogger_path_suffix}"
+    } else {
+      $log_dir = "${resource[0]['pcp_log_dir']}/LOCALHOSTNAME"
+    }
   } else {
     fail('xdmod::supremm::compute::pcp unable to determine resource')
   }

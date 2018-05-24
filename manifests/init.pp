@@ -117,6 +117,7 @@ class xdmod (
   Boolean $use_pcp                                = true,
   Enum['include', 'resource'] $pcp_declare_method = 'resource',
   Optional[String] $pcp_resource                  = undef,
+  Optional[String] $pcp_pmlogger_path_suffix      = undef,
   String $pcp_pmlogger_config_template            = 'xdmod/supremm/compute/pcp/pmlogger-supremm.config.erb',
   Optional[String] $pcp_pmlogger_config_source    = undef,
   String $pcp_logging_static_freq                 = '1 hour',
