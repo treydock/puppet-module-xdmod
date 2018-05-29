@@ -25,7 +25,7 @@ shared_examples_for 'xdmod::supremm::compute::pcp' do |facts|
   end
 
   context 'pcp_pmlogger_date_path => true' do
-    let(:params) { params.merge({:pcp_pmlogger_path_suffix => '$(date +%Y/%m/%d)'}) }
+    let(:params) { default_params.merge({:pcp_pmlogger_path_suffix => '$(date +%Y/%m/%d)'}) }
     it do
       should contain_pcp__pmlogger('supremm').with_log_dir('/data/pcp-data/example/LOCALHOSTNAME/$(date +%Y/%m/%d)')
     end

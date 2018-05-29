@@ -41,7 +41,7 @@
     "resources": {
 <%- scope['xdmod::supremm_resources'].each_with_index do |resource, i| -%>
         "<%= resource['resource'] %>": {
-            "enabled": <%= resource['enabled'] || true %>,
+            "enabled": <%= resource['enabled'].nil? ? true : resource['enabled'] %>,
             "resource_id": <%= resource['resource_id'] %>,
             "batch_system": "XDMoD",
             "hostname_mode": "<%= resource['hostname_mode'] || 'hostname' %>",

@@ -92,7 +92,7 @@ describe 'xdmod' do
       end
 
       context 'when compute => true only' do
-        let(:params) {{
+        let(:default_params) {{
           :web              => false,
           :database         => false,
           :compute          => true,
@@ -105,6 +105,7 @@ describe 'xdmod' do
           }],
           :pcp_resource     => 'example',
         }}
+        let(:params) { default_params }
 
         it { is_expected.to compile.with_all_deps }
 
