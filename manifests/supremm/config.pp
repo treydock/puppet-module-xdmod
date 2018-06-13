@@ -40,4 +40,21 @@ class xdmod::supremm::config {
     show_diff => false,
   }
 
+  # Determine if job scripts are to be ingested
+  $resources_with_script_dir = $xdmod::supremm_resources.filter |$r| {
+    has_key($r, 'script_dir')
+  }
+  if empty($resources_with_script_dir) {
+    $ingest_jobscripts = false
+  } else {
+    $ingest_jobscripts = true
+  }
+  file { '/etc/cron.d/supremm':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('xdmod/supremm/cron.erb'),
+  }
+
 }

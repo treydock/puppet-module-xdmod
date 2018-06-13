@@ -112,6 +112,9 @@ class xdmod (
   Optional[String] $supremm_mongodb_uri         = undef,
   Optional[String] $supremm_mongodb_replica_set = undef,
   Array[Xdmod::Supremm_Resource] $supremm_resources = [],
+  Array[Integer, 2, 2] $supremm_update_cron_times = [0,2],
+  Array[Integer, 2, 2] $ingest_jobscripts_cron_times = [0,3],
+  Array[Integer, 2, 2] $aggregate_supremm_cron_times = [0,4],
 
   # SUPReMM compute
   Boolean $use_pcp                                = true,
