@@ -233,6 +233,7 @@ class xdmod::config {
       'resource_type_id' => $resource_type_id,
       'pi_column' => $pi_column,
       'timezone' => $r['timezone'],
+      'shared_jobs' => $r['shared_jobs'],
     })
   }
 

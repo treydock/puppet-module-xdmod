@@ -5,4 +5,5 @@ type Xdmod::Resource = Struct[{
   Optional[resource_type_id] => Integer,
   Optional[pi_column] => String,
   Optional[timezone] => String,
+  Optional[shared_jobs] => Boolean,
 }]
