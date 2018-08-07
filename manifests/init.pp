@@ -98,6 +98,8 @@ class xdmod (
   String $akrr_restapi_rw_password    = $xdmod::params::akrr_restapi_rw_password,
   String $akrr_restapi_ro_password    = $xdmod::params::akrr_restapi_ro_password,
   Optional[String] $akrr_cron_mailto  = undef,
+  Array[Integer, 2, 2] $akrr_ingestor_cron_times = [0,5],
+  Array[Integer, 2, 2] $appkernel_reports_manager_cron_times = [0,6],
 
   # SUPReMM install
   String $supremm_version         = $xdmod::params::supremm_version,

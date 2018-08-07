@@ -1,5 +1,5 @@
 # This file is managed by Puppet, do not edit!
 
 # Application kernels ingestor and report generator
-0 5 * * * root /usr/bin/xdmod-akrr-ingestor -c -l load > /dev/null
-0 6 * * * root /usr/bin/appkernel_reports_manager >/dev/null
+<%= scope['xdmod::akrr_ingestor_cron_times'][0] %> <%= scope['xdmod::akrr_ingestor_cron_times'][1] %> * * * root /usr/bin/xdmod-akrr-ingestor -c -l load > /dev/null
+<%= scope['xdmod::appkernel_reports_manager_cron_times'][0] %> <%= scope['xdmod::appkernel_reports_manager_cron_times'][1] %> * * * root /usr/bin/appkernel_reports_manager >/dev/null
