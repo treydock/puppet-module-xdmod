@@ -57,6 +57,7 @@ class xdmod (
   Array[Xdmod::Resource] $resources             = [],
   Array[Xdmod::Resource_Spec] $resource_specs   = [],
   String $sender_email                          = $xdmod::params::sender_email,
+  Optional[String] $php_timezone                = undef,
 
   # XDMoD user/group
   Boolean $manage_user = true,
@@ -131,8 +132,6 @@ class xdmod (
   Array $pcp_standard_metrics                     = $xdmod::params::supremm_pcp_standard_metrics,
   Array $pcp_environ_metrics                      = $xdmod::params::supremm_pcp_environ_metrics,
   Boolean $pcp_install_pmie_config                = true,
-  String $pcp_pmie_config_template                = 'xdmod/supremm/compute/pcp/pmie-supremm.config.erb',
-  Optional[String] $pcp_pmie_config_source        = undef,
   Array $pcp_hotproc_exclude_users                = $xdmod::params::supremm_pcp_hotproc_exclude_users,
 ) inherits xdmod::params {
 

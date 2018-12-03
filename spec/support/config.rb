@@ -185,13 +185,43 @@ shared_examples_for "xdmod::config" do |facts|
   it do
     should contain_logrotate__rule('xdmod').with({
       :ensure        => 'present',
-      :path          => '/var/log/xdmod/*.log',
+      :path          => ['/var/log/xdmod/query.log','/var/log/xdmod/exceptions.log'],
+      :su_user       => 'apache',
+      :su_group      => 'xdmod',
+      :create        => 'true',
+      :create_mode   => '0660',
+      :create_owner  => 'apache',
+      :create_group  => 'xdmod',
       :rotate        => '4',
       :rotate_every  => 'week',
       :missingok     => 'true',
       :compress      => 'true',
       :dateext       => 'true',
     })
+  end
+
+  it do
+    should contain_logrotate__rule('xdmod-session_manager').with({
+      :ensure        => 'present',
+      :path          => '/var/log/xdmod/session_manager.log',
+      :su_user       => 'apache',
+      :su_group      => 'apache',
+      :create        => 'true',
+      :create_mode   => '0640',
+      :create_owner  => 'apache',
+      :create_group  => 'apache',
+      :rotate        => '4',
+      :rotate_every  => 'week',
+      :missingok     => 'true',
+      :compress      => 'true',
+      :dateext       => 'true',
+    })
+  end
+
+  context 'when php_timezone defined' do
+    let(:params) {{ :php_timezone => 'America/New_York' }}
+
+    it { should contain_ini_setting('php-timezone').with_value('America/New_York') }
   end
 
   context 'when resources defined' do

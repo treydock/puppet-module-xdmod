@@ -20,3 +20,7 @@ Gemfile.lock
 
 # Puppet module generated
 pkg/
+doc/
+log/
+.yardoc/
+.DS_Store

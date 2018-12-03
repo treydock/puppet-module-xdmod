@@ -19,17 +19,19 @@ This module is designed so that different hosts can run the various components o
 
 ### Open XDMoD Compatibility
 
-Open XDMoD Versions         |  4.5.x   | 5.0.x   | 7.5.x   |
-:---------------------------|:--------:|:-------:|:-------:|
-**puppet-module-xdmod 0.x** | **yes**  | no      | no      |
-**puppet-module-xdmod 1.x** | no       | **yes** | no      |
-**puppet-module-xdmod 2.x** | no       | no      | **yes** |
+Open XDMoD Versions         | 7.5.x   | 8.0.x   |
+:---------------------------|:-------:|:-------:|
+**puppet-module-xdmod 2.x** | **yes** | no      |
+**puppet-module-xdmod 3.x** | no      | **yes** |
+
+* puppet-module-xdmod **2.x** supports Open XDMoD **7.5.x**
+* puppet-module-xdmod **3.x** supports Open XDMoD **8.0.x**
 
 ## Usage
 
 Examples of some hiera values that may be useful to set globally
 
-    xdmod::version: '7.5.0'
+    xdmod::version: '8.0.0'
     # Disable roles that are enabled by default
     xdmod::web: false
     xdmod::database: false
@@ -185,7 +187,7 @@ TODO
 
 This module has been tested on:
 
-* CentOS 6 & 7
+* CentOS 7
 * RedHat 7
 
 ## Development

@@ -14,4 +14,5 @@ RSpec.configure do |c|
   c.formatter = :documentation
 end
 
+on hosts, 'puppet config set --section main show_diff true'
 apply_manifest_on(find_only_one(:web), "host { 'xdmod.localdomain': ip => '127.0.0.1' }", :catch_failures => true)

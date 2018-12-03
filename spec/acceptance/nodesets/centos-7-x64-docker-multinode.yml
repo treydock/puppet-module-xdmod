@@ -12,6 +12,7 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y tar wget cronie openssl which'
+      - 'yum update -y'
     docker_container_name: 'xdmod-web'
   db:
     roles:
@@ -25,6 +26,7 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y tar wget cronie openssl which'
+      - 'yum update -y'
     docker_container_name: 'xdmod-db'
   akrr:
     roles:
@@ -38,6 +40,7 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y tar wget cronie openssl which'
+      - 'yum update -y'
     docker_container_name: 'xdmod-akrr'
   supremm:
     roles:
@@ -51,6 +54,7 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y tar wget cronie openssl which'
+      - 'yum update -y'
     docker_container_name: 'xdmod-supremm'
   compute:
     roles:
@@ -64,6 +68,7 @@ HOSTS:
       - '/usr/sbin/init'
     docker_image_commands:
       - 'yum install -y tar wget cronie openssl which'
+      - 'yum update -y'
     docker_container_name: 'xdmod-compute'
 CONFIG:
   log_level: debug

@@ -5,6 +5,9 @@ describe 'xdmod class:' do
     it 'should run successfully' do
       pp =<<-EOS
       host { 'xdmod.localdomain': ip => '127.0.0.1' }
+      class { 'mysql::server':
+        root_password => 'secret',
+      }
       class { 'xdmod':
         apache_vhost_name => 'xdmod.localdomain',
         resources         => [{
@@ -12,6 +15,7 @@ describe 'xdmod class:' do
           'name' => 'Example',
         }],
         manage_simplesamlphp => true,
+        php_timezone => 'America/New_York',
       }
       EOS
 

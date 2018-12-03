@@ -1,8 +1,0 @@
-#!/bin/bash
-<% if @operatingsystemmajrelease == '7' -%>
-systemctl restart pmcd
-systemctl restart pmlogger
-<% else -%>
-service pmcd restart
-service pmlogger restart
-<% end -%>

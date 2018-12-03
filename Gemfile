@@ -15,11 +15,14 @@ group :development, :test do
   gem 'puppet-syntax',            :require => false
   gem 'simplecov',                :require => false
   gem 'json_pure', '~>1.x',       :require => false
+  gem 'puppet-strings',           :require => false
 end
 
 group :system_tests do
-  gem 'beaker', '~>2.0',                       :require => false
+  gem 'beaker', '~>4.0',              :require => false
   gem 'beaker-rspec',                 :require => false
+  gem 'beaker-puppet',                :require => false
+  gem 'beaker-docker',                :require => false
   gem 'serverspec',                   :require => false
   gem 'beaker-puppet_install_helper', :require => false
   gem 'beaker-module_install_helper', :require => false

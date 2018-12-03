@@ -7,6 +7,7 @@ describe 'xdmod class: databases' do
     it 'should run successfully' do
       pp =<<-EOS
       class { 'mysql::server':
+        root_password    => 'secret',
         override_options => {
           'mysqld' => {
             'bind_address' => '0.0.0.0',
@@ -48,6 +49,7 @@ describe 'xdmod class: databases' do
     it 'should run successfully' do
       pp =<<-EOS
       class { 'mysql::server':
+        root_password    => 'secret',
         override_options => {
           'mysqld' => {
             'bind_address' => '0.0.0.0',

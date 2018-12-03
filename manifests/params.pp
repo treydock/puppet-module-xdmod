@@ -4,9 +4,9 @@
 #
 class xdmod::params {
 
-  $version                  = '7.5.0'
-  $xdmod_appkernels_version = '7.5.0'
-  $xdmod_supremm_version    = '7.5.1'
+  $version                  = '8.0.0'
+  $xdmod_appkernels_version = '8.0.0'
+  $xdmod_supremm_version    = '8.0.0'
   $sender_email       = "xdmod@xdmod.${::domain}"
   $apache_vhost_name  = "xdmod.${::domain}"
   $portal_settings    = {}
@@ -22,16 +22,13 @@ class xdmod::params {
   $akrr_restapi_ro_password = fqdn_rand_string(16, undef, 'ro')
   $akrr_version             = '1.0.0'
   $akrr_source_url          = 'https://github.com/ubccr/akrr/releases/download/vAKRR_VERSION/akrr-AKRR_VERSION.tar.gz'
-  $supremm_version          = '1.0.4'
+  $supremm_version          = '1.1.0'
 
   case $::osfamily {
     'RedHat': {
       case $::operatingsystemmajrelease {
         '7': {
-          $rpm_release = 'el7.centos'
-        }
-        '6': {
-          $rpm_release = 'el6'
+          $rpm_release = 'el7'
         }
         default: {
           fail("Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 6 and 7")
@@ -177,7 +174,7 @@ class xdmod::params {
     'mem.numa.util.inactive_anon',
     'mem.numa.util.inactive_file',
     'mem.numa.util.mapped',
-    'mem.numa.util.NFS_Unstable',
+    'mem.numa.util.NFS_unstable',
     'mem.numa.util.pageTables',
     'mem.numa.util.slab',
     'mem.numa.util.used',
@@ -239,6 +236,9 @@ class xdmod::params {
     'hotproc.psinfo.ppid',
     'hotproc.psinfo.cmd',
     'hotproc.psinfo.pid',
+    'hotproc.psinfo.processor',
+    'hotproc.psinfo.threads',
+    'hotproc.psinfo.psargs',
     'hotproc.io.read_bytes',
     'hotproc.io.write_bytes',
     '',
@@ -260,8 +260,10 @@ class xdmod::params {
     'cgroup.cpuset.cpus',
     'cgroup.memory.usage',
     'cgroup.memory.limit',
-    'cgroup.memory.stat.rss',
-    'cgroup.memory.stat.swap',
+    'cgroup.memory.stat.total.rss',
+    'cgroup.memory.stat.total.swap',
+    'cgroup.memory.stat.total.mapped_file',
+    'cgroup.memory.stat.total.cache',
     '',
     '#infiniband.port.state',
     '#infiniband.port.phystate',

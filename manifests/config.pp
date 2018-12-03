@@ -164,6 +164,20 @@ class xdmod::config {
     }
   }
 
+  if $xdmod::php_timezone and $xdmod::web {
+    ini_setting { 'php-timezone':
+      ensure  => 'present',
+      path    => '/etc/php.ini',
+      section => 'Date',
+      setting => 'date.timezone',
+      value   => $xdmod::php_timezone,
+      before  => Exec['etl-bootstrap'],
+    }
+    if $xdmod::manage_apache_vhost {
+      Ini_setting['php-timezone'] ~> Service['httpd']
+    }
+  }
+
   file { '/root/xdmod-database-setup.sh':
     ensure    => 'file',
     owner     => 'root',
@@ -178,10 +192,20 @@ class xdmod::config {
     command => '/root/xdmod-database-setup.sh && touch /etc/xdmod/.database-setup',
     creates => '/etc/xdmod/.database-setup',
     require => File['/root/xdmod-database-setup.sh'],
-    before  => Exec['acl-xdmod-management'],
+    before  => Exec['etl-fix-moddb-users'],
   }
 
-  exec { 'acl-xdmod-management':
+  exec { 'etl-fix-moddb-users':
+    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command => "sed -i.orig 's/@localhost/@${xdmod::web_host}/g' /etc/xdmod/etl/etl_tables.d/xdb/users.json",
+    unless  => "grep -q '@${xdmod::web_host}' /etc/xdmod/etl/etl_tables.d/xdb/users.json",
+  }
+  -> exec { 'etl-bootstrap':
+    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command => '/usr/share/xdmod/tools/etl/etl_overseer.php -p xdb-bootstrap -p jobs-xdw-bootstrap -p shredder-bootstrap -p staging-bootstrap -p hpcdb-bootstrap && touch /etc/xdmod/.etl-bootstrap', # lint:ignore:140chars
+    creates => '/etc/xdmod/.etl-bootstrap',
+  }
+  -> exec { 'acl-xdmod-management':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
     command => '/usr/bin/acl-xdmod-management && touch /etc/xdmod/.acl-xdmod-management',
     creates => '/etc/xdmod/.acl-xdmod-management'
@@ -337,21 +361,35 @@ class xdmod::config {
     content => template('xdmod/xdmod_cron.erb'),
   }
 
+  $logrotate_defaults = {
+    'ensure'       => 'present',
+    'rotate'       => 4,
+    'rotate_every' => 'week',
+    'compress'     => true,
+    'missingok'    => true,
+    'dateext'      => true,
+  }
+
   logrotate::rule { 'xdmod':
-    ensure       => 'present',
-    path         => '/var/log/xdmod/*.log',
-    rotate       => 4,
-    rotate_every => 'week',
-    missingok    => true,
-    ifempty      => false,
-    compress     => true,
-    dateext      => true,
-    su_owner     => 'apache',
+    path         => ['/var/log/xdmod/query.log', '/var/log/xdmod/exceptions.log'],
+    su_user      => 'apache',
+    su_group     => 'xdmod',
+    create       => true,
+    create_mode  => '0660',
+    create_owner => 'apache',
+    create_group => 'xdmod',
+    *            => $logrotate_defaults,
+  }
+
+  logrotate::rule { 'xdmod-session_manager':
+    path         => '/var/log/xdmod/session_manager.log',
+    su_user      => 'apache',
     su_group     => 'apache',
     create       => true,
     create_mode  => '0640',
     create_owner => 'apache',
     create_group => 'apache',
+    *            => $logrotate_defaults,
   }
 
 }

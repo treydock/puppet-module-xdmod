@@ -13,8 +13,8 @@ shared_examples_for 'xdmod::database' do |facts|
         :user         => 'xdmod',
         :password     => 'changeme',
         :host         => 'localhost',
-        :charset      => 'utf8',
-        :collate      => 'utf8_general_ci',
+        :charset      => 'latin1',
+        :collate      => 'latin1_swedish_ci',
         :grant        => ['ALL'],
       })
     end
@@ -33,8 +33,8 @@ shared_examples_for 'xdmod::database' do |facts|
         :user         => 'akrr',
         :password     => 'changeme',
         :host         => 'localhost',
-        :charset      => 'utf8',
-        :collate      => 'utf8_general_ci',
+        :charset      => 'latin1',
+        :collate      => 'latin1_swedish_ci',
         :grant        => ['ALL'],
       })
     end
@@ -45,19 +45,22 @@ shared_examples_for 'xdmod::database' do |facts|
         :user         => 'akrr',
         :password     => 'changeme',
         :host         => 'localhost',
-        :charset      => 'utf8',
-        :collate      => 'utf8_general_ci',
+        :charset      => 'latin1',
+        :collate      => 'latin1_swedish_ci',
         :grant        => ['ALL'],
       })
     end
 
     it do
-      should contain_mysql_grant('akrr@localhost/modw.resourcefact').with({
-        :ensure     => 'present',
-        :privileges => ['SELECT'],
-        :table      => 'modw.resourcefact',
-        :user       => 'akrr@localhost',
-        :require    => ['Mysql::Db[modw]', 'Mysql::Db[mod_akrr]'],
+      should contain_mysql__db('modw-akrr').with({
+        :ensure       => 'present',
+        :dbname       => 'modw',
+        :user         => 'akrr',
+        :password     => 'changeme',
+        :host         => 'localhost',
+        :charset      => 'latin1',
+        :collate      => 'latin1_swedish_ci',
+        :grant        => ['SELECT'],
       })
     end
 

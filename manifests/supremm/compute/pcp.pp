@@ -19,7 +19,6 @@ class xdmod::supremm::compute::pcp {
     'resource': {
       class { '::pcp':
         include_default_pmlogger => false,
-        include_default_pmie     => false,
         pmlogger_daily_args      => '-M -k forever',
       }
     }
@@ -70,89 +69,67 @@ class xdmod::supremm::compute::pcp {
   $_all_metrics = union($xdmod::pcp_static_metrics, $xdmod::pcp_standard_metrics)
 
   pcp::pmda { 'nfsclient':
-    ensure => member_substring($_all_metrics, '^nfsclient'),
+    ensure => xdmod::member_substring($_all_metrics, '^nfsclient'),
   }
 
   pcp::pmda { 'infiniband':
-    ensure => member_substring($_all_metrics, '^infiniband'),
+    ensure => xdmod::member_substring($_all_metrics, '^infiniband'),
   }
 
   pcp::pmda { 'perfevent':
-    ensure => member_substring($_all_metrics, '^perfevent'),
+    ensure => xdmod::member_substring($_all_metrics, '^perfevent'),
   }
 
   pcp::pmda { 'slurm':
-    ensure => member_substring($_all_metrics, '^slurm'),
+    ensure => xdmod::member_substring($_all_metrics, '^slurm'),
   }
 
   pcp::pmda { 'mic':
-    ensure => member_substring($_all_metrics, '^mic'),
+    ensure => xdmod::member_substring($_all_metrics, '^mic'),
   }
 
   pcp::pmda { 'nvidia':
-    ensure       => member_substring($_all_metrics, '^nvidia'),
+    ensure       => xdmod::member_substring($_all_metrics, '^nvidia'),
     package_name => 'pcp-pmda-nvidia-gpu',
   }
 
   pcp::pmda { 'gpfs':
-    ensure => member_substring($_all_metrics, '^gpfs')
+    ensure => xdmod::member_substring($_all_metrics, '^gpfs')
   }
 
   pcp::pmda { 'proc':
     has_package    => false,
     config_path    => '/var/lib/pcp/pmdas/proc/hotproc.conf',
-    config_content => template('xdmod/supremm/compute/pcp/hotproc.conf.erb')
+    config_content => template('xdmod/supremm/compute/pcp/hotproc.conf.erb'),
+    args           => '-A',
   }
 
   if $xdmod::pcp_install_pmie_config {
-    if $xdmod::pcp_pmie_config_source {
-      $_pcp_pmie_config_source  = $xdmod::pcp_pmie_config_source
-      $_pcp_pmie_config_content = undef
-    } else {
-      $_pcp_pmie_config_source  = undef
-      $_pcp_pmie_config_content = template($xdmod::pcp_pmie_config_template)
-    }
-
     pcp::pmda { 'logger':
+      ensure         => 'absent',
       has_package    => true,
+      remove_package => true,
       config_content => "procrestart n ${_procpmda_log_path}\n"
     }
 
     pcp::pmie { 'supremm':
-      ensure         => 'present',
-      hostname       => 'LOCALHOSTNAME',
-      primary        => true,
-      socks          => false,
-      log_file       => 'PCP_LOG_DIR/pmie/LOCALHOSTNAME/pmie.log',
-      config_path    => '/etc/pcp/pmie/pmie-supremm.config',
-      config_content => $_pcp_pmie_config_content,
-      config_source  => $_pcp_pmie_config_source,
+      ensure      => 'absent',
+      config_path => '/etc/pcp/pmie/pmie-supremm.config',
     }
 
     sudo::conf { 'pcp':
+      ensure   => 'absent',
       priority => '10',
       content  => "pcp ALL=(root) NOPASSWD: ${_pcp_restart_path}",
     }
 
     file { '/etc/pcp/pmie/pcp-restart.sh':
-      ensure  => 'file',
-      path    => $_pcp_restart_path,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0755',
-      content => template('xdmod/supremm/compute/pcp/pcp-restart.sh.erb'),
-      require => Package['pcp'],
-      before  => Pcp::Pmie['supremm'],
+      ensure => 'absent',
+      path   => $_pcp_restart_path,
     }
 
     file { '/etc/pcp/pmie/procpmda_check.sh':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0755',
-      content => template('xdmod/supremm/compute/pcp/procpmda_check.sh.erb'),
-      require => Package['pcp'],
-      before  => Pcp::Pmie['supremm'],
+      ensure => 'absent',
     }
   }
 

@@ -1,4 +1,5 @@
 require 'beaker-rspec'
+require 'beaker-puppet'
 require 'beaker/puppet_install_helper'
 require 'beaker/module_install_helper'
 
@@ -13,3 +14,4 @@ RSpec.configure do |c|
   # Readable test descriptions
   c.formatter = :documentation
 end
+on hosts, 'puppet config set --section main show_diff true'

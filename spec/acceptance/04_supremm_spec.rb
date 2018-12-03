@@ -5,6 +5,9 @@ describe 'xdmod class:' do
     it 'should run successfully' do
       pp =<<-EOS
       host { 'xdmod.localdomain': ip => '127.0.0.1' }
+      class { 'mysql::server':
+        root_password => 'secret',
+      }
       class { 'xdmod':
         supremm             => true,
         enable_supremm      => true,
@@ -22,6 +25,7 @@ describe 'xdmod class:' do
           'pcp_log_dir' => '/data/pcp-data/example',
         }],
         manage_simplesamlphp => true,
+        php_timezone => 'America/New_York',
       }
       EOS
 

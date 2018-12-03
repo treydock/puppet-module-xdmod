@@ -5,7 +5,7 @@ describe 'xdmod' do
     :supported_os => [
       {
         "operatingsystem" => "CentOS",
-        "operatingsystemrelease" => ["6", "7"],
+        "operatingsystemrelease" => ["7"],
       }
     ]
   }).each do |os, facts|

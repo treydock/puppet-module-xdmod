@@ -1,10 +1,6 @@
 require 'spec_helper'
 
-describe 'member_substring' do
-  it 'should exist' do
-    expect(Puppet::Parser::Functions.function('member_substring')).to eq('function_member_substring')
-  end
-
+describe 'xdmod::member_substring' do
   context 'array contains substring' do
     let(:array) {['nfsclient.bytes.write.server','infiniband.hca.type']}
 
@@ -22,14 +18,14 @@ describe 'member_substring' do
   end
 
   it 'should raise a ParseError if there is not 2 arguments' do
-    is_expected.to run.with_params().and_raise_error(/wrong number of arguments/)
+    is_expected.to run.with_params().and_raise_error(/expects 2 arguments/)
   end
   
   it 'should raise a ParseError if first argument is not an array' do
-    is_expected.to run.with_params('foo', 'bar').and_raise_error(/First argument must be an array/)
+    is_expected.to run.with_params('foo', 'bar').and_raise_error(/parameter 'array' expects an Array/)
   end
 
   it 'should raise a ParseError if second argument is not a string' do
-    is_expected.to run.with_params(['foo'], ['bar']).and_raise_error(/Second argument must be a string/)
+    is_expected.to run.with_params(['foo'], ['bar']).and_raise_error(/parameter 'substring' expects a String/)
   end
 end

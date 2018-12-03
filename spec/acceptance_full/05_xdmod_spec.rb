@@ -13,6 +13,7 @@ describe 'xdmod class: web' do
         web_host              => 'web.#{fact('domain')}',
         akrr_host             => 'akrr.#{fact('domain')}',
         database_host         => 'db',
+        php_timezone => 'America/New_York',
         supremm_mongodb_host  => 'db',
         resources         => [{
           'resource' => 'example',
