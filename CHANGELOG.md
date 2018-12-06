@@ -1,3 +1,17 @@
+## 3.0.0 - TBD
+
+XDMoD 8.0.0 support
+
+### Changes
+
+* Support Puppet 6 and drop support for Puppet 4
+* Drop support for EL6
+* Only support XDMoD 8.0.0
+  * Default package versions all updated to match 8.0.0 releases
+* Optionally manage php.ini timezone via `php_timezone` parameter
+* Remove PCP pmie management and related resources that are no longer needed
+  * Remove `pcp_pmie_config_template` and `pcp_pmie_config_source` parameters that are no longer used
+
 ## 2.0.0 - TBD
 
 ### Summary
