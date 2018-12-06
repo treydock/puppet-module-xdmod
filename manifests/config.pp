@@ -372,6 +372,7 @@ class xdmod::config {
 
   logrotate::rule { 'xdmod':
     path         => ['/var/log/xdmod/query.log', '/var/log/xdmod/exceptions.log'],
+    su           => true,
     su_user      => 'apache',
     su_group     => 'xdmod',
     create       => true,
@@ -383,6 +384,7 @@ class xdmod::config {
 
   logrotate::rule { 'xdmod-session_manager':
     path         => '/var/log/xdmod/session_manager.log',
+    su           => true,
     su_user      => 'apache',
     su_group     => 'apache',
     create       => true,
