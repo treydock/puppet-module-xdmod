@@ -57,6 +57,7 @@ class xdmod (
   Array[Xdmod::Resource] $resources             = [],
   Array[Xdmod::Resource_Spec] $resource_specs   = [],
   String $sender_email                          = $xdmod::params::sender_email,
+  String $debug_recipient                       = '',
   Optional[String] $php_timezone                = undef,
 
   # XDMoD user/group
