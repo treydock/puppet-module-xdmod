@@ -367,6 +367,7 @@ class xdmod::config {
     'rotate_every' => 'week',
     'compress'     => true,
     'missingok'    => true,
+    'ifempty'      => false,
     'dateext'      => true,
   }
 
