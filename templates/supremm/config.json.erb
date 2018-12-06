@@ -47,9 +47,17 @@
             "hostname_mode": "<%= resource['hostname_mode'] || 'hostname' %>",
             "pcp_log_dir": "<%= resource['pcp_log_dir'] %>",
 <%- if resource['script_dir'] -%>
-            "script_dir": "<%= resource['script_dir'] %>"
+            "script_dir": "<%= resource['script_dir'] %>",
 <%- else -%>
-            "script_dir": ""
+            "script_dir": "",
+<%- end -%>
+<%- if resource['timezone'] -%>
+            "timezone": "<%= resource['timezone'] %>",
+<%- end -%>
+<%- if resource['fast_index'].nil? -%>
+            "fast_index": true
+<%- else -%>
+            "fast_index": <%= resource['fast_index'] %>
 <%- end -%>
         }<%= (scope['xdmod::supremm_resources'].size - 1) == i ? '' : ',' %>
 <%- end -%>

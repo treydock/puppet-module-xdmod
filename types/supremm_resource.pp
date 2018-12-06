@@ -7,4 +7,6 @@ type Xdmod::Supremm_Resource = Struct[{
   Optional[hostname_mode] => Enum['fqdn','hostname'],
   Optional[pcp_log_dir] => Stdlib::Unixpath,
   Optional[script_dir] => Stdlib::Unixpath,
+  Optional[fast_index] => Boolean,
+  Optional[timezone] => String,
 }]
