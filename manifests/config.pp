@@ -153,7 +153,7 @@ class xdmod::config {
       path    => '/usr/bin:/bin:/usr/sbin:/sbin',
       command => "mysql ${xdmod::_mysql_remote_args} -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql",
       onlyif  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
-      unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^jobstatus$'",# lint:ignore:140chars
+      unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^job$'",# lint:ignore:140chars
     }
     exec { 'modw_etl-schema':
       path    => '/usr/bin:/bin:/usr/sbin:/sbin',

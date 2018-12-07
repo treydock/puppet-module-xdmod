@@ -433,7 +433,7 @@ shared_examples_for "xdmod::config" do |facts|
       is_expected.to contain_exec('modw_supremm-schema').with({
         :command  => 'mysql -h localhost -u xdmod -pchangeme -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql',
         :onlyif   => "mysql -BN -h localhost -u xdmod -pchangeme -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
-        :unless   => "mysql -BN -h localhost -u xdmod -pchangeme -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^jobstatus$'",
+        :unless   => "mysql -BN -h localhost -u xdmod -pchangeme -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^job$'",
       })
     end
 
