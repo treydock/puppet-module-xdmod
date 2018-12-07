@@ -60,7 +60,10 @@ class xdmod::database {
 
   if $xdmod::enable_supremm {
     mysql::db { 'modw_etl': }
-    mysql::db { 'modw_supremm': }
+    mysql::db { 'modw_supremm':
+      charset => 'utf8',
+      collate => 'utf8_general_ci',
+    }
   }
 
 }
