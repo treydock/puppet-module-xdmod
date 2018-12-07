@@ -21,9 +21,9 @@ class xdmod::config {
 
   xdmod_portal_setting { 'general/site_address': value => "https://${xdmod::apache_vhost_name}/" }
   xdmod_portal_setting { 'general/user_manual': value => "https://${xdmod::apache_vhost_name}/user_manual/" }
+  xdmod_portal_setting { 'general/debug_recipient': value => $xdmod::debug_recipient }
 
   xdmod_portal_setting { 'mailer/sender_email': value => $xdmod::sender_email }
-  xdmod_portal_setting { 'mailer/debug_recipient': value => $xdmod::debug_recipient }
 
   xdmod_portal_setting { 'reporting/phantomjs_path': value => $::phantomjs::path }
   xdmod_portal_setting { 'reporting/java_path': value => '/usr/bin/java' }
