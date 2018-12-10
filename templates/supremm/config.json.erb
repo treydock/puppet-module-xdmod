@@ -29,7 +29,7 @@
     "summary": {
         // The archive out directory should be writable by the process that runs
         // the summaries.
-        "archive_out_dir": "/dev/shm/supremm_test",
+        "archive_out_dir": "<%= scope['xdmod::supremm_archive_out_dir'] %>",
         // The following substitutions are defined for the job archive subdirectory:
         //  %r means the resource name
         //  %j the local job id

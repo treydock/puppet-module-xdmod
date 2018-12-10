@@ -119,6 +119,7 @@ class xdmod (
   Array[Integer, 2, 2] $supremm_update_cron_times = [0,2],
   Array[Integer, 2, 2] $ingest_jobscripts_cron_times = [0,3],
   Array[Integer, 2, 2] $aggregate_supremm_cron_times = [0,4],
+  Stdlib::Absolutepath $supremm_archive_out_dir = '/dev/shm/supremm_test',
 
   # SUPReMM compute
   Boolean $use_pcp                                = true,
