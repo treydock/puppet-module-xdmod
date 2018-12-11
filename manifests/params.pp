@@ -311,9 +311,6 @@ class xdmod::params {
     '',
     '# PMCD pmda status',
     'pmcd.agent.status',
-    '',
-    '# Logger pmda.  Will flesh out more later',
-    'logger',
   ]
 
   $supremm_pcp_environ_metrics = [

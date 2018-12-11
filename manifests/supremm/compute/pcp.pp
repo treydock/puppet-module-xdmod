@@ -104,17 +104,10 @@ class xdmod::supremm::compute::pcp {
     args           => '-A',
   }
 
-  pcp::pmda { 'logger':
-    ensure => xdmod::member_substring($_all_metrics, '^logger')
-  }
-
   if $xdmod::pcp_install_pmie_config {
-    file { '/var/lib/pcp/config/logger':
-      ensure  => 'absent',
-      recurse => true,
-      purge   => true,
-      force   => true,
-      notify  => Service['pmcd'],
+    pcp::pmda { 'logger':
+      ensure         => 'absent',
+      config_content => "procrestart n ${_procpmda_log_path}\n",
     }
 
     pcp::pmie { 'supremm':
