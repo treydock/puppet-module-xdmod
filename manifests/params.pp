@@ -40,7 +40,7 @@ class xdmod::params {
       $appkernels_package_url     = "https://github.com/ubccr/xdmod-appkernels/releases/download/vVERSION/xdmod-appkernels-VERSION-1.0.${rpm_release}.noarch.rpm"
       $xdmod_supremm_package_name = 'xdmod-supremm'
       $xdmod_supremm_package_url  = "https://github.com/ubccr/xdmod-supremm/releases/download/vVERSION/xdmod-supremm-VERSION-1.0.${rpm_release}.noarch.rpm"
-      $supremm_package_url        = "https://github.com/ubccr/supremm/releases/download/SUPREMM_VERSION/supremm-SUPREMM_VERSION-1.${rpm_release}.x86_64.rpm"
+      $supremm_package_url        = "https://github.com/ubccr/supremm/releases/download/SUPREMM_VERSION/supremm-SUPREMM_VERSION-2.${rpm_release}.x86_64.rpm"
     }
 
     default: {
