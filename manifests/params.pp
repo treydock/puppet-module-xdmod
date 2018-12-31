@@ -29,6 +29,11 @@ class xdmod::params {
       case $::operatingsystemmajrelease {
         '7': {
           $rpm_release = 'el7'
+          $compute_only = false
+        }
+        '6': {
+          $rpm_release = 'el6'
+          $compute_only = true
         }
         default: {
           fail("Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 6 and 7")

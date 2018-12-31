@@ -213,6 +213,10 @@ class xdmod (
     }
   }
 
+  if $xdmod::params::compute_only and ($web or $database or $akrr or $supremm or $supremm_database) {
+    fail("This operating system is only supported for compute resources.")
+  }
+
   anchor { 'xdmod::start': }
   anchor { 'xdmod::end': }
 
