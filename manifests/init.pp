@@ -133,6 +133,7 @@ class xdmod (
   Array $pcp_static_metrics                       = $xdmod::params::supremm_pcp_static_metrics,
   Array $pcp_standard_metrics                     = $xdmod::params::supremm_pcp_standard_metrics,
   Array $pcp_environ_metrics                      = $xdmod::params::supremm_pcp_environ_metrics,
+  Boolean $pcp_merge_metrics                      = true,
   Boolean $pcp_install_pmie_config                = true,
   Array $pcp_hotproc_exclude_users                = $xdmod::params::supremm_pcp_hotproc_exclude_users,
 ) inherits xdmod::params {

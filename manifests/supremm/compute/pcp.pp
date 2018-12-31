@@ -1,6 +1,16 @@
 # Private class
 class xdmod::supremm::compute::pcp {
 
+  if $xdmod::pcp_merge_metrics {
+    $pcp_static_metrics   = lookup('xdmod::pcp_static_metrics', Array, 'unique', $xdmod::pcp_static_metrics)
+    $pcp_standard_metrics = lookup('xdmod::pcp_standard_metrics', Array, 'unique', $xdmod::pcp_standard_metrics)
+    $pcp_environ_metrics  = lookup('xdmod::pcp_environ_metrics', Array, 'unique', $xdmod::pcp_environ_metrics)
+  } else {
+    $pcp_static_metrics   = $xdmod::pcp_static_metrics
+    $pcp_standard_metrics = $xdmod::pcp_standard_metrics
+    $pcp_environ_metrics  = $xdmod::pcp_environ_metrics
+  }
+
   $_procpmda_log_path = '/var/log/pcp/pmie/procpmda.log'
   $_pcp_restart_path  = '/etc/pcp/pmie/pcp-restart.sh'
 
@@ -66,7 +76,7 @@ class xdmod::supremm::compute::pcp {
     config_source  => $_pcp_pmlogger_config_source,
   }
 
-  $_all_metrics = union($xdmod::pcp_static_metrics, $xdmod::pcp_standard_metrics)
+  $_all_metrics = union($pcp_static_metrics, $pcp_standard_metrics)
 
   pcp::pmda { 'nfsclient':
     ensure => xdmod::member_substring($_all_metrics, '^nfsclient'),

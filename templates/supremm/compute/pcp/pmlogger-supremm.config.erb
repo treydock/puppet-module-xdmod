@@ -36,7 +36,7 @@
 #
 
 log mandatory on %{static_freq} {
-<% scope.lookupvar('xdmod::pcp_static_metrics').each do |metric| -%>
+<% scope.lookupvar('xdmod::supremm::compute::pcp::pcp_static_metrics').each do |metric| -%>
   <%= metric %>
 <% end -%>
 }
@@ -45,14 +45,14 @@ log mandatory on %{static_freq} {
 # Metrics expected to frequently change.
 #
 log mandatory on %{standard_freq} {
-<% scope.lookupvar('xdmod::pcp_standard_metrics').each do |metric| -%>
+<% scope.lookupvar('xdmod::supremm::compute::pcp::pcp_standard_metrics').each do |metric| -%>
   <%= metric %>
 <% end -%>
 }
 
 # Recorded less frequently than other hotproc metrics due to size.
 log mandatory on %{environ_freq} {
-<% scope.lookupvar('xdmod::pcp_environ_metrics').each do |metric| -%>
+<% scope.lookupvar('xdmod::supremm::compute::pcp::pcp_environ_metrics').each do |metric| -%>
   <%= metric %>
 <% end -%>
 }
