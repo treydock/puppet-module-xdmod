@@ -2,10 +2,9 @@
 class xdmod::supremm::compute::pcp {
 
   if $xdmod::pcp_merge_metrics {
-    $merge_opts = {'value_type' => Array, 'merge' => {'strategy' => 'deep', 'sort_merged_arrays' => true}}
-    $pcp_static_metrics   = lookup('xdmod::pcp_static_metrics', $merge_opts + { 'default_value' => $xdmod::pcp_static_metrics})
-    $pcp_standard_metrics = lookup('xdmod::pcp_standard_metrics', $merge_opts + { 'default_value' => $xdmod::pcp_standard_metrics})
-    $pcp_environ_metrics  = lookup('xdmod::pcp_environ_metrics', $merge_opts + { 'default_value' => $xdmod::pcp_environ_metrics})
+    $pcp_static_metrics   = lookup('xdmod::pcp_static_metrics', Array, 'unique', $xdmod::pcp_static_metrics)
+    $pcp_standard_metrics = lookup('xdmod::pcp_standard_metrics', Array, 'unique', $xdmod::pcp_standard_metrics)
+    $pcp_environ_metrics  = lookup('xdmod::pcp_environ_metrics', Array, 'unique', $xdmod::pcp_environ_metrics)
   } else {
     $pcp_static_metrics   = $xdmod::pcp_static_metrics
     $pcp_standard_metrics = $xdmod::pcp_standard_metrics
