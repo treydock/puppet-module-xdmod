@@ -132,11 +132,27 @@ class xdmod::config {
       } else {
         $hardware = {'gpfs' => ''}
       }
+      if $r['datasetmap_source'] {
+        $datasetmap_name = basename($r['datasetmap_source'], '.js')
+        file { "/usr/share/xdmod/etl/js/config/supremm/dataset_maps/${datasetmap_name}.js":
+          ensure => 'file',
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0644'
+        }
+        if ! $r['datasetmap'] {
+          $_datasetmap = $datasetmap_name
+        } else {
+          $_datasetmap = $datasetmap
+        }
+      } else {
+        $_datasetmap = $datasetmap
+      }
       $d = {
         'resource'    => $r['resource'],
         'resource_id' => $r['resource_id'],
         'enabled'     => $enabled,
-        'datasetmap'  => $datasetmap,
+        'datasetmap'  => $_datasetmap,
         'hardware'    => $hardware,
       }
     }

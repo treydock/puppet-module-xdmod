@@ -446,6 +446,30 @@ shared_examples_for "xdmod::config" do |facts|
         ],
       })
     end
+
+    context 'with supremm resource using datasetmap_source' do
+      let(:params) do
+        {
+          :enable_supremm => true,
+          :supremm_resources => [{'resource' => 'example', 'resource_id' => 1, 'pcp_log_dir' => '/dne', 'datasetmap_source' => 'puppet:///modules/site/pcp-test.js'}],
+        }
+      end
+
+      it do
+        content = catalogue.resource('file', '/etc/xdmod/supremm_resources.json').send(:parameters)[:content]
+        value = JSON.parse(content)
+        expected = {
+          "resources" => [
+            "resource"    => "example",
+            "resource_id" => 1,
+            "enabled"     => true,
+            "datasetmap"  => "pcp-test",
+            "hardware"    => {"gpfs" => ""},
+          ]
+        }
+        expect(value).to eq(expected)
+      end
+    end
   end
 
   context 'partial hierarchy levels defined' do
