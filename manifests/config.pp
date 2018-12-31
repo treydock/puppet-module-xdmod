@@ -138,7 +138,8 @@ class xdmod::config {
           ensure => 'file',
           owner  => 'root',
           group  => 'root',
-          mode   => '0644'
+          mode   => '0644',
+          source => $r['datasetmap_source'],
         }
         if ! $r['datasetmap'] {
           $_datasetmap = $datasetmap_name
