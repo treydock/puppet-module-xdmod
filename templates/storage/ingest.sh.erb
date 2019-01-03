@@ -1,0 +1,30 @@
+#!/bin/bash
+# This file is managed by Puppet, do not edit!
+# Commands pulled from https://open.xdmod.org/8.0/storage.html
+
+set -e
+
+/usr/share/xdmod/tools/etl/etl_overseer.php \
+    -d STORAGE_LOG_DIRECTORY=<%= scope['xdmod::storage_log_directory'] %> \
+    -p xdmod.staging-ingest-storage
+
+/usr/share/xdmod/tools/etl/etl_overseer.php \
+    -p xdmod.staging-ingest-common \
+    -p xdmod.hpcdb-ingest-common \
+    -p xdmod.hpcdb-ingest-storage
+/usr/share/xdmod/tools/etl/etl_overseer.php \
+    -a xdmod.hpcdb-xdw-ingest.resource \
+    -a xdmod.hpcdb-xdw-ingest.field-of-science \
+    -a xdmod.hpcdb-xdw-ingest.field-of-science-hierarchy \
+    -a xdmod.hpcdb-xdw-ingest.organization \
+    -a xdmod.hpcdb-xdw-ingest.pi-person \
+    -a xdmod.hpcdb-xdw-ingest.person \
+    -a xdmod.hpcdb-xdw-ingest.people-under-pi \
+    -a xdmod.hpcdb-xdw-ingest.principal-investigator \
+    -a xdmod.hpcdb-xdw-ingest.resource-type \
+    -a xdmod.hpcdb-xdw-ingest.system-account
+/usr/share/xdmod/tools/etl/etl_overseer.php \
+    -p xdmod.xdw-ingest-storage \
+    -p xdmod.xdw-aggregate-storage
+
+/usr/bin/xdmod-build-filter-lists -r Storage

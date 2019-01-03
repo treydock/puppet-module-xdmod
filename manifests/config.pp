@@ -182,6 +182,28 @@ class xdmod::config {
     }
   }
 
+  if $xdmod::enable_storage {
+    $storage_file_ensure = 'file'
+  } else {
+    $storage_file_ensure = 'absent'
+  }
+  file { '/etc/xdmod/roles.d/storage.json':
+    ensure  => $storage_file_ensure,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    source  => $xdmod::storage_roles_source,
+    notify  => Exec['acl-refresh'],
+  }
+  file { '/usr/local/bin/storage-ingest.sh':
+    ensure  => $storage_file_ensure,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    content => template('xdmod/storage/ingest.sh.erb'),
+    before  => File['/etc/cron.d/xdmod-storage'],
+  }
+
   if $xdmod::php_timezone and $xdmod::web {
     ini_setting { 'php-timezone':
       ensure  => 'present',
@@ -237,6 +259,13 @@ class xdmod::config {
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
     command => '/usr/bin/acl-import && touch /etc/xdmod/.acl-import',
     creates => '/etc/xdmod/.acl-import'
+  }
+  exec { 'acl-refresh':
+    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command     => '/usr/bin/acl-config && /usr/bin/acl-import',
+    logoutput   => true,
+    refreshonly => true,
+    require     => Exec['acl-xdmod-management'],
   }
 
   if $xdmod::organization_name and $xdmod::organization_abbrev {
@@ -377,6 +406,13 @@ class xdmod::config {
     group   => 'root',
     mode    => '0644',
     content => template('xdmod/xdmod_cron.erb'),
+  }
+  file { '/etc/cron.d/xdmod-storage':
+    ensure  => $storage_file_ensure,
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => template('xdmod/storage/cron.erb'),
   }
 
   $logrotate_defaults = {

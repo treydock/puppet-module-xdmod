@@ -17,6 +17,7 @@ class xdmod (
 
   Boolean $enable_appkernel                     = false,
   Boolean $enable_supremm                       = false,
+  Boolean $enable_storage                       = false,
   Optional[String] $local_repo_name             = undef,
   String $package_ensure                        = 'present',
   String $xdmod_supremm_package_ensure          = 'present',
@@ -136,6 +137,11 @@ class xdmod (
   Boolean $pcp_merge_metrics                      = true,
   Boolean $pcp_install_pmie_config                = true,
   Array $pcp_hotproc_exclude_users                = $xdmod::params::supremm_pcp_hotproc_exclude_users,
+
+  # Storage
+  String $storage_roles_source = 'puppet:///modules/xdmod/roles.d/storage.json',
+  Optional[Stdlib::Absolutepath] $storage_log_directory = undef,
+  Array[Integer, 2, 2] $storage_cron_times = [0,5],
 ) inherits xdmod::params {
 
   case $scheduler {
@@ -166,6 +172,10 @@ class xdmod (
         fail("Module ${module_name}: pcp_resource must be defined.")
       }
     }
+  }
+
+  if $enable_storage and ! $storage_log_directory {
+    fail('Must provide storage_log_directory when enable_storage is true')
   }
 
   $shredder_command_default = $resources.map |$r| {
