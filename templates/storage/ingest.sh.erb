@@ -4,8 +4,13 @@
 
 set -e
 
+STORAGE_LOG_DIRECTORY="$1"
+if [ "x${STORAGE_LOG_DIRECTORY}" = "x" ]; then
+  STORAGE_LOG_DIRECTORY=<%= scope['xdmod::storage_log_directory'] %>
+fi
+
 /usr/share/xdmod/tools/etl/etl_overseer.php \
-    -d STORAGE_LOG_DIRECTORY=<%= scope['xdmod::storage_log_directory'] %> \
+    -d STORAGE_LOG_DIRECTORY=$STORAGE_LOG_DIRECTORY \
     -p xdmod.staging-ingest-storage
 
 /usr/share/xdmod/tools/etl/etl_overseer.php \

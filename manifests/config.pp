@@ -195,7 +195,7 @@ class xdmod::config {
     source  => $xdmod::storage_roles_source,
     notify  => Exec['acl-refresh'],
   }
-  file { '/usr/local/bin/storage-ingest.sh':
+  file { '/usr/local/bin/xdmod-storage-ingest.sh':
     ensure  => $storage_file_ensure,
     owner   => 'root',
     group   => 'root',
