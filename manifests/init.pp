@@ -19,6 +19,7 @@ class xdmod (
   Boolean $enable_supremm                       = false,
   Boolean $enable_storage                       = false,
   Optional[String] $local_repo_name             = undef,
+  Boolean $manage_epel                          = true,
   String $package_ensure                        = 'present',
   String $xdmod_supremm_package_ensure          = 'present',
   String $xdmod_appkernels_package_ensure       = 'present',
@@ -207,17 +208,25 @@ class xdmod (
   $_supremm_mongodb_uri = pick($supremm_mongodb_uri, "mongodb://supremm:${supremm_mongodb_password}@${_supremm_mongodb_host}/supremm${mongodb_uri_replica_set}")
   $supremm_mongo_args = "-u supremm -p ${supremm_mongodb_password} --host ${mongodb_args_replica_set}${_supremm_mongodb_host} supremm"
 
+  if $manage_epel {
+    $epel = [Yumrepo['epel']]
+  } else {
+    $epel = []
+  }
+
   if $local_repo_name {
-    $_package_require = [Yumrepo[$local_repo_name], Yumrepo['epel']]
+    $_package_require = [Yumrepo[$local_repo_name]] + $epel
   } else  {
-    $_package_require = Yumrepo['epel']
+    $_package_require = $epel
   }
 
   $_mysql_remote_args = "-h ${database_host} -u ${database_user} -p${database_password}"
 
   case $::osfamily {
     'RedHat': {
-      include ::epel
+      if $manage_epel {
+        include ::epel
+      }
     }
     default: {
       # Do nothing
@@ -328,7 +337,9 @@ class xdmod (
       }
     }
 
-    Yumrepo['epel']->Package['mongodb_client']
+    if $manage_epel {
+      Yumrepo['epel']->Package['mongodb_client']
+    }
 
     Anchor['xdmod::start']
     -> Class['::pcp']
