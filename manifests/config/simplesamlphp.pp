@@ -60,6 +60,7 @@ class xdmod::config::simplesamlphp {
       base_dir     => '/etc/xdmod/simplesamlphp/cert',
       key_owner    => 'apache',
       key_mode     => '0400',
+      days         => 3652,
       require      => File['/etc/xdmod/simplesamlphp/cert'],
     }
   }
