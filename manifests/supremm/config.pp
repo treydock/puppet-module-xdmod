@@ -1,11 +1,8 @@
 # Private class
 class xdmod::supremm::config {
 
-  if versioncmp($facts['os']['release']['full'], '7.0') >= 0 {
-    $modw_supremm_sql = '/usr/lib64/python2.7/site-packages/supremm/assets/modw_supremm.sql'
-  } else {
-    $modw_supremm_sql = '/usr/lib64/python2.6/site-packages/supremm/assets/modw_supremm.sql'
-  }
+  $modw_supremm_sql = '/usr/lib64/python2.7/site-packages/supremm/assets/modw_supremm.sql'
+  $mongo_setup = '/usr/lib64/python2.7/site-packages/supremm/assets/mongo_setup.js'
 
   exec { 'update-modw_supremm':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
@@ -13,12 +10,6 @@ class xdmod::supremm::config {
     onlyif  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
     unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^archive_paths$'", # lint:ignore:140chars
     require => Package['mysql_client'],
-  }
-
-  if versioncmp($facts['os']['release']['full'], '7.0') >= 0 {
-    $mongo_setup = '/usr/lib64/python2.7/site-packages/supremm/assets/mongo_setup.js'
-  } else {
-    $mongo_setup = '/usr/lib64/python2.6/site-packages/supremm/assets/mongo_setup.js'
   }
 
   exec { 'mongodb-supremm-schema':

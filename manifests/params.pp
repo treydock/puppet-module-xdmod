@@ -4,9 +4,9 @@
 #
 class xdmod::params {
 
-  $version                  = '8.0.0'
-  $xdmod_appkernels_version = '8.0.0'
-  $xdmod_supremm_version    = '8.0.0'
+  $version                  = '8.1.2'
+  $xdmod_appkernels_version = '8.1.0'
+  $xdmod_supremm_version    = '8.1.0'
   $sender_email       = "xdmod@xdmod.${::domain}"
   $apache_vhost_name  = "xdmod.${::domain}"
   $portal_settings    = {}
@@ -22,7 +22,7 @@ class xdmod::params {
   $akrr_restapi_ro_password = fqdn_rand_string(16, undef, 'ro')
   $akrr_version             = '1.0.0'
   $akrr_source_url          = 'https://github.com/ubccr/akrr/releases/download/vAKRR_VERSION/akrr-AKRR_VERSION.tar.gz'
-  $supremm_version          = '1.1.0'
+  $supremm_version          = '1.2.0'
 
   case $::osfamily {
     'RedHat': {

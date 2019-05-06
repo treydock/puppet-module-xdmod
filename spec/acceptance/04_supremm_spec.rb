@@ -3,6 +3,7 @@ require 'spec_helper_acceptance'
 describe 'xdmod class:' do
   context 'supremm enabled' do
     it 'should run successfully' do
+      pp_clean = "class { 'pcp': ensure => 'absent' }"
       pp =<<-EOS
       host { 'xdmod.localdomain': ip => '127.0.0.1' }
       class { 'mysql::server':
@@ -29,6 +30,7 @@ describe 'xdmod class:' do
       }
       EOS
 
+      apply_manifest(pp_clean, :catch_failures => true)
       apply_manifest(pp, :catch_failures => true)
       # MongoDB password constantly changes on EL6
       if fact('operatingsystemmajrelease') != '6'

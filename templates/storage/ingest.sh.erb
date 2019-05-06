@@ -1,6 +1,6 @@
 #!/bin/bash
 # This file is managed by Puppet, do not edit!
-# Commands pulled from https://open.xdmod.org/8.0/storage.html
+# Commands pulled from https://open.xdmod.org/8.1/storage.html
 
 set -e
 
@@ -9,27 +9,11 @@ if [ "x${STORAGE_LOG_DIRECTORY}" = "x" ]; then
   STORAGE_LOG_DIRECTORY=<%= scope['xdmod::storage_log_directory'] %>
 fi
 
-/usr/share/xdmod/tools/etl/etl_overseer.php \
-    -d STORAGE_LOG_DIRECTORY=$STORAGE_LOG_DIRECTORY \
-    -p xdmod.staging-ingest-storage
+for f in `find $STORAGE_LOG_DIRECTORY -maxdepth 1 -type f` ; do
+  resource=$(cat $f | jq -r '.[0].resource')
+  xdmod-shredder -f storage -r $resource -d $STORAGE_LOG_DIRECTORY
+done
 
-/usr/share/xdmod/tools/etl/etl_overseer.php \
-    -p xdmod.staging-ingest-common \
-    -p xdmod.hpcdb-ingest-common \
-    -p xdmod.hpcdb-ingest-storage
-/usr/share/xdmod/tools/etl/etl_overseer.php \
-    -a xdmod.hpcdb-xdw-ingest.resource \
-    -a xdmod.hpcdb-xdw-ingest.field-of-science \
-    -a xdmod.hpcdb-xdw-ingest.field-of-science-hierarchy \
-    -a xdmod.hpcdb-xdw-ingest.organization \
-    -a xdmod.hpcdb-xdw-ingest.pi-person \
-    -a xdmod.hpcdb-xdw-ingest.person \
-    -a xdmod.hpcdb-xdw-ingest.people-under-pi \
-    -a xdmod.hpcdb-xdw-ingest.principal-investigator \
-    -a xdmod.hpcdb-xdw-ingest.resource-type \
-    -a xdmod.hpcdb-xdw-ingest.system-account
-/usr/share/xdmod/tools/etl/etl_overseer.php \
-    -p xdmod.xdw-ingest-storage \
-    -p xdmod.xdw-aggregate-storage
-
-/usr/bin/xdmod-build-filter-lists -r Storage
+last_modified_start_date=$(date +'%F %T')
+xdmod-ingestor --datatype storage
+xdmod-ingestor --aggregate=storage --last-modified-start-date "$last_modified_start_date"

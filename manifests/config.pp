@@ -8,7 +8,7 @@ class xdmod::config {
       File['/etc/xdmod/hierarchy.csv'],
       File['/etc/xdmod/group-to-hierarchy.csv'],
       File['/etc/xdmod/names.csv'],
-      Exec['acl-xdmod-management'],
+      Exec['acl-config'],
     ]
   }
 
@@ -99,13 +99,6 @@ class xdmod::config {
   }
 
   if $xdmod::enable_supremm {
-    exec { 'xdmod-supremm-npm-install':
-      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-      cwd     => '/usr/share/xdmod/etl/js',
-      command => 'npm install && touch .npm-installed',
-      creates => '/usr/share/xdmod/etl/js/.npm-installed',
-    }
-
     file { '/etc/xdmod/portal_settings.d/supremm.ini':
       ensure => 'file',
       owner  => 'xdmod',
@@ -170,7 +163,7 @@ class xdmod::config {
       path    => '/usr/bin:/bin:/usr/sbin:/sbin',
       command => "mysql ${xdmod::_mysql_remote_args} -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql",
       onlyif  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
-      unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^job$'",# lint:ignore:140chars
+      unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^job_name$'",# lint:ignore:140chars
     }
     exec { 'modw_etl-schema':
       path    => '/usr/bin:/bin:/usr/sbin:/sbin',
@@ -188,12 +181,12 @@ class xdmod::config {
     $storage_file_ensure = 'absent'
   }
   file { '/etc/xdmod/roles.d/storage.json':
-    ensure  => $storage_file_ensure,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    source  => $xdmod::storage_roles_source,
-    notify  => Exec['acl-refresh'],
+    ensure => $storage_file_ensure,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+    source => $xdmod::storage_roles_source,
+    notify => Exec['acl-refresh'],
   }
   file { '/usr/local/bin/xdmod-storage-ingest.sh':
     ensure  => $storage_file_ensure,
@@ -232,40 +225,25 @@ class xdmod::config {
     command => '/root/xdmod-database-setup.sh && touch /etc/xdmod/.database-setup',
     creates => '/etc/xdmod/.database-setup',
     require => File['/root/xdmod-database-setup.sh'],
-    before  => Exec['etl-fix-moddb-users'],
+    before  => Exec['etl-bootstrap'],
   }
 
-  exec { 'etl-fix-moddb-users':
-    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => "sed -i.orig 's/@localhost/@${xdmod::web_host}/g' /etc/xdmod/etl/etl_tables.d/xdb/users.json",
-    unless  => "grep -q '@${xdmod::web_host}' /etc/xdmod/etl/etl_tables.d/xdb/users.json",
-  }
-  -> exec { 'etl-bootstrap':
+  exec { 'etl-bootstrap':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
     command => '/usr/share/xdmod/tools/etl/etl_overseer.php -p xdb-bootstrap -p jobs-xdw-bootstrap -p shredder-bootstrap -p staging-bootstrap -p hpcdb-bootstrap -v debug && touch /etc/xdmod/.etl-bootstrap', # lint:ignore:140chars
     creates => '/etc/xdmod/.etl-bootstrap',
-  }
-  -> exec { 'acl-xdmod-management':
-    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => '/usr/bin/acl-xdmod-management && touch /etc/xdmod/.acl-xdmod-management',
-    creates => '/etc/xdmod/.acl-xdmod-management'
   }
   -> exec { 'acl-config':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
     command => '/usr/bin/acl-config && touch /etc/xdmod/.acl-config',
     creates => '/etc/xdmod/.acl-config'
   }
-  -> exec { 'acl-import':
-    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => '/usr/bin/acl-import && touch /etc/xdmod/.acl-import',
-    creates => '/etc/xdmod/.acl-import'
-  }
   exec { 'acl-refresh':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command     => '/usr/bin/acl-config && /usr/bin/acl-import',
+    command     => '/usr/bin/acl-config',
     logoutput   => true,
     refreshonly => true,
-    require     => Exec['acl-xdmod-management'],
+    require     => Exec['acl-config'],
   }
 
   if $xdmod::organization_name and $xdmod::organization_abbrev {

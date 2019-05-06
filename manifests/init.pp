@@ -234,7 +234,7 @@ class xdmod (
   }
 
   if $xdmod::params::compute_only and ($web or $database or $akrr or $supremm or $supremm_database) {
-    fail("This operating system is only supported for compute resources.")
+    fail('This operating system is only supported for compute resources.')
   }
 
   anchor { 'xdmod::start': }
@@ -329,7 +329,8 @@ class xdmod (
       }
       'resource': {
         class { '::pcp':
-          ensure => 'stopped'
+          ensure         => 'stopped',
+          package_ensure => '3.12.2-1',
         }
       }
       default: {
