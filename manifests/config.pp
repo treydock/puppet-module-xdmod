@@ -105,7 +105,6 @@ class xdmod::config {
       mode   => '0640',
     }
 
-    xdmod_supremm_setting { 'features/singlejobviewer': value => 'on' }
     xdmod_supremm_setting { 'jobsummarydb/db_engine': value => 'MongoDB' }
     xdmod_supremm_setting { 'jobsummarydb/uri': value => $xdmod::_supremm_mongodb_uri, secret => true }
     xdmod_supremm_setting { 'jobsummarydb/db': value => 'supremm' }
