@@ -230,7 +230,7 @@ class xdmod::config {
 
   exec { 'etl-bootstrap':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => '/usr/share/xdmod/tools/etl/etl_overseer.php -p xdb-bootstrap -p jobs-xdw-bootstrap -p shredder-bootstrap -p staging-bootstrap -p hpcdb-bootstrap -v debug && touch /etc/xdmod/.etl-bootstrap', # lint:ignore:140chars
+    command => '/usr/share/xdmod/tools/etl/etl_overseer.php -p xdb-bootstrap -p jobs-xdw-bootstrap -p xdw-bootstrap-storage -p shredder-bootstrap -p staging-bootstrap -p hpcdb-bootstrap -v debug && touch /etc/xdmod/.etl-bootstrap', # lint:ignore:140chars
     creates => '/etc/xdmod/.etl-bootstrap',
   }
   -> exec { 'acl-config':
