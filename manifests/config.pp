@@ -65,7 +65,6 @@ class xdmod::config {
   }
 
   xdmod_portal_setting { 'features/appkernels': value => $_appkernels }
-  xdmod_portal_setting { 'features/singlejobviewer': value => $_singlejobviewer }
 
   if $xdmod::enable_appkernel {
     file { '/etc/xdmod/portal_settings.d/appkernels.ini':
