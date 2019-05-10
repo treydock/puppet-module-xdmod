@@ -407,10 +407,6 @@ shared_examples_for "xdmod::config" do |facts|
     end
 
     it do
-      is_expected.to contain_xdmod_supremm_setting('features/singlejobviewer').with_value('on')
-    end
-
-    it do
       content = catalogue.resource('file', '/etc/xdmod/supremm_resources.json').send(:parameters)[:content]
       value = JSON.parse(content)
       expected = {
