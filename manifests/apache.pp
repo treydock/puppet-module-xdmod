@@ -6,6 +6,7 @@ class xdmod::apache {
     include ::apache::mod::php
     include ::apache::mod::ssl
     include ::apache::mod::alias
+    include ::apache::mod::headers
 
     ensure_resource('apache::listen', 80)
     ensure_resource('apache::listen', 443)
