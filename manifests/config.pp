@@ -54,6 +54,23 @@ class xdmod::config {
   xdmod_portal_setting { 'hpcdb/user': value => $xdmod::database_user }
   xdmod_portal_setting { 'hpcdb/pass': value => $xdmod::database_password, secret => true }
 
+  if $xdmod::center_logo_source {
+    file { '/etc/xdmod/logo.png':
+      ensure => 'file',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      source => $xdmod::center_logo_source,
+    }
+    $center_logo = '/etc/xdmod/logo.png'
+  } else {
+    $center_logo = ''
+  }
+  xdmod_portal_setting { 'general/center_logo': value => $center_logo }
+  if $xdmod::center_logo_width {
+    xdmod_portal_setting { 'general/center_logo_width': value => $xdmod::center_logo_width }
+  }
+
   $_appkernels = $xdmod::enable_appkernel ? {
     true  => 'on',
     false => 'off',

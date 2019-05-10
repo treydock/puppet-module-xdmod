@@ -61,6 +61,8 @@ class xdmod (
   String $sender_email                          = $xdmod::params::sender_email,
   String $debug_recipient                       = '',
   Optional[String] $php_timezone                = undef,
+  Optional[String] $center_logo_source          = undef,
+  Optional[Integer] $center_logo_width          = undef,
 
   # XDMoD user/group
   Boolean $manage_user = true,
