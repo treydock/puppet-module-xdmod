@@ -143,7 +143,7 @@ class xdmod (
 
   # Storage
   String $storage_roles_source = 'puppet:///modules/xdmod/roles.d/storage.json',
-  Optional[Stdlib::Absolutepath] $storage_log_directory = undef,
+  Hash[String[1], Stdlib::Absolutepath] $storage_resources = {},
   Array[Integer, 2, 2] $storage_cron_times = [0,5],
 ) inherits xdmod::params {
 

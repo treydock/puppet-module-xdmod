@@ -4,15 +4,15 @@
 
 set -e
 
-STORAGE_LOG_DIRECTORY="$1"
-if [ "x${STORAGE_LOG_DIRECTORY}" = "x" ]; then
-  STORAGE_LOG_DIRECTORY=<%= scope['xdmod::storage_log_directory'] %>
+RESOURCE="$1"
+STORAGE_LOG_DIRECTORY="$2"
+if [ "x${RESOURCE}" != "x" -a "x${STORAGE_LOG_DIRECTORY}" != "x" ]; then
+  xdmod-shredder -f storage -r $RESOURCE -d $STORAGE_LOG_DIRECTORY
+else
+<% scope['xdmod::storage_resources'].each_pair do |resource, directory| -%>
+  xdmod-shredder -f storage -r <%= resource %> -d <%= directory %>
+<%- end -%>
 fi
-
-for f in `find $STORAGE_LOG_DIRECTORY -maxdepth 1 -type f` ; do
-  resource=$(cat $f | jq -r '.[0].resource')
-  xdmod-shredder -f storage -r $resource -i $f
-done
 
 last_modified_start_date=$(date +'%F %T')
 xdmod-ingestor --datatype storage
