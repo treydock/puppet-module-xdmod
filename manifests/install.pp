@@ -44,9 +44,4 @@ class xdmod::install {
       }
     }
   }
-
-  if $xdmod::enable_storage {
-    ensure_packages(['jq'])
-  }
-
 }

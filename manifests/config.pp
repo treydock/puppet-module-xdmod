@@ -190,7 +190,7 @@ class xdmod::config {
     }
   }
 
-  if $xdmod::enable_storage {
+  if ! empty($xdmod::storage_resources) {
     $storage_file_ensure = 'file'
   } else {
     $storage_file_ensure = 'absent'

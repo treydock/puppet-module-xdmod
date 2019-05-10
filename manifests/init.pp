@@ -17,7 +17,6 @@ class xdmod (
 
   Boolean $enable_appkernel                     = false,
   Boolean $enable_supremm                       = false,
-  Boolean $enable_storage                       = false,
   Optional[String] $local_repo_name             = undef,
   Boolean $manage_epel                          = true,
   String $package_ensure                        = 'present',
@@ -175,10 +174,6 @@ class xdmod (
         fail("Module ${module_name}: pcp_resource must be defined.")
       }
     }
-  }
-
-  if $enable_storage and ! $storage_log_directory {
-    fail('Must provide storage_log_directory when enable_storage is true')
   }
 
   $shredder_command_default = $resources.map |$r| {
