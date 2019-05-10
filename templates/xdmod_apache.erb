@@ -79,4 +79,13 @@
   ErrorLog <%= scope['apache::logroot']%>/xdmod-ssl-error.log
   CustomLog <%= scope['apache::logroot']%>/xdmod-ssl-access.log combined
 
+  RewriteEngine On
+  RewriteCond %{DOCUMENT_ROOT}/maintenance/index.php -f
+  RewriteCond /etc/xdmod/maintenance.enable -f
+  RewriteCond %{SCRIPT_FILENAME} !maintenance/index.php
+  RewriteCond %{SCRIPT_FILENAME} !maintenance/update_in_progress.png
+  RewriteRule ^.*$ /maintenance/index.php [R=503,L]
+  ErrorDocument 503 /maintenance/index.php
+  Header Set Cache-Control "max-age=0, no-store"
+
 </VirtualHost>
