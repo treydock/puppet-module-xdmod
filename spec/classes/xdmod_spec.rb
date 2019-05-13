@@ -91,22 +91,6 @@ describe 'xdmod' do
         it_behaves_like 'xdmod::apache', facts
       end
 
-      context 'when enable_storage => true' do
-        let(:params) {{ :enable_storage => true }}
-
-        it 'should require storage_log_directory' do
-          expect { is_expected.to compile }.to raise_error(/Must provide storage_log_directory/)
-        end
-
-        context 'when storage_log_directory defined' do
-          let(:params) {{
-            :enable_storage => true,
-            :storage_log_directory => '/dne',
-          }}
-          it { is_expected.to compile.with_all_deps }
-        end
-      end
-
       context 'when compute => true only' do
         let(:default_params) {{
           :web              => false,

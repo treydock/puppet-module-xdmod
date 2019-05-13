@@ -145,6 +145,10 @@ shared_examples_for "xdmod::config" do |facts|
     should_not contain_exec('xdmod-import-csv-names')
   end
 
+  it { is_expected.to contain_file('/etc/xdmod/roles.d/storage.json').with_ensure('absent') }
+  it { is_expected.to contain_file('/usr/local/bin/xdmod-storage-ingest.sh').with_ensure('absent') }
+  it { is_expected.to contain_file('/etc/cron.d/xdmod-storage').with_ensure('absent') }
+
   it do
     should contain_file('/root/xdmod-database-setup.sh').with({
       :ensure    => 'file',
@@ -597,6 +601,24 @@ shared_examples_for "xdmod::config" do |facts|
         :refreshonly => 'true',
         :subscribe   => 'File[/etc/xdmod/names.csv]',
       })
+    end
+  end
+
+  context 'when storage resources defined' do
+    let(:params) do
+      {
+        resources: [
+          {resource: 'home',name: 'Home',resource_type_id: 9, shred_directory: '/shared/quotas/home'}
+        ]
+      }
+    end
+    it { is_expected.to contain_file('/etc/xdmod/roles.d/storage.json').with_ensure('file') }
+    it { is_expected.to contain_file('/usr/local/bin/xdmod-storage-ingest.sh').with_ensure('file') }
+    it { is_expected.to contain_file('/etc/cron.d/xdmod-storage').with_ensure('file') }
+    it 'has storage ingest contents' do
+      verify_contents(catalogue, '/usr/local/bin/xdmod-storage-ingest.sh', [
+        '  xdmod-shredder -f storage -r home -d /shared/quotas/home',
+      ])
     end
   end
 end
