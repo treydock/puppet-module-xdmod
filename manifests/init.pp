@@ -142,7 +142,6 @@ class xdmod (
 
   # Storage
   String $storage_roles_source = 'puppet:///modules/xdmod/roles.d/storage.json',
-  Hash[String[1], Stdlib::Absolutepath] $storage_resources = {},
   Array[Integer, 2, 2] $storage_cron_times = [0,5],
 ) inherits xdmod::params {
 
@@ -175,6 +174,8 @@ class xdmod (
       }
     }
   }
+
+  $storage_resources = $resources.filter |$r| { $r['resource_type_id'] == 9 }
 
   $shredder_command_default = $resources.map |$r| {
     regsubst($scheduler_shredder_command, 'RESOURCE', $r['resource'], 'G')

@@ -9,8 +9,8 @@ STORAGE_LOG_DIRECTORY="$2"
 if [ "x${RESOURCE}" != "x" -a "x${STORAGE_LOG_DIRECTORY}" != "x" ]; then
   xdmod-shredder -f storage -r $RESOURCE -d $STORAGE_LOG_DIRECTORY
 else
-<% scope['xdmod::storage_resources'].each_pair do |resource, directory| -%>
-  xdmod-shredder -f storage -r <%= resource %> -d <%= directory %>
+<% scope['xdmod::storage_resources'].each do |resource| -%>
+  xdmod-shredder -f storage -r <%= resource['resource'] %> -d <%= resource['shred_directory'] %>
 <%- end -%>
 fi
 

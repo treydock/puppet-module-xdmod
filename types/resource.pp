@@ -6,4 +6,5 @@ type Xdmod::Resource = Struct[{
   Optional[pi_column] => String,
   Optional[timezone] => String,
   Optional[shared_jobs] => Boolean,
+  Optional[shred_directory] => Stdlib::Absolutepath,
 }]
