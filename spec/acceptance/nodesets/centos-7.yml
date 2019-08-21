@@ -1,7 +1,6 @@
 HOSTS:
-  centos-7-x64-docker:
+  centos-7:
     roles:
-      - master
       - agent
       - compute
       - db
@@ -15,9 +14,12 @@ HOSTS:
     docker_cmd:
       - '/usr/sbin/init'
     docker_image_commands:
-      - 'yum install -y tar wget cronie openssl which'
-      - 'yum update -y'
-    docker_container_name: 'xdmod'
+      - 'yum install -y wget which cronie iproute initscripts'
+    docker_container_name: 'xdmod-el7'
 CONFIG:
   log_level: debug
   type: foss
+ssh:
+  password: root
+  auth_methods: ["password"]
+
