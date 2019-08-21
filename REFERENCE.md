@@ -8,7 +8,6 @@
 _Public Classes_
 
 * [`xdmod`](#xdmod): Manage XDMoD
-* [`xdmod::params`](#xdmodparams): == Class: xdmod::params  Private class.
 
 _Private Classes_
 
@@ -21,6 +20,7 @@ _Private Classes_
 * `xdmod::config::simplesamlphp`: Manage XDMoD simplesamlphp
 * `xdmod::database`: Manage XDMoD databases
 * `xdmod::install`: Manage XDMoD packages
+* `xdmod::params`: XDMoD module defaults
 * `xdmod::supremm::compute::pcp`: Manage XDMoD compute PCP
 * `xdmod::supremm::config`: Manage XDMoD SUPReMM configs
 * `xdmod::supremm::database`: Manage XDMoD SUPReMM databases
@@ -977,20 +977,6 @@ Data type: `Array[Integer, 2, 2]`
 The cron times for storage shred/ingest
 
 Default value: [0,5]
-
-##### `pcp_install_pmie_config`
-
-Data type: `Boolean`
-
-
-
-Default value: `true`
-
-### xdmod::params
-
-== Class: xdmod::params
-
-Private class.
 
 ## Defined types
 
