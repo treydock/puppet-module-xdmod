@@ -15,14 +15,12 @@ describe 'xdmod' do
       it { is_expected.to create_class('xdmod') }
       it { is_expected.to contain_class('xdmod::params') }
 
-      it { is_expected.to contain_anchor('xdmod::start').that_comes_before('Class[xdmod::user]') }
       it { is_expected.to contain_class('xdmod::user').that_comes_before('Class[xdmod::install]') }
       it { is_expected.to contain_class('xdmod::install').that_comes_before('Class[xdmod::database]') }
       it { is_expected.to contain_class('xdmod::database').that_comes_before('Class[xdmod::config]') }
       it { is_expected.to contain_class('xdmod::config').that_comes_before('Class[xdmod::config::simplesamlphp]') }
       it { is_expected.to contain_class('xdmod::config::simplesamlphp').that_comes_before('Class[xdmod::apache]') }
-      it { is_expected.to contain_class('xdmod::apache').that_comes_before('Anchor[xdmod::end]') }
-      it { is_expected.to contain_anchor('xdmod::end') }
+      it { is_expected.to contain_class('xdmod::apache') }
 
       it_behaves_like 'xdmod::user', facts
       it_behaves_like 'xdmod::install', facts
@@ -57,9 +55,7 @@ describe 'xdmod' do
 
         it { is_expected.to compile.with_all_deps }
 
-        it { is_expected.to contain_anchor('xdmod::start').that_comes_before('Class[xdmod::database]') }
-        it { is_expected.to contain_class('xdmod::database').that_comes_before('Anchor[xdmod::end]') }
-        it { is_expected.to contain_anchor('xdmod::end') }
+        it { is_expected.to contain_class('xdmod::database') }
 
         it { is_expected.not_to contain_class('xdmod::install') }
         it { is_expected.not_to contain_class('xdmod::config') }
@@ -72,13 +68,11 @@ describe 'xdmod' do
 
         it { is_expected.to compile.with_all_deps }
 
-        it { is_expected.to contain_anchor('xdmod::start').that_comes_before('Class[xdmod::user]') }
         it { is_expected.to contain_class('xdmod::user').that_comes_before('Class[xdmod::install]') }
         it { is_expected.to contain_class('xdmod::install').that_comes_before('Class[xdmod::config]') }
         it { is_expected.to contain_class('xdmod::config').that_comes_before('Class[xdmod::config::simplesamlphp]') }
         it { is_expected.to contain_class('xdmod::config::simplesamlphp').that_comes_before('Class[xdmod::apache]') }
-        it { is_expected.to contain_class('xdmod::apache').that_comes_before('Anchor[xdmod::end]') }
-        it { is_expected.to contain_anchor('xdmod::end') }
+        it { is_expected.to contain_class('xdmod::apache') }
 
         it { is_expected.not_to contain_class('xdmod::database') }
 
@@ -154,19 +148,6 @@ describe 'xdmod' do
           it 'raises an error' do
             expect { is_expected.to compile }.to raise_error(%r{pcp_resource must be defined})
           end
-        end
-      end
-
-      # Test validate_bool parameters
-      [
-        :database,
-        :web,
-        :enable_appkernel,
-      ].each do |param|
-        context "with #{param} => 'foo'" do
-          let(:params) { { param => 'foo' } }
-
-          it { expect { is_expected.to create_class('xdmod') }.to raise_error(Puppet::Error, %r{expects a Boolean value}) }
         end
       end
     end

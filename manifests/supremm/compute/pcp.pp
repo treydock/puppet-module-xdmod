@@ -11,9 +11,6 @@ class xdmod::supremm::compute::pcp {
     $pcp_environ_metrics  = $xdmod::pcp_environ_metrics
   }
 
-  $_procpmda_log_path = '/var/log/pcp/pmie/procpmda.log'
-  $_pcp_restart_path  = '/etc/pcp/pmie/pcp-restart.sh'
-
   if $xdmod::pcp_pmlogger_config_source {
     $_pcp_pmlogger_config_source  = $xdmod::pcp_pmlogger_config_source
     $_pcp_pmlogger_config_content = undef
@@ -112,33 +109,6 @@ class xdmod::supremm::compute::pcp {
     config_path    => '/var/lib/pcp/pmdas/proc/hotproc.conf',
     config_content => template('xdmod/supremm/compute/pcp/hotproc.conf.erb'),
     args           => '-A',
-  }
-
-  if $xdmod::pcp_install_pmie_config {
-    pcp::pmda { 'logger':
-      ensure         => 'absent',
-      config_content => "procrestart n ${_procpmda_log_path}\n",
-    }
-
-    pcp::pmie { 'supremm':
-      ensure      => 'absent',
-      config_path => '/etc/pcp/pmie/pmie-supremm.config',
-    }
-
-    sudo::conf { 'pcp':
-      ensure   => 'absent',
-      priority => '10',
-      content  => "pcp ALL=(root) NOPASSWD: ${_pcp_restart_path}",
-    }
-
-    file { '/etc/pcp/pmie/pcp-restart.sh':
-      ensure => 'absent',
-      path   => $_pcp_restart_path,
-    }
-
-    file { '/etc/pcp/pmie/procpmda_check.sh':
-      ensure => 'absent',
-    }
   }
 
 }
