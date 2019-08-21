@@ -1,4 +1,5 @@
-# Private class
+# @summary Manage XDMoD databases
+# @api private
 class xdmod::database {
 
   include mysql::server

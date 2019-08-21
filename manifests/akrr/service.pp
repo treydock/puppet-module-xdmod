@@ -1,4 +1,5 @@
-# Private class
+# @summary Manage XDMoD AKRR service
+# @api private
 class xdmod::akrr::service {
 
   $_base_cmd  = "runuser -l ${xdmod::akrr_user} -c"

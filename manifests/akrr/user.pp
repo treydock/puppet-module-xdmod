@@ -1,4 +1,5 @@
-# Private class
+# @summary Manage XDMoD AKRR user
+# @api private
 class xdmod::akrr::user {
 
   if $xdmod::manage_akrr_user {

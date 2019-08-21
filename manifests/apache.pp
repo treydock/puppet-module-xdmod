@@ -1,4 +1,5 @@
-# Private class
+# @summary Manage XDMoD Apache configs
+# @api private
 class xdmod::apache {
 
   if $xdmod::manage_apache_vhost {

@@ -1,4 +1,5 @@
-# Private class
+# @summary Manage XDMoD compute PCP
+# @api private
 class xdmod::supremm::compute::pcp {
 
   if $xdmod::pcp_merge_metrics {

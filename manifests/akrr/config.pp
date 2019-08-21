@@ -1,4 +1,5 @@
-# Private class
+# @summary Manage XDMoD AKRR configs
+# @api private
 class xdmod::akrr::config {
 
   file { "${xdmod::_akrr_home}/cfg":

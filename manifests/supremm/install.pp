@@ -1,4 +1,5 @@
-# Private class
+# @summary Manage XDMoD SUPReMM packages
+# @api private
 class xdmod::supremm::install {
 
   if $xdmod::local_repo_name {

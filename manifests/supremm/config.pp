@@ -1,4 +1,5 @@
-# Private class
+# @summary Manage XDMoD SUPReMM configs
+# @api private
 class xdmod::supremm::config {
 
   $modw_supremm_sql = '/usr/lib64/python2.7/site-packages/supremm/assets/modw_supremm.sql'
