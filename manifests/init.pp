@@ -42,6 +42,9 @@ class xdmod (
   Enum['slurm','torque','pbs','sge'] $scheduler = 'slurm',
   Optional[Variant[String, Array]]
     $shredder_command                           = undef,
+  Integer[0,23] $shred_hour_start               = 1,
+  Integer $shred_minutes                        = 5,
+  Optional[Integer[0,23]] $ingest_hour          = undef,
   Boolean $enable_update_check                  = true,
   Boolean $manage_apache_vhost                  = true,
   String $apache_vhost_name               = $xdmod::params::apache_vhost_name,

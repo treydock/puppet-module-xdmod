@@ -8,12 +8,26 @@
 <% end -%>
 
 # Shred and ingest:
+<%- shred_hour = scope['xdmod::shred_hour_start'] -%>
+<%- ingest_hour = nil %>
 <%- if scope['xdmod::shredder_command_real'].is_a?(String) -%>
-0 1 * * * xdmod <%= scope.lookupvar('xdmod::shredder_command_real') %> && /usr/bin/xdmod-ingestor --quiet
+<%- ingest_hour = 2 %>
+0 <%= shred_hour %> * * * xdmod <%= scope.lookupvar('xdmod::shredder_command_real') %>
 <%- else -%>
 <%- scope['xdmod::shredder_command_real'].each_with_index do |cmd, i| -%>
-0 <%= 1 + i %> * * * xdmod <%= cmd %> && /usr/bin/xdmod-ingestor --quiet
+<%-
+shred_minute = i * scope['xdmod::shred_minutes']
+if shred_minute >= 60
+  shred_hour = shred_hour + 1
+  shred_minute = 0
+end
+-%>
+<%= shred_minute %> <%= shred_hour %> * * * xdmod <%= cmd %>
 <%- end -%>
+<%- ingest_hour = (shred_hour + 1) %>
+<%- end -%>
+<%- if ! ingest_hour.nil? -%>
+0 <%= scope['xdmod::ingest_hour'] || ingest_hour %> * * * xdmod /usr/bin/xdmod-ingestor --quiet
 <%- end -%>
 
 <%- if scope['xdmod::enable_supremm'] -%>

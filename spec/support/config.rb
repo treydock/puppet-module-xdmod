@@ -254,7 +254,8 @@ shared_examples_for "xdmod::config" do |facts|
         '# Every morning at 3:00 AM -- run the report scheduler',
         '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
         '# Shred and ingest:',
-        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example && /usr/bin/xdmod-ingestor --quiet'
+        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example',
+        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet',
       ])
     end
   end
@@ -294,8 +295,9 @@ shared_examples_for "xdmod::config" do |facts|
         '# Every morning at 3:00 AM -- run the report scheduler',
         '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
         '# Shred and ingest:',
-        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1 && /usr/bin/xdmod-ingestor --quiet',
-        '0 2 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2 && /usr/bin/xdmod-ingestor --quiet',
+        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1',
+        '5 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2',
+        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet',
       ])
     end
   end
@@ -334,7 +336,8 @@ shared_examples_for "xdmod::config" do |facts|
         '# Every morning at 3:00 AM -- run the report scheduler',
         '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
         '# Shred and ingest:',
-        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example && /usr/bin/xdmod-ingestor --quiet'
+        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example',
+        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet',
       ])
     end
   end
@@ -354,8 +357,9 @@ shared_examples_for "xdmod::config" do |facts|
         '# Every morning at 3:00 AM -- run the report scheduler',
         '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
         '# Shred and ingest:',
-        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1 && /usr/bin/xdmod-ingestor --quiet',
-        '0 2 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2 && /usr/bin/xdmod-ingestor --quiet',
+        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1',
+        '5 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2',
+        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet',
       ])
     end
   end
