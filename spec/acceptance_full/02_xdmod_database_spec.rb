@@ -4,8 +4,8 @@ describe 'xdmod class: databases' do
   node = find_only_one(:db)
 
   context 'databases only' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       class { 'mysql::server':
         root_password    => 'secret',
         override_options => {
@@ -35,10 +35,10 @@ describe 'xdmod class: databases' do
       }
       EOS
 
-      apply_manifest_on(node, pp, :catch_failures => true)
+      apply_manifest_on(node, pp, catch_failures: true)
       # MongoDB password constantly changes on EL6
       if fact('operatingsystemmajrelease') != '6'
-        apply_manifest_on(node, pp, :catch_changes => true)
+        apply_manifest_on(node, pp, catch_changes: true)
       end
     end
 
@@ -46,8 +46,8 @@ describe 'xdmod class: databases' do
   end
 
   context 'databases only - all' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       class { 'mysql::server':
         root_password    => 'secret',
         override_options => {
@@ -86,10 +86,10 @@ describe 'xdmod class: databases' do
       }
       EOS
 
-      apply_manifest_on(node, pp, :catch_failures => true)
+      apply_manifest_on(node, pp, catch_failures: true)
       # MongoDB password constantly changes on EL6
       if fact('operatingsystemmajrelease') != '6'
-        apply_manifest_on(node, pp, :catch_changes => true)
+        apply_manifest_on(node, pp, catch_changes: true)
       end
     end
 

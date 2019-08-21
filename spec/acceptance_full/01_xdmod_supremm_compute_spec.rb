@@ -4,8 +4,8 @@ describe 'xdmod class: compute' do
   node = find_only_one(:compute)
 
   context 'compute only enabled' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       class { 'xdmod':
         web                   => false,
         database              => false,
@@ -32,10 +32,10 @@ describe 'xdmod class: compute' do
       }
       EOS
 
-      apply_manifest_on(node, pp, :catch_failures => true)
+      apply_manifest_on(node, pp, catch_failures: true)
       # Sleep for a bit to allow pmlogger to start
       sleep(10)
-      apply_manifest_on(node, pp, :catch_changes => true)
+      apply_manifest_on(node, pp, catch_changes: true)
     end
 
     it_behaves_like 'compute', node

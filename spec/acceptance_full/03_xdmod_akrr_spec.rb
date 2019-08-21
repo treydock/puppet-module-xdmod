@@ -4,8 +4,8 @@ describe 'xdmod class: akrr' do
   node = find_only_one(:akrr)
 
   context 'akrr only' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       class { 'xdmod':
         web                   => false,
         database              => false,
@@ -31,8 +31,8 @@ describe 'xdmod class: akrr' do
       }
       EOS
 
-      apply_manifest_on(node, pp, :catch_failures => true)
-      apply_manifest_on(node, pp, :catch_changes => true)
+      apply_manifest_on(node, pp, catch_failures: true)
+      apply_manifest_on(node, pp, catch_changes: true)
     end
 
     it_behaves_like 'akrr', node

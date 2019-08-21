@@ -1,4 +1,4 @@
-shared_examples_for 'xdmod::database' do |facts|
+shared_examples_for 'xdmod::database' do |_facts|
   [
     'mod_hpcdb',
     'mod_logger',
@@ -8,67 +8,59 @@ shared_examples_for 'xdmod::database' do |facts|
     'modw_aggregates',
   ].each do |db|
     it "should create Mysql::Db[#{db}]" do
-      should contain_mysql__db(db).with({
-        :ensure       => 'present',
-        :user         => 'xdmod',
-        :password     => 'changeme',
-        :host         => 'localhost',
-        :charset      => 'latin1',
-        :collate      => 'latin1_swedish_ci',
-        :grant        => ['ALL'],
-      })
+      is_expected.to contain_mysql__db(db).with(ensure: 'present',
+                                                user: 'xdmod',
+                                                password: 'changeme',
+                                                host: 'localhost',
+                                                charset: 'latin1',
+                                                collate: 'latin1_swedish_ci',
+                                                grant: ['ALL'])
     end
   end
 
-  it { should_not contain_mysql__db('mod_appkernel') }
-  it { should_not contain_mysql__db('mod_akrr') }
-  it { should_not contain_mysql_grant('akrr@localhost/modw.resourcefact') }
+  it { is_expected.not_to contain_mysql__db('mod_appkernel') }
+  it { is_expected.not_to contain_mysql__db('mod_akrr') }
+  it { is_expected.not_to contain_mysql_grant('akrr@localhost/modw.resourcefact') }
 
   context 'when enable_appkernel => true' do
-    let(:params) {{ :enable_appkernel => true }}
+    let(:params) { { enable_appkernel: true } }
 
     it do
-      should contain_mysql__db('mod_appkernel').with({
-        :ensure       => 'present',
-        :user         => 'akrr',
-        :password     => 'changeme',
-        :host         => 'localhost',
-        :charset      => 'latin1',
-        :collate      => 'latin1_swedish_ci',
-        :grant        => ['ALL'],
-      })
+      is_expected.to contain_mysql__db('mod_appkernel').with(ensure: 'present',
+                                                             user: 'akrr',
+                                                             password: 'changeme',
+                                                             host: 'localhost',
+                                                             charset: 'latin1',
+                                                             collate: 'latin1_swedish_ci',
+                                                             grant: ['ALL'])
     end
 
     it do
-      should contain_mysql__db('mod_akrr').with({
-        :ensure       => 'present',
-        :user         => 'akrr',
-        :password     => 'changeme',
-        :host         => 'localhost',
-        :charset      => 'latin1',
-        :collate      => 'latin1_swedish_ci',
-        :grant        => ['ALL'],
-      })
+      is_expected.to contain_mysql__db('mod_akrr').with(ensure: 'present',
+                                                        user: 'akrr',
+                                                        password: 'changeme',
+                                                        host: 'localhost',
+                                                        charset: 'latin1',
+                                                        collate: 'latin1_swedish_ci',
+                                                        grant: ['ALL'])
     end
 
     it do
-      should contain_mysql__db('modw-akrr').with({
-        :ensure       => 'present',
-        :dbname       => 'modw',
-        :user         => 'akrr',
-        :password     => 'changeme',
-        :host         => 'localhost',
-        :charset      => 'latin1',
-        :collate      => 'latin1_swedish_ci',
-        :grant        => ['SELECT'],
-      })
+      is_expected.to contain_mysql__db('modw-akrr').with(ensure: 'present',
+                                                         dbname: 'modw',
+                                                         user: 'akrr',
+                                                         password: 'changeme',
+                                                         host: 'localhost',
+                                                         charset: 'latin1',
+                                                         collate: 'latin1_swedish_ci',
+                                                         grant: ['SELECT'])
     end
 
     context 'when akrr_host != web_host' do
-      let(:params) {{ :enable_appkernel => true, :akrr_host => 'foo' }}
+      let(:params) { { enable_appkernel: true, akrr_host: 'foo' } }
 
-      it { should contain_mysql__db('mod_appkernel').with_host('foo') }
-      it { should contain_mysql__db('mod_akrr').with_host('foo') }
+      it { is_expected.to contain_mysql__db('mod_appkernel').with_host('foo') }
+      it { is_expected.to contain_mysql__db('mod_akrr').with_host('foo') }
     end
   end
 end

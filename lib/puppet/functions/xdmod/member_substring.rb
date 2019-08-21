@@ -16,13 +16,10 @@ Puppet::Functions.create_function(:'xdmod::member_substring') do
 
   def check(array, substring)
     match = array.any? do |a|
-      a =~ /#{substring}/
+      a =~ %r{#{substring}}
     end
 
-    if match
-      return 'present'
-    else
-      return 'absent'
-    end
+    return 'present' if match
+    'absent'
   end
 end

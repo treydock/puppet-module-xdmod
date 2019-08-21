@@ -4,8 +4,8 @@ describe 'xdmod class: web' do
   node = find_only_one(:web)
 
   context 'web only' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       class { 'xdmod':
         web                   => true,
         database              => false,
@@ -29,16 +29,16 @@ describe 'xdmod class: web' do
       }
       EOS
 
-      apply_manifest_on(node, pp, :catch_failures => true)
-      apply_manifest_on(node, pp, :catch_changes => true)
+      apply_manifest_on(node, pp, catch_failures: true)
+      apply_manifest_on(node, pp, catch_changes: true)
     end
 
     it_behaves_like 'xdmod-default', node
   end
 
   context 'web only - all' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       class { 'xdmod':
         web                   => true,
         database              => false,
@@ -64,8 +64,8 @@ describe 'xdmod class: web' do
       }
       EOS
 
-      apply_manifest_on(node, pp, :catch_failures => true)
-      apply_manifest_on(node, pp, :catch_changes => true)
+      apply_manifest_on(node, pp, catch_failures: true)
+      apply_manifest_on(node, pp, catch_changes: true)
     end
 
     it_behaves_like 'xdmod-full', node

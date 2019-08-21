@@ -2,8 +2,8 @@ require 'spec_helper_acceptance'
 
 describe 'xdmod class:' do
   context 'appkernel and akrr enabled' do
-    it 'should run successfully' do
-      pp =<<-EOS
+    it 'runs successfully' do
+      pp = <<-EOS
       host { 'xdmod.localdomain': ip => '127.0.0.1' }
       class { 'mysql::server':
         root_password => 'secret',
@@ -21,8 +21,8 @@ describe 'xdmod class:' do
       }
       EOS
 
-      apply_manifest(pp, :catch_failures => true)
-      apply_manifest(pp, :catch_changes => true)
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
     end
 
     it_behaves_like 'xdmod-appkernels', default
