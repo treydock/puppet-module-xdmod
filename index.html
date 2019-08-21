@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Documentation by YARD 0.9.20
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="puppet_class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h1 id="label-puppet-module-xdmod">puppet-module-xdmod</h1>
+
+<p><a href="https://forge.puppetlabs.com/treydock/xdmod"><img
+src="http://img.shields.io/puppetforge/v/treydock/xdmod.svg"></a> <a
+href="https://travis-ci.org/treydock/puppet-module-xdmod"><img
+src="https://travis-ci.org/treydock/puppet-module-xdmod.svg?branch=master"></a></p>
+
+<h4 id="label-Table+of+Contents">Table of Contents</h4>
+<ol><li>
+<p><a href="#label-Overview">Overview</a></p>
+<ul><li>
+<p><a href="#label-Open+xdmod+compatibility">Open XDMoD Compatibility</a></p>
+</li></ul>
+</li><li>
+<p><a href="#label-Usage">Usage - Configuration options</a></p>
+</li><li>
+<p><a href="#label-Reference">Reference - Parameter and detailed reference to all
+options</a></p>
+</li><li>
+<p><a href="#label-Limitations">Limitations - OS compatibility, etc.</a></p>
+</li><li>
+<p><a href="#label-Development">Development - Guide for contributing to the
+module</a></p>
+</li></ol>
+
+<h2 id="label-Overview">Overview</h2>
+
+<p>This module will manage <a href="http://xdmod.sourceforge.net/">Open
+XDMoD</a>. This module works best when paired with Hiera for defining
+parameter values.</p>
+
+<p>This module is designed so that different hosts can run the various
+components of Open XDMoD.</p>
+
+<h3 id="label-Open+XDMoD+Compatibility">Open XDMoD Compatibility</h3>
+
+<p>Open XDMoD Versions | 7.5.x | 8.0.x | 8.5.x | :—————————|:——-:|:——-:|:——:|
+<strong>puppet-module-xdmod 2.x</strong> | <strong>yes</strong> | no | no |
+<strong>puppet-module-xdmod 3.x</strong> | no | <strong>yes</strong> | no |
+<strong>puppet-module-xdmod 3.x</strong> | no | no | <strong>yes</strong>|</p>
+<ul><li>
+<p>puppet-module-xdmod <strong>2.x</strong> supports Open XDMoD
+<strong>7.5.x</strong></p>
+</li><li>
+<p>puppet-module-xdmod <strong>3.x</strong> supports Open XDMoD
+<strong>8.0.x</strong></p>
+</li><li>
+<p>puppet-module-xdmod <strong>4.x</strong> supports Open XDMoD
+<strong>8.5.x</strong></p>
+</li></ul>
+
+<h2 id="label-Usage">Usage</h2>
+
+<p>Examples of some hiera values that may be useful to set globally</p>
+
+<pre class="code ruby"><code class="ruby">xdmod::version: &#39;8.0.0&#39;
+# Disable roles that are enabled by default
+xdmod::web: false
+xdmod::database: false
+# Define which features of XDMoD are enabled
+xdmod::enable_appkernel: true
+xdmod::enable_supremm: true
+# Define site information
+xdmod::organization_name: My Org
+xdmod::organization_abbrev: MO
+# Define resources
+xdmod::resources:
+  - resource: example
+    name: Example
+    resource_type_id: 1
+    pi_column: account
+    shared_jobs: true
+xdmod::resource_specs:
+  - resource: example
+    processors: 12000
+    nodes: 500
+    ppn: 24
+xdmod::supremm_resources:
+  - resource: example
+    resource_id: 1
+    enabled: true
+    datasetmap: pcp
+    hardware:
+      gpfs: /gpfs
+    pcp_log_dir: /data/pcp-data/example
+    script_dir: /data/job-scripts/example
+# Set parameters used by multiple roles
+xdmod::web_host: &#39;xdmod.domain&#39;
+xdmod::akrr_host: &#39;akrr.domain&#39;
+xdmod::database_password: &#39;xdmod-db-password-here&#39;
+xdmod::database_host: &#39;dbhost.domain&#39;
+xdmod::akrr_restapi_rw_password: &#39;some-password&#39;
+xdmod::akrr_restapi_ro_password: &#39;some-password&#39;
+xdmod::akrr_database_password: &#39;some-password&#39;
+xdmod::supremm_mongodb_password: &#39;some-password&#39;
+xdmod::supremm_mongodb_host: &#39;mongodb.domain&#39;
+xdmod::pcp_resource:
+  - example
+xdmod::supremm_update_cron_times:
+  - 0
+  - 4
+xdmod::ingest_jobscripts_cron_times:
+  - 0
+  - 5
+xdmod::aggregate_supremm_cron_times:
+  - 0
+  - 7
+# Ensure cron times are after the times scheduled to run app kernels
+xdmod::akrr_ingestor_cron_times:
+  - 0
+  - 7
+xdmod::appkernel_reports_manager_cron_times:
+  - 0
+  - 8
+</code></pre>
+
+<p>If you run a local yum repo for XDMoD packages</p>
+
+<pre class="code ruby"><code class="ruby">xdmod::local_repo_name: &#39;local-repo-name-here&#39;
+</code></pre>
+
+<p>Enable Federated logins for XDMoD web host</p>
+
+<pre class="code ruby"><code class="ruby">xdmod::web: true
+xdmod::manage_simplesamlphp: true
+xdmod::simplesamlphp_config_source: &#39;puppet:///modules/site_xdmod/simplesamlphp/config.php&#39;
+xdmod::simplesamlphp_authsources_source: &#39;puppet:///modules/site_xdmod/simplesamlphp/authsources.php&#39;
+</code></pre>
+
+<p>Run the XDMoD web interface and AKRR web service with SUPReMM support</p>
+
+<pre class="code ruby"><code class="ruby">classes:
+  - &#39;xdmod&#39;
+xdmod::web: true
+xdmod::akrr: true
+xdmod::database: false
+xdmod::enable_appkernel: true
+xdmod::enable_supremm: true
+xdmod::enable_update_check: false
+</code></pre>
+
+<p>Host the MySQL databases for XDMoD, AKRR and SUPReMM</p>
+
+<pre class="code ruby"><code class="ruby">classes:
+  - &#39;xdmod&#39;
+xdmod::web: false
+xdmod::database: true
+xdmod::enable_appkernel: true
+xdmod::enable_supremm: true
+</code></pre>
+
+<p>A compute node that will collect PCP data for SUPReMM. The
+xdmod::supremm::compute::pcp class will declare the pcp class by default.
+The metrics defined in <code>pcp_static_metrics</code> and
+<code>pcp_standard_metrics</code> will also define <code>pcp::pmda</code>
+resources based on which metrics are enabled. See
+<code>xdmod::params</code> for some defaults. The infiniband, perfevent,
+nvidia, gpfs, slurm, and mic metrics are commented out.</p>
+
+<pre class="code ruby"><code class="ruby">classes:
+  - &#39;xdmod&#39;
+xdmod::web: false
+xdmod::database: false
+xdmod::compute: true
+xdmod::pcp_static_metrics:
+  - &#39;metrics that don&#39;t change often go here&#39;
+  - &#39;#comments can be defined too and will be present in config file as comments&#39;
+  - &#39;more static metrics&#39;
+xdmod::pcp_standard_metrics:
+  - &#39;metrics that change often like during a job&#39;
+  - &#39;#comments can be defined too and will be present in config file as comments&#39;
+  - &#39;more standard metrics&#39;
+</code></pre>
+
+<p>If you wish to use <code>include</code> style class declaration for the pcp
+class then the default pmlogger and pmie need to be removed and
+pmlogger_daily in cron needs to have modified arguments.</p>
+
+<pre class="code ruby"><code class="ruby">classes:
+  - &#39;xdmod&#39;
+pcp::include_default_pmlogger: false
+pcp::include_default_pmie: false
+pcp::pmlogger_daily_args: &#39;-M -k forever&#39;
+xdmod::web: false
+xdmod::database: false
+xdmod::compute: true
+xdmod::pcp_declare_method: &#39;include&#39;
+xdmod::pcp_static_metrics:
+  - &#39;metrics that don&#39;t change often go here&#39;
+  - &#39;#comments can be defined too and will be present in config file as comments&#39;
+  - &#39;more static metrics&#39;
+xdmod::pcp_standard_metrics:
+  - &#39;metrics that change often like during a job&#39;
+  - &#39;#comments can be defined too and will be present in config file as comments&#39;
+  - &#39;more standard metrics&#39;
+</code></pre>
+
+<p>A host that needs to run the SUPReMM job summarization.</p>
+
+<pre class="code ruby"><code class="ruby">classes:
+  - &#39;xdmod&#39;
+xdmod::supremm:: true
+</code></pre>
+
+<p>A MongoDB host needs to be setup for SUPReMM</p>
+
+<pre class="code ruby"><code class="ruby">classes:
+  - &#39;xdmod&#39;
+xdmod::web: false
+xdmod::database: false
+xdmod::supremm_database: true
+</code></pre>
+
+<h2 id="label-Reference">Reference</h2>
+
+<p><a
+href="http://treydock.github.io/puppet-module-xdmod/">treydock.github.io/puppet-module-xdmod/</a></p>
+
+<h2 id="label-Limitations">Limitations</h2>
+
+<p>This module has been tested on:</p>
+<ul><li>
+<p>CentOS 7</p>
+</li><li>
+<p>RedHat 7</p>
+</li></ul>
+
+<h2 id="label-Development">Development</h2>
+
+<h3 id="label-Testing">Testing</h3>
+
+<p>Testing requires the following dependencies:</p>
+<ul><li>
+<p>rake</p>
+</li><li>
+<p>bundler</p>
+</li></ul>
+
+<p>Install gem dependencies</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_install'>install</span>
+</code></pre>
+
+<p>Run unit tests</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_bundle'>bundle</span> <span class='id identifier rubyid_exec'>exec</span> <span class='id identifier rubyid_rake'>rake</span> <span class='id identifier rubyid_spec'>spec</span>
+</code></pre>
+
+<p>Docker based acceptance tests can also be run to test default behavior</p>
+
+<pre class="code ruby"><code class="ruby">BEAKER_set=centos-7 BEAKER_destroy=no bundle exec rake beaker
+</code></pre>
+
+<p>Docker acceptance tests can also be run to test full funtionality of
+multiple systems hosting various XDMoD components</p>
+
+<pre class="code ruby"><code class="ruby">BEAKER_set=centos-7-multinode BEAKER_destroy=no bundle exec rake beaker_full
+</code></pre>
+</div></div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>

@@ -1,0 +1,2863 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Puppet Class: xdmod
+  
+    &mdash; Documentation by YARD 0.9.20
+  
+</title>
+
+  <link rel="stylesheet" href="../css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="../css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "puppet_classes::xdmod";
+  relpath = '../';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="../puppet_class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="../_index.html">Index (x)</a> &raquo;
+    <span class='title'><span class='object_link'>Puppet Classes</span></span>
+     &raquo; 
+    <span class="title">xdmod</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="puppet_class_list_link"
+        href="../puppet_class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Puppet Class: xdmod</h1>
+<div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd><span class='object_link'><a href="xdmod_3A_3Aparams.html" title="puppet_classes::xdmod::params (puppet_class)">xdmod::params</a></span></dd>
+  </dl>
+  
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>
+      manifests/init.pp
+    </dd>
+  </dl>
+</div>
+
+  <h2>Summary</h2>
+  Manage XDMoD
+
+<h2>Overview</h2>
+<div class="docstring">
+  <div class="discussion">
+    
+  </div>
+</div>
+
+
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>version</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::version</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Version of XDMoD to install</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xdmod_appkernels_version</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::xdmod_appkernels_version</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Version of XDMoD AppKernels to install</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xdmod_supremm_version</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::xdmod_supremm_version</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Version of XDMoD SUPReMM to install</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>database</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets database role</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>web</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets web role</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets akrr role</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets supremm role</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_database</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets supremm database role</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>compute</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Sets compute role</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>enable_appkernel</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Enable XDMoD AppKernel support</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>enable_supremm</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Enable XDMod SUPReMM support</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>local_repo_name</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Name of yum repo hosting RPMs</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_epel</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if EPEL should be managed</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>package_ensure</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;present&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD package ensure property</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xdmod_supremm_package_ensure</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;present&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD supremm package ensure property</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xdmod_appkernels_package_ensure</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;present&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD appkernels package ensure property</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>package_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::package_name</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD package name</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>package_url</span>
+      
+      
+        <span class='type'>(<tt>Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::package_url</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD package RPM URL, not used if <code>local_repo_name</code> is defined</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>appkernels_package_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::appkernels_package_name</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD appkernels package name</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>appkernels_package_url</span>
+      
+      
+        <span class='type'>(<tt>Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::appkernels_package_url</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD appkernels package RPM URL, not used if <code>local_repo_name</code>
+is defined</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xdmod_supremm_package_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::xdmod_supremm_package_name</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD supremm package name</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>xdmod_supremm_package_url</span>
+      
+      
+        <span class='type'>(<tt>Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::xdmod_supremm_package_url</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD supremm package RPM URL, not used if <code>local_repo_name</code> is
+defined</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>database_host</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;localhost&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD database host</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>database_port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>3306</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD database port</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>database_user</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;xdmod&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD database user</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>database_password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;changeme&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD database password</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_database_user</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;akrr&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR database user</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_database_password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;changeme&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR database password</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>web_host</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;localhost&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>FQDN of web host</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_host</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;localhost&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>FQDN of AKRR host</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>scheduler</span>
+      
+      
+        <span class='type'>(<tt>Enum['slurm','torque','pbs','sge']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;slurm&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Scheduler to shred, used to define default shred commands and PI column</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>shredder_command</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[String, Array]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Shred command(s)</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>shred_hour_start</span>
+      
+      
+        <span class='type'>(<tt>Integer[0,23]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>1</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The numeric hour to start shredding</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>shred_minutes</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>5</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Time in minutes between shred operations if multiple shred commands</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ingest_hour</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer[0,23]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The numeric hour to start ingest</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>enable_update_check</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Enable XDMoD update check</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_apache_vhost</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Manage the XMDoD Apache Virtual Host</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>apache_vhost_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::apache_vhost_name</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The Apache Virtual Host name</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>apache_ssl_cert</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Unixpath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/etc/pki/tls/certs/localhost.crt&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Path to SSL cert used by Apache</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>apache_ssl_key</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Unixpath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/etc/pki/tls/private/localhost.key&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Path to SSL private key used by Apache</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>apache_ssl_chain</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Unixpath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Path to SSL chain used by Apache</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>portal_settings</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::portal_settings</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hash of portal_settings.ini settings to pass to
+<code>xdmod_portal_setting</code> resources</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>hierarchy_levels</span>
+      
+      
+        <span class='type'>(<tt>Xdmod::Hierarchy_Levels</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::hierarchy_levels</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hierarchy levels used when defining hierarchies</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>hierarchies</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::hierarchies</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Hierarchy lines, see XDMoD docs</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>group_to_hierarchy</span>
+      
+      
+        <span class='type'>(<tt>Hash</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::group_to_hierarchy</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Group to Hierarchy mappings, see XDMoD docs</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_pi_names</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::user_pi_names</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>User and PI names, see XDMoD docs</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>organization_name</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Organization name for XDMoD instance</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>organization_abbrev</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Organization abbreviation for XDMoD instance</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>resources</span>
+      
+      
+        <span class='type'>(<tt>Array[Xdmod::Resource]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Resources to define resources.json</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>resource_specs</span>
+      
+      
+        <span class='type'>(<tt>Array[Xdmod::Resource_Spec]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Resource specs for resource_specs.json</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>sender_email</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::sender_email</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Configure sender for EMail</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>debug_recipient</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Configure email addres to receive debug information</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>php_timezone</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>PHP Timezone</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>center_logo_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Source to image that will be used as center logo in XDMoD</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>center_logo_width</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The width of file from <code>center_logo_source</code></p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_user</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if managing XMDoD user</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>user_uid</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XMDoD user UID</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>group_gid</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>XDMoD user group GID</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_simplesamlphp</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if managing simplesamlphp</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>simplesamlphp_config_content</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The content for simplesamlphp config</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>simplesamlphp_config_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The source for simplesamlphp config</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>simplesamlphp_authsources_content</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The content for simplesaml php authsources</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>simplesamlphp_authsources_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The source for simplesaml php authsources</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>simplesamlphp_metadata_content</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The simplesamlphp metadata content</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>simplesamlphp_metadata_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The simplesamlphp metadata source</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>simplesamlphp_cert_country</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;US&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The simplesamlphp cert country</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>simplesamlphp_cert_organization</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The simplesamlphp cert organization</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>simplesamlphp_cert_commonname</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The simplesamlphp cert commonname</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_source_url</span>
+      
+      
+        <span class='type'>(<tt>Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::akrr_source_url</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The AKRR source URL</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_version</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::akrr_version</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The AKRR version. This version is used to build default
+<code>akrr_source_url</code>.</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_home</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Unixpath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR home path</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_akrr_user</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean to manage AKRR user</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_user</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;akrr&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR username</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_user_group</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;akrr&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR user group name</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_user_group_gid</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR user gropu GID</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_user_uid</span>
+      
+      
+        <span class='type'>(<tt>Optional[Integer]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR user UID</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_user_shell</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Unixpath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/bin/bash&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR user shell</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_user_home</span>
+      
+      
+        <span class='type'>(<tt>Optional[Stdlib::Unixpath]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR user home</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_user_managehome</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR user managehome property</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_user_comment</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;AKRR&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR user comment</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_user_system</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR user system property</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_restapi_port</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>8091</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR restapi port</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_restapi_rw_password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::akrr_restapi_rw_password</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR restapi RW password</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_restapi_ro_password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::akrr_restapi_ro_password</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR restapi RO password</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_cron_mailto</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR cron MAILTO</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>akrr_ingestor_cron_times</span>
+      
+      
+        <span class='type'>(<tt>Array[Integer, 2, 2]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[0,5]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AKRR ingestor cron times</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>appkernel_reports_manager_cron_times</span>
+      
+      
+        <span class='type'>(<tt>Array[Integer, 2, 2]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[0,6]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>AppKernel report manager cron times</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_version</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::supremm_version</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Version of SUPReMM to install, builds <code>supremm_package_url</code> if
+not defined</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_package_ensure</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;present&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>SUPReMM package ensure property</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_package_url</span>
+      
+      
+        <span class='type'>(<tt>Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::supremm_package_url</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The URL to download SUPReMM RPM from</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_package_name</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;supremm&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>SUPReMM RPM package name</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_mongodb_password</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;changeme&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>SUPReMM mongodb password</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_mongodb_host</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;localhost&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>SUPReMM mongodb host</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_mongodb_uri</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>SUPReMM mongodb URI</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_mongodb_replica_set</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>SUPReMM mongodb replica set</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_resources</span>
+      
+      
+        <span class='type'>(<tt>Array[Xdmod::Supremm_Resource]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>SUPReMM resources</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_update_cron_times</span>
+      
+      
+        <span class='type'>(<tt>Array[Integer, 2, 2]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[0,2]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The cron times to run supremm_update</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>ingest_jobscripts_cron_times</span>
+      
+      
+        <span class='type'>(<tt>Array[Integer, 2, 2]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[0,3]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The cron times to ingest job scripts</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>aggregate_supremm_cron_times</span>
+      
+      
+        <span class='type'>(<tt>Array[Integer, 2, 2]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[0,4]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The cron times to run supremm aggregation</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_archive_out_dir</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/dev/shm/supremm_test&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The path to supremm archive out</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>use_pcp</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that PCP should be used for compute environment</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pcp_declare_method</span>
+      
+      
+        <span class='type'>(<tt>Enum['include', 'resource']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;resource&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Should pcp class be included or declared like a resource</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pcp_resource</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>PCP resource name</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pcp_pmlogger_path_suffix</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>PCP pmlogger path suffix</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pcp_pmlogger_config_template</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;xdmod/supremm/compute/pcp/pmlogger-supremm.config.erb&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Template for pmlogger config</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pcp_pmlogger_config_source</span>
+      
+      
+        <span class='type'>(<tt>Optional[String]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Source for pmlogger config</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pcp_logging_static_freq</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;1 hour&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Frequency for PCP logging static metrics</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pcp_logging_standard_freq</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;30 sec&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Frequency for PCP logging standard metrics</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pcp_static_metrics</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::supremm_pcp_static_metrics</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>PCP static metrics</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pcp_standard_metrics</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::supremm_pcp_standard_metrics</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>PCP standard metrics</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pcp_environ_metrics</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::supremm_pcp_environ_metrics</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>PCP environment metrics</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pcp_merge_metrics</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that PCP metrics should be merged with defaults</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>pcp_hotproc_exclude_users</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>$xdmod::params::supremm_pcp_hotproc_exclude_users</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Users to exclude from PCP hotproc</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>storage_roles_source</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;puppet:///modules/xdmod/roles.d/storage.json&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The source of storage roles.json</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>storage_cron_times</span>
+      
+      
+        <span class='type'>(<tt>Array[Integer, 2, 2]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[0,5]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The cron times for storage shred/ingest</p>
+</div>
+      
+    </li>
+  
+</ul>
+
+
+</div><div class="method_details_list">
+  <table class="source_code">
+    <tr>
+      <td>
+        <pre class="lines">
+
+
+234
+235
+236
+237
+238
+239
+240
+241
+242
+243
+244
+245
+246
+247
+248
+249
+250
+251
+252
+253
+254
+255
+256
+257
+258
+259
+260
+261
+262
+263
+264
+265
+266
+267
+268
+269
+270
+271
+272
+273
+274
+275
+276
+277
+278
+279
+280
+281
+282
+283
+284
+285
+286
+287
+288
+289
+290
+291
+292
+293
+294
+295
+296
+297
+298
+299
+300
+301
+302
+303
+304
+305
+306
+307
+308
+309
+310
+311
+312
+313
+314
+315
+316
+317
+318
+319
+320
+321
+322
+323
+324
+325
+326
+327
+328
+329
+330
+331
+332
+333
+334
+335
+336
+337
+338
+339
+340
+341
+342
+343
+344
+345
+346
+347
+348
+349
+350
+351
+352
+353
+354
+355
+356
+357
+358
+359
+360
+361
+362
+363
+364
+365
+366
+367
+368
+369
+370
+371
+372
+373
+374
+375
+376
+377
+378
+379
+380
+381
+382
+383
+384
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394
+395
+396
+397
+398
+399
+400
+401
+402
+403
+404
+405
+406
+407
+408
+409
+410
+411
+412
+413
+414
+415
+416
+417
+418
+419
+420
+421
+422
+423
+424
+425
+426
+427
+428
+429
+430
+431
+432
+433
+434
+435
+436
+437
+438
+439
+440
+441
+442
+443
+444
+445
+446
+447
+448
+449
+450
+451
+452
+453
+454
+455
+456
+457
+458
+459
+460
+461
+462
+463
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490
+491
+492
+493
+494
+495
+496
+497
+498
+499
+500
+501
+502
+503
+504
+505
+506
+507
+508
+509
+510
+511
+512
+513
+514
+515
+516
+517
+518
+519
+520
+521
+522
+523
+524
+525
+526
+527
+528
+529
+530
+531
+532
+533
+534
+535
+536
+537
+538
+539
+540
+541
+542
+543
+544
+545
+546
+547
+548
+549
+550
+551
+552
+553
+554
+555
+556
+557
+558
+559
+560
+561
+562
+563
+564
+565
+566
+567</pre>
+      </td>
+      <td>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 234</span>
+
+class xdmod (
+  String $version                  = $xdmod::params::version,
+  String $xdmod_appkernels_version = $xdmod::params::xdmod_appkernels_version,
+  String $xdmod_supremm_version    = $xdmod::params::xdmod_supremm_version,
+
+  # Roles
+  Boolean $database                 = true,
+  Boolean $web                      = true,
+  Boolean $akrr                     = false,
+  Boolean $supremm                  = false,
+  Boolean $supremm_database         = false,
+  Boolean $compute                  = false,
+
+  Boolean $enable_appkernel                     = false,
+  Boolean $enable_supremm                       = false,
+  Optional[String] $local_repo_name             = undef,
+  Boolean $manage_epel                          = true,
+  String $package_ensure                        = &#39;present&#39;,
+  String $xdmod_supremm_package_ensure          = &#39;present&#39;,
+  String $xdmod_appkernels_package_ensure       = &#39;present&#39;,
+  String $package_name                          = $xdmod::params::package_name,
+  Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
+    $package_url                                = $xdmod::params::package_url,
+  String $appkernels_package_name               = $xdmod::params::appkernels_package_name,
+  Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
+    $appkernels_package_url                     = $xdmod::params::appkernels_package_url,
+  String $xdmod_supremm_package_name            = $xdmod::params::xdmod_supremm_package_name,
+  Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
+    $xdmod_supremm_package_url                  = $xdmod::params::xdmod_supremm_package_url,
+  String $database_host                   = &#39;localhost&#39;,
+  Integer $database_port                   = 3306,
+  String $database_user                         = &#39;xdmod&#39;,
+  String $database_password                     = &#39;changeme&#39;,
+  String $akrr_database_user                    = &#39;akrr&#39;,
+  String $akrr_database_password                = &#39;changeme&#39;,
+  String $web_host                        = &#39;localhost&#39;,
+  String $akrr_host                       = &#39;localhost&#39;,
+  Enum[&#39;slurm&#39;,&#39;torque&#39;,&#39;pbs&#39;,&#39;sge&#39;] $scheduler = &#39;slurm&#39;,
+  Optional[Variant[String, Array]]
+    $shredder_command                           = undef,
+  Integer[0,23] $shred_hour_start               = 1,
+  Integer $shred_minutes                        = 5,
+  Optional[Integer[0,23]] $ingest_hour          = undef,
+  Boolean $enable_update_check                  = true,
+  Boolean $manage_apache_vhost                  = true,
+  String $apache_vhost_name               = $xdmod::params::apache_vhost_name,
+  Stdlib::Unixpath $apache_ssl_cert             = &#39;/etc/pki/tls/certs/localhost.crt&#39;,
+  Stdlib::Unixpath $apache_ssl_key              = &#39;/etc/pki/tls/private/localhost.key&#39;,
+  Optional[Stdlib::Unixpath] $apache_ssl_chain  = undef,
+  Hash $portal_settings                         = $xdmod::params::portal_settings,
+  Xdmod::Hierarchy_Levels $hierarchy_levels     = $xdmod::params::hierarchy_levels,
+  Array $hierarchies                            = $xdmod::params::hierarchies,
+  Hash $group_to_hierarchy                      = $xdmod::params::group_to_hierarchy,
+  Array $user_pi_names                          = $xdmod::params::user_pi_names,
+  Optional[String] $organization_name           = undef,
+  Optional[String] $organization_abbrev         = undef,
+  Array[Xdmod::Resource] $resources             = [],
+  Array[Xdmod::Resource_Spec] $resource_specs   = [],
+  String $sender_email                          = $xdmod::params::sender_email,
+  String $debug_recipient                       = &#39;&#39;,
+  Optional[String] $php_timezone                = undef,
+  Optional[String] $center_logo_source          = undef,
+  Optional[Integer] $center_logo_width          = undef,
+
+  # XDMoD user/group
+  Boolean $manage_user = true,
+  Optional[Integer] $user_uid = undef,
+  Optional[Integer] $group_gid = undef,
+
+  # simplesamlphp
+  Boolean $manage_simplesamlphp = false,
+  Optional[String] $simplesamlphp_config_content = undef,
+  Optional[String] $simplesamlphp_config_source = undef,
+  Optional[String] $simplesamlphp_authsources_content = undef,
+  Optional[String] $simplesamlphp_authsources_source = undef,
+  Optional[String] $simplesamlphp_metadata_content = undef,
+  Optional[String] $simplesamlphp_metadata_source = undef,
+  String $simplesamlphp_cert_country = &#39;US&#39;,
+  Optional[String] $simplesamlphp_cert_organization = undef,
+  Optional[String] $simplesamlphp_cert_commonname = undef,
+
+  # AKRR Install
+  Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
+    $akrr_source_url                    = $xdmod::params::akrr_source_url,
+  String $akrr_version                  = $xdmod::params::akrr_version,
+  Optional[Stdlib::Unixpath] $akrr_home = undef,
+
+  # AKRR User
+  Boolean $manage_akrr_user                   = true,
+  String $akrr_user                           = &#39;akrr&#39;,
+  String $akrr_user_group                     = &#39;akrr&#39;,
+  Optional[Integer] $akrr_user_group_gid      = undef,
+  Optional[Integer] $akrr_user_uid            = undef,
+  Stdlib::Unixpath $akrr_user_shell           = &#39;/bin/bash&#39;,
+  Optional[Stdlib::Unixpath] $akrr_user_home  = undef,
+  Boolean $akrr_user_managehome               = true,
+  String $akrr_user_comment                   = &#39;AKRR&#39;,
+  Boolean $akrr_user_system                   = true,
+
+  # AKRR config
+  Integer $akrr_restapi_port     = 8091,
+  String $akrr_restapi_rw_password    = $xdmod::params::akrr_restapi_rw_password,
+  String $akrr_restapi_ro_password    = $xdmod::params::akrr_restapi_ro_password,
+  Optional[String] $akrr_cron_mailto  = undef,
+  Array[Integer, 2, 2] $akrr_ingestor_cron_times = [0,5],
+  Array[Integer, 2, 2] $appkernel_reports_manager_cron_times = [0,6],
+
+  # SUPReMM install
+  String $supremm_version         = $xdmod::params::supremm_version,
+  String $supremm_package_ensure  = &#39;present&#39;,
+  Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
+    $supremm_package_url          = $xdmod::params::supremm_package_url,
+  String $supremm_package_name    = &#39;supremm&#39;,
+
+  # SUPReMM config
+  String $supremm_mongodb_password              = &#39;changeme&#39;,
+  String $supremm_mongodb_host            = &#39;localhost&#39;,
+  Optional[String] $supremm_mongodb_uri         = undef,
+  Optional[String] $supremm_mongodb_replica_set = undef,
+  Array[Xdmod::Supremm_Resource] $supremm_resources = [],
+  Array[Integer, 2, 2] $supremm_update_cron_times = [0,2],
+  Array[Integer, 2, 2] $ingest_jobscripts_cron_times = [0,3],
+  Array[Integer, 2, 2] $aggregate_supremm_cron_times = [0,4],
+  Stdlib::Absolutepath $supremm_archive_out_dir = &#39;/dev/shm/supremm_test&#39;,
+
+  # SUPReMM compute
+  Boolean $use_pcp                                = true,
+  Enum[&#39;include&#39;, &#39;resource&#39;] $pcp_declare_method = &#39;resource&#39;,
+  Optional[String] $pcp_resource                  = undef,
+  Optional[String] $pcp_pmlogger_path_suffix      = undef,
+  String $pcp_pmlogger_config_template            = &#39;xdmod/supremm/compute/pcp/pmlogger-supremm.config.erb&#39;,
+  Optional[String] $pcp_pmlogger_config_source    = undef,
+  String $pcp_logging_static_freq                 = &#39;1 hour&#39;,
+  String $pcp_logging_standard_freq               = &#39;30 sec&#39;,
+  Array $pcp_static_metrics                       = $xdmod::params::supremm_pcp_static_metrics,
+  Array $pcp_standard_metrics                     = $xdmod::params::supremm_pcp_standard_metrics,
+  Array $pcp_environ_metrics                      = $xdmod::params::supremm_pcp_environ_metrics,
+  Boolean $pcp_merge_metrics                      = true,
+  Array $pcp_hotproc_exclude_users                = $xdmod::params::supremm_pcp_hotproc_exclude_users,
+
+  # Storage
+  String $storage_roles_source = &#39;puppet:///modules/xdmod/roles.d/storage.json&#39;,
+  Array[Integer, 2, 2] $storage_cron_times = [0,5],
+) inherits xdmod::params {
+
+  case $scheduler {
+    &#39;slurm&#39;: {
+      $scheduler_shredder_command = &#39;/usr/bin/xdmod-slurm-helper --quiet -r RESOURCE&#39;
+      $pi_column = &#39;account_name&#39;
+    }
+    &#39;pbs&#39;: {
+      $scheduler_shredder_command = &#39;/usr/bin/xdmod-shredder --quiet -r RESOURCE -f pbs -d /var/spool/pbs/server_priv/accounting&#39;
+      $pi_column = &#39;account&#39;
+    }
+    &#39;torque&#39;: {
+      $scheduler_shredder_command = &#39;/usr/bin/xdmod-shredder --quiet -r RESOURCE -f pbs -d /var/spool/torque/server_priv/accounting&#39;
+      $pi_column = &#39;account&#39;
+    }
+    &#39;sge&#39;: {
+      $scheduler_shredder_command = &#39;/usr/bin/xdmod-shredder --quiet -r RESOURCE -f sge -i /var/lib/gridengine/default/common/accounting&#39;
+      $pi_column = undef
+    }
+    default: {
+      fail(&quot;Module ${module_name}: Supported scheduler value is either slurm, pbs, torque or sge.&quot;)
+    }
+  }
+
+  if $compute {
+    if $use_pcp {
+      if ! $pcp_resource {
+        fail(&quot;Module ${module_name}: pcp_resource must be defined.&quot;)
+      }
+    }
+  }
+
+  $storage_resources = $resources.filter |$r| { $r[&#39;resource_type_id&#39;] == 9 }
+
+  $shredder_command_default = $resources.map |$r| {
+    regsubst($scheduler_shredder_command, &#39;RESOURCE&#39;, $r[&#39;resource&#39;], &#39;G&#39;)
+  }
+  $shredder_command_real = pick($shredder_command, $shredder_command_default)
+
+  $_package_url = regsubst($package_url, &#39;VERSION&#39;, $version, &#39;G&#39;)
+  $_appkernels_package_url = regsubst($appkernels_package_url, &#39;VERSION&#39;, $xdmod_appkernels_version, &#39;G&#39;)
+  $_xdmod_supremm_package_url = regsubst($xdmod_supremm_package_url, &#39;VERSION&#39;, $xdmod_supremm_version, &#39;G&#39;)
+
+  $_akrr_source_url = regsubst($akrr_source_url, &#39;AKRR_VERSION&#39;, $akrr_version, &#39;G&#39;)
+
+  $_akrr_user_home = pick($akrr_user_home, &quot;/home/${akrr_user}&quot;)
+  $_akrr_home = pick($akrr_home, &quot;${xdmod::_akrr_user_home}/akrr-${xdmod::akrr_version}&quot;)
+
+  $_supremm_package_url = regsubst($supremm_package_url, &#39;SUPREMM_VERSION&#39;, $supremm_version, &#39;G&#39;)
+  $_supremm_mongodb_host = $supremm_mongodb_host ? {
+    Array   =&gt; join($supremm_mongodb_host, &#39;,&#39;),
+    default =&gt; $supremm_mongodb_host,
+  }
+  if $supremm_mongodb_replica_set {
+    $mongodb_uri_replica_set = &quot;?replicaSet=${supremm_mongodb_replica_set}&quot;
+    $mongodb_args_replica_set = &quot;${supremm_mongodb_replica_set}/&quot;
+  } else {
+    $mongodb_uri_replica_set = &#39;&#39;
+    $mongodb_args_replica_set = &#39;&#39;
+  }
+  $_supremm_mongodb_uri = pick($supremm_mongodb_uri, &quot;mongodb://supremm:${supremm_mongodb_password}@${_supremm_mongodb_host}/supremm${mongodb_uri_replica_set}&quot;)
+  $supremm_mongo_args = &quot;-u supremm -p ${supremm_mongodb_password} --host ${mongodb_args_replica_set}${_supremm_mongodb_host} supremm&quot;
+
+  if $manage_epel {
+    $epel = [Yumrepo[&#39;epel&#39;]]
+    include ::epel
+  } else {
+    $epel = []
+  }
+
+  if $local_repo_name {
+    $_package_require = [Yumrepo[$local_repo_name]] + $epel
+  } else  {
+    $_package_require = $epel
+  }
+
+  $_mysql_remote_args = &quot;-h ${database_host} -u ${database_user} -p${database_password}&quot;
+
+  if $xdmod::params::compute_only and ($web or $database or $akrr or $supremm or $supremm_database) {
+    fail(&#39;This operating system is only supported for compute resources.&#39;)
+  }
+
+  if $database and $web {
+    include ::phantomjs
+    contain xdmod::user
+    contain xdmod::install
+    contain xdmod::database
+    contain xdmod::config
+    contain xdmod::config::simplesamlphp
+    include xdmod::apache
+
+    Class[&#39;::phantomjs&#39;]
+    -&gt; Class[&#39;xdmod::user&#39;]
+    -&gt; Class[&#39;xdmod::install&#39;]
+    -&gt; Class[&#39;xdmod::database&#39;]
+    -&gt; Class[&#39;xdmod::config&#39;]
+    -&gt; Class[&#39;xdmod::config::simplesamlphp&#39;]
+    -&gt; Class[&#39;xdmod::apache&#39;]
+  } elsif $database {
+    contain xdmod::database
+  } elsif $web {
+    include ::phantomjs
+    contain xdmod::user
+    contain xdmod::install
+    contain xdmod::config
+    contain xdmod::config::simplesamlphp
+    contain xdmod::apache
+
+    Class[&#39;::phantomjs&#39;]
+    -&gt; Class[&#39;xdmod::user&#39;]
+    -&gt; Class[&#39;xdmod::install&#39;]
+    -&gt; Class[&#39;xdmod::config&#39;]
+    -&gt; Class[&#39;xdmod::config::simplesamlphp&#39;]
+    -&gt; Class[&#39;xdmod::apache&#39;]
+  }
+
+  if $akrr {
+    include mysql::bindings
+    include mysql::bindings::python
+    contain xdmod::akrr::user
+    contain xdmod::akrr::install
+    contain xdmod::akrr::config
+    contain xdmod::akrr::service
+
+    Class[&#39;mysql::bindings::python&#39;]
+    -&gt; Class[&#39;xdmod::akrr::user&#39;]
+    -&gt; Class[&#39;xdmod::akrr::install&#39;]
+    -&gt; Class[&#39;xdmod::akrr::config&#39;]
+    -&gt; Class[&#39;xdmod::akrr::service&#39;]
+
+    if $database {
+      Class[&#39;xdmod::database&#39;]-&gt;Class[&#39;xdmod::akrr::user&#39;]
+    }
+  }
+
+  if $supremm_database {
+    contain xdmod::supremm::database
+  }
+
+  if $supremm {
+    if $web {
+      $supremm_mysql_access = &#39;include&#39;
+      Class[&#39;xdmod::supremm::config&#39;]-&gt;Class[&#39;xdmod::config&#39;]
+    } else {
+      $supremm_mysql_access = &#39;defaultsfile&#39;
+    }
+
+    include mysql::client
+    include mongodb::client
+    contain xdmod::supremm::install
+    contain xdmod::supremm::config
+
+    case $xdmod::pcp_declare_method {
+      &#39;include&#39;: {
+        include ::pcp
+      }
+      &#39;resource&#39;: {
+        class { &#39;::pcp&#39;:
+          ensure         =&gt; &#39;stopped&#39;,
+          package_ensure =&gt; &#39;3.12.2-1&#39;,
+        }
+      }
+      default: {
+        # Do nothing
+      }
+    }
+
+    if $manage_epel {
+      Yumrepo[&#39;epel&#39;]-&gt;Package[&#39;mongodb_client&#39;]
+    }
+
+    Class[&#39;::pcp&#39;]
+    -&gt; Class[&#39;xdmod::supremm::install&#39;]
+    -&gt; Class[&#39;xdmod::supremm::config&#39;]
+
+    if $database {
+      Class[&#39;xdmod::database&#39;]-&gt;Class[&#39;xdmod::supremm::config&#39;]
+    }
+
+    if $supremm_database {
+      Class[&#39;xdmod::supremm::database&#39;]-&gt;Class[&#39;xdmod::supremm::install&#39;]
+    }
+  }
+
+  if $compute {
+    if $use_pcp {
+      contain xdmod::supremm::compute::pcp
+    }
+  }
+
+}</pre>
+      </td>
+    </tr>
+  </table>
+</div>
+</div>
+
+      <div id="footer">
+     Generated by <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>.
+</div>
+
+    </div>
+  </body>
+</html>
