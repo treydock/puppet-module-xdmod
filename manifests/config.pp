@@ -1,8 +1,6 @@
 # Private class
 class xdmod::config {
 
-  create_resources('xdmod_portal_setting', $xdmod::portal_settings)
-
   Xdmod_portal_setting {
     before => [
       File['/etc/xdmod/hierarchy.csv'],
@@ -10,6 +8,10 @@ class xdmod::config {
       File['/etc/xdmod/names.csv'],
       Exec['acl-config'],
     ]
+  }
+
+  $xdmod::portal_settings.each |$name, $data| {
+    xdmod_portal_setting { $name: * => $data }
   }
 
   file { '/etc/xdmod/portal_settings.ini':

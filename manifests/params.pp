@@ -1,7 +1,5 @@
-# == Class: xdmod::params
-#
-# Private class.
-#
+# @summary XDMoD module defaults
+# @api private
 class xdmod::params {
 
   $version                  = '8.1.2'

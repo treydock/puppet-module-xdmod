@@ -256,7 +256,6 @@ class xdmod (
   Array $pcp_standard_metrics                     = $xdmod::params::supremm_pcp_standard_metrics,
   Array $pcp_environ_metrics                      = $xdmod::params::supremm_pcp_environ_metrics,
   Boolean $pcp_merge_metrics                      = true,
-  Boolean $pcp_install_pmie_config                = true,
   Array $pcp_hotproc_exclude_users                = $xdmod::params::supremm_pcp_hotproc_exclude_users,
 
   # Storage
@@ -327,6 +326,7 @@ class xdmod (
 
   if $manage_epel {
     $epel = [Yumrepo['epel']]
+    include ::epel
   } else {
     $epel = []
   }
@@ -339,92 +339,65 @@ class xdmod (
 
   $_mysql_remote_args = "-h ${database_host} -u ${database_user} -p${database_password}"
 
-  case $::osfamily {
-    'RedHat': {
-      if $manage_epel {
-        include ::epel
-      }
-    }
-    default: {
-      # Do nothing
-    }
-  }
-
   if $xdmod::params::compute_only and ($web or $database or $akrr or $supremm or $supremm_database) {
     fail('This operating system is only supported for compute resources.')
   }
 
-  anchor { 'xdmod::start': }
-  anchor { 'xdmod::end': }
-
   if $database and $web {
     include ::phantomjs
-    include xdmod::user
-    include xdmod::install
-    include xdmod::database
-    include xdmod::config
-    include xdmod::config::simplesamlphp
+    contain xdmod::user
+    contain xdmod::install
+    contain xdmod::database
+    contain xdmod::config
+    contain xdmod::config::simplesamlphp
     include xdmod::apache
 
-    Anchor['xdmod::start']
-    -> Class['::phantomjs']
+    Class['::phantomjs']
     -> Class['xdmod::user']
     -> Class['xdmod::install']
     -> Class['xdmod::database']
     -> Class['xdmod::config']
     -> Class['xdmod::config::simplesamlphp']
     -> Class['xdmod::apache']
-    -> Anchor['xdmod::end']
   } elsif $database {
-    include xdmod::database
-
-    Anchor['xdmod::start']
-    -> Class['xdmod::database']
-    -> Anchor['xdmod::end']
+    contain xdmod::database
   } elsif $web {
     include ::phantomjs
-    include xdmod::user
-    include xdmod::install
-    include xdmod::config
-    include xdmod::config::simplesamlphp
-    include xdmod::apache
+    contain xdmod::user
+    contain xdmod::install
+    contain xdmod::config
+    contain xdmod::config::simplesamlphp
+    contain xdmod::apache
 
-    Anchor['xdmod::start']
-    -> Class['::phantomjs']
+    Class['::phantomjs']
     -> Class['xdmod::user']
     -> Class['xdmod::install']
     -> Class['xdmod::config']
     -> Class['xdmod::config::simplesamlphp']
     -> Class['xdmod::apache']
-    -> Anchor['xdmod::end']
   }
 
   if $akrr {
-    anchor { 'xdmod::akrr::start': }
-    anchor { 'xdmod::akrr::end': }
-
     include mysql::bindings
     include mysql::bindings::python
-    include xdmod::akrr::user
-    include xdmod::akrr::install
-    include xdmod::akrr::config
-    include xdmod::akrr::service
+    contain xdmod::akrr::user
+    contain xdmod::akrr::install
+    contain xdmod::akrr::config
+    contain xdmod::akrr::service
 
-    Anchor['xdmod::akrr::start']
-    -> Class['mysql::bindings::python']
+    Class['mysql::bindings::python']
     -> Class['xdmod::akrr::user']
     -> Class['xdmod::akrr::install']
     -> Class['xdmod::akrr::config']
     -> Class['xdmod::akrr::service']
-    -> Anchor['xdmod::akrr::end']
 
     if $database {
-      Class['xdmod::database']->Anchor['xdmod::akrr::start']
+      Class['xdmod::database']->Class['xdmod::akrr::user']
     }
   }
 
   if $supremm_database {
-    include xdmod::supremm::database
+    contain xdmod::supremm::database
   }
 
   if $supremm {
@@ -437,8 +410,8 @@ class xdmod (
 
     include mysql::client
     include mongodb::client
-    include xdmod::supremm::install
-    include xdmod::supremm::config
+    contain xdmod::supremm::install
+    contain xdmod::supremm::config
 
     case $xdmod::pcp_declare_method {
       'include': {
@@ -459,11 +432,9 @@ class xdmod (
       Yumrepo['epel']->Package['mongodb_client']
     }
 
-    Anchor['xdmod::start']
-    -> Class['::pcp']
+    Class['::pcp']
     -> Class['xdmod::supremm::install']
     -> Class['xdmod::supremm::config']
-    -> Anchor['xdmod::end']
 
     if $database {
       Class['xdmod::database']->Class['xdmod::supremm::config']
@@ -476,11 +447,7 @@ class xdmod (
 
   if $compute {
     if $use_pcp {
-      include xdmod::supremm::compute::pcp
-
-      Anchor['xdmod::start']
-      -> Class['xdmod::supremm::compute::pcp']
-      -> Anchor['xdmod::end']
+      contain xdmod::supremm::compute::pcp
     }
   }
 
