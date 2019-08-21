@@ -1,4 +1,5 @@
-#
+# @summary Manage XDMoD user
+# @api private
 class xdmod::user {
 
   if $xdmod::manage_user {

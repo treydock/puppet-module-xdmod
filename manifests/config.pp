@@ -1,4 +1,5 @@
-# Private class
+# @summary Manage XDMoD configs
+# @api private
 class xdmod::config {
 
   Xdmod_portal_setting {

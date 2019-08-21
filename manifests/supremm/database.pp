@@ -1,4 +1,5 @@
-# Private class
+# @summary Manage XDMoD SUPReMM databases
+# @api private
 class xdmod::supremm::database {
 
   include mongodb::server

@@ -1,4 +1,5 @@
-# Private class
+# @summary Manage XDMoD AKRR install
+# @api private
 class xdmod::akrr::install {
 
   file { $xdmod::_akrr_home:

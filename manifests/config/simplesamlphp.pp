@@ -1,4 +1,5 @@
-#
+# @summary Manage XDMoD simplesamlphp
+# @api private
 class xdmod::config::simplesamlphp {
 
   $dirs = [

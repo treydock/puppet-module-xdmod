@@ -1,5 +1,6 @@
 # puppet-module-xdmod
 
+[![Puppet Forge](http://img.shields.io/puppetforge/v/treydock/xdmod.svg)](https://forge.puppetlabs.com/treydock/xdmod)
 [![Build Status](https://travis-ci.org/treydock/puppet-module-xdmod.svg?branch=master)](https://travis-ci.org/treydock/puppet-module-xdmod)
 
 #### Table of Contents
@@ -19,13 +20,15 @@ This module is designed so that different hosts can run the various components o
 
 ### Open XDMoD Compatibility
 
-Open XDMoD Versions         | 7.5.x   | 8.0.x   |
-:---------------------------|:-------:|:-------:|
-**puppet-module-xdmod 2.x** | **yes** | no      |
-**puppet-module-xdmod 3.x** | no      | **yes** |
+Open XDMoD Versions         | 7.5.x   | 8.0.x   | 8.5.x  |
+:---------------------------|:-------:|:-------:|:------:|
+**puppet-module-xdmod 2.x** | **yes** | no      | no     |
+**puppet-module-xdmod 3.x** | no      | **yes** | no     |
+**puppet-module-xdmod 3.x** | no      | no      | **yes**|
 
 * puppet-module-xdmod **2.x** supports Open XDMoD **7.5.x**
 * puppet-module-xdmod **3.x** supports Open XDMoD **8.0.x**
+* puppet-module-xdmod **4.x** supports Open XDMoD **8.5.x**
 
 ## Usage
 
@@ -46,6 +49,8 @@ Examples of some hiera values that may be useful to set globally
       - resource: example
         name: Example
         resource_type_id: 1
+        pi_column: account
+        shared_jobs: true
     xdmod::resource_specs:
       - resource: example
         processors: 12000
@@ -72,6 +77,22 @@ Examples of some hiera values that may be useful to set globally
     xdmod::supremm_mongodb_host: 'mongodb.domain'
     xdmod::pcp_resource:
       - example
+    xdmod::supremm_update_cron_times:
+      - 0
+      - 4
+    xdmod::ingest_jobscripts_cron_times:
+      - 0
+      - 5
+    xdmod::aggregate_supremm_cron_times:
+      - 0
+      - 7
+    # Ensure cron times are after the times scheduled to run app kernels
+    xdmod::akrr_ingestor_cron_times:
+      - 0
+      - 7
+    xdmod::appkernel_reports_manager_cron_times:
+      - 0
+      - 8
 
 If you run a local yum repo for XDMoD packages
 
@@ -156,32 +177,7 @@ A MongoDB host needs to be setup for SUPReMM
 
 ## Reference
 
-### Classes
-
-#### Public classes
-
-* `xdmod`: Installs and configures xdmod.
-
-#### Private classes
-
-* `xdmod::install`: Installs xdmod packages.
-* `xdmod::database`: Manage XDMoD databases.
-* `xdmod::config`: Configures xdmod.
-* `xdmod::config::simplesamlphp`: Configures federated logins
-* `xdmod::apache`: Manage Apache configurations.
-* `xdmod::params`: Sets parameter defaults.
-* `xdmod::akrr::user`: Create AKRR user and group
-* `xdmod::akrr::install`: Install AKRR
-* `xdmod::akrr::config`: Configure AKRR
-* `xdmod::akrr::service`: Manage AKRR services
-* `xdmod::supremm::install`: Install SUPReMM
-* `xdmod::supremm::database`: Manage SUPReMM MongoDB database
-* `xdmod::supremm::config`: Configure SUPReMM
-* `xdmod::supremm::compute::pcp`: Configure compute PCP data collection
-
-#### Class xdmod
-
-TODO
+[http://treydock.github.io/puppet-module-xdmod/](http://treydock.github.io/puppet-module-xdmod/)
 
 ## Limitations
 
@@ -205,16 +201,12 @@ Install gem dependencies
 
 Run unit tests
 
-    bundle exec rake test
-
-If you have Vagrant >= 1.2.0 installed you can run system tests
-
-    bundle exec rake beaker
+    bundle exec rake spec
 
 Docker based acceptance tests can also be run to test default behavior
 
-    BEAKER_set=centos-7-x64-docker BEAKER_destroy=no bundle exec rake beaker
+    BEAKER_set=centos-7 BEAKER_destroy=no bundle exec rake beaker
 
 Docker acceptance tests can also be run to test full funtionality of multiple systems hosting various XDMoD components
 
-    BEAKER_set=centos-7-x64-docker-multinode BEAKER_destroy=no bundle exec rake beaker_full
+    BEAKER_set=centos-7-multinode BEAKER_destroy=no bundle exec rake beaker_full

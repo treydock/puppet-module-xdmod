@@ -1,4 +1,5 @@
-# Private class
+# @summary Manage XDMoD packages
+# @api private
 class xdmod::install {
 
   if $xdmod::local_repo_name {
