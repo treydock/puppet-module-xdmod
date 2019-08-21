@@ -13,20 +13,16 @@
       "version_requirement": ">= 4.13.1 <6.0.0"
     },
     {
-      "name": "puppetlabs/apache",
-      "version_requirement": ">= 1.8.0 <5.0.0"
-    },
-    {
       "name": "puppetlabs/inifile",
       "version_requirement": ">= 1.0.0 <4.0.0"
     },
     {
       "name": "puppetlabs/mysql",
-      "version_requirement": ">= 3.1.0 <9.0.0"
+      "version_requirement": ">= 3.1.0 <11.0.0"
     },
     {
       "name": "puppet/mongodb",
-      "version_requirement": ">= 1.0.0 <3.0.0"
+      "version_requirement": ">= 1.0.0 <4.0.0"
     },
     {
       "name": "stahnma/epel",
@@ -39,6 +35,10 @@
     {
       "name": "puppet/yum",
       "version_requirement": ">= 1.0.0 <4.0.0"
+    },
+    {
+      "name": "puppetlabs/apache",
+      "version_requirement": ">= 1.8.0 <6.0.0"
     },
     {
       "name": "herculesteam/augeasproviders_shellvar",
