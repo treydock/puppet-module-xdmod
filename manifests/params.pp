@@ -7,8 +7,8 @@ class xdmod::params {
   $version                  = '8.1.2'
   $xdmod_appkernels_version = '8.1.0'
   $xdmod_supremm_version    = '8.1.0'
-  $sender_email       = "xdmod@xdmod.${::domain}"
-  $apache_vhost_name  = "xdmod.${::domain}"
+  $sender_email       = "xdmod@xdmod.${facts['domain']}"
+  $apache_vhost_name  = "xdmod.${facts['domain']}"
   $portal_settings    = {}
   $hierarchy_levels  = {
     'top'     => {'label' => 'Hierarchy Top Level', 'info' => ''},

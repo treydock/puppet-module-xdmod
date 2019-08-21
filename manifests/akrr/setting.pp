@@ -1,4 +1,9 @@
-# == Define: xdmod::akrr::setting
+# @summary Manage AKRR config setting value
+#
+# @param value
+#   Setting value
+# @param quote
+#   Should value be quoted
 define xdmod::akrr::setting ($value, $quote = undef) {
 
   include xdmod

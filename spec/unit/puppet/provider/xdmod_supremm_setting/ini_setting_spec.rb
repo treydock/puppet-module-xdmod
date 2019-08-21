@@ -13,20 +13,23 @@ $LOAD_PATH.push(
     'fixtures',
     'modules',
     'inifile',
-    'lib')
+    'lib',
+  ),
 )
 require 'spec_helper'
 provider_class = Puppet::Type.type(:xdmod_supremm_setting).provider(:ini_setting)
 describe provider_class do
-  before :each do
-    resource = Puppet::Type::Xdmod_supremm_setting.new(
-      {:name => 'vars/foo', :value => 'bar'}
+  let(:resource) do
+    Puppet::Type::Xdmod_supremm_setting.new(
+      name: 'vars/foo', value: 'bar',
     )
-    @provider = provider_class.new(resource)
+  end
+  let(:provider) do
+    provider_class.new(resource)
   end
 
-  it 'should set section and setting' do
-    @provider.section.should == 'vars'
-    @provider.setting.should == 'foo'
+  it 'sets section and setting' do
+    expect(provider.section).to eq 'vars'
+    expect(provider.setting).to eq 'foo'
   end
 end

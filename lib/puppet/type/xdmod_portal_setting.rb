@@ -1,13 +1,12 @@
 Puppet::Type.newtype(:xdmod_portal_setting) do
-
   ensurable
 
-  newparam(:name, :namevar => true) do
+  newparam(:name, namevar: true) do
     desc 'Section/setting name to manage from portal_settings.ini'
     # namevar should be of the form section/setting
     validate do |value|
-      unless value =~ /\S+\/\S+/
-        fail("Invalid xdmod_portal_setting #{value}, entries should be in the form of section/setting.")
+      unless value =~ %r{\S+/\S+}
+        raise("Invalid xdmod_portal_setting #{value}, entries should be in the form of section/setting.")
       end
     end
   end
@@ -18,24 +17,24 @@ Puppet::Type.newtype(:xdmod_portal_setting) do
       '"' + v.to_s.strip + '"'
     end
 
-    def is_to_s( currentvalue )
+    def is_to_s(currentvalue) # rubocop:disable Style/PredicateName
       if resource.secret?
-        return '[old secret redacted]'
+        '[old secret redacted]'
       else
-        return currentvalue
+        currentvalue
       end
     end
 
-    def should_to_s( newvalue )
+    def should_to_s(newvalue)
       if resource.secret?
-        return '[new secret redacted]'
+        '[new secret redacted]'
       else
-        return newvalue
+        newvalue
       end
     end
   end
 
-  newparam(:secret, :boolean => true) do
+  newparam(:secret, boolean: true) do
     desc 'Whether to hide the value from Puppet logs. Defaults to `false`.'
 
     newvalues(:true, :false)

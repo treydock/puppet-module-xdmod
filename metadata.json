@@ -5,40 +5,93 @@
   "summary": "XDMoD Puppet module",
   "license": "Apache-2.0",
   "source": "git://github.com/treydock/puppet-module-xdmod.git",
-  "issues_url": "https://github.com/treydock/puppet-module-xdmod/issues",
   "project_page": "https://github.com/treydock/puppet-module-xdmod",
-  "tags": [ "xdmod", "hpc" ],
+  "issues_url": "https://github.com/treydock/puppet-module-xdmod/issues",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 4.13.1 <6.0.0"
+    },
+    {
+      "name": "puppetlabs/apache",
+      "version_requirement": ">= 1.8.0 <5.0.0"
+    },
+    {
+      "name": "puppetlabs/inifile",
+      "version_requirement": ">= 1.0.0 <4.0.0"
+    },
+    {
+      "name": "puppetlabs/mysql",
+      "version_requirement": ">= 3.1.0 <9.0.0"
+    },
+    {
+      "name": "puppet/mongodb",
+      "version_requirement": ">= 1.0.0 <3.0.0"
+    },
+    {
+      "name": "stahnma/epel",
+      "version_requirement": ">= 1.0.0 <2.0.0"
+    },
+    {
+      "name": "puppet/logrotate",
+      "version_requirement": ">= 1.0.0 <4.0.0"
+    },
+    {
+      "name": "puppet/yum",
+      "version_requirement": ">= 1.0.0 <4.0.0"
+    },
+    {
+      "name": "herculesteam/augeasproviders_shellvar",
+      "version_requirement": ">= 2.0.0 <5.0.0"
+    },
+    {
+      "name": "saz/sudo",
+      "version_requirement": ">= 3.0.0 <7.0.0"
+    },
+    {
+      "name": "treydock/pcp",
+      "version_requirement": ">= 1.4.0 <2.0.0"
+    },
+    {
+      "name": "treydock/phantomjs",
+      "version_requirement": ">= 0.0.1 <1.0.0"
+    },
+    {
+      "name": "camptocamp/openssl",
+      "version_requirement": ">= 1.10.0 <2.0.0"
+    }
+  ],
   "operatingsystem_support": [
     {
       "operatingsystem": "RedHat",
-      "operatingsystemrelease": [ "7" ]
+      "operatingsystemrelease": [
+        "7"
+      ]
     },
     {
       "operatingsystem": "CentOS",
-      "operatingsystemrelease": [ "7" ]
+      "operatingsystemrelease": [
+        "7"
+      ]
     },
     {
       "operatingsystem": "Scientific",
-      "operatingsystemrelease": [ "7" ]
+      "operatingsystemrelease": [
+        "7"
+      ]
     }
   ],
-  "dependencies": [
-    { "name": "puppetlabs/stdlib", "version_requirement": ">= 4.13.1 <6.0.0" },
-    { "name": "puppetlabs/apache", "version_requirement": ">= 1.8.0 <5.0.0" },
-    { "name": "puppetlabs/inifile", "version_requirement": ">= 1.0.0 <4.0.0" },
-    { "name": "puppetlabs/mysql", "version_requirement": ">= 3.1.0 <9.0.0" },
-    { "name": "puppet/mongodb", "version_requirement": ">= 1.0.0 <3.0.0" },
-    { "name": "stahnma/epel", "version_requirement": ">= 1.0.0 <2.0.0" },
-    { "name": "puppet/logrotate", "version_requirement": ">= 1.0.0 <4.0.0" },
-    { "name": "puppet/yum", "version_requirement": ">= 1.0.0 <4.0.0" },
-    { "name": "herculesteam/augeasproviders_shellvar", "version_requirement": ">= 2.0.0 <5.0.0" },
-    { "name": "saz/sudo", "version_requirement": ">= 3.0.0 <7.0.0" },
-    { "name": "treydock/pcp", "version_requirement": ">= 1.4.0 <2.0.0" },
-    { "name": "treydock/phantomjs", "version_requirement": ">= 0.0.1 <1.0.0" },
-    { "name": "camptocamp/openssl", "version_requirement": ">= 1.10.0 <2.0.0" }
-  ],
   "requirements": [
-    {"name": "puppet", "version_requirement": ">= 5.0.0 < 7.0.0" }
-  ]
+    {
+      "name": "puppet",
+      "version_requirement": ">= 5.0.0 < 7.0.0"
+    }
+  ],
+  "tags": [
+    "xdmod",
+    "hpc"
+  ],
+  "pdk-version": "1.10.0",
+  "template-url": "https://github.com/treydock/pdk-templates.git#master",
+  "template-ref": "heads/master-0-g92d8565"
 }
-
