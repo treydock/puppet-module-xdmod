@@ -61,6 +61,7 @@ describe 'xdmod class: web' do
           'pcp_log_dir' => '/data/pcp-data/example',
         }],
         manage_simplesamlphp => true,
+        simplesamlphp_cert_organization => 'example.com',
       }
       EOS
 

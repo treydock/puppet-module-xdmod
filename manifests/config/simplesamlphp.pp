@@ -9,15 +9,10 @@ class xdmod::config::simplesamlphp {
     '/etc/xdmod/simplesamlphp/cert',
   ]
 
-  if $xdmod::organization_name {
-    $simplesamlphp_cert_organization = pick($xdmod::simplesamlphp_cert_organization, $xdmod::organization_name)
-  } else {
-    $simplesamlphp_cert_organization = $facts['domain']
-  }
-
-  $simplesamlphp_cert_commonname = pick($xdmod::simplesamlphp_cert_commonname, $xdmod::apache_vhost_name)
-
   if $xdmod::manage_simplesamlphp {
+    $simplesamlphp_cert_organization = pick($xdmod::simplesamlphp_cert_organization, $xdmod::organization_name, $facts['domain'])
+    $simplesamlphp_cert_commonname = pick($xdmod::simplesamlphp_cert_commonname, $xdmod::apache_vhost_name)
+
     file { $dirs:
       ensure => 'directory',
       owner  => 'root',

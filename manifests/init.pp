@@ -532,8 +532,8 @@ class xdmod (
       }
       'resource': {
         class { '::pcp':
-          ensure         => 'stopped',
-          package_ensure => '3.12.2-1',
+          ensure      => 'stopped',
+          manage_repo => $xdmod::params::pcp_manage_repo,
         }
       }
       default: {
