@@ -420,7 +420,7 @@ class xdmod (
   $_akrr_source_url = regsubst($akrr_source_url, 'AKRR_VERSION', $akrr_version, 'G')
 
   $_akrr_user_home = pick($akrr_user_home, "/home/${akrr_user}")
-  $_akrr_home = pick($akrr_home, "${xdmod::_akrr_user_home}/akrr-${xdmod::akrr_version}")
+  $_akrr_home = pick($akrr_home, "${_akrr_user_home}/akrr-${akrr_version}")
 
   $_supremm_package_url = regsubst($supremm_package_url, 'SUPREMM_VERSION', $supremm_version, 'G')
   $_supremm_mongodb_host = $supremm_mongodb_host ? {
