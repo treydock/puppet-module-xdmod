@@ -213,7 +213,7 @@ shared_examples_for 'xdmod::config' do |_facts|
       value = JSON.parse(content)
       expected = [{
         'resource' => 'example',
-        'resource_type_id' => 1,
+        'resource_type' => 'HPC',
         'name' => 'Example',
         'pi_column' => 'account_name',
       }]
@@ -247,13 +247,13 @@ shared_examples_for 'xdmod::config' do |_facts|
       expected = [
         {
           'resource' => 'example1',
-          'resource_type_id' => 1,
+          'resource_type' => 'HPC',
           'name' => 'Example1',
           'pi_column' => 'account_name',
         },
         {
           'resource' => 'example2',
-          'resource_type_id' => 1,
+          'resource_type' => 'HPC',
           'name' => 'Example2',
           'pi_column' => 'account_name',
         },
@@ -572,7 +572,7 @@ shared_examples_for 'xdmod::config' do |_facts|
     let(:params) do
       {
         resources: [
-          { resource: 'home', name: 'Home', resource_type_id: 9, shred_directory: '/shared/quotas/home' },
+          { resource: 'home', name: 'Home', resource_type: 'Disk', shred_directory: '/shared/quotas/home' },
         ],
       }
     end

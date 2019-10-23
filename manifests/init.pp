@@ -406,7 +406,7 @@ class xdmod (
     }
   }
 
-  $storage_resources = $resources.filter |$r| { $r['resource_type_id'] == 9 }
+  $storage_resources = $resources.filter |$r| { $r['resource_type'] == 'Disk' }
 
   $shredder_command_default = $resources.map |$r| {
     regsubst($scheduler_shredder_command, 'RESOURCE', $r['resource'], 'G')

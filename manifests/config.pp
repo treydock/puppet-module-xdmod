@@ -285,9 +285,9 @@ class xdmod::config {
   }
 
   $resources = $::xdmod::resources.map |$r| {
-    $resource_type_id = $r['resource_type_id'] ? {
-      Undef   => 1,
-      default => $r['resource_type_id'],
+    $resource_type = $r['resource_type'] ? {
+      Undef   => 'HPC',
+      default => $r['resource_type'],
     }
     $pi_column = $r['pi_column'] ? {
       Undef   => $::xdmod::pi_column,
@@ -297,7 +297,7 @@ class xdmod::config {
       'resource' => $r['resource'],
       'name' => $r['name'],
       'description' => $r['description'],
-      'resource_type_id' => $resource_type_id,
+      'resource_type' => $resource_type,
       'pi_column' => $pi_column,
       'timezone' => $r['timezone'],
       'shared_jobs' => $r['shared_jobs'],
