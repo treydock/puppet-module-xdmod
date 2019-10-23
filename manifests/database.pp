@@ -65,6 +65,7 @@ class xdmod::database {
       charset => 'utf8',
       collate => 'utf8_general_ci',
     }
+    mysql::db { 'modw_jobefficiency': }
   }
 
 }
