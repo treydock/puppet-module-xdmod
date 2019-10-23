@@ -110,6 +110,8 @@
 #   Source to image that will be used as center logo in XDMoD
 # @param center_logo_width
 #   The width of file from `center_logo_source`
+# @param user_dashboard
+#   The value for `user_dashboard` in portal_settings.ini
 # @param manage_user
 #   Boolean that sets if managing XMDoD user
 # @param user_uid
@@ -294,6 +296,7 @@ class xdmod (
   Optional[String] $php_timezone                = undef,
   Optional[String] $center_logo_source          = undef,
   Optional[Integer] $center_logo_width          = undef,
+  Enum['on','off'] $user_dashboard              = 'off',
 
   # XDMoD user/group
   Boolean $manage_user = true,

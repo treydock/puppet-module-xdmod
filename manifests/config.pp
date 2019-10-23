@@ -26,6 +26,8 @@ class xdmod::config {
   xdmod_portal_setting { 'general/user_manual': value => "https://${::xdmod::apache_vhost_name}/user_manual/" }
   xdmod_portal_setting { 'general/debug_recipient': value => $::xdmod::debug_recipient }
 
+  xdmod_portal_setting { 'features/user_dashboard': value => $::xdmod::user_dashboard }
+
   xdmod_portal_setting { 'mailer/sender_email': value => $::xdmod::sender_email }
 
   xdmod_portal_setting { 'reporting/phantomjs_path': value => $::phantomjs::path }
