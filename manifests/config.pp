@@ -59,6 +59,10 @@ class xdmod::config {
   xdmod_portal_setting { 'hpcdb/user': value => $::xdmod::database_user }
   xdmod_portal_setting { 'hpcdb/pass': value => $::xdmod::database_password, secret => true }
 
+  xdmod_portal_setting { 'data_warehouse_export/export_directory': value => $::xdmod::data_warehouse_export_directory }
+  xdmod_portal_setting { 'data_warehouse_export/retention_duration_days': value => $::xdmod::data_warehouse_export_retention_duration_days }
+  xdmod_portal_setting { 'data_warehouse_export/hash_salt': value => $::xdmod::data_warehouse_export_hash_salt }
+
   if $::xdmod::center_logo_source {
     file { '/etc/xdmod/logo.png':
       ensure => 'file',
@@ -411,6 +415,18 @@ class xdmod::config {
     group   => 'root',
     mode    => '0644',
     content => template('xdmod/storage/cron.erb'),
+  }
+
+  exec { "mkdir-p ${::xdmod::data_warehouse_export_directory}":
+    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command => "mkdir -p ${::xdmod::data_warehouse_export_directory}",
+    creates => $::xdmod::data_warehouse_export_directory,
+  }
+  -> file { $::xdmod::data_warehouse_export_directory:
+    ensure  => 'directory',
+    owner   => 'apache',
+    group   => 'xdmod',
+    mode    => '0570',
   }
 
   $logrotate_defaults = {

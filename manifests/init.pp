@@ -303,6 +303,12 @@ class xdmod (
   Optional[Integer] $user_uid = undef,
   Optional[Integer] $group_gid = undef,
 
+  # Batch export
+  Stdlib::Absolutepath $data_warehouse_export_directory = '/var/spool/xdmod/export',
+  Integer $data_warehouse_export_retention_duration_days = 30,
+  String $data_warehouse_export_hash_salt = sha256($::fqdn),
+  Array[Integer, 2 ,2] $batch_export_cron_times = [0,4],
+
   # simplesamlphp
   Boolean $manage_simplesamlphp = false,
   Optional[String] $simplesamlphp_config_content = undef,
