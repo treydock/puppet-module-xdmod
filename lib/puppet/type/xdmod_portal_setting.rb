@@ -14,12 +14,7 @@ Puppet::Type.newtype(:xdmod_portal_setting) do
   newproperty(:value) do
     desc 'The value of the setting to be defined.'
     munge do |v|
-      if v.is_a?(Integer)
-        value = v
-      else
-        value = '"' + v.to_s.strip + '"'
-      end
-      value
+      '"' + v.to_s.strip + '"'
     end
 
     def is_to_s(currentvalue) # rubocop:disable Style/PredicateName
