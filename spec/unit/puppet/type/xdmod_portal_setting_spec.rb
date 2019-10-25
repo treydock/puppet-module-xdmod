@@ -32,6 +32,10 @@ describe 'Puppet::Type.type(:xdmod_portal_setting)' do
     xdmod_portal_setting[:value] = 'bar'
     expect(xdmod_portal_setting[:value]).to eq '"bar"'
   end
+  it 'accepts a valid integer value' do
+    xdmod_portal_setting[:value] = 30
+    expect(xdmod_portal_setting[:value]).to eq 30
+  end
   it 'does not accept a value with whitespace' do
     xdmod_portal_setting[:value] = 'b ar'
     expect(xdmod_portal_setting[:value]).to eq '"b ar"'
