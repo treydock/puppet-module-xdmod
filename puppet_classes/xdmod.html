@@ -1086,6 +1086,24 @@ defined</p>
   
     <li>
       
+        <span class='name'>user_dashboard</span>
+      
+      
+        <span class='type'>(<tt>Enum['on','off']</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;off&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The value for <code>user_dashboard</code> in portal_settings.ini</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>manage_user</span>
       
       
@@ -1134,6 +1152,79 @@ defined</p>
         &mdash;
         <div class='inline'>
 <p>XDMoD user group GID</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>data_warehouse_export_directory</span>
+      
+      
+        <span class='type'>(<tt>Stdlib::Absolutepath</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>&#39;/var/spool/xdmod/export&#39;</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Path used for data warehouse export</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>data_warehouse_export_retention_duration_days</span>
+      
+      
+        <span class='type'>(<tt>Integer</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>30</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>portal_settings.ini section=data_warehouse_export
+setting=retention_duration_days</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>data_warehouse_export_hash_salt</span>
+      
+      
+        <span class='type'>(<tt>String</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>sha256($::fqdn)</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>portal_settings.ini section=data_warehouse_export setting=hash_salt</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>batch_export_cron_times</span>
+      
+      
+        <span class='type'>(<tt>Array[Integer, 2 ,2]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[0,4]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>cron times to run batch export</p>
 </div>
       
     </li>
@@ -2176,16 +2267,6 @@ not defined</p>
         <pre class="lines">
 
 
-234
-235
-236
-237
-238
-239
-240
-241
-242
-243
 244
 245
 246
@@ -2509,10 +2590,27 @@ not defined</p>
 564
 565
 566
-567</pre>
+567
+568
+569
+570
+571
+572
+573
+574
+575
+576
+577
+578
+579
+580
+581
+582
+583
+584</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 234</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 244</span>
 
 class xdmod (
   String $version                  = $xdmod::params::version,
@@ -2577,11 +2675,18 @@ class xdmod (
   Optional[String] $php_timezone                = undef,
   Optional[String] $center_logo_source          = undef,
   Optional[Integer] $center_logo_width          = undef,
+  Enum[&#39;on&#39;,&#39;off&#39;] $user_dashboard              = &#39;off&#39;,
 
   # XDMoD user/group
   Boolean $manage_user = true,
   Optional[Integer] $user_uid = undef,
   Optional[Integer] $group_gid = undef,
+
+  # Batch export
+  Stdlib::Absolutepath $data_warehouse_export_directory = &#39;/var/spool/xdmod/export&#39;,
+  Integer $data_warehouse_export_retention_duration_days = 30,
+  String $data_warehouse_export_hash_salt = sha256($::fqdn),
+  Array[Integer, 2 ,2] $batch_export_cron_times = [0,4],
 
   # simplesamlphp
   Boolean $manage_simplesamlphp = false,
@@ -2689,7 +2794,7 @@ class xdmod (
     }
   }
 
-  $storage_resources = $resources.filter |$r| { $r[&#39;resource_type_id&#39;] == 9 }
+  $storage_resources = $resources.filter |$r| { $r[&#39;resource_type&#39;] == &#39;Disk&#39; }
 
   $shredder_command_default = $resources.map |$r| {
     regsubst($scheduler_shredder_command, &#39;RESOURCE&#39;, $r[&#39;resource&#39;], &#39;G&#39;)
@@ -2703,7 +2808,7 @@ class xdmod (
   $_akrr_source_url = regsubst($akrr_source_url, &#39;AKRR_VERSION&#39;, $akrr_version, &#39;G&#39;)
 
   $_akrr_user_home = pick($akrr_user_home, &quot;/home/${akrr_user}&quot;)
-  $_akrr_home = pick($akrr_home, &quot;${xdmod::_akrr_user_home}/akrr-${xdmod::akrr_version}&quot;)
+  $_akrr_home = pick($akrr_home, &quot;${_akrr_user_home}/akrr-${akrr_version}&quot;)
 
   $_supremm_package_url = regsubst($supremm_package_url, &#39;SUPREMM_VERSION&#39;, $supremm_version, &#39;G&#39;)
   $_supremm_mongodb_host = $supremm_mongodb_host ? {
@@ -2815,8 +2920,8 @@ class xdmod (
       }
       &#39;resource&#39;: {
         class { &#39;::pcp&#39;:
-          ensure         =&gt; &#39;stopped&#39;,
-          package_ensure =&gt; &#39;3.12.2-1&#39;,
+          ensure      =&gt; &#39;stopped&#39;,
+          manage_repo =&gt; $xdmod::params::pcp_manage_repo,
         }
       }
       default: {

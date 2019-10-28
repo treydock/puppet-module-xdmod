@@ -204,7 +204,9 @@
 112
 113
 114
-115</pre>
+115
+116
+117</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/supremm/compute/pcp.pp', line 3</span>
@@ -237,6 +239,8 @@ class xdmod::supremm::compute::pcp {
       class { &#39;::pcp&#39;:
         include_default_pmlogger =&gt; false,
         pmlogger_daily_args      =&gt; &#39;-M -k forever&#39;,
+        package_ensure           =&gt; $xdmod::params::pcp_package_ensure,
+        manage_repo              =&gt; $xdmod::params::pcp_manage_repo,
       }
     }
     default: {

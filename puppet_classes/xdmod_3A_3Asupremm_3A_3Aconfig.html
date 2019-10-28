@@ -165,20 +165,20 @@ class xdmod::supremm::config {
 
   exec { &#39;update-modw_supremm&#39;:
     path    =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
-    command =&gt; &quot;mysql ${xdmod::_mysql_remote_args} -D modw_supremm &lt; ${modw_supremm_sql}&quot;,
-    onlyif  =&gt; &quot;mysql -BN ${xdmod::_mysql_remote_args} -e &#39;SHOW DATABASES&#39; | egrep -q &#39;^modw_supremm$&#39;&quot;,
-    unless  =&gt; &quot;mysql -BN ${xdmod::_mysql_remote_args} -e &#39;SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\&quot;modw_supremm\&quot;&#39; | egrep -q &#39;^archive_paths$&#39;&quot;, # lint:ignore:140chars
+    command =&gt; &quot;mysql ${::xdmod::_mysql_remote_args} -D modw_supremm &lt; ${modw_supremm_sql}&quot;,
+    onlyif  =&gt; &quot;mysql -BN ${::xdmod::_mysql_remote_args} -e &#39;SHOW DATABASES&#39; | egrep -q &#39;^modw_supremm$&#39;&quot;,
+    unless  =&gt; &quot;mysql -BN ${::xdmod::_mysql_remote_args} -e &#39;SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\&quot;modw_supremm\&quot;&#39; | egrep -q &#39;^archive_paths$&#39;&quot;, # lint:ignore:140chars
     require =&gt; Package[&#39;mysql_client&#39;],
   }
 
   exec { &#39;mongodb-supremm-schema&#39;:
     path    =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
-    command =&gt; &quot;mongo ${xdmod::supremm_mongo_args} ${mongo_setup}&quot;,
-    onlyif  =&gt; &quot;test `mongo --quiet ${xdmod::supremm_mongo_args} --eval &#39;db.schema.count()&#39;` -eq 0&quot;,
+    command =&gt; &quot;mongo ${::xdmod::supremm_mongo_args} ${mongo_setup}&quot;,
+    onlyif  =&gt; &quot;test `mongo --quiet ${::xdmod::supremm_mongo_args} --eval &#39;db.schema.count()&#39;` -eq 0&quot;,
     require =&gt; Package[&#39;mongodb_client&#39;],
   }
 
-  if $xdmod::supremm_mysql_access == &#39;defaultsfile&#39; {
+  if $::xdmod::supremm_mysql_access == &#39;defaultsfile&#39; {
     $_defaults_file_ensure = &#39;file&#39;
   } else {
     $_defaults_file_ensure = &#39;absent&#39;
@@ -203,7 +203,7 @@ class xdmod::supremm::config {
   }
 
   # Determine if job scripts are to be ingested
-  $resources_with_script_dir = $xdmod::supremm_resources.filter |$r| {
+  $resources_with_script_dir = $::xdmod::supremm_resources.filter |$r| {
     has_key($r, &#39;script_dir&#39;)
   }
   if empty($resources_with_script_dir) {

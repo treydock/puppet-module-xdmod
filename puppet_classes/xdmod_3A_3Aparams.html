@@ -441,16 +441,22 @@
 340
 341
 342
-343</pre>
+343
+344
+345
+346
+347
+348
+349</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/params.pp', line 3</span>
 
 class xdmod::params {
 
-  $version                  = &#39;8.1.2&#39;
-  $xdmod_appkernels_version = &#39;8.1.0&#39;
-  $xdmod_supremm_version    = &#39;8.1.0&#39;
+  $version                  = &#39;8.5.0&#39;
+  $xdmod_appkernels_version = &#39;8.5.0&#39;
+  $xdmod_supremm_version    = &#39;8.5.0&#39;
   $sender_email       = &quot;xdmod@xdmod.${facts[&#39;domain&#39;]}&quot;
   $apache_vhost_name  = &quot;xdmod.${facts[&#39;domain&#39;]}&quot;
   $portal_settings    = {}
@@ -466,18 +472,24 @@ class xdmod::params {
   $akrr_restapi_ro_password = fqdn_rand_string(16, undef, &#39;ro&#39;)
   $akrr_version             = &#39;1.0.0&#39;
   $akrr_source_url          = &#39;https://github.com/ubccr/akrr/releases/download/vAKRR_VERSION/akrr-AKRR_VERSION.tar.gz&#39;
-  $supremm_version          = &#39;1.2.0&#39;
+  $supremm_version          = &#39;1.3.0&#39;
 
   case $::osfamily {
     &#39;RedHat&#39;: {
       case $::operatingsystemmajrelease {
         &#39;7&#39;: {
           $rpm_release = &#39;el7&#39;
+          $supremm_rpm_release = &#39;el7_7&#39;
           $compute_only = false
+          $pcp_package_ensure = undef
+          $pcp_manage_repo = false
         }
         &#39;6&#39;: {
           $rpm_release = &#39;el6&#39;
+          $supremm_rpm_release = &#39;el6&#39;
           $compute_only = true
+          $pcp_package_ensure = &#39;4.1.0-1&#39;
+          $pcp_manage_repo = false
         }
         default: {
           fail(&quot;Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 6 and 7&quot;)
@@ -489,7 +501,7 @@ class xdmod::params {
       $appkernels_package_url     = &quot;https://github.com/ubccr/xdmod-appkernels/releases/download/vVERSION/xdmod-appkernels-VERSION-1.0.${rpm_release}.noarch.rpm&quot;
       $xdmod_supremm_package_name = &#39;xdmod-supremm&#39;
       $xdmod_supremm_package_url  = &quot;https://github.com/ubccr/xdmod-supremm/releases/download/vVERSION/xdmod-supremm-VERSION-1.0.${rpm_release}.noarch.rpm&quot;
-      $supremm_package_url        = &quot;https://github.com/ubccr/supremm/releases/download/SUPREMM_VERSION/supremm-SUPREMM_VERSION-1.${rpm_release}.x86_64.rpm&quot;
+      $supremm_package_url        = &quot;https://github.com/ubccr/supremm/releases/download/SUPREMM_VERSION/supremm-SUPREMM_VERSION-1.${supremm_rpm_release}.x86_64.rpm&quot;
     }
 
     default: {

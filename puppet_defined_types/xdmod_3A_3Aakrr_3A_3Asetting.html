@@ -168,7 +168,7 @@ define xdmod::akrr::setting ($value, $quote = undef) {
 
   include xdmod
 
-  $_config_path = &quot;${xdmod::_akrr_home}/cfg/akrr.inp.py&quot;
+  $_config_path = &quot;${::xdmod::_akrr_home}/cfg/akrr.inp.py&quot;
 
   if $quote != undef {
     $_quote = $quote

@@ -159,7 +159,8 @@
 67
 68
 69
-70</pre>
+70
+71</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/database.pp', line 3</span>
@@ -229,6 +230,7 @@ class xdmod::database {
       charset =&gt; &#39;utf8&#39;,
       collate =&gt; &#39;utf8_general_ci&#39;,
     }
+    mysql::db { &#39;modw_jobefficiency&#39;: }
   }
 
 }</pre>

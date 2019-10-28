@@ -153,12 +153,7 @@
 61
 62
 63
-64
-65
-66
-67
-68
-69</pre>
+64</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/config/simplesamlphp.pp', line 3</span>
@@ -172,15 +167,10 @@ class xdmod::config::simplesamlphp {
     &#39;/etc/xdmod/simplesamlphp/cert&#39;,
   ]
 
-  if $xdmod::organization_name {
-    $simplesamlphp_cert_organization = pick($xdmod::simplesamlphp_cert_organization, $xdmod::organization_name)
-  } else {
-    $simplesamlphp_cert_organization = $facts[&#39;domain&#39;]
-  }
-
-  $simplesamlphp_cert_commonname = pick($xdmod::simplesamlphp_cert_commonname, $xdmod::apache_vhost_name)
-
   if $xdmod::manage_simplesamlphp {
+    $simplesamlphp_cert_organization = pick($xdmod::simplesamlphp_cert_organization, $xdmod::organization_name, $facts[&#39;domain&#39;])
+    $simplesamlphp_cert_commonname = pick($xdmod::simplesamlphp_cert_commonname, $xdmod::apache_vhost_name)
+
     file { $dirs:
       ensure =&gt; &#39;directory&#39;,
       owner  =&gt; &#39;root&#39;,
