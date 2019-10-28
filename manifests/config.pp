@@ -423,10 +423,10 @@ class xdmod::config {
     creates => $::xdmod::data_warehouse_export_directory,
   }
   -> file { $::xdmod::data_warehouse_export_directory:
-    ensure  => 'directory',
-    owner   => 'apache',
-    group   => 'xdmod',
-    mode    => '0570',
+    ensure => 'directory',
+    owner  => 'apache',
+    group  => 'xdmod',
+    mode   => '0570',
   }
 
   $logrotate_defaults = {
