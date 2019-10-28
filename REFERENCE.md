@@ -498,6 +498,14 @@ The width of file from `center_logo_source`
 
 Default value: `undef`
 
+##### `user_dashboard`
+
+Data type: `Enum['on','off']`
+
+The value for `user_dashboard` in portal_settings.ini
+
+Default value: 'off'
+
 ##### `manage_user`
 
 Data type: `Boolean`
@@ -521,6 +529,38 @@ Data type: `Optional[Integer]`
 XDMoD user group GID
 
 Default value: `undef`
+
+##### `data_warehouse_export_directory`
+
+Data type: `Stdlib::Absolutepath`
+
+Path used for data warehouse export
+
+Default value: '/var/spool/xdmod/export'
+
+##### `data_warehouse_export_retention_duration_days`
+
+Data type: `Integer`
+
+portal_settings.ini section=data_warehouse_export setting=retention_duration_days
+
+Default value: 30
+
+##### `data_warehouse_export_hash_salt`
+
+Data type: `String`
+
+portal_settings.ini section=data_warehouse_export setting=hash_salt
+
+Default value: sha256($::fqdn)
+
+##### `batch_export_cron_times`
+
+Data type: `Array[Integer, 2 ,2]`
+
+cron times to run batch export
+
+Default value: [0,4]
 
 ##### `manage_simplesamlphp`
 
@@ -1201,7 +1241,7 @@ Alias of `Struct[{
   resource => String,
   name => String,
   Optional[description] => String,
-  Optional[resource_type_id] => Integer,
+  Optional[resource_type] => String,
   Optional[pi_column] => String,
   Optional[timezone] => String,
   Optional[shared_jobs] => Boolean,
@@ -1231,7 +1271,13 @@ Alias of `Struct[{
   Optional[enabled] => Boolean,
   Optional[datasetmap] => String,
   Optional[datasetmap_source] => String,
-  Optional[hardware] => Struct[{gpfs => String}],
+  Optional[hardware] => Struct[{
+    Optional[gpfs] => Variant[String, Array],
+    Optional[network] => Variant[String, Array],
+    Optional[mounts] => Hash,
+    Optional[block] => Variant[String, Array],
+    Optional[gpus] => Variant[String, Array],
+  }],
   Optional[hostname_mode] => Enum['fqdn','hostname'],
   Optional[pcp_log_dir] => Stdlib::Unixpath,
   Optional[script_dir] => Stdlib::Unixpath,
