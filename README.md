@@ -20,15 +20,10 @@ This module is designed so that different hosts can run the various components o
 
 ### Open XDMoD Compatibility
 
-Open XDMoD Versions         | 7.5.x   | 8.0.x   | 8.5.x  |
-:---------------------------|:-------:|:-------:|:------:|
-**puppet-module-xdmod 2.x** | **yes** | no      | no     |
-**puppet-module-xdmod 3.x** | no      | **yes** | no     |
-**puppet-module-xdmod 3.x** | no      | no      | **yes**|
-
 * puppet-module-xdmod **2.x** supports Open XDMoD **7.5.x**
 * puppet-module-xdmod **3.x** supports Open XDMoD **8.0.x**
-* puppet-module-xdmod **4.x** supports Open XDMoD **8.5.x**
+* puppet-module-xdmod **4.x** supports Open XDMoD **8.1.x**
+* puppet-module-xdmod **5.x** supports Open XDMoD **8.5.x**
 
 ## Usage
 

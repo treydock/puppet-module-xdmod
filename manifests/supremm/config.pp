@@ -7,20 +7,20 @@ class xdmod::supremm::config {
 
   exec { 'update-modw_supremm':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => "mysql ${xdmod::_mysql_remote_args} -D modw_supremm < ${modw_supremm_sql}",
-    onlyif  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
-    unless  => "mysql -BN ${xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^archive_paths$'", # lint:ignore:140chars
+    command => "mysql ${::xdmod::_mysql_remote_args} -D modw_supremm < ${modw_supremm_sql}",
+    onlyif  => "mysql -BN ${::xdmod::_mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
+    unless  => "mysql -BN ${::xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^archive_paths$'", # lint:ignore:140chars
     require => Package['mysql_client'],
   }
 
   exec { 'mongodb-supremm-schema':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => "mongo ${xdmod::supremm_mongo_args} ${mongo_setup}",
-    onlyif  => "test `mongo --quiet ${xdmod::supremm_mongo_args} --eval 'db.schema.count()'` -eq 0",
+    command => "mongo ${::xdmod::supremm_mongo_args} ${mongo_setup}",
+    onlyif  => "test `mongo --quiet ${::xdmod::supremm_mongo_args} --eval 'db.schema.count()'` -eq 0",
     require => Package['mongodb_client'],
   }
 
-  if $xdmod::supremm_mysql_access == 'defaultsfile' {
+  if $::xdmod::supremm_mysql_access == 'defaultsfile' {
     $_defaults_file_ensure = 'file'
   } else {
     $_defaults_file_ensure = 'absent'
@@ -45,7 +45,7 @@ class xdmod::supremm::config {
   }
 
   # Determine if job scripts are to be ingested
-  $resources_with_script_dir = $xdmod::supremm_resources.filter |$r| {
+  $resources_with_script_dir = $::xdmod::supremm_resources.filter |$r| {
     has_key($r, 'script_dir')
   }
   if empty($resources_with_script_dir) {

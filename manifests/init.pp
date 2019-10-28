@@ -110,12 +110,22 @@
 #   Source to image that will be used as center logo in XDMoD
 # @param center_logo_width
 #   The width of file from `center_logo_source`
+# @param user_dashboard
+#   The value for `user_dashboard` in portal_settings.ini
 # @param manage_user
 #   Boolean that sets if managing XMDoD user
 # @param user_uid
 #   XMDoD user UID
 # @param group_gid
 #   XDMoD user group GID
+# @param data_warehouse_export_directory
+#   Path used for data warehouse export
+# @param data_warehouse_export_retention_duration_days
+#   portal_settings.ini section=data_warehouse_export setting=retention_duration_days
+# @param data_warehouse_export_hash_salt
+#   portal_settings.ini section=data_warehouse_export setting=hash_salt
+# @param batch_export_cron_times
+#   cron times to run batch export
 # @param manage_simplesamlphp
 #   Boolean that sets if managing simplesamlphp
 # @param simplesamlphp_config_content
@@ -294,11 +304,18 @@ class xdmod (
   Optional[String] $php_timezone                = undef,
   Optional[String] $center_logo_source          = undef,
   Optional[Integer] $center_logo_width          = undef,
+  Enum['on','off'] $user_dashboard              = 'off',
 
   # XDMoD user/group
   Boolean $manage_user = true,
   Optional[Integer] $user_uid = undef,
   Optional[Integer] $group_gid = undef,
+
+  # Batch export
+  Stdlib::Absolutepath $data_warehouse_export_directory = '/var/spool/xdmod/export',
+  Integer $data_warehouse_export_retention_duration_days = 30,
+  String $data_warehouse_export_hash_salt = sha256($::fqdn),
+  Array[Integer, 2 ,2] $batch_export_cron_times = [0,4],
 
   # simplesamlphp
   Boolean $manage_simplesamlphp = false,
@@ -406,7 +423,7 @@ class xdmod (
     }
   }
 
-  $storage_resources = $resources.filter |$r| { $r['resource_type_id'] == 9 }
+  $storage_resources = $resources.filter |$r| { $r['resource_type'] == 'Disk' }
 
   $shredder_command_default = $resources.map |$r| {
     regsubst($scheduler_shredder_command, 'RESOURCE', $r['resource'], 'G')
@@ -420,7 +437,7 @@ class xdmod (
   $_akrr_source_url = regsubst($akrr_source_url, 'AKRR_VERSION', $akrr_version, 'G')
 
   $_akrr_user_home = pick($akrr_user_home, "/home/${akrr_user}")
-  $_akrr_home = pick($akrr_home, "${xdmod::_akrr_user_home}/akrr-${xdmod::akrr_version}")
+  $_akrr_home = pick($akrr_home, "${_akrr_user_home}/akrr-${akrr_version}")
 
   $_supremm_package_url = regsubst($supremm_package_url, 'SUPREMM_VERSION', $supremm_version, 'G')
   $_supremm_mongodb_host = $supremm_mongodb_host ? {
@@ -532,8 +549,8 @@ class xdmod (
       }
       'resource': {
         class { '::pcp':
-          ensure         => 'stopped',
-          package_ensure => '3.12.2-1',
+          ensure      => 'stopped',
+          manage_repo => $xdmod::params::pcp_manage_repo,
         }
       }
       default: {
