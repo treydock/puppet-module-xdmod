@@ -118,6 +118,14 @@
 #   XMDoD user UID
 # @param group_gid
 #   XDMoD user group GID
+# @param data_warehouse_export_directory
+#   Path used for data warehouse export
+# @param data_warehouse_export_retention_duration_days
+#   portal_settings.ini section=data_warehouse_export setting=retention_duration_days
+# @param data_warehouse_export_hash_salt
+#   portal_settings.ini section=data_warehouse_export setting=hash_salt
+# @param batch_export_cron_times
+#   cron times to run batch export
 # @param manage_simplesamlphp
 #   Boolean that sets if managing simplesamlphp
 # @param simplesamlphp_config_content
