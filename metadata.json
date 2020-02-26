@@ -91,7 +91,7 @@
     "xdmod",
     "hpc"
   ],
-  "pdk-version": "1.10.0",
+  "pdk-version": "1.14.1",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-g92d8565"
+  "template-ref": "heads/master-0-gaddf0b8"
 }
