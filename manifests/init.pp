@@ -22,6 +22,8 @@
 #   Enable XDMoD AppKernel support
 # @param enable_supremm
 #   Enable XDMod SUPReMM support
+# @param enable_cloud_realm
+#   Enable the XDMoD cloud realm by adding the necessary database
 # @param local_repo_name
 #   Name of yum repo hosting RPMs
 # @param manage_epel
@@ -112,6 +114,8 @@
 #   The width of file from `center_logo_source`
 # @param user_dashboard
 #   The value for `user_dashboard` in portal_settings.ini
+# @param cors_domains
+#   The value for `domains` in `cors` section of portal_settings.ini
 # @param manage_user
 #   Boolean that sets if managing XMDoD user
 # @param user_uid
@@ -256,6 +260,7 @@ class xdmod (
 
   Boolean $enable_appkernel                     = false,
   Boolean $enable_supremm                       = false,
+  Boolean $enable_cloud_realm                   = false,
   Optional[String] $local_repo_name             = undef,
   Boolean $manage_epel                          = true,
   String $package_ensure                        = 'present',
@@ -305,6 +310,7 @@ class xdmod (
   Optional[String] $center_logo_source          = undef,
   Optional[Integer] $center_logo_width          = undef,
   Enum['on','off'] $user_dashboard              = 'off',
+  Array $cors_domains                           = [],
 
   # XDMoD user/group
   Boolean $manage_user = true,

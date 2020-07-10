@@ -18,9 +18,26 @@ shared_examples_for 'xdmod::database' do |_facts|
     end
   end
 
+  it { is_expected.not_to contain_mysql__db('modw_cloud') }
   it { is_expected.not_to contain_mysql__db('mod_appkernel') }
   it { is_expected.not_to contain_mysql__db('mod_akrr') }
   it { is_expected.not_to contain_mysql_grant('akrr@localhost/modw.resourcefact') }
+
+  context 'when enable_cloud_realm => true' do
+    let(:params) { { enable_cloud_realm: true } }
+
+    it do
+      is_expected.to contain_mysql__db('modw_cloud').with(
+        ensure: 'present',
+        user: 'xdmod',
+        password: 'changeme',
+        host: 'localhost',
+        charset: 'latin1',
+        collate: 'latin1_swedish_ci',
+        grant: ['ALL'],
+      )
+    end
+  end
 
   context 'when enable_appkernel => true' do
     let(:params) { { enable_appkernel: true } }

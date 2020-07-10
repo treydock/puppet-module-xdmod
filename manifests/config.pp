@@ -30,6 +30,8 @@ class xdmod::config {
 
   xdmod_portal_setting { 'mailer/sender_email': value => $::xdmod::sender_email }
 
+  xdmod_portal_setting { 'cors/domains': value => join($xdmod::cors_domains, ',') }
+
   xdmod_portal_setting { 'reporting/phantomjs_path': value => $::phantomjs::path }
   xdmod_portal_setting { 'reporting/java_path': value => '/usr/bin/java' }
   xdmod_portal_setting { 'reporting/javac_path': value => '/usr/bin/javac' }
