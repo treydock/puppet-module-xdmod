@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::database
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
@@ -161,7 +161,10 @@
 68
 69
 70
-71</pre>
+71
+72
+73
+74</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/database.pp', line 3</span>
@@ -187,6 +190,9 @@ class xdmod::database {
   mysql::db { &#39;modw&#39;: }
   mysql::db { &#39;modw_aggregates&#39;: }
   mysql::db { &#39;modw_filters&#39;: }
+  if $xdmod::enable_cloud_realm {
+    mysql::db { &#39;modw_cloud&#39;: }
+  }
 
   if $xdmod::enable_appkernel {
     mysql::db { &#39;mod_appkernel&#39;:

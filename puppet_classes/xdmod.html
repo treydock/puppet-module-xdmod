@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod
   
-    &mdash; Documentation by YARD 0.9.24
+    &mdash; Documentation by YARD 0.9.25
   
 </title>
 
@@ -285,6 +285,24 @@
         &mdash;
         <div class='inline'>
 <p>Enable XDMod SUPReMM support</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>enable_cloud_realm</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Enable the XDMoD cloud realm by adding the necessary database</p>
 </div>
       
     </li>
@@ -1098,6 +1116,25 @@ defined</p>
         &mdash;
         <div class='inline'>
 <p>The value for <code>user_dashboard</code> in portal_settings.ini</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>cors_domains</span>
+      
+      
+        <span class='type'>(<tt>Array</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>[]</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>The value for <code>domains</code> in <code>cors</code> section of
+portal_settings.ini</p>
 </div>
       
     </li>
@@ -2268,10 +2305,6 @@ not defined</p>
         <pre class="lines">
 
 
-244
-245
-246
-247
 248
 249
 250
@@ -2608,10 +2641,16 @@ not defined</p>
 581
 582
 583
-584</pre>
+584
+585
+586
+587
+588
+589
+590</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 244</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 248</span>
 
 class xdmod (
   String $version                  = $xdmod::params::version,
@@ -2628,6 +2667,7 @@ class xdmod (
 
   Boolean $enable_appkernel                     = false,
   Boolean $enable_supremm                       = false,
+  Boolean $enable_cloud_realm                   = false,
   Optional[String] $local_repo_name             = undef,
   Boolean $manage_epel                          = true,
   String $package_ensure                        = &#39;present&#39;,
@@ -2677,6 +2717,7 @@ class xdmod (
   Optional[String] $center_logo_source          = undef,
   Optional[Integer] $center_logo_width          = undef,
   Enum[&#39;on&#39;,&#39;off&#39;] $user_dashboard              = &#39;off&#39;,
+  Array $cors_domains                           = [],
 
   # XDMoD user/group
   Boolean $manage_user = true,
