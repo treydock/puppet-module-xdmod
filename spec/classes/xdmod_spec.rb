@@ -37,10 +37,13 @@ describe 'xdmod' do
       end
 
       context 'when supremm => true' do
-        let(:params) { { supremm: true, web: true } }
+        let(:default_params) { { supremm: true, web: true } }
+        let(:params) { default_params }
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to compile }
+
+        it_behaves_like 'xdmod::supremm::config', facts
       end
 
       context 'when database => true && supremm_database => true' do

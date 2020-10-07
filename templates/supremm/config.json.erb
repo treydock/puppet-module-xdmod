@@ -27,6 +27,20 @@
         "dbname": "supremm"
     },
     "summary": {
+      <%- if scope['xdmod::supremm_prometheus_url'] -%>
+        "prometheus_url": "<%= scope['xdmod::supremm_prometheus_url'] %>",
+      <%- end -%>
+      <%- if scope['xdmod::supremm_prometheus_step'] -%>
+        "step": "<%= scope['xdmod::supremm_prometheus_step'] %>",
+      <%- end -%>
+      <%- if scope['xdmod::supremm_prometheus_rates'] -%>
+        "rates": {
+        <%- scope['xdmod::supremm_prometheus_rates'].keys.each_with_index do |k, i| -%>
+          <%- v = scope['xdmod::supremm_prometheus_rates'][k] -%>
+            "<%= k %>": "<%= v %>"<%= (scope['xdmod::supremm_prometheus_rates'].keys.size - 1) == i ? '' : ',' %>
+        <%- end -%>
+        },
+      <%- end -%>
         // The archive out directory should be writable by the process that runs
         // the summaries.
         "archive_out_dir": "<%= scope['xdmod::supremm_archive_out_dir'] %>",
@@ -40,25 +54,31 @@
     },
     "resources": {
 <%- scope['xdmod::supremm_resources'].each_with_index do |resource, i| -%>
+<%- metric_system = resource['metric_system'] || 'pcp' %>
         "<%= resource['resource'] %>": {
             "enabled": <%= resource['enabled'].nil? ? true : resource['enabled'] %>,
             "resource_id": <%= resource['resource_id'] %>,
             "batch_system": "XDMoD",
-            "hostname_mode": "<%= resource['hostname_mode'] || 'hostname' %>",
+<%- if resource['pcp_log_dir'] -%>
             "pcp_log_dir": "<%= resource['pcp_log_dir'] %>",
+<%- end -%>
 <%- if resource['script_dir'] -%>
             "script_dir": "<%= resource['script_dir'] %>",
 <%- else -%>
             "script_dir": "",
 <%- end -%>
-<%- if resource['timezone'] -%>
+<%- if metric_system == 'pcp' -%>
+            "hostname_mode": "<%= resource['hostname_mode'] || 'hostname' %>",
+  <%- if resource['timezone'] -%>
             "timezone": "<%= resource['timezone'] %>",
+  <%- end -%>
+  <%- if resource['fast_index'].nil? -%>
+            "fast_index": true,
+  <%- else -%>
+            "fast_index": <%= resource['fast_index'] %>,
+  <%- end -%>
 <%- end -%>
-<%- if resource['fast_index'].nil? -%>
-            "fast_index": true
-<%- else -%>
-            "fast_index": <%= resource['fast_index'] %>
-<%- end -%>
+            "metric_system": "<%= metric_system %>"
         }<%= (scope['xdmod::supremm_resources'].size - 1) == i ? '' : ',' %>
 <%- end -%>
     }

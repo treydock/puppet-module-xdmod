@@ -216,6 +216,12 @@
 #   The cron times to run supremm aggregation
 # @param supremm_archive_out_dir
 #   The path to supremm archive out
+# @param supremm_prometheus_url
+#   Prometheus URL to use with SUPREMM summarization
+# @param supremm_prometheus_step
+#   Prometheus step value for SUPREMM summarization
+# @param supremm_prometheus_rates
+#   Prometheus rate overrides for SUPREMM summarization
 # @param use_pcp
 #   Boolean that PCP should be used for compute environment
 # @param pcp_declare_method
@@ -381,6 +387,9 @@ class xdmod (
   Array[Integer, 2, 2] $ingest_jobscripts_cron_times = [0,3],
   Array[Integer, 2, 2] $aggregate_supremm_cron_times = [0,4],
   Stdlib::Absolutepath $supremm_archive_out_dir = '/dev/shm/supremm_test',
+  Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]] $supremm_prometheus_url = undef,
+  Optional[String[1]] $supremm_prometheus_step = undef,
+  Optional[Hash] $supremm_prometheus_rates = undef,
 
   # SUPReMM compute
   Boolean $use_pcp                                = true,
