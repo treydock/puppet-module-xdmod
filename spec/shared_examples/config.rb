@@ -47,6 +47,7 @@ shared_examples_for 'xdmod::config' do |_facts|
 
   it { is_expected.to contain_xdmod_portal_setting('features/appkernels').with_value('off') }
   it { is_expected.to contain_xdmod_portal_setting('reporting/java_path').with_value('/usr/bin/java') }
+  it { is_expected.to contain_xdmod_portal_setting('cors/domains').with_value('') }
   it { is_expected.not_to contain_file('/etc/xdmod/portal_settings.d/appkernels.ini') }
   it { is_expected.not_to contain_xdmod_appkernel_setting('features/appkernels') }
   it { is_expected.not_to contain_xdmod_appkernel_setting('appkernel/host') }
@@ -197,6 +198,12 @@ shared_examples_for 'xdmod::config' do |_facts|
     let(:params) { { php_timezone: 'America/New_York' } }
 
     it { is_expected.to contain_ini_setting('php-timezone').with_value('America/New_York') }
+  end
+
+  context 'when cors_domains defined' do
+    let(:params) { { cors_domains: ['foo.example.com', 'bar.example.com'] } }
+
+    it { is_expected.to contain_xdmod_portal_setting('cors/domains').with_value('foo.example.com,bar.example.com') }
   end
 
   context 'when resources defined' do

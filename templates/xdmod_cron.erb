@@ -35,5 +35,5 @@ end
 
 <%- if scope['xdmod::enable_supremm'] -%>
 # Ingest job level sumamries into XDMoD and run aggregation
-<%= scope['xdmod::aggregate_supremm_cron_times'][0] %> <%= scope['xdmod::aggregate_supremm_cron_times'][1] %> * * * xdmod /usr/bin/aggregate_supremm.sh
+<%= scope['xdmod::aggregate_supremm_cron_times'][0] %> <%= scope['xdmod::aggregate_supremm_cron_times'][1] %> * * * xdmod /usr/bin/aggregate_supremm.sh 2>&1 | logger -t aggregate_supremm
 <%- end -%>

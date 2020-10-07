@@ -2,9 +2,9 @@
 # @api private
 class xdmod::params {
 
-  $version                  = '8.5.0'
-  $xdmod_appkernels_version = '8.5.0'
-  $xdmod_supremm_version    = '8.5.0'
+  $version                  = '9.0.0'
+  $xdmod_appkernels_version = '9.0.0'
+  $xdmod_supremm_version    = '9.0.0'
   $sender_email       = "xdmod@xdmod.${facts['domain']}"
   $apache_vhost_name  = "xdmod.${facts['domain']}"
   $portal_settings    = {}

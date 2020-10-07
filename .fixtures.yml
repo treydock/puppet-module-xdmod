@@ -11,7 +11,7 @@ fixtures:
     logrotate:
       repo: https://github.com/voxpupuli/puppet-logrotate.git
     epel:
-      repo: https://github.com/stahnma/puppet-module-epel.git
+      repo: https://github.com/voxpupuli/puppet-epel.git
     mysql: 
       repo: https://github.com/puppetlabs/puppetlabs-mysql.git
     mongodb:

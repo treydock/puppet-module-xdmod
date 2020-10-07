@@ -21,6 +21,9 @@ class xdmod::database {
   mysql::db { 'modw': }
   mysql::db { 'modw_aggregates': }
   mysql::db { 'modw_filters': }
+  if $xdmod::enable_cloud_realm {
+    mysql::db { 'modw_cloud': }
+  }
 
   if $xdmod::enable_appkernel {
     mysql::db { 'mod_appkernel':
