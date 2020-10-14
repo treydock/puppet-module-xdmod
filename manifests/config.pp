@@ -153,13 +153,13 @@ class xdmod::config {
       }
       if $r['datasetmap_source'] {
         $datasetmap_name = basename($r['datasetmap_source'], '.js')
-        file { "/usr/share/xdmod/etl/js/config/supremm/dataset_maps/${datasetmap_name}.js":
-          ensure => 'file',
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0644',
-          source => $r['datasetmap_source'],
-        }
+        ensure_resource('file', "/usr/share/xdmod/etl/js/config/supremm/dataset_maps/${datasetmap_name}.js", {
+          'ensure' => 'file',
+          'owner'  => 'root',
+          'group'  => 'root',
+          'mode'   => '0644',
+          'source' => $r['datasetmap_source'],
+        })
         if ! $r['datasetmap'] {
           $_datasetmap = $datasetmap_name
         } else {

@@ -423,8 +423,21 @@ shared_examples_for 'xdmod::config' do |_facts|
       let(:params) do
         {
           enable_supremm: true,
-          supremm_resources: [{ 'resource' => 'example', 'resource_id' => 1, 'pcp_log_dir' => '/dne', 'datasetmap_source' => 'puppet:///modules/site/pcp-test.js' }],
+          supremm_resources: [
+            { 'resource' => 'example', 'resource_id' => 1, 'pcp_log_dir' => '/dne', 'datasetmap_source' => 'puppet:///modules/site/pcp-test.js' },
+            { 'resource' => 'foo', 'resource_id' => 2, 'pcp_log_dir' => '/dne', 'datasetmap_source' => 'puppet:///modules/site/pcp-test.js' },
+          ],
         }
+      end
+
+      it do
+        is_expected.to contain_file('/usr/share/xdmod/etl/js/config/supremm/dataset_maps/pcp-test.js').with(
+          'ensure' => 'file',
+          'owner'  => 'root',
+          'group'  => 'root',
+          'mode'   => '0644',
+          'source' => 'puppet:///modules/site/pcp-test.js',
+        )
       end
 
       it do
@@ -432,11 +445,20 @@ shared_examples_for 'xdmod::config' do |_facts|
         value = JSON.parse(content)
         expected = {
           'resources' => [
-            'resource'    => 'example',
-            'resource_id' => 1,
-            'enabled'     => true,
-            'datasetmap'  => 'pcp-test',
-            'hardware'    => { 'gpfs' => '' },
+            {
+              'resource'    => 'example',
+              'resource_id' => 1,
+              'enabled'     => true,
+              'datasetmap'  => 'pcp-test',
+              'hardware'    => { 'gpfs' => '' },
+            },
+            {
+              'resource'    => 'foo',
+              'resource_id' => 2,
+              'enabled'     => true,
+              'datasetmap'  => 'pcp-test',
+              'hardware'    => { 'gpfs' => '' },
+            },
           ],
         }
         expect(value).to eq(expected)
