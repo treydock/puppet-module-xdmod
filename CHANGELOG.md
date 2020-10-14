@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v6.0.1](https://github.com/treydock/puppet-module-xdmod/tree/v6.0.1) (2020-10-14)
+
+[Full Changelog](https://github.com/treydock/puppet-module-xdmod/compare/v6.0.0...v6.0.1)
+
+### Fixed
+
+- Fix issue when multiple supremm resources have same PCP datasetmap\_source [\#10](https://github.com/treydock/puppet-module-xdmod/pull/10) ([treydock](https://github.com/treydock))
+
 ## [v6.0.0](https://github.com/treydock/puppet-module-xdmod/tree/v6.0.0) (2020-10-07)
 
 [Full Changelog](https://github.com/treydock/puppet-module-xdmod/compare/v5.1.0...v6.0.0)
