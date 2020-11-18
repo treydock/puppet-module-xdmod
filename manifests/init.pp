@@ -223,7 +223,7 @@
 # @param supremm_prometheus_rates
 #   Prometheus rate overrides for SUPREMM summarization
 # @param use_pcp
-#   Boolean that PCP should be used for compute environment
+#   Boolean that PCP should be used for SUPREMM
 # @param pcp_declare_method
 #   Should pcp class be included or declared like a resource
 # @param pcp_resource
@@ -566,27 +566,30 @@ class xdmod (
     contain xdmod::supremm::install
     contain xdmod::supremm::config
 
-    case $xdmod::pcp_declare_method {
-      'include': {
-        include ::pcp
-      }
-      'resource': {
-        class { '::pcp':
-          ensure      => 'stopped',
-          manage_repo => $xdmod::params::pcp_manage_repo,
+    if $use_pcp {
+      case $xdmod::pcp_declare_method {
+        'include': {
+          include ::pcp
+        }
+        'resource': {
+          class { '::pcp':
+            ensure      => 'stopped',
+            manage_repo => $xdmod::params::pcp_manage_repo,
+          }
+        }
+        default: {
+          # Do nothing
         }
       }
-      default: {
-        # Do nothing
-      }
+      Class['::pcp']
+      -> Class['xdmod::supremm::install']
     }
 
     if $manage_epel {
       Yumrepo['epel']->Package['mongodb_client']
     }
 
-    Class['::pcp']
-    -> Class['xdmod::supremm::install']
+   Class['xdmod::supremm::install']
     -> Class['xdmod::supremm::config']
 
     if $database {
