@@ -20,6 +20,15 @@ class xdmod::supremm::config {
     require => Package['mongodb_client'],
   }
 
+  exec { 'mongodb-supremm-schema-refresh':
+    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command     => "mongo ${::xdmod::supremm_mongo_args} ${mongo_setup}",
+    onlyif      => "test `mongo --quiet ${::xdmod::supremm_mongo_args} --eval 'db.schema.count()'` -gt 0",
+    refreshonly => true,
+    require     => Package['mongodb_client'],
+    subscribe   => Class['xdmod::supremm::install'],
+  }
+
   if $::xdmod::supremm_mysql_access == 'defaultsfile' {
     $_defaults_file_ensure = 'file'
   } else {
