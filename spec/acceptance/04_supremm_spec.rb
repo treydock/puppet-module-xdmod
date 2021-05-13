@@ -9,6 +9,10 @@ describe 'xdmod class:' do
       class { 'mysql::server':
         root_password => 'secret',
       }
+      class { 'mongodb::globals':
+        manage_package_repo => true,
+        version             => '3.4.24',
+      }
       class { 'xdmod':
         supremm             => true,
         enable_supremm      => true,
