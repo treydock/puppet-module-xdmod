@@ -30,9 +30,22 @@ EOS
 pcp::pcp_conf_configs:
   PCP_USER: root
   PCP_GROUP: root
+mongodb::server::user: root
+mongodb::server::group: root
+EOS
+
+  mongod_hack = <<-EOS
+[Service]
+User=root
+Group=root
+ExecStartPre=
+ExecStartPre=/usr/bin/mkdir -p /var/run/mongodb
+ExecStartPre=/usr/bin/chown root:root /var/run/mongodb
 EOS
 
   create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
   on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
   create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)
+  on hosts, 'mkdir -p /etc/systemd/system/mongod.service.d'
+  create_remote_file(hosts, '/etc/systemd/system/mongod.service.d/hack.conf', mongod_hack)
 end

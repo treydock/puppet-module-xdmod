@@ -1,7 +1,8 @@
 # puppet-module-xdmod
 
 [![Puppet Forge](http://img.shields.io/puppetforge/v/treydock/xdmod.svg)](https://forge.puppetlabs.com/treydock/xdmod)
-[![Build Status](https://travis-ci.org/treydock/puppet-module-xdmod.svg?branch=master)](https://travis-ci.org/treydock/puppet-module-xdmod)
+[![CI Status](https://github.com/treydock/puppet-module-xdmod/workflows/CI/badge.svg?branch=master)](https://github.com/treydock/puppet-module-xdmod/actions?query=workflow%3ACI)
+
 
 #### Table of Contents
 
