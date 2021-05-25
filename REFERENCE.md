@@ -51,15 +51,138 @@
 
 ## Classes
 
-### `xdmod`
+### <a name="xdmod"></a>`xdmod`
 
 Manage XDMoD
 
 #### Parameters
 
-The following parameters are available in the `xdmod` class.
+The following parameters are available in the `xdmod` class:
 
-##### `version`
+* [`version`](#version)
+* [`xdmod_appkernels_version`](#xdmod_appkernels_version)
+* [`xdmod_supremm_version`](#xdmod_supremm_version)
+* [`database`](#database)
+* [`web`](#web)
+* [`akrr`](#akrr)
+* [`supremm`](#supremm)
+* [`supremm_database`](#supremm_database)
+* [`compute`](#compute)
+* [`enable_appkernel`](#enable_appkernel)
+* [`enable_supremm`](#enable_supremm)
+* [`enable_cloud_realm`](#enable_cloud_realm)
+* [`local_repo_name`](#local_repo_name)
+* [`manage_epel`](#manage_epel)
+* [`package_ensure`](#package_ensure)
+* [`xdmod_supremm_package_ensure`](#xdmod_supremm_package_ensure)
+* [`xdmod_appkernels_package_ensure`](#xdmod_appkernels_package_ensure)
+* [`package_name`](#package_name)
+* [`package_url`](#package_url)
+* [`appkernels_package_name`](#appkernels_package_name)
+* [`appkernels_package_url`](#appkernels_package_url)
+* [`xdmod_supremm_package_name`](#xdmod_supremm_package_name)
+* [`xdmod_supremm_package_url`](#xdmod_supremm_package_url)
+* [`database_host`](#database_host)
+* [`database_port`](#database_port)
+* [`database_user`](#database_user)
+* [`database_password`](#database_password)
+* [`akrr_database_user`](#akrr_database_user)
+* [`akrr_database_password`](#akrr_database_password)
+* [`web_host`](#web_host)
+* [`akrr_host`](#akrr_host)
+* [`scheduler`](#scheduler)
+* [`shredder_command`](#shredder_command)
+* [`shred_hour_start`](#shred_hour_start)
+* [`shred_minutes`](#shred_minutes)
+* [`ingest_hour`](#ingest_hour)
+* [`enable_update_check`](#enable_update_check)
+* [`manage_apache_vhost`](#manage_apache_vhost)
+* [`apache_vhost_name`](#apache_vhost_name)
+* [`apache_ssl_cert`](#apache_ssl_cert)
+* [`apache_ssl_key`](#apache_ssl_key)
+* [`apache_ssl_chain`](#apache_ssl_chain)
+* [`portal_settings`](#portal_settings)
+* [`hierarchy_levels`](#hierarchy_levels)
+* [`hierarchies`](#hierarchies)
+* [`group_to_hierarchy`](#group_to_hierarchy)
+* [`user_pi_names`](#user_pi_names)
+* [`organization_name`](#organization_name)
+* [`organization_abbrev`](#organization_abbrev)
+* [`resources`](#resources)
+* [`resource_specs`](#resource_specs)
+* [`sender_email`](#sender_email)
+* [`debug_recipient`](#debug_recipient)
+* [`php_timezone`](#php_timezone)
+* [`center_logo_source`](#center_logo_source)
+* [`center_logo_width`](#center_logo_width)
+* [`user_dashboard`](#user_dashboard)
+* [`cors_domains`](#cors_domains)
+* [`manage_user`](#manage_user)
+* [`user_uid`](#user_uid)
+* [`group_gid`](#group_gid)
+* [`data_warehouse_export_directory`](#data_warehouse_export_directory)
+* [`data_warehouse_export_retention_duration_days`](#data_warehouse_export_retention_duration_days)
+* [`data_warehouse_export_hash_salt`](#data_warehouse_export_hash_salt)
+* [`batch_export_cron_times`](#batch_export_cron_times)
+* [`manage_simplesamlphp`](#manage_simplesamlphp)
+* [`simplesamlphp_config_content`](#simplesamlphp_config_content)
+* [`simplesamlphp_config_source`](#simplesamlphp_config_source)
+* [`simplesamlphp_authsources_content`](#simplesamlphp_authsources_content)
+* [`simplesamlphp_authsources_source`](#simplesamlphp_authsources_source)
+* [`simplesamlphp_metadata_content`](#simplesamlphp_metadata_content)
+* [`simplesamlphp_metadata_source`](#simplesamlphp_metadata_source)
+* [`simplesamlphp_cert_country`](#simplesamlphp_cert_country)
+* [`simplesamlphp_cert_organization`](#simplesamlphp_cert_organization)
+* [`simplesamlphp_cert_commonname`](#simplesamlphp_cert_commonname)
+* [`akrr_source_url`](#akrr_source_url)
+* [`akrr_version`](#akrr_version)
+* [`akrr_home`](#akrr_home)
+* [`manage_akrr_user`](#manage_akrr_user)
+* [`akrr_user`](#akrr_user)
+* [`akrr_user_group`](#akrr_user_group)
+* [`akrr_user_group_gid`](#akrr_user_group_gid)
+* [`akrr_user_uid`](#akrr_user_uid)
+* [`akrr_user_shell`](#akrr_user_shell)
+* [`akrr_user_home`](#akrr_user_home)
+* [`akrr_user_managehome`](#akrr_user_managehome)
+* [`akrr_user_comment`](#akrr_user_comment)
+* [`akrr_user_system`](#akrr_user_system)
+* [`akrr_restapi_port`](#akrr_restapi_port)
+* [`akrr_restapi_rw_password`](#akrr_restapi_rw_password)
+* [`akrr_restapi_ro_password`](#akrr_restapi_ro_password)
+* [`akrr_cron_mailto`](#akrr_cron_mailto)
+* [`akrr_ingestor_cron_times`](#akrr_ingestor_cron_times)
+* [`appkernel_reports_manager_cron_times`](#appkernel_reports_manager_cron_times)
+* [`supremm_version`](#supremm_version)
+* [`supremm_package_ensure`](#supremm_package_ensure)
+* [`supremm_package_url`](#supremm_package_url)
+* [`supremm_package_name`](#supremm_package_name)
+* [`supremm_mongodb_password`](#supremm_mongodb_password)
+* [`supremm_mongodb_host`](#supremm_mongodb_host)
+* [`supremm_mongodb_uri`](#supremm_mongodb_uri)
+* [`supremm_mongodb_replica_set`](#supremm_mongodb_replica_set)
+* [`supremm_resources`](#supremm_resources)
+* [`supremm_update_cron_times`](#supremm_update_cron_times)
+* [`ingest_jobscripts_cron_times`](#ingest_jobscripts_cron_times)
+* [`aggregate_supremm_cron_times`](#aggregate_supremm_cron_times)
+* [`supremm_archive_out_dir`](#supremm_archive_out_dir)
+* [`use_pcp`](#use_pcp)
+* [`pcp_declare_method`](#pcp_declare_method)
+* [`pcp_resource`](#pcp_resource)
+* [`pcp_pmlogger_path_suffix`](#pcp_pmlogger_path_suffix)
+* [`pcp_pmlogger_config_template`](#pcp_pmlogger_config_template)
+* [`pcp_pmlogger_config_source`](#pcp_pmlogger_config_source)
+* [`pcp_logging_static_freq`](#pcp_logging_static_freq)
+* [`pcp_logging_standard_freq`](#pcp_logging_standard_freq)
+* [`pcp_static_metrics`](#pcp_static_metrics)
+* [`pcp_standard_metrics`](#pcp_standard_metrics)
+* [`pcp_environ_metrics`](#pcp_environ_metrics)
+* [`pcp_merge_metrics`](#pcp_merge_metrics)
+* [`pcp_hotproc_exclude_users`](#pcp_hotproc_exclude_users)
+* [`storage_roles_source`](#storage_roles_source)
+* [`storage_cron_times`](#storage_cron_times)
+
+##### <a name="version"></a>`version`
 
 Data type: `String`
 
@@ -67,7 +190,7 @@ Version of XDMoD to install
 
 Default value: `$xdmod::params::version`
 
-##### `xdmod_appkernels_version`
+##### <a name="xdmod_appkernels_version"></a>`xdmod_appkernels_version`
 
 Data type: `String`
 
@@ -75,7 +198,7 @@ Version of XDMoD AppKernels to install
 
 Default value: `$xdmod::params::xdmod_appkernels_version`
 
-##### `xdmod_supremm_version`
+##### <a name="xdmod_supremm_version"></a>`xdmod_supremm_version`
 
 Data type: `String`
 
@@ -83,7 +206,7 @@ Version of XDMoD SUPReMM to install
 
 Default value: `$xdmod::params::xdmod_supremm_version`
 
-##### `database`
+##### <a name="database"></a>`database`
 
 Data type: `Boolean`
 
@@ -91,7 +214,7 @@ Sets database role
 
 Default value: ``true``
 
-##### `web`
+##### <a name="web"></a>`web`
 
 Data type: `Boolean`
 
@@ -99,7 +222,7 @@ Sets web role
 
 Default value: ``true``
 
-##### `akrr`
+##### <a name="akrr"></a>`akrr`
 
 Data type: `Boolean`
 
@@ -107,7 +230,7 @@ Sets akrr role
 
 Default value: ``false``
 
-##### `supremm`
+##### <a name="supremm"></a>`supremm`
 
 Data type: `Boolean`
 
@@ -115,7 +238,7 @@ Sets supremm role
 
 Default value: ``false``
 
-##### `supremm_database`
+##### <a name="supremm_database"></a>`supremm_database`
 
 Data type: `Boolean`
 
@@ -123,7 +246,7 @@ Sets supremm database role
 
 Default value: ``false``
 
-##### `compute`
+##### <a name="compute"></a>`compute`
 
 Data type: `Boolean`
 
@@ -131,7 +254,7 @@ Sets compute role
 
 Default value: ``false``
 
-##### `enable_appkernel`
+##### <a name="enable_appkernel"></a>`enable_appkernel`
 
 Data type: `Boolean`
 
@@ -139,7 +262,7 @@ Enable XDMoD AppKernel support
 
 Default value: ``false``
 
-##### `enable_supremm`
+##### <a name="enable_supremm"></a>`enable_supremm`
 
 Data type: `Boolean`
 
@@ -147,7 +270,7 @@ Enable XDMod SUPReMM support
 
 Default value: ``false``
 
-##### `enable_cloud_realm`
+##### <a name="enable_cloud_realm"></a>`enable_cloud_realm`
 
 Data type: `Boolean`
 
@@ -155,7 +278,7 @@ Enable the XDMoD cloud realm by adding the necessary database
 
 Default value: ``false``
 
-##### `local_repo_name`
+##### <a name="local_repo_name"></a>`local_repo_name`
 
 Data type: `Optional[String]`
 
@@ -163,7 +286,7 @@ Name of yum repo hosting RPMs
 
 Default value: ``undef``
 
-##### `manage_epel`
+##### <a name="manage_epel"></a>`manage_epel`
 
 Data type: `Boolean`
 
@@ -171,7 +294,7 @@ Boolean that sets if EPEL should be managed
 
 Default value: ``true``
 
-##### `package_ensure`
+##### <a name="package_ensure"></a>`package_ensure`
 
 Data type: `String`
 
@@ -179,7 +302,7 @@ XDMoD package ensure property
 
 Default value: `'present'`
 
-##### `xdmod_supremm_package_ensure`
+##### <a name="xdmod_supremm_package_ensure"></a>`xdmod_supremm_package_ensure`
 
 Data type: `String`
 
@@ -187,7 +310,7 @@ XDMoD supremm package ensure property
 
 Default value: `'present'`
 
-##### `xdmod_appkernels_package_ensure`
+##### <a name="xdmod_appkernels_package_ensure"></a>`xdmod_appkernels_package_ensure`
 
 Data type: `String`
 
@@ -195,7 +318,7 @@ XDMoD appkernels package ensure property
 
 Default value: `'present'`
 
-##### `package_name`
+##### <a name="package_name"></a>`package_name`
 
 Data type: `String`
 
@@ -203,7 +326,7 @@ XDMoD package name
 
 Default value: `$xdmod::params::package_name`
 
-##### `package_url`
+##### <a name="package_url"></a>`package_url`
 
 Data type: `Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]`
 
@@ -211,7 +334,7 @@ XDMoD package RPM URL, not used if `local_repo_name` is defined
 
 Default value: `$xdmod::params::package_url`
 
-##### `appkernels_package_name`
+##### <a name="appkernels_package_name"></a>`appkernels_package_name`
 
 Data type: `String`
 
@@ -219,7 +342,7 @@ XDMoD appkernels package name
 
 Default value: `$xdmod::params::appkernels_package_name`
 
-##### `appkernels_package_url`
+##### <a name="appkernels_package_url"></a>`appkernels_package_url`
 
 Data type: `Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]`
 
@@ -227,7 +350,7 @@ XDMoD appkernels package RPM URL, not used if `local_repo_name` is defined
 
 Default value: `$xdmod::params::appkernels_package_url`
 
-##### `xdmod_supremm_package_name`
+##### <a name="xdmod_supremm_package_name"></a>`xdmod_supremm_package_name`
 
 Data type: `String`
 
@@ -235,7 +358,7 @@ XDMoD supremm package name
 
 Default value: `$xdmod::params::xdmod_supremm_package_name`
 
-##### `xdmod_supremm_package_url`
+##### <a name="xdmod_supremm_package_url"></a>`xdmod_supremm_package_url`
 
 Data type: `Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]`
 
@@ -243,7 +366,7 @@ XDMoD supremm package RPM URL, not used if `local_repo_name` is defined
 
 Default value: `$xdmod::params::xdmod_supremm_package_url`
 
-##### `database_host`
+##### <a name="database_host"></a>`database_host`
 
 Data type: `String`
 
@@ -251,7 +374,7 @@ XDMoD database host
 
 Default value: `'localhost'`
 
-##### `database_port`
+##### <a name="database_port"></a>`database_port`
 
 Data type: `Integer`
 
@@ -259,7 +382,7 @@ XDMoD database port
 
 Default value: `3306`
 
-##### `database_user`
+##### <a name="database_user"></a>`database_user`
 
 Data type: `String`
 
@@ -267,7 +390,7 @@ XDMoD database user
 
 Default value: `'xdmod'`
 
-##### `database_password`
+##### <a name="database_password"></a>`database_password`
 
 Data type: `String`
 
@@ -275,7 +398,7 @@ XDMoD database password
 
 Default value: `'changeme'`
 
-##### `akrr_database_user`
+##### <a name="akrr_database_user"></a>`akrr_database_user`
 
 Data type: `String`
 
@@ -283,7 +406,7 @@ AKRR database user
 
 Default value: `'akrr'`
 
-##### `akrr_database_password`
+##### <a name="akrr_database_password"></a>`akrr_database_password`
 
 Data type: `String`
 
@@ -291,7 +414,7 @@ AKRR database password
 
 Default value: `'changeme'`
 
-##### `web_host`
+##### <a name="web_host"></a>`web_host`
 
 Data type: `String`
 
@@ -299,7 +422,7 @@ FQDN of web host
 
 Default value: `'localhost'`
 
-##### `akrr_host`
+##### <a name="akrr_host"></a>`akrr_host`
 
 Data type: `String`
 
@@ -307,7 +430,7 @@ FQDN of AKRR host
 
 Default value: `'localhost'`
 
-##### `scheduler`
+##### <a name="scheduler"></a>`scheduler`
 
 Data type: `Enum['slurm','torque','pbs','sge']`
 
@@ -315,7 +438,7 @@ Scheduler to shred, used to define default shred commands and PI column
 
 Default value: `'slurm'`
 
-##### `shredder_command`
+##### <a name="shredder_command"></a>`shredder_command`
 
 Data type: `Optional[Variant[String, Array]]`
 
@@ -323,7 +446,7 @@ Shred command(s)
 
 Default value: ``undef``
 
-##### `shred_hour_start`
+##### <a name="shred_hour_start"></a>`shred_hour_start`
 
 Data type: `Integer[0,23]`
 
@@ -331,7 +454,7 @@ The numeric hour to start shredding
 
 Default value: `1`
 
-##### `shred_minutes`
+##### <a name="shred_minutes"></a>`shred_minutes`
 
 Data type: `Integer`
 
@@ -339,7 +462,7 @@ Time in minutes between shred operations if multiple shred commands
 
 Default value: `5`
 
-##### `ingest_hour`
+##### <a name="ingest_hour"></a>`ingest_hour`
 
 Data type: `Optional[Integer[0,23]]`
 
@@ -347,7 +470,7 @@ The numeric hour to start ingest
 
 Default value: ``undef``
 
-##### `enable_update_check`
+##### <a name="enable_update_check"></a>`enable_update_check`
 
 Data type: `Boolean`
 
@@ -355,7 +478,7 @@ Enable XDMoD update check
 
 Default value: ``true``
 
-##### `manage_apache_vhost`
+##### <a name="manage_apache_vhost"></a>`manage_apache_vhost`
 
 Data type: `Boolean`
 
@@ -363,7 +486,7 @@ Manage the XMDoD Apache Virtual Host
 
 Default value: ``true``
 
-##### `apache_vhost_name`
+##### <a name="apache_vhost_name"></a>`apache_vhost_name`
 
 Data type: `String`
 
@@ -371,7 +494,7 @@ The Apache Virtual Host name
 
 Default value: `$xdmod::params::apache_vhost_name`
 
-##### `apache_ssl_cert`
+##### <a name="apache_ssl_cert"></a>`apache_ssl_cert`
 
 Data type: `Stdlib::Unixpath`
 
@@ -379,7 +502,7 @@ Path to SSL cert used by Apache
 
 Default value: `'/etc/pki/tls/certs/localhost.crt'`
 
-##### `apache_ssl_key`
+##### <a name="apache_ssl_key"></a>`apache_ssl_key`
 
 Data type: `Stdlib::Unixpath`
 
@@ -387,7 +510,7 @@ Path to SSL private key used by Apache
 
 Default value: `'/etc/pki/tls/private/localhost.key'`
 
-##### `apache_ssl_chain`
+##### <a name="apache_ssl_chain"></a>`apache_ssl_chain`
 
 Data type: `Optional[Stdlib::Unixpath]`
 
@@ -395,7 +518,7 @@ Path to SSL chain used by Apache
 
 Default value: ``undef``
 
-##### `portal_settings`
+##### <a name="portal_settings"></a>`portal_settings`
 
 Data type: `Hash`
 
@@ -403,7 +526,7 @@ Hash of portal_settings.ini settings to pass to `xdmod_portal_setting` resources
 
 Default value: `$xdmod::params::portal_settings`
 
-##### `hierarchy_levels`
+##### <a name="hierarchy_levels"></a>`hierarchy_levels`
 
 Data type: `Xdmod::Hierarchy_Levels`
 
@@ -411,7 +534,7 @@ Hierarchy levels used when defining hierarchies
 
 Default value: `$xdmod::params::hierarchy_levels`
 
-##### `hierarchies`
+##### <a name="hierarchies"></a>`hierarchies`
 
 Data type: `Array`
 
@@ -419,7 +542,7 @@ Hierarchy lines, see XDMoD docs
 
 Default value: `$xdmod::params::hierarchies`
 
-##### `group_to_hierarchy`
+##### <a name="group_to_hierarchy"></a>`group_to_hierarchy`
 
 Data type: `Hash`
 
@@ -427,7 +550,7 @@ Group to Hierarchy mappings, see XDMoD docs
 
 Default value: `$xdmod::params::group_to_hierarchy`
 
-##### `user_pi_names`
+##### <a name="user_pi_names"></a>`user_pi_names`
 
 Data type: `Array`
 
@@ -435,7 +558,7 @@ User and PI names, see XDMoD docs
 
 Default value: `$xdmod::params::user_pi_names`
 
-##### `organization_name`
+##### <a name="organization_name"></a>`organization_name`
 
 Data type: `Optional[String]`
 
@@ -443,7 +566,7 @@ Organization name for XDMoD instance
 
 Default value: ``undef``
 
-##### `organization_abbrev`
+##### <a name="organization_abbrev"></a>`organization_abbrev`
 
 Data type: `Optional[String]`
 
@@ -451,7 +574,7 @@ Organization abbreviation for XDMoD instance
 
 Default value: ``undef``
 
-##### `resources`
+##### <a name="resources"></a>`resources`
 
 Data type: `Array[Xdmod::Resource]`
 
@@ -459,7 +582,7 @@ Resources to define resources.json
 
 Default value: `[]`
 
-##### `resource_specs`
+##### <a name="resource_specs"></a>`resource_specs`
 
 Data type: `Array[Xdmod::Resource_Spec]`
 
@@ -467,7 +590,7 @@ Resource specs for resource_specs.json
 
 Default value: `[]`
 
-##### `sender_email`
+##### <a name="sender_email"></a>`sender_email`
 
 Data type: `String`
 
@@ -475,7 +598,7 @@ Configure sender for EMail
 
 Default value: `$xdmod::params::sender_email`
 
-##### `debug_recipient`
+##### <a name="debug_recipient"></a>`debug_recipient`
 
 Data type: `String`
 
@@ -483,7 +606,7 @@ Configure email addres to receive debug information
 
 Default value: `''`
 
-##### `php_timezone`
+##### <a name="php_timezone"></a>`php_timezone`
 
 Data type: `Optional[String]`
 
@@ -491,7 +614,7 @@ PHP Timezone
 
 Default value: ``undef``
 
-##### `center_logo_source`
+##### <a name="center_logo_source"></a>`center_logo_source`
 
 Data type: `Optional[String]`
 
@@ -499,7 +622,7 @@ Source to image that will be used as center logo in XDMoD
 
 Default value: ``undef``
 
-##### `center_logo_width`
+##### <a name="center_logo_width"></a>`center_logo_width`
 
 Data type: `Optional[Integer]`
 
@@ -507,7 +630,7 @@ The width of file from `center_logo_source`
 
 Default value: ``undef``
 
-##### `user_dashboard`
+##### <a name="user_dashboard"></a>`user_dashboard`
 
 Data type: `Enum['on','off']`
 
@@ -515,7 +638,7 @@ The value for `user_dashboard` in portal_settings.ini
 
 Default value: `'off'`
 
-##### `cors_domains`
+##### <a name="cors_domains"></a>`cors_domains`
 
 Data type: `Array`
 
@@ -523,7 +646,7 @@ The value for `domains` in `cors` section of portal_settings.ini
 
 Default value: `[]`
 
-##### `manage_user`
+##### <a name="manage_user"></a>`manage_user`
 
 Data type: `Boolean`
 
@@ -531,7 +654,7 @@ Boolean that sets if managing XMDoD user
 
 Default value: ``true``
 
-##### `user_uid`
+##### <a name="user_uid"></a>`user_uid`
 
 Data type: `Optional[Integer]`
 
@@ -539,7 +662,7 @@ XMDoD user UID
 
 Default value: ``undef``
 
-##### `group_gid`
+##### <a name="group_gid"></a>`group_gid`
 
 Data type: `Optional[Integer]`
 
@@ -547,7 +670,7 @@ XDMoD user group GID
 
 Default value: ``undef``
 
-##### `data_warehouse_export_directory`
+##### <a name="data_warehouse_export_directory"></a>`data_warehouse_export_directory`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -555,7 +678,7 @@ Path used for data warehouse export
 
 Default value: `'/var/spool/xdmod/export'`
 
-##### `data_warehouse_export_retention_duration_days`
+##### <a name="data_warehouse_export_retention_duration_days"></a>`data_warehouse_export_retention_duration_days`
 
 Data type: `Integer`
 
@@ -563,7 +686,7 @@ portal_settings.ini section=data_warehouse_export setting=retention_duration_day
 
 Default value: `30`
 
-##### `data_warehouse_export_hash_salt`
+##### <a name="data_warehouse_export_hash_salt"></a>`data_warehouse_export_hash_salt`
 
 Data type: `String`
 
@@ -571,7 +694,7 @@ portal_settings.ini section=data_warehouse_export setting=hash_salt
 
 Default value: `sha256($::fqdn)`
 
-##### `batch_export_cron_times`
+##### <a name="batch_export_cron_times"></a>`batch_export_cron_times`
 
 Data type: `Array[Integer, 2 ,2]`
 
@@ -579,7 +702,7 @@ cron times to run batch export
 
 Default value: `[0,4]`
 
-##### `manage_simplesamlphp`
+##### <a name="manage_simplesamlphp"></a>`manage_simplesamlphp`
 
 Data type: `Boolean`
 
@@ -587,7 +710,7 @@ Boolean that sets if managing simplesamlphp
 
 Default value: ``false``
 
-##### `simplesamlphp_config_content`
+##### <a name="simplesamlphp_config_content"></a>`simplesamlphp_config_content`
 
 Data type: `Optional[String]`
 
@@ -595,7 +718,7 @@ The content for simplesamlphp config
 
 Default value: ``undef``
 
-##### `simplesamlphp_config_source`
+##### <a name="simplesamlphp_config_source"></a>`simplesamlphp_config_source`
 
 Data type: `Optional[String]`
 
@@ -603,7 +726,7 @@ The source for simplesamlphp config
 
 Default value: ``undef``
 
-##### `simplesamlphp_authsources_content`
+##### <a name="simplesamlphp_authsources_content"></a>`simplesamlphp_authsources_content`
 
 Data type: `Optional[String]`
 
@@ -611,7 +734,7 @@ The content for simplesaml php authsources
 
 Default value: ``undef``
 
-##### `simplesamlphp_authsources_source`
+##### <a name="simplesamlphp_authsources_source"></a>`simplesamlphp_authsources_source`
 
 Data type: `Optional[String]`
 
@@ -619,7 +742,7 @@ The source for simplesaml php authsources
 
 Default value: ``undef``
 
-##### `simplesamlphp_metadata_content`
+##### <a name="simplesamlphp_metadata_content"></a>`simplesamlphp_metadata_content`
 
 Data type: `Optional[String]`
 
@@ -627,7 +750,7 @@ The simplesamlphp metadata content
 
 Default value: ``undef``
 
-##### `simplesamlphp_metadata_source`
+##### <a name="simplesamlphp_metadata_source"></a>`simplesamlphp_metadata_source`
 
 Data type: `Optional[String]`
 
@@ -635,7 +758,7 @@ The simplesamlphp metadata source
 
 Default value: ``undef``
 
-##### `simplesamlphp_cert_country`
+##### <a name="simplesamlphp_cert_country"></a>`simplesamlphp_cert_country`
 
 Data type: `String`
 
@@ -643,7 +766,7 @@ The simplesamlphp cert country
 
 Default value: `'US'`
 
-##### `simplesamlphp_cert_organization`
+##### <a name="simplesamlphp_cert_organization"></a>`simplesamlphp_cert_organization`
 
 Data type: `Optional[String]`
 
@@ -651,7 +774,7 @@ The simplesamlphp cert organization
 
 Default value: ``undef``
 
-##### `simplesamlphp_cert_commonname`
+##### <a name="simplesamlphp_cert_commonname"></a>`simplesamlphp_cert_commonname`
 
 Data type: `Optional[String]`
 
@@ -659,7 +782,7 @@ The simplesamlphp cert commonname
 
 Default value: ``undef``
 
-##### `akrr_source_url`
+##### <a name="akrr_source_url"></a>`akrr_source_url`
 
 Data type: `Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]`
 
@@ -667,7 +790,7 @@ The AKRR source URL
 
 Default value: `$xdmod::params::akrr_source_url`
 
-##### `akrr_version`
+##### <a name="akrr_version"></a>`akrr_version`
 
 Data type: `String`
 
@@ -675,7 +798,7 @@ The AKRR version. This version is used to build default `akrr_source_url`.
 
 Default value: `$xdmod::params::akrr_version`
 
-##### `akrr_home`
+##### <a name="akrr_home"></a>`akrr_home`
 
 Data type: `Optional[Stdlib::Unixpath]`
 
@@ -683,7 +806,7 @@ AKRR home path
 
 Default value: ``undef``
 
-##### `manage_akrr_user`
+##### <a name="manage_akrr_user"></a>`manage_akrr_user`
 
 Data type: `Boolean`
 
@@ -691,7 +814,7 @@ Boolean to manage AKRR user
 
 Default value: ``true``
 
-##### `akrr_user`
+##### <a name="akrr_user"></a>`akrr_user`
 
 Data type: `String`
 
@@ -699,7 +822,7 @@ AKRR username
 
 Default value: `'akrr'`
 
-##### `akrr_user_group`
+##### <a name="akrr_user_group"></a>`akrr_user_group`
 
 Data type: `String`
 
@@ -707,7 +830,7 @@ AKRR user group name
 
 Default value: `'akrr'`
 
-##### `akrr_user_group_gid`
+##### <a name="akrr_user_group_gid"></a>`akrr_user_group_gid`
 
 Data type: `Optional[Integer]`
 
@@ -715,7 +838,7 @@ AKRR user gropu GID
 
 Default value: ``undef``
 
-##### `akrr_user_uid`
+##### <a name="akrr_user_uid"></a>`akrr_user_uid`
 
 Data type: `Optional[Integer]`
 
@@ -723,7 +846,7 @@ AKRR user UID
 
 Default value: ``undef``
 
-##### `akrr_user_shell`
+##### <a name="akrr_user_shell"></a>`akrr_user_shell`
 
 Data type: `Stdlib::Unixpath`
 
@@ -731,7 +854,7 @@ AKRR user shell
 
 Default value: `'/bin/bash'`
 
-##### `akrr_user_home`
+##### <a name="akrr_user_home"></a>`akrr_user_home`
 
 Data type: `Optional[Stdlib::Unixpath]`
 
@@ -739,7 +862,7 @@ AKRR user home
 
 Default value: ``undef``
 
-##### `akrr_user_managehome`
+##### <a name="akrr_user_managehome"></a>`akrr_user_managehome`
 
 Data type: `Boolean`
 
@@ -747,7 +870,7 @@ AKRR user managehome property
 
 Default value: ``true``
 
-##### `akrr_user_comment`
+##### <a name="akrr_user_comment"></a>`akrr_user_comment`
 
 Data type: `String`
 
@@ -755,7 +878,7 @@ AKRR user comment
 
 Default value: `'AKRR'`
 
-##### `akrr_user_system`
+##### <a name="akrr_user_system"></a>`akrr_user_system`
 
 Data type: `Boolean`
 
@@ -763,7 +886,7 @@ AKRR user system property
 
 Default value: ``true``
 
-##### `akrr_restapi_port`
+##### <a name="akrr_restapi_port"></a>`akrr_restapi_port`
 
 Data type: `Integer`
 
@@ -771,7 +894,7 @@ AKRR restapi port
 
 Default value: `8091`
 
-##### `akrr_restapi_rw_password`
+##### <a name="akrr_restapi_rw_password"></a>`akrr_restapi_rw_password`
 
 Data type: `String`
 
@@ -779,7 +902,7 @@ AKRR restapi RW password
 
 Default value: `$xdmod::params::akrr_restapi_rw_password`
 
-##### `akrr_restapi_ro_password`
+##### <a name="akrr_restapi_ro_password"></a>`akrr_restapi_ro_password`
 
 Data type: `String`
 
@@ -787,7 +910,7 @@ AKRR restapi RO password
 
 Default value: `$xdmod::params::akrr_restapi_ro_password`
 
-##### `akrr_cron_mailto`
+##### <a name="akrr_cron_mailto"></a>`akrr_cron_mailto`
 
 Data type: `Optional[String]`
 
@@ -795,7 +918,7 @@ AKRR cron MAILTO
 
 Default value: ``undef``
 
-##### `akrr_ingestor_cron_times`
+##### <a name="akrr_ingestor_cron_times"></a>`akrr_ingestor_cron_times`
 
 Data type: `Array[Integer, 2, 2]`
 
@@ -803,7 +926,7 @@ AKRR ingestor cron times
 
 Default value: `[0,5]`
 
-##### `appkernel_reports_manager_cron_times`
+##### <a name="appkernel_reports_manager_cron_times"></a>`appkernel_reports_manager_cron_times`
 
 Data type: `Array[Integer, 2, 2]`
 
@@ -811,7 +934,7 @@ AppKernel report manager cron times
 
 Default value: `[0,6]`
 
-##### `supremm_version`
+##### <a name="supremm_version"></a>`supremm_version`
 
 Data type: `String`
 
@@ -819,7 +942,7 @@ Version of SUPReMM to install, builds `supremm_package_url` if not defined
 
 Default value: `$xdmod::params::supremm_version`
 
-##### `supremm_package_ensure`
+##### <a name="supremm_package_ensure"></a>`supremm_package_ensure`
 
 Data type: `String`
 
@@ -827,7 +950,7 @@ SUPReMM package ensure property
 
 Default value: `'present'`
 
-##### `supremm_package_url`
+##### <a name="supremm_package_url"></a>`supremm_package_url`
 
 Data type: `Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]`
 
@@ -835,7 +958,7 @@ The URL to download SUPReMM RPM from
 
 Default value: `$xdmod::params::supremm_package_url`
 
-##### `supremm_package_name`
+##### <a name="supremm_package_name"></a>`supremm_package_name`
 
 Data type: `String`
 
@@ -843,7 +966,7 @@ SUPReMM RPM package name
 
 Default value: `'supremm'`
 
-##### `supremm_mongodb_password`
+##### <a name="supremm_mongodb_password"></a>`supremm_mongodb_password`
 
 Data type: `String`
 
@@ -851,7 +974,7 @@ SUPReMM mongodb password
 
 Default value: `'changeme'`
 
-##### `supremm_mongodb_host`
+##### <a name="supremm_mongodb_host"></a>`supremm_mongodb_host`
 
 Data type: `String`
 
@@ -859,7 +982,7 @@ SUPReMM mongodb host
 
 Default value: `'localhost'`
 
-##### `supremm_mongodb_uri`
+##### <a name="supremm_mongodb_uri"></a>`supremm_mongodb_uri`
 
 Data type: `Optional[String]`
 
@@ -867,7 +990,7 @@ SUPReMM mongodb URI
 
 Default value: ``undef``
 
-##### `supremm_mongodb_replica_set`
+##### <a name="supremm_mongodb_replica_set"></a>`supremm_mongodb_replica_set`
 
 Data type: `Optional[String]`
 
@@ -875,7 +998,7 @@ SUPReMM mongodb replica set
 
 Default value: ``undef``
 
-##### `supremm_resources`
+##### <a name="supremm_resources"></a>`supremm_resources`
 
 Data type: `Array[Xdmod::Supremm_Resource]`
 
@@ -883,7 +1006,7 @@ SUPReMM resources
 
 Default value: `[]`
 
-##### `supremm_update_cron_times`
+##### <a name="supremm_update_cron_times"></a>`supremm_update_cron_times`
 
 Data type: `Array[Integer, 2, 2]`
 
@@ -891,7 +1014,7 @@ The cron times to run supremm_update
 
 Default value: `[0,2]`
 
-##### `ingest_jobscripts_cron_times`
+##### <a name="ingest_jobscripts_cron_times"></a>`ingest_jobscripts_cron_times`
 
 Data type: `Array[Integer, 2, 2]`
 
@@ -899,7 +1022,7 @@ The cron times to ingest job scripts
 
 Default value: `[0,3]`
 
-##### `aggregate_supremm_cron_times`
+##### <a name="aggregate_supremm_cron_times"></a>`aggregate_supremm_cron_times`
 
 Data type: `Array[Integer, 2, 2]`
 
@@ -907,7 +1030,7 @@ The cron times to run supremm aggregation
 
 Default value: `[0,4]`
 
-##### `supremm_archive_out_dir`
+##### <a name="supremm_archive_out_dir"></a>`supremm_archive_out_dir`
 
 Data type: `Stdlib::Absolutepath`
 
@@ -915,7 +1038,7 @@ The path to supremm archive out
 
 Default value: `'/dev/shm/supremm_test'`
 
-##### `use_pcp`
+##### <a name="use_pcp"></a>`use_pcp`
 
 Data type: `Boolean`
 
@@ -923,7 +1046,7 @@ Boolean that PCP should be used for compute environment
 
 Default value: ``true``
 
-##### `pcp_declare_method`
+##### <a name="pcp_declare_method"></a>`pcp_declare_method`
 
 Data type: `Enum['include', 'resource']`
 
@@ -931,7 +1054,7 @@ Should pcp class be included or declared like a resource
 
 Default value: `'resource'`
 
-##### `pcp_resource`
+##### <a name="pcp_resource"></a>`pcp_resource`
 
 Data type: `Optional[String]`
 
@@ -939,7 +1062,7 @@ PCP resource name
 
 Default value: ``undef``
 
-##### `pcp_pmlogger_path_suffix`
+##### <a name="pcp_pmlogger_path_suffix"></a>`pcp_pmlogger_path_suffix`
 
 Data type: `Optional[String]`
 
@@ -947,7 +1070,7 @@ PCP pmlogger path suffix
 
 Default value: ``undef``
 
-##### `pcp_pmlogger_config_template`
+##### <a name="pcp_pmlogger_config_template"></a>`pcp_pmlogger_config_template`
 
 Data type: `String`
 
@@ -955,7 +1078,7 @@ Template for pmlogger config
 
 Default value: `'xdmod/supremm/compute/pcp/pmlogger-supremm.config.erb'`
 
-##### `pcp_pmlogger_config_source`
+##### <a name="pcp_pmlogger_config_source"></a>`pcp_pmlogger_config_source`
 
 Data type: `Optional[String]`
 
@@ -963,7 +1086,7 @@ Source for pmlogger config
 
 Default value: ``undef``
 
-##### `pcp_logging_static_freq`
+##### <a name="pcp_logging_static_freq"></a>`pcp_logging_static_freq`
 
 Data type: `String`
 
@@ -971,7 +1094,7 @@ Frequency for PCP logging static metrics
 
 Default value: `'1 hour'`
 
-##### `pcp_logging_standard_freq`
+##### <a name="pcp_logging_standard_freq"></a>`pcp_logging_standard_freq`
 
 Data type: `String`
 
@@ -979,7 +1102,7 @@ Frequency for PCP logging standard metrics
 
 Default value: `'30 sec'`
 
-##### `pcp_static_metrics`
+##### <a name="pcp_static_metrics"></a>`pcp_static_metrics`
 
 Data type: `Array`
 
@@ -987,7 +1110,7 @@ PCP static metrics
 
 Default value: `$xdmod::params::supremm_pcp_static_metrics`
 
-##### `pcp_standard_metrics`
+##### <a name="pcp_standard_metrics"></a>`pcp_standard_metrics`
 
 Data type: `Array`
 
@@ -995,7 +1118,7 @@ PCP standard metrics
 
 Default value: `$xdmod::params::supremm_pcp_standard_metrics`
 
-##### `pcp_environ_metrics`
+##### <a name="pcp_environ_metrics"></a>`pcp_environ_metrics`
 
 Data type: `Array`
 
@@ -1003,7 +1126,7 @@ PCP environment metrics
 
 Default value: `$xdmod::params::supremm_pcp_environ_metrics`
 
-##### `pcp_merge_metrics`
+##### <a name="pcp_merge_metrics"></a>`pcp_merge_metrics`
 
 Data type: `Boolean`
 
@@ -1011,7 +1134,7 @@ Boolean that PCP metrics should be merged with defaults
 
 Default value: ``true``
 
-##### `pcp_hotproc_exclude_users`
+##### <a name="pcp_hotproc_exclude_users"></a>`pcp_hotproc_exclude_users`
 
 Data type: `Array`
 
@@ -1019,7 +1142,7 @@ Users to exclude from PCP hotproc
 
 Default value: `$xdmod::params::supremm_pcp_hotproc_exclude_users`
 
-##### `storage_roles_source`
+##### <a name="storage_roles_source"></a>`storage_roles_source`
 
 Data type: `String`
 
@@ -1027,7 +1150,7 @@ The source of storage roles.json
 
 Default value: `'puppet:///modules/xdmod/roles.d/storage.json'`
 
-##### `storage_cron_times`
+##### <a name="storage_cron_times"></a>`storage_cron_times`
 
 Data type: `Array[Integer, 2, 2]`
 
@@ -1037,21 +1160,24 @@ Default value: `[0,5]`
 
 ## Defined types
 
-### `xdmod::akrr::setting`
+### <a name="xdmodakrrsetting"></a>`xdmod::akrr::setting`
 
 Manage AKRR config setting value
 
 #### Parameters
 
-The following parameters are available in the `xdmod::akrr::setting` defined type.
+The following parameters are available in the `xdmod::akrr::setting` defined type:
 
-##### `value`
+* [`value`](#value)
+* [`quote`](#quote)
+
+##### <a name="value"></a>`value`
 
 Data type: `Any`
 
 Setting value
 
-##### `quote`
+##### <a name="quote"></a>`quote`
 
 Data type: `Any`
 
@@ -1061,7 +1187,7 @@ Default value: ``undef``
 
 ## Resource types
 
-### `xdmod_appkernel_setting`
+### <a name="xdmod_appkernel_setting"></a>`xdmod_appkernel_setting`
 
 Section/setting name to manage from appkernels.ini
 
@@ -1085,18 +1211,22 @@ The value of the setting to be defined.
 
 The following parameters are available in the `xdmod_appkernel_setting` type.
 
-##### `name`
+* [`name`](#name)
+* [`provider`](#provider)
+* [`secret`](#secret)
+
+##### <a name="name"></a>`name`
 
 namevar
 
 Section/setting name to manage from appkernels.ini
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `xdmod_appkernel_setting` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
-##### `secret`
+##### <a name="secret"></a>`secret`
 
 Valid values: ``true``, ``false``
 
@@ -1104,7 +1234,7 @@ Whether to hide the value from Puppet logs. Defaults to `false`.
 
 Default value: ``false``
 
-### `xdmod_portal_setting`
+### <a name="xdmod_portal_setting"></a>`xdmod_portal_setting`
 
 Section/setting name to manage from portal_settings.ini
 
@@ -1128,18 +1258,22 @@ The value of the setting to be defined.
 
 The following parameters are available in the `xdmod_portal_setting` type.
 
-##### `name`
+* [`name`](#name)
+* [`provider`](#provider)
+* [`secret`](#secret)
+
+##### <a name="name"></a>`name`
 
 namevar
 
 Section/setting name to manage from portal_settings.ini
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `xdmod_portal_setting` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
-##### `secret`
+##### <a name="secret"></a>`secret`
 
 Valid values: ``true``, ``false``
 
@@ -1147,7 +1281,7 @@ Whether to hide the value from Puppet logs. Defaults to `false`.
 
 Default value: ``false``
 
-### `xdmod_supremm_setting`
+### <a name="xdmod_supremm_setting"></a>`xdmod_supremm_setting`
 
 Section/setting name to manage from supremm.ini
 
@@ -1171,18 +1305,22 @@ The value of the setting to be defined.
 
 The following parameters are available in the `xdmod_supremm_setting` type.
 
-##### `name`
+* [`name`](#name)
+* [`provider`](#provider)
+* [`secret`](#secret)
+
+##### <a name="name"></a>`name`
 
 namevar
 
 Section/setting name to manage from supremm.ini
 
-##### `provider`
+##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `xdmod_supremm_setting` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
-##### `secret`
+##### <a name="secret"></a>`secret`
 
 Valid values: ``true``, ``false``
 
@@ -1192,7 +1330,7 @@ Default value: ``false``
 
 ## Functions
 
-### `xdmod::member_substring`
+### <a name="xdmodmember_substring"></a>`xdmod::member_substring`
 
 Type: Ruby 4.x API
 
@@ -1246,11 +1384,14 @@ The substring used for check.
 
 ## Data types
 
-### `Xdmod::Hierarchy_Levels`
+### <a name="xdmodhierarchy_levels"></a>`Xdmod::Hierarchy_Levels`
 
 The Xdmod::Hierarchy_Levels data type.
 
-Alias of `Struct[{
+Alias of
+
+```puppet
+Struct[{
   top => Struct[{
     label => String,
     info  => String,
@@ -1263,13 +1404,17 @@ Alias of `Struct[{
     label => String,
     info  => String,
   }],
-}]`
+}]
+```
 
-### `Xdmod::Resource`
+### <a name="xdmodresource"></a>`Xdmod::Resource`
 
 The Xdmod::Resource data type.
 
-Alias of `Struct[{
+Alias of
+
+```puppet
+Struct[{
   resource => String,
   name => String,
   Optional[description] => String,
@@ -1278,26 +1423,34 @@ Alias of `Struct[{
   Optional[timezone] => String,
   Optional[shared_jobs] => Boolean,
   Optional[shred_directory] => Stdlib::Absolutepath,
-}]`
+}]
+```
 
-### `Xdmod::Resource_Spec`
+### <a name="xdmodresource_spec"></a>`Xdmod::Resource_Spec`
 
 The Xdmod::Resource_Spec data type.
 
-Alias of `Struct[{
+Alias of
+
+```puppet
+Struct[{
   resource => String,
   start_date => Optional[String],
   end_date => Optional[String],
   processors => Integer,
   nodes => Integer,
   ppn => Integer,
-}]`
+}]
+```
 
-### `Xdmod::Supremm_Resource`
+### <a name="xdmodsupremm_resource"></a>`Xdmod::Supremm_Resource`
 
 The Xdmod::Supremm_Resource data type.
 
-Alias of `Struct[{
+Alias of
+
+```puppet
+Struct[{
   resource => String,
   resource_id => Integer,
   Optional[enabled] => Boolean,
@@ -1315,5 +1468,6 @@ Alias of `Struct[{
   Optional[script_dir] => Stdlib::Unixpath,
   Optional[fast_index] => Boolean,
   Optional[timezone] => String,
-}]`
+}]
+```
 
