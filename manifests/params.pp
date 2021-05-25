@@ -2,9 +2,9 @@
 # @api private
 class xdmod::params {
 
-  $version                  = '9.0.0'
-  $xdmod_appkernels_version = '9.0.0'
-  $xdmod_supremm_version    = '9.0.0'
+  $version                  = '9.5.0'
+  $xdmod_appkernels_version = '9.5.0'
+  $xdmod_supremm_version    = '9.5.0'
   $sender_email       = "xdmod@xdmod.${facts['domain']}"
   $apache_vhost_name  = "xdmod.${facts['domain']}"
   $portal_settings    = {}
@@ -20,27 +20,20 @@ class xdmod::params {
   $akrr_restapi_ro_password = fqdn_rand_string(16, undef, 'ro')
   $akrr_version             = '1.0.0'
   $akrr_source_url          = 'https://github.com/ubccr/akrr/releases/download/vAKRR_VERSION/akrr-AKRR_VERSION.tar.gz'
-  $supremm_version          = '1.3.0'
+  $supremm_version          = '1.4.1'
 
   case $::osfamily {
     'RedHat': {
       case $::operatingsystemmajrelease {
         '7': {
           $rpm_release = 'el7'
-          $supremm_rpm_release = 'el7_7'
+          $supremm_rpm_release = 'el7'
           $compute_only = false
           $pcp_package_ensure = undef
           $pcp_manage_repo = false
         }
-        '6': {
-          $rpm_release = 'el6'
-          $supremm_rpm_release = 'el6'
-          $compute_only = true
-          $pcp_package_ensure = '4.1.0-1'
-          $pcp_manage_repo = false
-        }
         default: {
-          fail("Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 6 and 7")
+          fail("Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 7")
         }
       }
       $package_name               = 'xdmod'
