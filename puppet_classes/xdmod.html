@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -2643,11 +2643,7 @@ not defined</p>
 583
 584
 585
-586
-587
-588
-589
-590</pre>
+586</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 248</span>
@@ -2887,7 +2883,6 @@ class xdmod (
   }
 
   if $database and $web {
-    include ::phantomjs
     contain xdmod::user
     contain xdmod::install
     contain xdmod::database
@@ -2895,8 +2890,7 @@ class xdmod (
     contain xdmod::config::simplesamlphp
     include xdmod::apache
 
-    Class[&#39;::phantomjs&#39;]
-    -&gt; Class[&#39;xdmod::user&#39;]
+    Class[&#39;xdmod::user&#39;]
     -&gt; Class[&#39;xdmod::install&#39;]
     -&gt; Class[&#39;xdmod::database&#39;]
     -&gt; Class[&#39;xdmod::config&#39;]
@@ -2905,15 +2899,13 @@ class xdmod (
   } elsif $database {
     contain xdmod::database
   } elsif $web {
-    include ::phantomjs
     contain xdmod::user
     contain xdmod::install
     contain xdmod::config
     contain xdmod::config::simplesamlphp
     contain xdmod::apache
 
-    Class[&#39;::phantomjs&#39;]
-    -&gt; Class[&#39;xdmod::user&#39;]
+    Class[&#39;xdmod::user&#39;]
     -&gt; Class[&#39;xdmod::install&#39;]
     -&gt; Class[&#39;xdmod::config&#39;]
     -&gt; Class[&#39;xdmod::config::simplesamlphp&#39;]

@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::supremm::config
   
-    &mdash; Documentation by YARD 0.9.25
+    &mdash; Documentation by YARD 0.9.26
   
 </title>
 
@@ -154,7 +154,16 @@
 61
 62
 63
-64</pre>
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/supremm/config.pp', line 3</span>
@@ -177,6 +186,15 @@ class xdmod::supremm::config {
     command =&gt; &quot;mongo ${::xdmod::supremm_mongo_args} ${mongo_setup}&quot;,
     onlyif  =&gt; &quot;test `mongo --quiet ${::xdmod::supremm_mongo_args} --eval &#39;db.schema.count()&#39;` -eq 0&quot;,
     require =&gt; Package[&#39;mongodb_client&#39;],
+  }
+
+  exec { &#39;mongodb-supremm-schema-refresh&#39;:
+    path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
+    command     =&gt; &quot;mongo ${::xdmod::supremm_mongo_args} ${mongo_setup}&quot;,
+    onlyif      =&gt; &quot;test `mongo --quiet ${::xdmod::supremm_mongo_args} --eval &#39;db.schema.count()&#39;` -gt 0&quot;,
+    refreshonly =&gt; true,
+    require     =&gt; Package[&#39;mongodb_client&#39;],
+    subscribe   =&gt; Class[&#39;xdmod::supremm::install&#39;],
   }
 
   if $::xdmod::supremm_mysql_access == &#39;defaultsfile&#39; {
