@@ -480,7 +480,6 @@ class xdmod (
   }
 
   if $database and $web {
-    include ::phantomjs
     contain xdmod::user
     contain xdmod::install
     contain xdmod::database
@@ -488,8 +487,7 @@ class xdmod (
     contain xdmod::config::simplesamlphp
     include xdmod::apache
 
-    Class['::phantomjs']
-    -> Class['xdmod::user']
+    Class['xdmod::user']
     -> Class['xdmod::install']
     -> Class['xdmod::database']
     -> Class['xdmod::config']
@@ -498,15 +496,13 @@ class xdmod (
   } elsif $database {
     contain xdmod::database
   } elsif $web {
-    include ::phantomjs
     contain xdmod::user
     contain xdmod::install
     contain xdmod::config
     contain xdmod::config::simplesamlphp
     contain xdmod::apache
 
-    Class['::phantomjs']
-    -> Class['xdmod::user']
+    Class['xdmod::user']
     -> Class['xdmod::install']
     -> Class['xdmod::config']
     -> Class['xdmod::config::simplesamlphp']
