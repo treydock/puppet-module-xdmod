@@ -554,10 +554,7 @@
 461
 462
 463
-464
-465
-466
-467</pre>
+464</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/config.pp', line 3</span>
@@ -593,9 +590,6 @@ class xdmod::config {
   xdmod_portal_setting { &#39;mailer/sender_email&#39;: value =&gt; $::xdmod::sender_email }
 
   xdmod_portal_setting { &#39;cors/domains&#39;: value =&gt; join($xdmod::cors_domains, &#39;,&#39;) }
-
-  xdmod_portal_setting { &#39;reporting/java_path&#39;: value =&gt; &#39;/usr/bin/java&#39; }
-  xdmod_portal_setting { &#39;reporting/javac_path&#39;: value =&gt; &#39;/usr/bin/javac&#39; }
 
   xdmod_portal_setting { &#39;logger/host&#39;: value =&gt; $::xdmod::database_host }
   xdmod_portal_setting { &#39;logger/port&#39;: value =&gt; $::xdmod::database_port }
