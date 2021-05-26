@@ -32,9 +32,6 @@ class xdmod::config {
 
   xdmod_portal_setting { 'cors/domains': value => join($xdmod::cors_domains, ',') }
 
-  xdmod_portal_setting { 'reporting/java_path': value => '/usr/bin/java' }
-  xdmod_portal_setting { 'reporting/javac_path': value => '/usr/bin/javac' }
-
   xdmod_portal_setting { 'logger/host': value => $::xdmod::database_host }
   xdmod_portal_setting { 'logger/port': value => $::xdmod::database_port }
   xdmod_portal_setting { 'logger/user': value => $::xdmod::database_user }

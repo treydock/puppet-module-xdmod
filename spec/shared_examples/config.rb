@@ -46,7 +46,6 @@ shared_examples_for 'xdmod::config' do |_facts|
   end
 
   it { is_expected.to contain_xdmod_portal_setting('features/appkernels').with_value('off') }
-  it { is_expected.to contain_xdmod_portal_setting('reporting/java_path').with_value('/usr/bin/java') }
   it { is_expected.to contain_xdmod_portal_setting('cors/domains').with_value('') }
   it { is_expected.not_to contain_file('/etc/xdmod/portal_settings.d/appkernels.ini') }
   it { is_expected.not_to contain_xdmod_appkernel_setting('features/appkernels') }
