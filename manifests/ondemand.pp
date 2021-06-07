@@ -29,6 +29,7 @@ class xdmod::ondemand (
     $geoip_directory = '/usr/share/GeoIP'
     $update_timer_hour = sprintf('%02d', ($cron_times[1] - 1))
     class { 'geoip':
+      packages      => ['geoipupdate'],
       config        => {
         'userid'             => $geoip_userid,
         'licensekey'         => $geoip_licensekey,
