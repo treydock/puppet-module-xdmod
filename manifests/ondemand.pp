@@ -57,10 +57,10 @@ class xdmod::ondemand (
 
   if $geoip_directory {
     exec { 'xmod-ondemand-enable-geoip-file':
-      path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-      command     => 'mv -f /etc/xdmod/etl/etl.d/ood.json.puppet-save /etc/xdmod/etl/etl.d/ood.json',
-      onlyif      => 'test -f /etc/xdmod/etl/etl.d/ood.json.puppet-save',
-      require     => $package_subscribe,
+      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
+      command => 'mv -f /etc/xdmod/etl/etl.d/ood.json.puppet-save /etc/xdmod/etl/etl.d/ood.json',
+      onlyif  => 'test -f /etc/xdmod/etl/etl.d/ood.json.puppet-save',
+      require => $package_subscribe,
     }
   } else {
     exec { 'xmod-ondemand-disable-geoip-file':

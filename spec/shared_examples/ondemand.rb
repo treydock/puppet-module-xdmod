@@ -1,5 +1,4 @@
 shared_examples_for 'xdmod::ondemand' do |_facts|
-
   it { is_expected.to create_class('xdmod::ondemand') }
   it { is_expected.to contain_class('xdmod') }
   it { is_expected.not_to contain_class('geoip') }
