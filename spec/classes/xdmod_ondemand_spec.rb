@@ -34,6 +34,7 @@ describe 'xdmod::ondemand' do
             update_timers: ['*-*-* 06:00:00'],
           )
         end
+        it { is_expected.to contain_file('/etc/GeoIP.conf').with_show_diff('false') }
         it { is_expected.to contain_exec('xmod-ondemand-enable-geoip-file') }
         it { is_expected.not_to contain_exec('xmod-ondemand-disable-geoip-file') }
       end

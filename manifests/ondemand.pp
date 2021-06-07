@@ -39,6 +39,9 @@ class xdmod::ondemand (
         "*-*-* ${update_timer_hour}:00:00",
       ],
     }
+    File <| title == $geoip::config_path |> {
+      show_diff => false,
+    }
   } else {
     $geoip_directory = undef
   }
