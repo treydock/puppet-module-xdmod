@@ -9,7 +9,5 @@ Type=oneshot
 User=<%= $geoip::service_user %>
 Group=<%= $geoip::service_group %>
 ExecStart=<%= $geoip::update_path %> -v -f <%= $geoip::config_path %>
-Restart=<%= $geoip::systemd::service::restart %>
-RestartSec=<%= $geoip::systemd::service::restart_sec %>
 StandardOutput=journal
 StandardError=journal
