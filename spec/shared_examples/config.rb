@@ -614,4 +614,45 @@ shared_examples_for 'xdmod::config' do |_facts|
                       ])
     end
   end
+
+  context 'when ondemand resources defined' do
+    let(:params) do
+      {
+        resources: [
+          { 'resource' => 'ondemand', 'name' => 'OnDemand', 'resource_type' => 'Gateway' },
+        ],
+        resource_specs: [
+          { 'resource' => 'example', 'processors' => 2, 'nodes' => 1, 'ppn' => 2 },
+        ],
+      }
+    end
+
+    it do
+      content = catalogue.resource('file', '/etc/xdmod/resources.json').send(:parameters)[:content]
+      value = JSON.parse(content)
+      expected = [{
+        'resource' => 'ondemand',
+        'resource_type' => 'Gateway',
+        'name' => 'OnDemand',
+      }]
+      expect(value).to eq(expected)
+    end
+    it do
+      content = catalogue.resource('file', '/etc/xdmod/resource_specs.json').send(:parameters)[:content]
+      value = JSON.parse(content)
+      expected = [{
+        'resource' => 'example',
+        'processors' => 2,
+        'nodes' => 1,
+        'ppn' => 2,
+      },
+                  {
+                    'resource' => 'ondemand',
+                    'processors' => 1,
+                    'nodes' => 1,
+                    'ppn' => 1,
+                  }]
+      expect(value).to eq(expected)
+    end
+  end
 end

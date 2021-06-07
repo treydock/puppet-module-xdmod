@@ -267,6 +267,15 @@ class xdmod::config {
     refreshonly => true,
     require     => Exec['acl-config'],
   }
+  exec { 'xdmod-ingestor':
+    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command     => '/usr/bin/xdmod-ingestor',
+    refreshonly => true,
+    require     => [
+      Exec['acl-config'],
+      Exec['acl-refresh'],
+    ],
+  }
 
   if $::xdmod::organization_name and $::xdmod::organization_abbrev {
     $organization = {
@@ -293,9 +302,13 @@ class xdmod::config {
       Undef   => 'HPC',
       default => $r['resource_type'],
     }
-    $pi_column = $r['pi_column'] ? {
-      Undef   => $::xdmod::pi_column,
-      default => $r['pi_column'],
+    if $resource_type == 'HPC' {
+      $pi_column = $r['pi_column'] ? {
+        Undef   => $::xdmod::pi_column,
+        default => $r['pi_column'],
+      }
+    } else {
+      $pi_column = undef
     }
     delete_undef_values({
       'resource' => $r['resource'],
@@ -307,6 +320,15 @@ class xdmod::config {
       'shared_jobs' => $r['shared_jobs'],
     })
   }
+  $ondemand_resource_specs = $xdmod::ondemand_resources.map |$r| {
+    {
+      'resource' => $r['resource'],
+      'processors' => 1,
+      'nodes' => 1,
+      'ppn' => 1,
+    }
+  }
+  $resource_specs = $xdmod::resource_specs + $ondemand_resource_specs
 
   file { '/etc/xdmod/resources.json':
     ensure  => 'file',
@@ -314,13 +336,17 @@ class xdmod::config {
     group   => 'root',
     mode    => '0644',
     content => to_json_pretty($resources),
+    notify  => [
+      Exec['acl-refresh'],
+      Exec['xdmod-ingestor'],
+    ],
   }
   file { '/etc/xdmod/resource_specs.json':
     ensure  => 'file',
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => to_json_pretty($::xdmod::resource_specs),
+    content => to_json_pretty($resource_specs),
   }
 
   $hierarchy_levels = $::xdmod::params::hierarchy_levels + $::xdmod::hierarchy_levels

@@ -83,6 +83,14 @@ describe 'xdmod' do
         it_behaves_like 'xdmod::apache', facts
       end
 
+      context 'when ondemand enabled' do
+        let(:params) { { enable_ondemand: true } }
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_class('xdmod::install').that_comes_before('Class[xdmod::ondemand]') }
+        it { is_expected.to contain_class('xdmod::ondemand').that_comes_before('Class[xdmod::apache]') }
+      end
+
       context 'when compute => true only' do
         let(:default_params) do
           {

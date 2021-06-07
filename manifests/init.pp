@@ -24,6 +24,8 @@
 #   Enable XDMod SUPReMM support
 # @param enable_cloud_realm
 #   Enable the XDMoD cloud realm by adding the necessary database
+# @param enable_ondemand
+#   Enable the XDMOD OnDemand plugin and necessary database
 # @param local_repo_name
 #   Name of yum repo hosting RPMs
 # @param manage_epel
@@ -261,6 +263,7 @@ class xdmod (
   Boolean $enable_appkernel                     = false,
   Boolean $enable_supremm                       = false,
   Boolean $enable_cloud_realm                   = false,
+  Boolean $enable_ondemand                      = false,
   Optional[String] $local_repo_name             = undef,
   Boolean $manage_epel                          = true,
   String $package_ensure                        = 'present',
@@ -430,6 +433,7 @@ class xdmod (
   }
 
   $storage_resources = $resources.filter |$r| { $r['resource_type'] == 'Disk' }
+  $ondemand_resources = $resources.filter |$r| { $r['resource_type'] == 'Gateway' }
 
   $shredder_command_default = $resources.map |$r| {
     regsubst($scheduler_shredder_command, 'RESOURCE', $r['resource'], 'G')
@@ -506,6 +510,14 @@ class xdmod (
     -> Class['xdmod::install']
     -> Class['xdmod::config']
     -> Class['xdmod::config::simplesamlphp']
+    -> Class['xdmod::apache']
+  }
+
+  if $web and $enable_ondemand {
+    contain xdmod::ondemand
+    Class['xdmod::install']
+    -> Class['xdmod::ondemand']
+    Class['xdmod::ondemand']
     -> Class['xdmod::apache']
   }
 

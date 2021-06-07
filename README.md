@@ -92,6 +92,20 @@ Examples of some hiera values that may be useful to set globally
       - 0
       - 8
 
+Example of how to enable OnDemand module:
+
+```yaml
+xdmod::enable_ondemand: true
+xdmod::resources:
+  - resource: ondemand
+    name: OnDemand
+    resource_type: Gateway
+    shred_directory: /path/to/ondemand/logs/directory
+    hostname: https://ondemand.example.com
+xdmod::ondemand::geoip_userid: 00001
+xdmod::ondemand::geoip_licensekey: secret-key
+```
+
 If you run a local yum repo for XDMoD packages
 
     xdmod::local_repo_name: 'local-repo-name-here'
