@@ -28,10 +28,12 @@ class xdmod::ondemand (
   if $geoip_userid and $geoip_licensekey {
     $geoip_directory = '/usr/share/GeoIP'
     class { 'geoip':
-      userid             => $geoip_userid,
-      licensekey         => $geoip_licensekey,
-      database_directory => $geoip_directory,
-      productids         => ['GeoLite2-City'],
+      config => {
+        'userid'             => $geoip_userid,
+        'licensekey'         => $geoip_licensekey,
+        'database_directory' => $geoip_directory,
+        'productids'         => ['GeoLite2-City'],
+      },
     }
   } else {
     $geoip_directory = undef
@@ -53,10 +55,17 @@ class xdmod::ondemand (
     $package_subscribe = Yum::Install[$package_name]
   }
 
-  if !$geoip_directory {
-    exec { 'xmod-ondemand-rm-geoip-file':
+  if $geoip_directory {
+    exec { 'xmod-ondemand-enable-geoip-file':
       path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-      command     => 'sed -i \'/"geoip_file":/d\' /etc/xdmod/etl/etl.d/ood.json',
+      command     => 'mv -f /etc/xdmod/etl/etl.d/ood.json.puppet-save /etc/xdmod/etl/etl.d/ood.json',
+      onlyif      => 'test -f /etc/xdmod/etl/etl.d/ood.json.puppet-save',
+      require     => $package_subscribe,
+    }
+  } else {
+    exec { 'xmod-ondemand-disable-geoip-file':
+      path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+      command     => 'sed -i.puppet-save \'/"geoip_file":/d\' /etc/xdmod/etl/etl.d/ood.json',
       refreshonly => true,
       subscribe   => $package_subscribe,
     }
