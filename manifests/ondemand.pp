@@ -27,13 +27,17 @@ class xdmod::ondemand (
 
   if $geoip_userid and $geoip_licensekey {
     $geoip_directory = '/usr/share/GeoIP'
+    $update_timer_hour = sprintf('%02d', ($cron_times[1] - 1))
     class { 'geoip':
-      config => {
+      config        => {
         'userid'             => $geoip_userid,
         'licensekey'         => $geoip_licensekey,
         'database_directory' => $geoip_directory,
         'productids'         => ['GeoLite2-City'],
       },
+      update_timers => [
+        "*-*-* ${update_timer_hour}:00:00",
+      ],
     }
   } else {
     $geoip_directory = undef
