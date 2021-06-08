@@ -12,6 +12,8 @@
 #   The state of XDMOD OnDemand package when using local repo
 # @param package_url
 #   The URL of the XDMOD OnDemand package when not using local repo
+# @param log_format
+#   Log format to use for parsing access logs
 # @param cron_times
 #   The cron times for ondemand shred/ingest
 #
@@ -21,6 +23,7 @@ class xdmod::ondemand (
   String $package_name = 'xdmod-ondemand',
   String $package_ensure = 'installed',
   Stdlib::HTTPSUrl $package_url  = 'https://github.com/ubccr/xdmod-ondemand/releases/download/9.5.0-rc1/xdmod-ondemand-9.5.0-1.0.rc.1.el7.noarch.rpm',
+  String $log_format = '%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"',
   Array[Integer, 2, 2] $cron_times = [0,7],
 ) {
   include xdmod
@@ -66,19 +69,33 @@ class xdmod::ondemand (
     $package_subscribe = Yum::Install[$package_name]
   }
 
+  augeas { 'xdmod-ondemand-log_format':
+    incl    => '/etc/xdmod/etl/etl.d/ood.json',
+    lens    => 'Json.lns',
+    changes => [
+      "set dict/entry[. = \"log-ingestion\"]/array/dict/entry[. = \"endpoints\"]/dict/entry/dict/entry[. = \"handler\"]/dict/entry[. = \"log_format\"]/string \'${log_format}'",
+    ],
+    require => $package_subscribe,
+  }
+
   if $geoip_directory {
-    exec { 'xmod-ondemand-enable-geoip-file':
-      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-      command => 'mv -f /etc/xdmod/etl/etl.d/ood.json.puppet-save /etc/xdmod/etl/etl.d/ood.json',
-      onlyif  => 'test -f /etc/xdmod/etl/etl.d/ood.json.puppet-save',
+    augeas { 'xdmod-ondemand-geoip_file':
+      incl    => '/etc/xdmod/etl/etl.d/ood.json',
+      lens    => 'Json.lns',
+      changes => [
+        'set dict/entry[. = "log-ingestion"]/array/dict/entry[. = "endpoints"]/dict/entry/dict/entry[. = "handler"]/dict/entry[last()+1] "geoip_file"',
+        'set dict/entry[. = "log-ingestion"]/array/dict/entry[. = "endpoints"]/dict/entry/dict/entry[. = "handler"]/dict/entry[. = "geoip_file"]/string "${GEOIP_FILE_PATH}"',
+      ],
       require => $package_subscribe,
     }
   } else {
-    exec { 'xmod-ondemand-disable-geoip-file':
-      path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-      command     => 'sed -i.puppet-save \'/"geoip_file":/d\' /etc/xdmod/etl/etl.d/ood.json',
-      refreshonly => true,
-      subscribe   => $package_subscribe,
+    augeas { 'xdmod-ondemand-rm-geoip_file':
+      incl    => '/etc/xdmod/etl/etl.d/ood.json',
+      lens    => 'Json.lns',
+      changes => [
+        'rm dict/entry[. = "log-ingestion"]/array/dict/entry[. = "endpoints"]/dict/entry/dict/entry[. = "handler"]/dict/entry[. = "geoip_file"]',
+      ],
+      require => $package_subscribe,
     }
   }
 
