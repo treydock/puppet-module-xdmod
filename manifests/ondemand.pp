@@ -59,14 +59,14 @@ class xdmod::ondemand (
       name    => $package_name,
       require => $xdmod::_package_require,
     }
-    $package_subscribe = Package['xdmod-ondemand']
+    $package_resource = Package['xdmod-ondemand']
   } else {
     yum::install { $package_name:
       ensure  => 'present',
       source  => $package_url,
       require => $xdmod::_package_require,
     }
-    $package_subscribe = Yum::Install[$package_name]
+    $package_resource = Yum::Install[$package_name]
   }
 
   augeas { 'xdmod-ondemand-log_format':
@@ -75,7 +75,7 @@ class xdmod::ondemand (
     changes => [
       "set dict/entry[. = \"log-ingestion\"]/array/dict/entry[. = \"endpoints\"]/dict/entry/dict/entry[. = \"handler\"]/dict/entry[. = \"log_format\"]/string \'${log_format}'",
     ],
-    require => $package_subscribe,
+    require => $package_resource,
   }
 
   if $geoip_directory {
@@ -86,7 +86,8 @@ class xdmod::ondemand (
         'set dict/entry[. = "log-ingestion"]/array/dict/entry[. = "endpoints"]/dict/entry/dict/entry[. = "handler"]/dict/entry[last()+1] "geoip_file"',
         'set dict/entry[. = "log-ingestion"]/array/dict/entry[. = "endpoints"]/dict/entry/dict/entry[. = "handler"]/dict/entry[. = "geoip_file"]/string "${GEOIP_FILE_PATH}"',
       ],
-      require => $package_subscribe,
+      onlyif  => 'match dict/entry[. = "log-ingestion"]/array/dict/entry[. = "endpoints"]/dict/entry/dict/entry[. = "handler"]/dict/entry[. = "geoip_file"] size == 0',
+      require => $package_resource,
     }
   } else {
     augeas { 'xdmod-ondemand-rm-geoip_file':
@@ -95,7 +96,7 @@ class xdmod::ondemand (
       changes => [
         'rm dict/entry[. = "log-ingestion"]/array/dict/entry[. = "endpoints"]/dict/entry/dict/entry[. = "handler"]/dict/entry[. = "geoip_file"]',
       ],
-      require => $package_subscribe,
+      require => $package_resource,
     }
   }
 
