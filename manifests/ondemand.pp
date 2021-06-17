@@ -32,7 +32,6 @@ class xdmod::ondemand (
     $geoip_directory = '/usr/share/GeoIP'
     $update_timer_hour = sprintf('%02d', ($cron_times[1] - 1))
     class { 'geoip':
-      packages      => ['geoipupdate'],
       config        => {
         'userid'             => $geoip_userid,
         'licensekey'         => $geoip_licensekey,
@@ -45,9 +44,6 @@ class xdmod::ondemand (
     }
     File <| title == $geoip::config_path |> {
       show_diff => false,
-    }
-    Systemd::Unit_file <| title == "${geoip::service_name}.service" |> {
-      content => epp('xdmod/ondemand/geoip_service_unit.epp'),
     }
   } else {
     $geoip_directory = undef

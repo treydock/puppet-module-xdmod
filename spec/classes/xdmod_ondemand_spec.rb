@@ -25,7 +25,6 @@ describe 'xdmod::ondemand' do
         it { is_expected.to compile.with_all_deps }
         it do
           is_expected.to contain_class('geoip').with(
-            packages: ['geoipupdate'],
             config: {
               'userid'             => '0001',
               'licensekey'         => 'secret-key',

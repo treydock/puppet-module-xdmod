@@ -7,6 +7,9 @@
       puppet:
         - puppet6
         - puppet7
+  acceptance_env_vars:
+    GEOIP_USERID: '${{ secrets.GEOIP_USERID }}'
+    GEOIP_LICENSEKEY: '${{ secrets.GEOIP_LICENSEKEY }}'
 .gitlab-ci.yml:
   delete: true
 appveyor.yml:

@@ -62,7 +62,7 @@
     },
     {
       "name": "trepasi/geoip",
-      "version_requirement": ">= 3.0.0 <4.0.0"
+      "version_requirement": ">= 3.1.0 <4.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -97,5 +97,5 @@
   ],
   "pdk-version": "1.17.0",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-g3ae711a"
+  "template-ref": "heads/master-0-g21694e9"
 }
