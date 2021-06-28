@@ -1,7 +1,7 @@
 shared_examples_for 'xdmod::supremm::config' do |_facts|
   it 'has valid JSON' do
     config = catalogue.resource('file', '/etc/supremm/config.json').send(:parameters)[:content]
-    expect { JSON.parse(config) }.to_not raise_error
+    expect { JSON.parse(config) }.not_to raise_error
   end
 
   context 'prometheus parameters' do
@@ -15,7 +15,7 @@ shared_examples_for 'xdmod::supremm::config' do |_facts|
 
     it 'has valid JSON' do
       config = catalogue.resource('file', '/etc/supremm/config.json').send(:parameters)[:content]
-      expect { JSON.parse(config) }.to_not raise_error
+      expect { JSON.parse(config) }.not_to raise_error
       data = JSON.parse(config)
       expect(data['summary']['prometheus_url']).to eq('http://example.com:9090')
     end
