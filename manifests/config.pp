@@ -271,6 +271,7 @@ class xdmod::config {
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
     command     => '/usr/bin/xdmod-ingestor',
     refreshonly => true,
+    timeout     => 0,
     require     => [
       Exec['acl-config'],
       Exec['acl-refresh'],
@@ -338,8 +339,10 @@ class xdmod::config {
     content => to_json_pretty($resources),
     notify  => [
       Exec['acl-refresh'],
-      Exec['xdmod-ingestor'],
     ],
+  }
+  if ! empty($xdmod::ondemand_resources) {
+    File['/etc/xdmod/resources.json'] ~> Exec['xdmod-ingestor']
   }
   file { '/etc/xdmod/resource_specs.json':
     ensure  => 'file',
