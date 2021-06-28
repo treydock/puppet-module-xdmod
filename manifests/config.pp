@@ -267,16 +267,6 @@ class xdmod::config {
     refreshonly => true,
     require     => Exec['acl-config'],
   }
-  exec { 'xdmod-ingestor':
-    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command     => '/usr/bin/xdmod-ingestor',
-    refreshonly => true,
-    timeout     => 0,
-    require     => [
-      Exec['acl-config'],
-      Exec['acl-refresh'],
-    ],
-  }
 
   if $::xdmod::organization_name and $::xdmod::organization_abbrev {
     $organization = {
@@ -340,9 +330,6 @@ class xdmod::config {
     notify  => [
       Exec['acl-refresh'],
     ],
-  }
-  if ! empty($xdmod::ondemand_resources) {
-    File['/etc/xdmod/resources.json'] ~> Exec['xdmod-ingestor']
   }
   file { '/etc/xdmod/resource_specs.json':
     ensure  => 'file',
