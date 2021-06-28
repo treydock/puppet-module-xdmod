@@ -168,6 +168,9 @@ The following parameters are available in the `xdmod` class:
 * [`ingest_jobscripts_cron_times`](#ingest_jobscripts_cron_times)
 * [`aggregate_supremm_cron_times`](#aggregate_supremm_cron_times)
 * [`supremm_archive_out_dir`](#supremm_archive_out_dir)
+* [`supremm_prometheus_url`](#supremm_prometheus_url)
+* [`supremm_prometheus_step`](#supremm_prometheus_step)
+* [`supremm_prometheus_rates`](#supremm_prometheus_rates)
 * [`use_pcp`](#use_pcp)
 * [`pcp_declare_method`](#pcp_declare_method)
 * [`pcp_resource`](#pcp_resource)
@@ -1048,11 +1051,35 @@ The path to supremm archive out
 
 Default value: `'/dev/shm/supremm_test'`
 
+##### <a name="supremm_prometheus_url"></a>`supremm_prometheus_url`
+
+Data type: `Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]]`
+
+Prometheus URL to use with SUPREMM summarization
+
+Default value: ``undef``
+
+##### <a name="supremm_prometheus_step"></a>`supremm_prometheus_step`
+
+Data type: `Optional[String[1]]`
+
+Prometheus step value for SUPREMM summarization
+
+Default value: ``undef``
+
+##### <a name="supremm_prometheus_rates"></a>`supremm_prometheus_rates`
+
+Data type: `Optional[Hash]`
+
+Prometheus rate overrides for SUPREMM summarization
+
+Default value: ``undef``
+
 ##### <a name="use_pcp"></a>`use_pcp`
 
 Data type: `Boolean`
 
-Boolean that PCP should be used for compute environment
+Boolean that PCP should be used for SUPREMM
 
 Default value: ``true``
 
@@ -1550,6 +1577,7 @@ Struct[{
   }],
   Optional[hostname_mode] => Enum['fqdn','hostname'],
   Optional[pcp_log_dir] => Stdlib::Unixpath,
+  Optional[metric_system] => Enum['pcp','prometheus'],
   Optional[script_dir] => Stdlib::Unixpath,
   Optional[fast_index] => Boolean,
   Optional[timezone] => String,
