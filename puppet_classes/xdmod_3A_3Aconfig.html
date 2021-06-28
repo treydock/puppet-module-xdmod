@@ -580,7 +580,10 @@
 487
 488
 489
-490</pre>
+490
+491
+492
+493</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/config.pp', line 3</span>
@@ -856,6 +859,7 @@ class xdmod::config {
     path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
     command     =&gt; &#39;/usr/bin/xdmod-ingestor&#39;,
     refreshonly =&gt; true,
+    timeout     =&gt; 0,
     require     =&gt; [
       Exec[&#39;acl-config&#39;],
       Exec[&#39;acl-refresh&#39;],
@@ -923,8 +927,10 @@ class xdmod::config {
     content =&gt; to_json_pretty($resources),
     notify  =&gt; [
       Exec[&#39;acl-refresh&#39;],
-      Exec[&#39;xdmod-ingestor&#39;],
     ],
+  }
+  if ! empty($xdmod::ondemand_resources) {
+    File[&#39;/etc/xdmod/resources.json&#39;] ~&gt; Exec[&#39;xdmod-ingestor&#39;]
   }
   file { &#39;/etc/xdmod/resource_specs.json&#39;:
     ensure  =&gt; &#39;file&#39;,
