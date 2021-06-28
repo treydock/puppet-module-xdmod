@@ -589,7 +589,7 @@ class xdmod (
       Yumrepo['epel']->Package['mongodb_client']
     }
 
-   Class['xdmod::supremm::install']
+    Class['xdmod::supremm::install']
     -> Class['xdmod::supremm::config']
 
     if $database {
