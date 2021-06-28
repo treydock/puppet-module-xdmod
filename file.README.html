@@ -178,6 +178,19 @@ xdmod::appkernel_reports_manager_cron_times:
   - 8
 </code></pre>
 
+<p>Example of how to enable OnDemand module:</p>
+
+<pre class="code ruby"><code class="ruby">xdmod::enable_ondemand: true
+xdmod::resources:
+  - resource: ondemand
+    name: OnDemand
+    resource_type: Gateway
+    shred_directory: /path/to/ondemand/logs/directory
+    hostname: https://ondemand.example.com
+xdmod::ondemand::geoip_userid: 00001
+xdmod::ondemand::geoip_licensekey: secret-key
+</code></pre>
+
 <p>If you run a local yum repo for XDMoD packages</p>
 
 <pre class="code ruby"><code class="ruby">xdmod::local_repo_name: &#39;local-repo-name-here&#39;

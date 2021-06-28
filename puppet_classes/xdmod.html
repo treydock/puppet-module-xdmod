@@ -309,6 +309,24 @@
   
     <li>
       
+        <span class='name'>enable_ondemand</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>false</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Enable the XDMOD OnDemand plugin and necessary database</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>local_repo_name</span>
       
       
@@ -2305,8 +2323,6 @@ not defined</p>
         <pre class="lines">
 
 
-248
-249
 250
 251
 252
@@ -2643,10 +2659,22 @@ not defined</p>
 583
 584
 585
-586</pre>
+586
+587
+588
+589
+590
+591
+592
+593
+594
+595
+596
+597
+598</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 248</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 250</span>
 
 class xdmod (
   String $version                  = $xdmod::params::version,
@@ -2664,6 +2692,7 @@ class xdmod (
   Boolean $enable_appkernel                     = false,
   Boolean $enable_supremm                       = false,
   Boolean $enable_cloud_realm                   = false,
+  Boolean $enable_ondemand                      = false,
   Optional[String] $local_repo_name             = undef,
   Boolean $manage_epel                          = true,
   String $package_ensure                        = &#39;present&#39;,
@@ -2833,6 +2862,7 @@ class xdmod (
   }
 
   $storage_resources = $resources.filter |$r| { $r[&#39;resource_type&#39;] == &#39;Disk&#39; }
+  $ondemand_resources = $resources.filter |$r| { $r[&#39;resource_type&#39;] == &#39;Gateway&#39; }
 
   $shredder_command_default = $resources.map |$r| {
     regsubst($scheduler_shredder_command, &#39;RESOURCE&#39;, $r[&#39;resource&#39;], &#39;G&#39;)
@@ -2909,6 +2939,14 @@ class xdmod (
     -&gt; Class[&#39;xdmod::install&#39;]
     -&gt; Class[&#39;xdmod::config&#39;]
     -&gt; Class[&#39;xdmod::config::simplesamlphp&#39;]
+    -&gt; Class[&#39;xdmod::apache&#39;]
+  }
+
+  if $web and $enable_ondemand {
+    contain xdmod::ondemand
+    Class[&#39;xdmod::install&#39;]
+    -&gt; Class[&#39;xdmod::ondemand&#39;]
+    Class[&#39;xdmod::ondemand&#39;]
     -&gt; Class[&#39;xdmod::apache&#39;]
   }
 

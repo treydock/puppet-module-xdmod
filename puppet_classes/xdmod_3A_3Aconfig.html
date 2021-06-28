@@ -554,7 +554,33 @@
 461
 462
 463
-464</pre>
+464
+465
+466
+467
+468
+469
+470
+471
+472
+473
+474
+475
+476
+477
+478
+479
+480
+481
+482
+483
+484
+485
+486
+487
+488
+489
+490</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/config.pp', line 3</span>
@@ -826,6 +852,15 @@ class xdmod::config {
     refreshonly =&gt; true,
     require     =&gt; Exec[&#39;acl-config&#39;],
   }
+  exec { &#39;xdmod-ingestor&#39;:
+    path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
+    command     =&gt; &#39;/usr/bin/xdmod-ingestor&#39;,
+    refreshonly =&gt; true,
+    require     =&gt; [
+      Exec[&#39;acl-config&#39;],
+      Exec[&#39;acl-refresh&#39;],
+    ],
+  }
 
   if $::xdmod::organization_name and $::xdmod::organization_abbrev {
     $organization = {
@@ -852,9 +887,13 @@ class xdmod::config {
       Undef   =&gt; &#39;HPC&#39;,
       default =&gt; $r[&#39;resource_type&#39;],
     }
-    $pi_column = $r[&#39;pi_column&#39;] ? {
-      Undef   =&gt; $::xdmod::pi_column,
-      default =&gt; $r[&#39;pi_column&#39;],
+    if $resource_type == &#39;HPC&#39; {
+      $pi_column = $r[&#39;pi_column&#39;] ? {
+        Undef   =&gt; $::xdmod::pi_column,
+        default =&gt; $r[&#39;pi_column&#39;],
+      }
+    } else {
+      $pi_column = undef
     }
     delete_undef_values({
       &#39;resource&#39; =&gt; $r[&#39;resource&#39;],
@@ -866,6 +905,15 @@ class xdmod::config {
       &#39;shared_jobs&#39; =&gt; $r[&#39;shared_jobs&#39;],
     })
   }
+  $ondemand_resource_specs = $xdmod::ondemand_resources.map |$r| {
+    {
+      &#39;resource&#39; =&gt; $r[&#39;resource&#39;],
+      &#39;processors&#39; =&gt; 1,
+      &#39;nodes&#39; =&gt; 1,
+      &#39;ppn&#39; =&gt; 1,
+    }
+  }
+  $resource_specs = $xdmod::resource_specs + $ondemand_resource_specs
 
   file { &#39;/etc/xdmod/resources.json&#39;:
     ensure  =&gt; &#39;file&#39;,
@@ -873,13 +921,17 @@ class xdmod::config {
     group   =&gt; &#39;root&#39;,
     mode    =&gt; &#39;0644&#39;,
     content =&gt; to_json_pretty($resources),
+    notify  =&gt; [
+      Exec[&#39;acl-refresh&#39;],
+      Exec[&#39;xdmod-ingestor&#39;],
+    ],
   }
   file { &#39;/etc/xdmod/resource_specs.json&#39;:
     ensure  =&gt; &#39;file&#39;,
     owner   =&gt; &#39;root&#39;,
     group   =&gt; &#39;root&#39;,
     mode    =&gt; &#39;0644&#39;,
-    content =&gt; to_json_pretty($::xdmod::resource_specs),
+    content =&gt; to_json_pretty($resource_specs),
   }
 
   $hierarchy_levels = $::xdmod::params::hierarchy_levels + $::xdmod::hierarchy_levels
