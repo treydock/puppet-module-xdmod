@@ -216,8 +216,14 @@
 #   The cron times to run supremm aggregation
 # @param supremm_archive_out_dir
 #   The path to supremm archive out
+# @param supremm_prometheus_url
+#   Prometheus URL to use with SUPREMM summarization
+# @param supremm_prometheus_step
+#   Prometheus step value for SUPREMM summarization
+# @param supremm_prometheus_rates
+#   Prometheus rate overrides for SUPREMM summarization
 # @param use_pcp
-#   Boolean that PCP should be used for compute environment
+#   Boolean that PCP should be used for SUPREMM
 # @param pcp_declare_method
 #   Should pcp class be included or declared like a resource
 # @param pcp_resource
@@ -381,6 +387,9 @@ class xdmod (
   Array[Integer, 2, 2] $ingest_jobscripts_cron_times = [0,3],
   Array[Integer, 2, 2] $aggregate_supremm_cron_times = [0,4],
   Stdlib::Absolutepath $supremm_archive_out_dir = '/dev/shm/supremm_test',
+  Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]] $supremm_prometheus_url = undef,
+  Optional[String[1]] $supremm_prometheus_step = undef,
+  Optional[Hash] $supremm_prometheus_rates = undef,
 
   # SUPReMM compute
   Boolean $use_pcp                                = true,
@@ -557,27 +566,30 @@ class xdmod (
     contain xdmod::supremm::install
     contain xdmod::supremm::config
 
-    case $xdmod::pcp_declare_method {
-      'include': {
-        include ::pcp
-      }
-      'resource': {
-        class { '::pcp':
-          ensure      => 'stopped',
-          manage_repo => $xdmod::params::pcp_manage_repo,
+    if $use_pcp {
+      case $xdmod::pcp_declare_method {
+        'include': {
+          include ::pcp
+        }
+        'resource': {
+          class { '::pcp':
+            ensure      => 'stopped',
+            manage_repo => $xdmod::params::pcp_manage_repo,
+          }
+        }
+        default: {
+          # Do nothing
         }
       }
-      default: {
-        # Do nothing
-      }
+      Class['::pcp']
+      -> Class['xdmod::supremm::install']
     }
 
     if $manage_epel {
       Yumrepo['epel']->Package['mongodb_client']
     }
 
-    Class['::pcp']
-    -> Class['xdmod::supremm::install']
+    Class['xdmod::supremm::install']
     -> Class['xdmod::supremm::config']
 
     if $database {
