@@ -16,6 +16,7 @@ describe 'xdmod class:' do
         }],
         manage_simplesamlphp => true,
         php_timezone => 'America/New_York',
+        enable_ondemand => true,
       }
       EOS
 

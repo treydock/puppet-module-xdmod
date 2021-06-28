@@ -24,6 +24,9 @@ class xdmod::database {
   if $xdmod::enable_cloud_realm {
     mysql::db { 'modw_cloud': }
   }
+  if $xdmod::enable_ondemand {
+    mysql::db { 'modw_ondemand': }
+  }
 
   if $xdmod::enable_appkernel {
     mysql::db { 'mod_appkernel':

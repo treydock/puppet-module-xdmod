@@ -7,4 +7,5 @@ type Xdmod::Resource = Struct[{
   Optional[timezone] => String,
   Optional[shared_jobs] => Boolean,
   Optional[shred_directory] => Stdlib::Absolutepath,
+  Optional[hostname] => Stdlib::HTTPSUrl,
 }]

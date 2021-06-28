@@ -39,6 +39,22 @@ shared_examples_for 'xdmod::database' do |_facts|
     end
   end
 
+  context 'when enable_ondemand => true' do
+    let(:params) { { enable_ondemand: true } }
+
+    it do
+      is_expected.to contain_mysql__db('modw_ondemand').with(
+        ensure: 'present',
+        user: 'xdmod',
+        password: 'changeme',
+        host: 'localhost',
+        charset: 'latin1',
+        collate: 'latin1_swedish_ci',
+        grant: ['ALL'],
+      )
+    end
+  end
+
   context 'when enable_appkernel => true' do
     let(:params) { { enable_appkernel: true } }
 

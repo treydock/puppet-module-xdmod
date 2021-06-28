@@ -1,0 +1,27 @@
+#!/bin/bash
+# This file is managed by Puppet, do not edit!
+# Commands pulled from https://open.xdmod.org/8.1/storage.html
+
+set -e
+
+BASE_CMD="/usr/share/xdmod/tools/etl/etl_overseer.php -p ondemand.log-ingestion -p ondemand.aggregation"
+
+<% if @geoip_directory -%>
+GEOIP_ARG="-d GEOIP_FILE_PATH=<%= @geoip_directory%>/GeoLite2-City.mmdb"
+<% else -%>
+GEOIP_ARG=""
+<% end -%>
+
+OOD_HOSTNAME="$1"
+RESOURCE="$2"
+LOG_DIRECTORY="$3"
+if [ "x${OOD_HOSTNAME}" != "x" -a "x${RESOURCE}" != "x" -a "x${LOG_DIRECTORY}" != "x" ]; then
+  xdmod-shredder -f storage -r $RESOURCE -d $LOG_DIRECTORY
+  $BASE_CMD $GEOIP_ARG -d OOD_LOG_PATH=$LOG_DIRECTORY -d OOD_HOSTNAME=$OOD_HOSTNAME -d OOD_RESOURCE_CODE=$RESOURCE
+else
+<% scope['xdmod::ondemand_resources'].each do |resource| -%>
+  $BASE_CMD $GEOIP_ARG -d OOD_LOG_PATH=<%= resource['shred_directory'] %> -d OOD_HOSTNAME=<%= resource['hostname'] %> -d OOD_RESOURCE_CODE=<%= resource['resource'] %>
+<%- end -%>
+fi
+
+/usr/bin/xdmod-build-filter-lists --realm OnDemand

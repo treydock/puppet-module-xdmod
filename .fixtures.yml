@@ -4,6 +4,8 @@ fixtures:
       repo: https://github.com/puppetlabs/puppetlabs-yumrepo_core.git
     cron_core:
       repo: https://github.com/puppetlabs/puppetlabs-cron_core.git
+    augeas_core:
+      repo: https://github.com/puppetlabs/puppetlabs-augeas_core.git
     stdlib:
       repo: https://github.com/puppetlabs/puppetlabs-stdlib.git
     logrotate:
@@ -34,5 +36,10 @@ fixtures:
       repo: https://github.com/saz/puppet-sudo.git
     openssl:
       repo: https://github.com/camptocamp/puppet-openssl
+    geoip:
+      repo: https://github.com/rtib/puppet-geoip
+    # Needed by geoip
+    systemd:
+      repo: https://github.com/camptocamp/puppet-systemd
   symlinks:
     xdmod: "#{source_dir}"

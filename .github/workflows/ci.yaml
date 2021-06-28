@@ -79,3 +79,5 @@ jobs:
         env:
           BEAKER_PUPPET_COLLECTION: ${{ matrix.puppet }}
           BEAKER_set: ${{ matrix.set }}
+          GEOIP_USERID: ${{ secrets.GEOIP_USERID }}
+          GEOIP_LICENSEKEY: ${{ secrets.GEOIP_LICENSEKEY }}
