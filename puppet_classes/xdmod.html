@@ -2044,6 +2044,60 @@ not defined</p>
   
     <li>
       
+        <span class='name'>supremm_prometheus_url</span>
+      
+      
+        <span class='type'>(<tt>Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Prometheus URL to use with SUPREMM summarization</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_prometheus_step</span>
+      
+      
+        <span class='type'>(<tt>Optional[String[1]]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Prometheus step value for SUPREMM summarization</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>supremm_prometheus_rates</span>
+      
+      
+        <span class='type'>(<tt>Optional[Hash]</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>undef</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Prometheus rate overrides for SUPREMM summarization</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>use_pcp</span>
       
       
@@ -2055,7 +2109,7 @@ not defined</p>
       
         &mdash;
         <div class='inline'>
-<p>Boolean that PCP should be used for compute environment</p>
+<p>Boolean that PCP should be used for SUPREMM</p>
 </div>
       
     </li>
@@ -2323,12 +2377,6 @@ not defined</p>
         <pre class="lines">
 
 
-250
-251
-252
-253
-254
-255
 256
 257
 258
@@ -2671,10 +2719,22 @@ not defined</p>
 595
 596
 597
-598</pre>
+598
+599
+600
+601
+602
+603
+604
+605
+606
+607
+608
+609
+610</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 250</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 256</span>
 
 class xdmod (
   String $version                  = $xdmod::params::version,
@@ -2810,6 +2870,9 @@ class xdmod (
   Array[Integer, 2, 2] $ingest_jobscripts_cron_times = [0,3],
   Array[Integer, 2, 2] $aggregate_supremm_cron_times = [0,4],
   Stdlib::Absolutepath $supremm_archive_out_dir = &#39;/dev/shm/supremm_test&#39;,
+  Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]] $supremm_prometheus_url = undef,
+  Optional[String[1]] $supremm_prometheus_step = undef,
+  Optional[Hash] $supremm_prometheus_rates = undef,
 
   # SUPReMM compute
   Boolean $use_pcp                                = true,
@@ -2986,27 +3049,30 @@ class xdmod (
     contain xdmod::supremm::install
     contain xdmod::supremm::config
 
-    case $xdmod::pcp_declare_method {
-      &#39;include&#39;: {
-        include ::pcp
-      }
-      &#39;resource&#39;: {
-        class { &#39;::pcp&#39;:
-          ensure      =&gt; &#39;stopped&#39;,
-          manage_repo =&gt; $xdmod::params::pcp_manage_repo,
+    if $use_pcp {
+      case $xdmod::pcp_declare_method {
+        &#39;include&#39;: {
+          include ::pcp
+        }
+        &#39;resource&#39;: {
+          class { &#39;::pcp&#39;:
+            ensure      =&gt; &#39;stopped&#39;,
+            manage_repo =&gt; $xdmod::params::pcp_manage_repo,
+          }
+        }
+        default: {
+          # Do nothing
         }
       }
-      default: {
-        # Do nothing
-      }
+      Class[&#39;::pcp&#39;]
+      -&gt; Class[&#39;xdmod::supremm::install&#39;]
     }
 
     if $manage_epel {
       Yumrepo[&#39;epel&#39;]-&gt;Package[&#39;mongodb_client&#39;]
     }
 
-    Class[&#39;::pcp&#39;]
-    -&gt; Class[&#39;xdmod::supremm::install&#39;]
+    Class[&#39;xdmod::supremm::install&#39;]
     -&gt; Class[&#39;xdmod::supremm::config&#39;]
 
     if $database {
