@@ -9,6 +9,7 @@
 #### Public Classes
 
 * [`xdmod`](#xdmod): Manage XDMoD
+* [`xdmod::ondemand`](#xdmodondemand): Manage XDMoD OnDemand plugin
 
 #### Private Classes
 
@@ -71,6 +72,7 @@ The following parameters are available in the `xdmod` class:
 * [`enable_appkernel`](#enable_appkernel)
 * [`enable_supremm`](#enable_supremm)
 * [`enable_cloud_realm`](#enable_cloud_realm)
+* [`enable_ondemand`](#enable_ondemand)
 * [`local_repo_name`](#local_repo_name)
 * [`manage_epel`](#manage_epel)
 * [`package_ensure`](#package_ensure)
@@ -275,6 +277,14 @@ Default value: ``false``
 Data type: `Boolean`
 
 Enable the XDMoD cloud realm by adding the necessary database
+
+Default value: ``false``
+
+##### <a name="enable_ondemand"></a>`enable_ondemand`
+
+Data type: `Boolean`
+
+Enable the XDMOD OnDemand plugin and necessary database
 
 Default value: ``false``
 
@@ -1158,6 +1168,80 @@ The cron times for storage shred/ingest
 
 Default value: `[0,5]`
 
+### <a name="xdmodondemand"></a>`xdmod::ondemand`
+
+Manage XDMoD OnDemand plugin
+
+#### Parameters
+
+The following parameters are available in the `xdmod::ondemand` class:
+
+* [`geoip_userid`](#geoip_userid)
+* [`geoip_licensekey`](#geoip_licensekey)
+* [`package_name`](#package_name)
+* [`package_ensure`](#package_ensure)
+* [`package_url`](#package_url)
+* [`log_format`](#log_format)
+* [`cron_times`](#cron_times)
+
+##### <a name="geoip_userid"></a>`geoip_userid`
+
+Data type: `Optional[String]`
+
+The MaxMind GeoIP user ID
+Must be set if you wish to use GeoIP database
+
+Default value: ``undef``
+
+##### <a name="geoip_licensekey"></a>`geoip_licensekey`
+
+Data type: `Optional[String]`
+
+The MaxMind GeoIP license key
+Must be set if you wish to use GeoIP database
+
+Default value: ``undef``
+
+##### <a name="package_name"></a>`package_name`
+
+Data type: `String`
+
+The XDMOD OnDemand package name
+
+Default value: `'xdmod-ondemand'`
+
+##### <a name="package_ensure"></a>`package_ensure`
+
+Data type: `String`
+
+The state of XDMOD OnDemand package when using local repo
+
+Default value: `'installed'`
+
+##### <a name="package_url"></a>`package_url`
+
+Data type: `Stdlib::HTTPSUrl`
+
+The URL of the XDMOD OnDemand package when not using local repo
+
+Default value: `'https://github.com/ubccr/xdmod-ondemand/releases/download/9.5.0-rc1/xdmod-ondemand-9.5.0-1.0.rc.1.el7.noarch.rpm'`
+
+##### <a name="log_format"></a>`log_format`
+
+Data type: `String`
+
+Log format to use for parsing access logs
+
+Default value: `'%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"'`
+
+##### <a name="cron_times"></a>`cron_times`
+
+Data type: `Array[Integer, 2, 2]`
+
+The cron times for ondemand shred/ingest
+
+Default value: `[0,7]`
+
 ## Defined types
 
 ### <a name="xdmodakrrsetting"></a>`xdmod::akrr::setting`
@@ -1423,6 +1507,7 @@ Struct[{
   Optional[timezone] => String,
   Optional[shared_jobs] => Boolean,
   Optional[shred_directory] => Stdlib::Absolutepath,
+  Optional[hostname] => Stdlib::HTTPSUrl,
 }]
 ```
 
