@@ -16,8 +16,7 @@ describe 'xdmod::ondemand' do
       it { is_expected.not_to contain_class('geoip') }
 
       it { is_expected.to contain_yum__install('xdmod-ondemand') }
-      it { is_expected.not_to contain_augeas('xdmod-ondemand-geoip_file') }
-      it { is_expected.to contain_augeas('xdmod-ondemand-rm-geoip_file') }
+      it { is_expected.to contain_xdmod_ondemand_setting('ondemand-general/geoip_database').with_value('') }
 
       context 'when geoip parameters defined' do
         let(:params) { { geoip_userid: '0001', geoip_licensekey: 'secret-key' } }
@@ -35,8 +34,7 @@ describe 'xdmod::ondemand' do
           )
         end
         it { is_expected.to contain_file('/etc/GeoIP.conf').with_show_diff('false') }
-        it { is_expected.to contain_augeas('xdmod-ondemand-geoip_file') }
-        it { is_expected.not_to contain_augeas('xdmod-ondemand-rm-geoip_file') }
+        it { is_expected.to contain_xdmod_ondemand_setting('ondemand-general/geoip_database').with_value('/usr/share/GeoIP/GeoLite2-City.mmdb') }
       end
     end
   end

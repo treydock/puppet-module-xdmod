@@ -22,7 +22,7 @@ class xdmod::ondemand (
   Optional[String] $geoip_licensekey = undef,
   String $package_name = 'xdmod-ondemand',
   String $package_ensure = 'installed',
-  Stdlib::HTTPSUrl $package_url  = 'https://github.com/ubccr/xdmod-ondemand/releases/download/9.5.0-rc1/xdmod-ondemand-9.5.0-1.0.rc.1.el7.noarch.rpm',
+  Stdlib::HTTPSUrl $package_url  = 'https://github.com/ubccr/xdmod-ondemand/releases/download/v9.5.0/xdmod-ondemand-9.5.0-1.0.el7.noarch.rpm',
   String $log_format = '%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"',
   Array[Integer, 2, 2] $cron_times = [0,7],
 ) {
@@ -30,6 +30,7 @@ class xdmod::ondemand (
 
   if $geoip_userid and $geoip_licensekey {
     $geoip_directory = '/usr/share/GeoIP'
+    $geoip_database = "${geoip_directory}/GeoLite2-City.mmdb"
     $update_timer_hour = sprintf('%02d', ($cron_times[1] - 1))
     class { 'geoip':
       config        => {
@@ -46,7 +47,7 @@ class xdmod::ondemand (
       show_diff => false,
     }
   } else {
-    $geoip_directory = undef
+    $geoip_database = ''
   }
 
   if $xdmod::local_repo_name {
@@ -54,6 +55,7 @@ class xdmod::ondemand (
       ensure  => $package_ensure,
       name    => $package_name,
       require => $xdmod::_package_require,
+      before  => File['/etc/xdmod/portal_settings.d/ondemand.ini'],
     }
     $package_resource = Package['xdmod-ondemand']
   } else {
@@ -61,40 +63,20 @@ class xdmod::ondemand (
       ensure  => 'present',
       source  => $package_url,
       require => $xdmod::_package_require,
+      before  => File['/etc/xdmod/portal_settings.d/ondemand.ini'],
     }
     $package_resource = Yum::Install[$package_name]
   }
 
-  augeas { 'xdmod-ondemand-log_format':
-    incl    => '/etc/xdmod/etl/etl.d/ood.json',
-    lens    => 'Json.lns',
-    changes => [
-      "set dict/entry[. = \"log-ingestion\"]/array/dict/entry[. = \"endpoints\"]/dict/entry/dict/entry[. = \"handler\"]/dict/entry[. = \"log_format\"]/string \'${log_format}'",
-    ],
-    require => $package_resource,
+  file { '/etc/xdmod/portal_settings.d/ondemand.ini':
+    ensure => 'file',
+    owner  => 'apache',
+    group  => 'xdmod',
+    mode   => '0440',
   }
 
-  if $geoip_directory {
-    augeas { 'xdmod-ondemand-geoip_file':
-      incl    => '/etc/xdmod/etl/etl.d/ood.json',
-      lens    => 'Json.lns',
-      changes => [
-        'set dict/entry[. = "log-ingestion"]/array/dict/entry[. = "endpoints"]/dict/entry/dict/entry[. = "handler"]/dict/entry[last()+1] "geoip_file"',
-        'set dict/entry[. = "log-ingestion"]/array/dict/entry[. = "endpoints"]/dict/entry/dict/entry[. = "handler"]/dict/entry[. = "geoip_file"]/string "${GEOIP_FILE_PATH}"',
-      ],
-      onlyif  => 'match dict/entry[. = "log-ingestion"]/array/dict/entry[. = "endpoints"]/dict/entry/dict/entry[. = "handler"]/dict/entry[. = "geoip_file"] size == 0',
-      require => $package_resource,
-    }
-  } else {
-    augeas { 'xdmod-ondemand-rm-geoip_file':
-      incl    => '/etc/xdmod/etl/etl.d/ood.json',
-      lens    => 'Json.lns',
-      changes => [
-        'rm dict/entry[. = "log-ingestion"]/array/dict/entry[. = "endpoints"]/dict/entry/dict/entry[. = "handler"]/dict/entry[. = "geoip_file"]',
-      ],
-      require => $package_resource,
-    }
-  }
+  xdmod_ondemand_setting { 'ondemand-general/geoip_database': value => $geoip_database }
+  xdmod_ondemand_setting { 'ondemand-general/webserver_format_str': value => $log_format }
 
   file { '/usr/local/bin/xdmod-ondemand-ingest.sh':
     ensure  => 'file',
