@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.3.0](https://github.com/treydock/puppet-module-xdmod/tree/v7.3.0) (2021-07-28)
+
+[Full Changelog](https://github.com/treydock/puppet-module-xdmod/compare/v7.2.0...v7.3.0)
+
+### Added
+
+- Update how OnDemand plugin works for stable release [\#19](https://github.com/treydock/puppet-module-xdmod/pull/19) ([treydock](https://github.com/treydock))
+
 ## [v7.2.0](https://github.com/treydock/puppet-module-xdmod/tree/v7.2.0) (2021-06-28)
 
 [Full Changelog](https://github.com/treydock/puppet-module-xdmod/compare/v7.1.1...v7.2.0)

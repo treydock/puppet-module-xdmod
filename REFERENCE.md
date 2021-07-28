@@ -36,6 +36,7 @@
 ### Resource types
 
 * [`xdmod_appkernel_setting`](#xdmod_appkernel_setting): Section/setting name to manage from appkernels.ini
+* [`xdmod_ondemand_setting`](#xdmod_ondemand_setting): Section/setting name to manage from ondemand.ini
 * [`xdmod_portal_setting`](#xdmod_portal_setting): Section/setting name to manage from portal_settings.ini
 * [`xdmod_supremm_setting`](#xdmod_supremm_setting): Section/setting name to manage from supremm.ini
 
@@ -1251,7 +1252,7 @@ Data type: `Stdlib::HTTPSUrl`
 
 The URL of the XDMOD OnDemand package when not using local repo
 
-Default value: `'https://github.com/ubccr/xdmod-ondemand/releases/download/9.5.0-rc1/xdmod-ondemand-9.5.0-1.0.rc.1.el7.noarch.rpm'`
+Default value: `'https://github.com/ubccr/xdmod-ondemand/releases/download/v9.5.0/xdmod-ondemand-9.5.0-1.0.el7.noarch.rpm'`
 
 ##### <a name="log_format"></a>`log_format`
 
@@ -1335,6 +1336,53 @@ Section/setting name to manage from appkernels.ini
 ##### <a name="provider"></a>`provider`
 
 The specific backend to use for this `xdmod_appkernel_setting` resource. You will seldom need to specify this --- Puppet
+will usually discover the appropriate provider for your platform.
+
+##### <a name="secret"></a>`secret`
+
+Valid values: ``true``, ``false``
+
+Whether to hide the value from Puppet logs. Defaults to `false`.
+
+Default value: ``false``
+
+### <a name="xdmod_ondemand_setting"></a>`xdmod_ondemand_setting`
+
+Section/setting name to manage from ondemand.ini
+
+#### Properties
+
+The following properties are available in the `xdmod_ondemand_setting` type.
+
+##### `ensure`
+
+Valid values: `present`, `absent`
+
+The basic property that the resource should be in.
+
+Default value: `present`
+
+##### `value`
+
+The value of the setting to be defined.
+
+#### Parameters
+
+The following parameters are available in the `xdmod_ondemand_setting` type.
+
+* [`name`](#name)
+* [`provider`](#provider)
+* [`secret`](#secret)
+
+##### <a name="name"></a>`name`
+
+namevar
+
+Section/setting name to manage from ondemand.ini
+
+##### <a name="provider"></a>`provider`
+
+The specific backend to use for this `xdmod_ondemand_setting` resource. You will seldom need to specify this --- Puppet
 will usually discover the appropriate provider for your platform.
 
 ##### <a name="secret"></a>`secret`
