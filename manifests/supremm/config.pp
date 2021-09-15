@@ -62,12 +62,14 @@ class xdmod::supremm::config {
   } else {
     $ingest_jobscripts = true
   }
-  file { '/etc/cron.d/supremm':
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('xdmod/supremm/cron.erb'),
+  if $xdmod::manage_supremm_cron {
+    file { '/etc/cron.d/supremm':
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('xdmod/supremm/cron.erb'),
+    }
   }
 
 }

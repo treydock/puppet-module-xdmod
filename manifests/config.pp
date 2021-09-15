@@ -112,12 +112,14 @@ class xdmod::config {
     xdmod_appkernel_setting { 'akrr/username': value => 'rw' }
     xdmod_appkernel_setting { 'akrr/password': value => $::xdmod::akrr_restapi_rw_password, secret => true }
 
-    file { '/etc/cron.d/xdmod-appkernels':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => template('xdmod/xdmod-appkernels_cron.erb'),
+    if $xdmod::manage_appkernel_cron {
+      file { '/etc/cron.d/xdmod-appkernels':
+        ensure  => 'file',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template('xdmod/xdmod-appkernels_cron.erb'),
+      }
     }
   }
 
@@ -416,19 +418,23 @@ class xdmod::config {
     content => $user_pi_names_content,
   }
 
-  file { '/etc/cron.d/xdmod':
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('xdmod/xdmod_cron.erb'),
+  if $xdmod::manage_cron {
+    file { '/etc/cron.d/xdmod':
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('xdmod/xdmod_cron.erb'),
+    }
   }
-  file { '/etc/cron.d/xdmod-storage':
-    ensure  => $storage_file_ensure,
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('xdmod/storage/cron.erb'),
+  if $xdmod::manage_storage_cron {
+    file { '/etc/cron.d/xdmod-storage':
+      ensure  => $storage_file_ensure,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('xdmod/storage/cron.erb'),
+    }
   }
 
   exec { "mkdir-p ${::xdmod::data_warehouse_export_directory}":

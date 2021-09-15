@@ -78,17 +78,18 @@ class xdmod::akrr::config {
     $_akrr_cron_environment = undef
   }
 
-  cron { 'akrr-restart':
-    command => "${::xdmod::_akrr_home}/bin/restart.sh",
-    user    => $::xdmod::akrr_user,
-    minute  => '50',
-    hour    => '23',
-  }
-
-  cron { 'akrr-checknrestart':
-    command => "${::xdmod::_akrr_home}/bin/checknrestart.sh",
-    user    => $::xdmod::akrr_user,
-    minute  => '33',
+  if $xdmod::manage_akrr_cron {
+    cron { 'akrr-restart':
+      command => "${::xdmod::_akrr_home}/bin/restart.sh",
+      user    => $::xdmod::akrr_user,
+      minute  => '50',
+      hour    => '23',
+    }
+    cron { 'akrr-checknrestart':
+      command => "${::xdmod::_akrr_home}/bin/checknrestart.sh",
+      user    => $::xdmod::akrr_user,
+      minute  => '33',
+    }
   }
 
   shellvar { 'AKRR_HOME':
