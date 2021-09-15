@@ -252,6 +252,16 @@
 #   The source of storage roles.json
 # @param storage_cron_times
 #   The cron times for storage shred/ingest
+# @param manage_cron
+#   Manage XDMOD cron files
+# @param manage_supremm_cron
+#   Manage SUPREMM cron files
+# @param manage_akrr_cron
+#   Manage AKRR cron files
+# @param manage_appkernel_cron
+#   Manage App Kernel cron files
+# @param manage_storage_cron
+#   Manage Storage cron files
 #
 class xdmod (
   String $version                  = $xdmod::params::version,
@@ -409,6 +419,12 @@ class xdmod (
   # Storage
   String $storage_roles_source = 'puppet:///modules/xdmod/roles.d/storage.json',
   Array[Integer, 2, 2] $storage_cron_times = [0,5],
+
+  Boolean $manage_cron = true,
+  Boolean $manage_supremm_cron = true,
+  Boolean $manage_akrr_cron = true,
+  Boolean $manage_appkernel_cron = true,
+  Boolean $manage_storage_cron = true,
 ) inherits xdmod::params {
 
   case $scheduler {

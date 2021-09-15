@@ -16,6 +16,8 @@
 #   Log format to use for parsing access logs
 # @param cron_times
 #   The cron times for ondemand shred/ingest
+# @param manage_cron
+#   Manage OnDemand cron files
 #
 class xdmod::ondemand (
   Optional[String] $geoip_userid = undef,
@@ -25,6 +27,7 @@ class xdmod::ondemand (
   Stdlib::HTTPSUrl $package_url  = 'https://github.com/ubccr/xdmod-ondemand/releases/download/v9.5.0/xdmod-ondemand-9.5.0-1.0.el7.noarch.rpm',
   String $log_format = '%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"',
   Array[Integer, 2, 2] $cron_times = [0,7],
+  Boolean $manage_cron = true,
 ) {
   include xdmod
 
@@ -86,11 +89,13 @@ class xdmod::ondemand (
     content => template('xdmod/ondemand/ingest.sh.erb'),
     before  => File['/etc/cron.d/xdmod-ondemand'],
   }
-  file { '/etc/cron.d/xdmod-ondemand':
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    content => template('xdmod/ondemand/cron.erb'),
+  if $manage_cron {
+    file { '/etc/cron.d/xdmod-ondemand':
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('xdmod/ondemand/cron.erb'),
+    }
   }
 }
