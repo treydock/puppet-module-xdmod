@@ -187,6 +187,11 @@ The following parameters are available in the `xdmod` class:
 * [`pcp_hotproc_exclude_users`](#pcp_hotproc_exclude_users)
 * [`storage_roles_source`](#storage_roles_source)
 * [`storage_cron_times`](#storage_cron_times)
+* [`manage_cron`](#manage_cron)
+* [`manage_supremm_cron`](#manage_supremm_cron)
+* [`manage_akrr_cron`](#manage_akrr_cron)
+* [`manage_appkernel_cron`](#manage_appkernel_cron)
+* [`manage_storage_cron`](#manage_storage_cron)
 
 ##### <a name="version"></a>`version`
 
@@ -1196,6 +1201,46 @@ The cron times for storage shred/ingest
 
 Default value: `[0,5]`
 
+##### <a name="manage_cron"></a>`manage_cron`
+
+Data type: `Boolean`
+
+Manage XDMOD cron files
+
+Default value: ``true``
+
+##### <a name="manage_supremm_cron"></a>`manage_supremm_cron`
+
+Data type: `Boolean`
+
+Manage SUPREMM cron files
+
+Default value: ``true``
+
+##### <a name="manage_akrr_cron"></a>`manage_akrr_cron`
+
+Data type: `Boolean`
+
+Manage AKRR cron files
+
+Default value: ``true``
+
+##### <a name="manage_appkernel_cron"></a>`manage_appkernel_cron`
+
+Data type: `Boolean`
+
+Manage App Kernel cron files
+
+Default value: ``true``
+
+##### <a name="manage_storage_cron"></a>`manage_storage_cron`
+
+Data type: `Boolean`
+
+Manage Storage cron files
+
+Default value: ``true``
+
 ### <a name="xdmodondemand"></a>`xdmod::ondemand`
 
 Manage XDMoD OnDemand plugin
@@ -1211,6 +1256,7 @@ The following parameters are available in the `xdmod::ondemand` class:
 * [`package_url`](#package_url)
 * [`log_format`](#log_format)
 * [`cron_times`](#cron_times)
+* [`manage_cron`](#manage_cron)
 
 ##### <a name="geoip_userid"></a>`geoip_userid`
 
@@ -1269,6 +1315,14 @@ Data type: `Array[Integer, 2, 2]`
 The cron times for ondemand shred/ingest
 
 Default value: `[0,7]`
+
+##### <a name="manage_cron"></a>`manage_cron`
+
+Data type: `Boolean`
+
+Manage OnDemand cron files
+
+Default value: ``true``
 
 ## Defined types
 
