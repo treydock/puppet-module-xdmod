@@ -28,12 +28,14 @@ class xdmod::install {
     yum::install { $xdmod::package_name:
       ensure  => 'present',
       source  => $xdmod::_package_url,
+      timeout => 0,
       require => $xdmod::_package_require,
     }
     if $xdmod::enable_appkernel {
       yum::install { $xdmod::appkernels_package_name:
         ensure  => 'present',
         source  => $xdmod::_appkernels_package_url,
+        timeout => 0,
         require => $xdmod::_package_require,
       }
     }
@@ -41,6 +43,7 @@ class xdmod::install {
       yum::install { $xdmod::xdmod_supremm_package_name:
         ensure  => 'present',
         source  => $xdmod::_xdmod_supremm_package_url,
+        timeout => 0,
         require => $xdmod::_package_require,
       }
     }
