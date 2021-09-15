@@ -2366,6 +2366,96 @@ not defined</p>
       
     </li>
   
+    <li>
+      
+        <span class='name'>manage_cron</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Manage XDMOD cron files</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_supremm_cron</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Manage SUPREMM cron files</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_akrr_cron</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Manage AKRR cron files</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_appkernel_cron</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Manage App Kernel cron files</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>manage_storage_cron</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Manage Storage cron files</p>
+</div>
+      
+    </li>
+  
 </ul>
 
 
@@ -2377,16 +2467,6 @@ not defined</p>
         <pre class="lines">
 
 
-256
-257
-258
-259
-260
-261
-262
-263
-264
-265
 266
 267
 268
@@ -2731,10 +2811,26 @@ not defined</p>
 607
 608
 609
-610</pre>
+610
+611
+612
+613
+614
+615
+616
+617
+618
+619
+620
+621
+622
+623
+624
+625
+626</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 256</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 266</span>
 
 class xdmod (
   String $version                  = $xdmod::params::version,
@@ -2892,6 +2988,12 @@ class xdmod (
   # Storage
   String $storage_roles_source = &#39;puppet:///modules/xdmod/roles.d/storage.json&#39;,
   Array[Integer, 2, 2] $storage_cron_times = [0,5],
+
+  Boolean $manage_cron = true,
+  Boolean $manage_supremm_cron = true,
+  Boolean $manage_akrr_cron = true,
+  Boolean $manage_appkernel_cron = true,
+  Boolean $manage_storage_cron = true,
 ) inherits xdmod::params {
 
   case $scheduler {

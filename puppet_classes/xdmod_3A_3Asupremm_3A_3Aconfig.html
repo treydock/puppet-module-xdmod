@@ -163,7 +163,9 @@
 70
 71
 72
-73</pre>
+73
+74
+75</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/supremm/config.pp', line 3</span>
@@ -230,12 +232,14 @@ class xdmod::supremm::config {
   } else {
     $ingest_jobscripts = true
   }
-  file { &#39;/etc/cron.d/supremm&#39;:
-    ensure  =&gt; &#39;file&#39;,
-    owner   =&gt; &#39;root&#39;,
-    group   =&gt; &#39;root&#39;,
-    mode    =&gt; &#39;0644&#39;,
-    content =&gt; template(&#39;xdmod/supremm/cron.erb&#39;),
+  if $xdmod::manage_supremm_cron {
+    file { &#39;/etc/cron.d/supremm&#39;:
+      ensure  =&gt; &#39;file&#39;,
+      owner   =&gt; &#39;root&#39;,
+      group   =&gt; &#39;root&#39;,
+      mode    =&gt; &#39;0644&#39;,
+      content =&gt; template(&#39;xdmod/supremm/cron.erb&#39;),
+    }
   }
 
 }</pre>

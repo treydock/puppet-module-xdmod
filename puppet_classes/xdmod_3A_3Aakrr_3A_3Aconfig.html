@@ -205,7 +205,8 @@
 112
 113
 114
-115</pre>
+115
+116</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/akrr/config.pp', line 3</span>
@@ -288,17 +289,18 @@ class xdmod::akrr::config {
     $_akrr_cron_environment = undef
   }
 
-  cron { &#39;akrr-restart&#39;:
-    command =&gt; &quot;${::xdmod::_akrr_home}/bin/restart.sh&quot;,
-    user    =&gt; $::xdmod::akrr_user,
-    minute  =&gt; &#39;50&#39;,
-    hour    =&gt; &#39;23&#39;,
-  }
-
-  cron { &#39;akrr-checknrestart&#39;:
-    command =&gt; &quot;${::xdmod::_akrr_home}/bin/checknrestart.sh&quot;,
-    user    =&gt; $::xdmod::akrr_user,
-    minute  =&gt; &#39;33&#39;,
+  if $xdmod::manage_akrr_cron {
+    cron { &#39;akrr-restart&#39;:
+      command =&gt; &quot;${::xdmod::_akrr_home}/bin/restart.sh&quot;,
+      user    =&gt; $::xdmod::akrr_user,
+      minute  =&gt; &#39;50&#39;,
+      hour    =&gt; &#39;23&#39;,
+    }
+    cron { &#39;akrr-checknrestart&#39;:
+      command =&gt; &quot;${::xdmod::_akrr_home}/bin/checknrestart.sh&quot;,
+      user    =&gt; $::xdmod::akrr_user,
+      minute  =&gt; &#39;33&#39;,
+    }
   }
 
   shellvar { &#39;AKRR_HOME&#39;:
