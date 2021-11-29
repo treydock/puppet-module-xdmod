@@ -10,7 +10,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.13.1 <7.0.0"
+      "version_requirement": ">= 4.13.1 <8.0.0"
     },
     {
       "name": "puppetlabs/inifile",
@@ -18,11 +18,11 @@
     },
     {
       "name": "puppetlabs/mysql",
-      "version_requirement": ">= 3.1.0 <12.0.0"
+      "version_requirement": ">= 3.1.0 <13.0.0"
     },
     {
       "name": "puppet/mongodb",
-      "version_requirement": ">= 1.0.0 <4.0.0"
+      "version_requirement": ">= 1.0.0 <5.0.0"
     },
     {
       "name": "puppet/epel",
@@ -30,11 +30,11 @@
     },
     {
       "name": "puppet/logrotate",
-      "version_requirement": ">= 1.0.0 <6.0.0"
+      "version_requirement": ">= 1.0.0 <7.0.0"
     },
     {
       "name": "puppet/yum",
-      "version_requirement": ">= 1.0.0 <5.0.0"
+      "version_requirement": ">= 1.0.0 <6.0.0"
     },
     {
       "name": "puppet/archive",
@@ -42,7 +42,7 @@
     },
     {
       "name": "puppetlabs/apache",
-      "version_requirement": ">= 1.8.0 <7.0.0"
+      "version_requirement": ">= 1.8.0 <8.0.0"
     },
     {
       "name": "herculesteam/augeasproviders_shellvar",
@@ -50,7 +50,7 @@
     },
     {
       "name": "saz/sudo",
-      "version_requirement": ">= 3.0.0 <7.0.0"
+      "version_requirement": ">= 3.0.0 <8.0.0"
     },
     {
       "name": "treydock/pcp",
