@@ -30,7 +30,6 @@ class xdmod::params {
           $supremm_rpm_release = 'el7'
           $compute_only = false
           $pcp_package_ensure = undef
-          $pcp_manage_repo = false
         }
         default: {
           fail("Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 7")

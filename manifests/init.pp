@@ -589,8 +589,7 @@ class xdmod (
         }
         'resource': {
           class { '::pcp':
-            ensure      => 'stopped',
-            manage_repo => $xdmod::params::pcp_manage_repo,
+            ensure => 'stopped',
           }
         }
         default: {
