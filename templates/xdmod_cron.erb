@@ -1,10 +1,10 @@
 # This file is managed by Puppet, do not edit!
 
 # Every morning at 3:00 AM -- run the report scheduler
-0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null
+0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager
 
 # Process data warehouse batch export requests.
-<%= scope['xdmod::batch_export_cron_times'][0] %> <%= scope['xdmod::batch_export_cron_times'][1] %> * * * xdmod /usr/lib64/xdmod/batch_export_manager.php -q
+<%= scope['xdmod::batch_export_cron_times'][0] %> <%= scope['xdmod::batch_export_cron_times'][1] %> * * * xdmod /usr/lib64/xdmod/batch_export_manager.php -q 2>&1 | logger -t xdmod-batch_export_manager
 
 <% if scope.lookupvar('xdmod::enable_update_check') -%>
 0 1 1 * * xdmod /usr/lib64/xdmod/update_check.php >/dev/null
