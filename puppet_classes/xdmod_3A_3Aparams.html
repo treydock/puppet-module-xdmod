@@ -440,8 +440,7 @@
 338
 339
 340
-341
-342</pre>
+341</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/params.pp', line 3</span>
@@ -476,7 +475,6 @@ class xdmod::params {
           $supremm_rpm_release = &#39;el7&#39;
           $compute_only = false
           $pcp_package_ensure = undef
-          $pcp_manage_repo = false
         }
         default: {
           fail(&quot;Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 7&quot;)

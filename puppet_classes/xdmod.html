@@ -2826,8 +2826,7 @@ not defined</p>
 622
 623
 624
-625
-626</pre>
+625</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/init.pp', line 266</span>
@@ -3158,8 +3157,7 @@ class xdmod (
         }
         &#39;resource&#39;: {
           class { &#39;::pcp&#39;:
-            ensure      =&gt; &#39;stopped&#39;,
-            manage_repo =&gt; $xdmod::params::pcp_manage_repo,
+            ensure =&gt; &#39;stopped&#39;,
           }
         }
         default: {
