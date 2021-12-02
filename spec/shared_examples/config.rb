@@ -156,7 +156,7 @@ shared_examples_for 'xdmod::config' do |_facts|
   it do
     verify_contents(catalogue, '/etc/cron.d/xdmod', [
                       '# Every morning at 3:00 AM -- run the report scheduler',
-                      '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
+                      '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
                       '# Shred and ingest:',
                     ])
   end
@@ -229,7 +229,7 @@ shared_examples_for 'xdmod::config' do |_facts|
     it do
       verify_contents(catalogue, '/etc/cron.d/xdmod', [
                         '# Every morning at 3:00 AM -- run the report scheduler',
-                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
+                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
                         '# Shred and ingest:',
                         '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example',
                         '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet',
@@ -270,7 +270,7 @@ shared_examples_for 'xdmod::config' do |_facts|
     it do
       verify_contents(catalogue, '/etc/cron.d/xdmod', [
                         '# Every morning at 3:00 AM -- run the report scheduler',
-                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
+                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
                         '# Shred and ingest:',
                         '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1',
                         '5 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2',
@@ -311,7 +311,7 @@ shared_examples_for 'xdmod::config' do |_facts|
     it do
       verify_contents(catalogue, '/etc/cron.d/xdmod', [
                         '# Every morning at 3:00 AM -- run the report scheduler',
-                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
+                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
                         '# Shred and ingest:',
                         '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example',
                         '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet',
@@ -332,7 +332,7 @@ shared_examples_for 'xdmod::config' do |_facts|
     it do
       verify_contents(catalogue, '/etc/cron.d/xdmod', [
                         '# Every morning at 3:00 AM -- run the report scheduler',
-                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php >/dev/null',
+                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
                         '# Shred and ingest:',
                         '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1',
                         '5 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2',
