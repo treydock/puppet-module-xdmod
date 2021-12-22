@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v7.5.1](https://github.com/treydock/puppet-module-xdmod/tree/v7.5.1) (2021-12-22)
+
+[Full Changelog](https://github.com/treydock/puppet-module-xdmod/compare/v7.5.0...v7.5.1)
+
+### Fixed
+
+- Improve logging for xdmod-ingestor [\#27](https://github.com/treydock/puppet-module-xdmod/pull/27) ([treydock](https://github.com/treydock))
+
 ## [v7.5.0](https://github.com/treydock/puppet-module-xdmod/tree/v7.5.0) (2021-12-02)
 
 [Full Changelog](https://github.com/treydock/puppet-module-xdmod/compare/v7.4.1...v7.5.0)
