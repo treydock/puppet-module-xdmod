@@ -30,7 +30,7 @@ end
 <%- ingest_hour = (shred_hour + 1) %>
 <%- end -%>
 <%- if ! ingest_hour.nil? -%>
-0 <%= scope['xdmod::ingest_hour'] || ingest_hour %> * * * xdmod /usr/bin/xdmod-ingestor --quiet
+0 <%= scope['xdmod::ingest_hour'] || ingest_hour %> * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor
 <%- end -%>
 
 <%- if scope['xdmod::enable_supremm'] -%>
