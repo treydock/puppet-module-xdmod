@@ -232,7 +232,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                         '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
                         '# Shred and ingest:',
                         '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet',
+                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor',
                       ])
     end
   end
@@ -274,7 +274,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                         '# Shred and ingest:',
                         '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1',
                         '5 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet',
+                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor',
                       ])
     end
   end
@@ -314,7 +314,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                         '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
                         '# Shred and ingest:',
                         '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet',
+                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor',
                       ])
     end
   end
@@ -336,7 +336,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                         '# Shred and ingest:',
                         '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1',
                         '5 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet',
+                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor',
                       ])
     end
   end
