@@ -1,14 +1,17 @@
 #!/bin/bash
 # Syockel - 2016
+# rjsigh - 2021 - Updated for new SLURM changes
 # Custom SLURM sacct to xdmod-shredder to xdmod-ingester meant for running each day to pull yesterdays data into XDMoD
 # Get yesterday's date
 ndate=`date -d yesterday +%F`
 
 # Step 1 - Create slurm log
-TZ=UTC sacct --allusers --allclusters --parsable2 --noheader --allocations --format jobid,jobidraw,cluster,partition,account,group,gid,user,uid,submit,eligible,start,end,elapsed,exitcode,state,nnodes,ncpus,reqcpus,reqmem,reqgres,reqtres,timelimit,nodelist,jobname --state CANCELLED,COMPLETED,FAILED,NODE_FAIL,PREEMPTED,TIMEOUT --starttime ${ndate}T00:00:00 --endtime ${ndate}T23:59:59 > /tmp/sacct-${ndate}.log
+TZ=UTC sacct --allusers --allclusters --parsable2 --noheader --allocations --format jobid,jobidraw,cluster,partition,account,group,gid,user,uid,submit,eligible,start,end,elapsed,exitcode,state,nnodes,ncpus,reqcpus,reqmem,reqtres,alloctres,timelimit,nodelist,jobname --starttime ${ndate}T00:00:00 --endtime ${ndate}T23:59:59 > /tmp/sacct-${ndate}.log
+
 # clean up any bad data
 grep -v ^0_0 /tmp/sacct-${ndate}.log > /tmp/sacct-${ndate}.v2.log
-grep -v ^$ /tmp/sacct-${ndate}.v2.log > /tmp/slurm-${ndate}.log
+sed -e 's/交互的//g' -e 's/_全数据//g' -e 's/↲//g' -e 's/bash /bash/' /tmp/sacct-${ndate}.v2.log > /tmp/sacct-${ndate}.v3.log
+grep -v ^$ /tmp/sacct-${ndate}.v3.log > /tmp/slurm-${ndate}.log
 
 # Step 2 - Shred Data into XDMoD DB
 xdmod-shredder -v -r <%= scope.lookupvar('xdmod::params::resource_name') %> -f <%= scope.lookupvar('xdmod::scheduler') %> -i /tmp/<%= scope.lookupvar('xdmod::scheduler') %>-${ndate}.log &>> /var/log/xdmod/shredder.log
