@@ -24,11 +24,11 @@ class xdmod::ondemand (
   Optional[String] $geoip_licensekey = undef,
   String $package_name = 'xdmod-ondemand',
   String $package_ensure = 'installed',
-  Stdlib::HTTPSUrl $package_url  = 'https://github.com/ubccr/xdmod-ondemand/releases/download/v9.5.0/xdmod-ondemand-9.5.0-1.0.el7.noarch.rpm',
+  Stdlib::HTTPSUrl $package_url  = $xdmod::params::ondemand_package_url,
   String $log_format = '%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"',
   Array[Integer, 2, 2] $cron_times = [0,7],
   Boolean $manage_cron = true,
-) {
+) inherits xdmod::params {
   include xdmod
 
   if $geoip_userid and $geoip_licensekey {
@@ -62,9 +62,10 @@ class xdmod::ondemand (
     }
     $package_resource = Package['xdmod-ondemand']
   } else {
+    $_package_url = regsubst($package_url, 'VERSION', $xdmod::version, 'G')
     yum::install { $package_name:
       ensure  => 'present',
-      source  => $package_url,
+      source  => $_package_url,
       require => $xdmod::_package_require,
       before  => File['/etc/xdmod/portal_settings.d/ondemand.ini'],
     }

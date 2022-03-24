@@ -15,7 +15,7 @@
 
 ## Overview
 
-This module will manage [Open XDMoD](http://xdmod.sourceforge.net/).  This module works best when paired with Hiera for defining parameter values.
+This module will manage [Open XDMoD](https://open.xdmod.org/).  This module works best when paired with Hiera for defining parameter values.
 
 This module is designed so that different hosts can run the various components of Open XDMoD.
 
@@ -27,6 +27,7 @@ This module is designed so that different hosts can run the various components o
 * puppet-module-xdmod **5.x** supports Open XDMoD **8.5.x**
 * puppet-module-xdmod **6.x** supports Open XDMoD **9.0.x**
 * puppet-module-xdmod **7.x** supports Open XDMoD **9.5.x**
+* puppet-module-xdmod **8.x** supports Open XDMoD **10.0.x**
 
 ## Usage
 
@@ -195,8 +196,8 @@ A MongoDB host needs to be setup for SUPReMM
 
 This module has been tested on:
 
-* CentOS 7
-* RedHat 7
+* RedHat/CentOS 7
+* RedHat/Rocky 8
 
 ## Development
 

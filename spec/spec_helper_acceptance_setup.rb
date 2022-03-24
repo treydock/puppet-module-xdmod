@@ -55,6 +55,18 @@ EOS
   create_remote_file(hosts, '/etc/systemd/system/mongod.service.d/hack.conf', mongod_hack)
 end
 
+# Hack to fix issue with notify services not starting
+if fact('os.family') == 'RedHat' && fact('os.release.major').to_i >= 8
+  on hosts, 'mkdir -p /etc/systemd/system/{pmcd,pmlogger,pmie}.service.d'
+  override = <<-EOS
+[Service]
+Type=simple
+EOS
+  create_remote_file(hosts, '/etc/systemd/system/pmcd.service.d/override.conf', override)
+  create_remote_file(hosts, '/etc/systemd/system/pmlogger.service.d/override.conf', override)
+  create_remote_file(hosts, '/etc/systemd/system/pmie.service.d/override.conf', override)
+end
+
 create_remote_file(hosts, '/etc/puppetlabs/puppet/hiera.yaml', hiera_yaml)
 on hosts, 'mkdir -p /etc/puppetlabs/puppet/data'
 create_remote_file(hosts, '/etc/puppetlabs/puppet/data/common.yaml', common_yaml)
