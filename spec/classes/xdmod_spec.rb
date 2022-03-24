@@ -36,7 +36,7 @@ describe 'xdmod' do
         it { is_expected.to compile }
       end
 
-      context 'when supremm => true' do
+      context 'when supremm => true', if: facts[:os]['release']['major'].to_s == '7' do
         let(:default_params) { { supremm: true, web: true } }
         let(:params) { default_params }
 

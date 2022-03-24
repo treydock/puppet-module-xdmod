@@ -1,7 +1,7 @@
 require 'spec_helper_acceptance'
 
 describe 'xdmod class:' do
-  context 'supremm enabled' do
+  context 'supremm enabled', if: fact('os.release.major') == '7' do
     it 'runs successfully' do
       pp_clean = "class { 'pcp': ensure => 'absent' }"
       pp = <<-EOS

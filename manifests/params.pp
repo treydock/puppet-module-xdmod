@@ -2,9 +2,9 @@
 # @api private
 class xdmod::params {
 
-  $version                  = '9.5.0'
-  $xdmod_appkernels_version = '9.5.0'
-  $xdmod_supremm_version    = '9.5.0'
+  $version                  = '10.0.0'
+  $xdmod_appkernels_version = '10.0.0'
+  $xdmod_supremm_version    = '10.0.0'
   $sender_email       = "xdmod@xdmod.${facts['domain']}"
   $apache_vhost_name  = "xdmod.${facts['domain']}"
   $portal_settings    = {}
@@ -31,8 +31,14 @@ class xdmod::params {
           $compute_only = false
           $pcp_package_ensure = undef
         }
+        '8': {
+          $rpm_release = 'beta1.el8'
+          $supremm_rpm_release = 'beta1.el8'
+          $compute_only = false
+          $pcp_package_ensure = undef
+        }
         default: {
-          fail("Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 7")
+          fail("Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 7 and 8")
         }
       }
       $package_name               = 'xdmod'
@@ -42,6 +48,7 @@ class xdmod::params {
       $xdmod_supremm_package_name = 'xdmod-supremm'
       $xdmod_supremm_package_url  = "https://github.com/ubccr/xdmod-supremm/releases/download/vVERSION/xdmod-supremm-VERSION-1.0.${rpm_release}.noarch.rpm"
       $supremm_package_url        = "https://github.com/ubccr/supremm/releases/download/SUPREMM_VERSION/supremm-SUPREMM_VERSION-1.${supremm_rpm_release}.x86_64.rpm"
+      $ondemand_package_url       = "https://github.com/ubccr/xdmod-ondemand/releases/download/vVERSION/xdmod-ondemand-VERSION-1.0.${rpm_release}.noarch.rpm"
     }
 
     default: {

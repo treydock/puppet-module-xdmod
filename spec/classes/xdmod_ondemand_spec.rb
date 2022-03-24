@@ -6,6 +6,10 @@ describe 'xdmod::ondemand' do
                       'operatingsystem' => 'CentOS',
                       'operatingsystemrelease' => ['7'],
                     },
+                    {
+                      'operatingsystem' => 'Rocky',
+                      'operatingsystemrelease' => ['8'],
+                    },
                   ]).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
