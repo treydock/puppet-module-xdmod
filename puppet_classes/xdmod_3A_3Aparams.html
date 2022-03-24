@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::params
   
-    &mdash; Documentation by YARD 0.9.26
+    &mdash; Documentation by YARD 0.9.27
   
 </title>
 
@@ -68,6 +68,8 @@
     <dd>
       
       <span class='object_link'><a href="xdmod.html" title="puppet_classes::xdmod (puppet_class)">xdmod</a></span><br/>
+      
+      <span class='object_link'><a href="xdmod_3A_3Aondemand.html" title="puppet_classes::xdmod::ondemand (puppet_class)">xdmod::ondemand</a></span><br/>
       
     </dd>
   </dl>
@@ -440,16 +442,23 @@
 338
 339
 340
-341</pre>
+341
+342
+343
+344
+345
+346
+347
+348</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/params.pp', line 3</span>
 
 class xdmod::params {
 
-  $version                  = &#39;9.5.0&#39;
-  $xdmod_appkernels_version = &#39;9.5.0&#39;
-  $xdmod_supremm_version    = &#39;9.5.0&#39;
+  $version                  = &#39;10.0.0&#39;
+  $xdmod_appkernels_version = &#39;10.0.0&#39;
+  $xdmod_supremm_version    = &#39;10.0.0&#39;
   $sender_email       = &quot;xdmod@xdmod.${facts[&#39;domain&#39;]}&quot;
   $apache_vhost_name  = &quot;xdmod.${facts[&#39;domain&#39;]}&quot;
   $portal_settings    = {}
@@ -476,8 +485,14 @@ class xdmod::params {
           $compute_only = false
           $pcp_package_ensure = undef
         }
+        &#39;8&#39;: {
+          $rpm_release = &#39;beta1.el8&#39;
+          $supremm_rpm_release = &#39;beta1.el8&#39;
+          $compute_only = false
+          $pcp_package_ensure = undef
+        }
         default: {
-          fail(&quot;Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 7&quot;)
+          fail(&quot;Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 7 and 8&quot;)
         }
       }
       $package_name               = &#39;xdmod&#39;
@@ -487,6 +502,7 @@ class xdmod::params {
       $xdmod_supremm_package_name = &#39;xdmod-supremm&#39;
       $xdmod_supremm_package_url  = &quot;https://github.com/ubccr/xdmod-supremm/releases/download/vVERSION/xdmod-supremm-VERSION-1.0.${rpm_release}.noarch.rpm&quot;
       $supremm_package_url        = &quot;https://github.com/ubccr/supremm/releases/download/SUPREMM_VERSION/supremm-SUPREMM_VERSION-1.${supremm_rpm_release}.x86_64.rpm&quot;
+      $ondemand_package_url       = &quot;https://github.com/ubccr/xdmod-ondemand/releases/download/vVERSION/xdmod-ondemand-VERSION-1.0.${rpm_release}.noarch.rpm&quot;
     }
 
     default: {

@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::ondemand
   
-    &mdash; Documentation by YARD 0.9.26
+    &mdash; Documentation by YARD 0.9.27
   
 </title>
 
@@ -61,6 +61,11 @@
 
       <div id="content"><h1>Puppet Class: xdmod::ondemand</h1>
 <div class="box_info">
+  
+  <dl>
+    <dt>Inherits:</dt>
+    <dd><span class='object_link'><a href="xdmod_3A_3Aparams.html" title="puppet_classes::xdmod::params (puppet_class)">xdmod::params</a></span></dd>
+  </dl>
   
   
   <dl>
@@ -166,7 +171,7 @@
         <span class='type'>(<tt>Stdlib::HTTPSUrl</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>&#39;https://github.com/ubccr/xdmod-ondemand/releases/download/v9.5.0/xdmod-ondemand-9.5.0-1.0.el7.noarch.rpm&#39;</tt>)</em>
+        <em class="default">(defaults to: <tt>$xdmod::params::ondemand_package_url</tt>)</em>
       
       
         &mdash;
@@ -320,7 +325,8 @@
 98
 99
 100
-101</pre>
+101
+102</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/ondemand.pp', line 22</span>
@@ -330,11 +336,11 @@ class xdmod::ondemand (
   Optional[String] $geoip_licensekey = undef,
   String $package_name = &#39;xdmod-ondemand&#39;,
   String $package_ensure = &#39;installed&#39;,
-  Stdlib::HTTPSUrl $package_url  = &#39;https://github.com/ubccr/xdmod-ondemand/releases/download/v9.5.0/xdmod-ondemand-9.5.0-1.0.el7.noarch.rpm&#39;,
+  Stdlib::HTTPSUrl $package_url  = $xdmod::params::ondemand_package_url,
   String $log_format = &#39;%h %l %u %t \&quot;%r\&quot; %&gt;s %b \&quot;%{Referer}i\&quot; \&quot;%{User-Agent}i\&quot;&#39;,
   Array[Integer, 2, 2] $cron_times = [0,7],
   Boolean $manage_cron = true,
-) {
+) inherits xdmod::params {
   include xdmod
 
   if $geoip_userid and $geoip_licensekey {
@@ -368,9 +374,10 @@ class xdmod::ondemand (
     }
     $package_resource = Package[&#39;xdmod-ondemand&#39;]
   } else {
+    $_package_url = regsubst($package_url, &#39;VERSION&#39;, $xdmod::version, &#39;G&#39;)
     yum::install { $package_name:
       ensure  =&gt; &#39;present&#39;,
-      source  =&gt; $package_url,
+      source  =&gt; $_package_url,
       require =&gt; $xdmod::_package_require,
       before  =&gt; File[&#39;/etc/xdmod/portal_settings.d/ondemand.ini&#39;],
     }
