@@ -65,7 +65,7 @@ class xdmod::ondemand (
     $_package_url = regsubst($package_url, 'VERSION', $xdmod::version, 'G')
     yum::install { $package_name:
       ensure  => 'present',
-      source  => $package_url,
+      source  => $_package_url,
       require => $xdmod::_package_require,
       before  => File['/etc/xdmod/portal_settings.d/ondemand.ini'],
     }

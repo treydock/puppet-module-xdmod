@@ -1,7 +1,7 @@
 require 'spec_helper_acceptance'
 
 describe 'xdmod class:' do
-  context 'appkernel and akrr enabled' do
+  context 'appkernel and akrr enabled', if: fact('os.release.major') == '7' do
     it 'runs successfully' do
       pp = <<-EOS
       host { 'xdmod.localdomain': ip => '127.0.0.1' }
