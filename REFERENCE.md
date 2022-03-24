@@ -1298,7 +1298,7 @@ Data type: `Stdlib::HTTPSUrl`
 
 The URL of the XDMOD OnDemand package when not using local repo
 
-Default value: `'https://github.com/ubccr/xdmod-ondemand/releases/download/v9.5.0/xdmod-ondemand-9.5.0-1.0.el7.noarch.rpm'`
+Default value: `$xdmod::params::ondemand_package_url`
 
 ##### <a name="log_format"></a>`log_format`
 
