@@ -1,7 +1,6 @@
 # @summary Manage XDMoD AKRR user
 # @api private
 class xdmod::akrr::user {
-
   if $xdmod::manage_akrr_user {
     if $xdmod::akrr_user_managehome {
       $_user_before = Exec['mk-akrr-home']
@@ -40,5 +39,4 @@ class xdmod::akrr::user {
       creates => $xdmod::_akrr_user_home,
     }
   }
-
 }

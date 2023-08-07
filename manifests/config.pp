@@ -1,6 +1,7 @@
 # @summary Manage XDMoD configs
 # @api private
 class xdmod::config {
+  $mysql_remote_args = $xdmod::_mysql_remote_args
 
   Xdmod_portal_setting {
     before => [
@@ -8,10 +9,10 @@ class xdmod::config {
       File['/etc/xdmod/group-to-hierarchy.csv'],
       File['/etc/xdmod/names.csv'],
       Exec['acl-config'],
-    ]
+    ],
   }
 
-  $::xdmod::portal_settings.each |$name, $data| {
+  $xdmod::portal_settings.each |$name, $data| {
     xdmod_portal_setting { $name: * => $data }
   }
 
@@ -22,75 +23,75 @@ class xdmod::config {
     mode   => '0440',
   }
 
-  xdmod_portal_setting { 'general/site_address': value => "https://${::xdmod::apache_vhost_name}/" }
-  xdmod_portal_setting { 'general/user_manual': value => "https://${::xdmod::apache_vhost_name}/user_manual/" }
-  xdmod_portal_setting { 'general/debug_recipient': value => $::xdmod::debug_recipient }
+  xdmod_portal_setting { 'general/site_address': value => "https://${xdmod::apache_vhost_name}/" }
+  xdmod_portal_setting { 'general/user_manual': value => "https://${xdmod::apache_vhost_name}/user_manual/" }
+  xdmod_portal_setting { 'general/debug_recipient': value => $xdmod::debug_recipient }
 
-  xdmod_portal_setting { 'features/user_dashboard': value => $::xdmod::user_dashboard }
+  xdmod_portal_setting { 'features/user_dashboard': value => $xdmod::user_dashboard }
 
-  xdmod_portal_setting { 'mailer/sender_email': value => $::xdmod::sender_email }
+  xdmod_portal_setting { 'mailer/sender_email': value => $xdmod::sender_email }
 
   xdmod_portal_setting { 'cors/domains': value => join($xdmod::cors_domains, ',') }
 
-  xdmod_portal_setting { 'logger/host': value => $::xdmod::database_host }
-  xdmod_portal_setting { 'logger/port': value => $::xdmod::database_port }
-  xdmod_portal_setting { 'logger/user': value => $::xdmod::database_user }
-  xdmod_portal_setting { 'logger/pass': value => $::xdmod::database_password, secret => true }
+  xdmod_portal_setting { 'logger/host': value => $xdmod::database_host }
+  xdmod_portal_setting { 'logger/port': value => $xdmod::database_port }
+  xdmod_portal_setting { 'logger/user': value => $xdmod::database_user }
+  xdmod_portal_setting { 'logger/pass': value => $xdmod::database_password, secret => true }
 
-  xdmod_portal_setting { 'database/host': value => $::xdmod::database_host }
-  xdmod_portal_setting { 'database/port': value => $::xdmod::database_port }
-  xdmod_portal_setting { 'database/user': value => $::xdmod::database_user }
-  xdmod_portal_setting { 'database/pass': value => $::xdmod::database_password, secret => true }
+  xdmod_portal_setting { 'database/host': value => $xdmod::database_host }
+  xdmod_portal_setting { 'database/port': value => $xdmod::database_port }
+  xdmod_portal_setting { 'database/user': value => $xdmod::database_user }
+  xdmod_portal_setting { 'database/pass': value => $xdmod::database_password, secret => true }
 
-  xdmod_portal_setting { 'datawarehouse/host': value => $::xdmod::database_host }
-  xdmod_portal_setting { 'datawarehouse/port': value => $::xdmod::database_port }
-  xdmod_portal_setting { 'datawarehouse/user': value => $::xdmod::database_user }
-  xdmod_portal_setting { 'datawarehouse/pass': value => $::xdmod::database_password, secret => true }
+  xdmod_portal_setting { 'datawarehouse/host': value => $xdmod::database_host }
+  xdmod_portal_setting { 'datawarehouse/port': value => $xdmod::database_port }
+  xdmod_portal_setting { 'datawarehouse/user': value => $xdmod::database_user }
+  xdmod_portal_setting { 'datawarehouse/pass': value => $xdmod::database_password, secret => true }
 
-  xdmod_portal_setting { 'shredder/host': value => $::xdmod::database_host }
-  xdmod_portal_setting { 'shredder/port': value => $::xdmod::database_port }
-  xdmod_portal_setting { 'shredder/user': value => $::xdmod::database_user }
-  xdmod_portal_setting { 'shredder/pass': value => $::xdmod::database_password, secret => true }
+  xdmod_portal_setting { 'shredder/host': value => $xdmod::database_host }
+  xdmod_portal_setting { 'shredder/port': value => $xdmod::database_port }
+  xdmod_portal_setting { 'shredder/user': value => $xdmod::database_user }
+  xdmod_portal_setting { 'shredder/pass': value => $xdmod::database_password, secret => true }
 
-  xdmod_portal_setting { 'hpcdb/host': value => $::xdmod::database_host }
-  xdmod_portal_setting { 'hpcdb/port': value => $::xdmod::database_port }
-  xdmod_portal_setting { 'hpcdb/user': value => $::xdmod::database_user }
-  xdmod_portal_setting { 'hpcdb/pass': value => $::xdmod::database_password, secret => true }
+  xdmod_portal_setting { 'hpcdb/host': value => $xdmod::database_host }
+  xdmod_portal_setting { 'hpcdb/port': value => $xdmod::database_port }
+  xdmod_portal_setting { 'hpcdb/user': value => $xdmod::database_user }
+  xdmod_portal_setting { 'hpcdb/pass': value => $xdmod::database_password, secret => true }
 
-  xdmod_portal_setting { 'data_warehouse_export/export_directory': value => $::xdmod::data_warehouse_export_directory }
-  xdmod_portal_setting { 'data_warehouse_export/retention_duration_days': value => $::xdmod::data_warehouse_export_retention_duration_days }
-  xdmod_portal_setting { 'data_warehouse_export/hash_salt': value => $::xdmod::data_warehouse_export_hash_salt }
+  xdmod_portal_setting { 'data_warehouse_export/export_directory': value => $xdmod::data_warehouse_export_directory }
+  xdmod_portal_setting { 'data_warehouse_export/retention_duration_days': value => $xdmod::data_warehouse_export_retention_duration_days }
+  xdmod_portal_setting { 'data_warehouse_export/hash_salt': value => $xdmod::data_warehouse_export_hash_salt }
 
-  if $::xdmod::center_logo_source {
+  if $xdmod::center_logo_source {
     file { '/etc/xdmod/logo.png':
       ensure => 'file',
       owner  => 'root',
       group  => 'root',
       mode   => '0644',
-      source => $::xdmod::center_logo_source,
+      source => $xdmod::center_logo_source,
     }
     $center_logo = '/etc/xdmod/logo.png'
   } else {
     $center_logo = ''
   }
   xdmod_portal_setting { 'general/center_logo': value => $center_logo }
-  if $::xdmod::center_logo_width {
-    xdmod_portal_setting { 'general/center_logo_width': value => $::xdmod::center_logo_width }
+  if $xdmod::center_logo_width {
+    xdmod_portal_setting { 'general/center_logo_width': value => $xdmod::center_logo_width }
   }
 
-  $_appkernels = $::xdmod::enable_appkernel ? {
+  $_appkernels = $xdmod::enable_appkernel ? {
     true  => 'on',
     false => 'off',
   }
 
-  $_singlejobviewer = $::xdmod::enable_supremm ? {
+  $_singlejobviewer = $xdmod::enable_supremm ? {
     true  => 'on',
     false => 'off',
   }
 
   xdmod_portal_setting { 'features/appkernels': value => $_appkernels }
 
-  if $::xdmod::enable_appkernel {
+  if $xdmod::enable_appkernel {
     file { '/etc/xdmod/portal_settings.d/appkernels.ini':
       ensure => 'file',
       owner  => 'xdmod',
@@ -99,18 +100,18 @@ class xdmod::config {
     }
 
     xdmod_appkernel_setting { 'features/appkernels': value => $_appkernels }
-    xdmod_appkernel_setting { 'appkernel/host': value => $::xdmod::database_host }
-    xdmod_appkernel_setting { 'appkernel/port': value => $::xdmod::database_port }
-    xdmod_appkernel_setting { 'appkernel/user': value => $::xdmod::akrr_database_user }
-    xdmod_appkernel_setting { 'appkernel/pass': value => $::xdmod::akrr_database_password, secret => true }
-    xdmod_appkernel_setting { 'akrr-db/host': value => $::xdmod::database_host }
-    xdmod_appkernel_setting { 'akrr-db/port': value => $::xdmod::database_port }
-    xdmod_appkernel_setting { 'akrr-db/user': value => $::xdmod::akrr_database_user }
-    xdmod_appkernel_setting { 'akrr-db/pass': value => $::xdmod::akrr_database_password, secret => true }
+    xdmod_appkernel_setting { 'appkernel/host': value => $xdmod::database_host }
+    xdmod_appkernel_setting { 'appkernel/port': value => $xdmod::database_port }
+    xdmod_appkernel_setting { 'appkernel/user': value => $xdmod::akrr_database_user }
+    xdmod_appkernel_setting { 'appkernel/pass': value => $xdmod::akrr_database_password, secret => true }
+    xdmod_appkernel_setting { 'akrr-db/host': value => $xdmod::database_host }
+    xdmod_appkernel_setting { 'akrr-db/port': value => $xdmod::database_port }
+    xdmod_appkernel_setting { 'akrr-db/user': value => $xdmod::akrr_database_user }
+    xdmod_appkernel_setting { 'akrr-db/pass': value => $xdmod::akrr_database_password, secret => true }
     xdmod_appkernel_setting { 'akrr/host': value => 'localhost' }
-    xdmod_appkernel_setting { 'akrr/port': value => $::xdmod::akrr_restapi_port }
+    xdmod_appkernel_setting { 'akrr/port': value => $xdmod::akrr_restapi_port }
     xdmod_appkernel_setting { 'akrr/username': value => 'rw' }
-    xdmod_appkernel_setting { 'akrr/password': value => $::xdmod::akrr_restapi_rw_password, secret => true }
+    xdmod_appkernel_setting { 'akrr/password': value => $xdmod::akrr_restapi_rw_password, secret => true }
 
     if $xdmod::manage_appkernel_cron {
       file { '/etc/cron.d/xdmod-appkernels':
@@ -123,7 +124,7 @@ class xdmod::config {
     }
   }
 
-  if $::xdmod::enable_supremm {
+  if $xdmod::enable_supremm {
     file { '/etc/xdmod/portal_settings.d/supremm.ini':
       ensure => 'file',
       owner  => 'xdmod',
@@ -132,10 +133,10 @@ class xdmod::config {
     }
 
     xdmod_supremm_setting { 'jobsummarydb/db_engine': value => 'MongoDB' }
-    xdmod_supremm_setting { 'jobsummarydb/uri': value => $::xdmod::_supremm_mongodb_uri, secret => true }
+    xdmod_supremm_setting { 'jobsummarydb/uri': value => $xdmod::_supremm_mongodb_uri, secret => true }
     xdmod_supremm_setting { 'jobsummarydb/db': value => 'supremm' }
 
-    $supremm_resources = $::xdmod::supremm_resources.map |$r| {
+    $supremm_resources = $xdmod::supremm_resources.map |$r| {
       $enabled = $r['enabled'] ? {
         Undef   => true,
         default => $r['enabled'],
@@ -147,16 +148,16 @@ class xdmod::config {
       if $r['hardware'] {
         $hardware = $r['hardware']
       } else {
-        $hardware = {'gpfs' => ''}
+        $hardware = { 'gpfs' => '' }
       }
       if $r['datasetmap_source'] {
         $datasetmap_name = basename($r['datasetmap_source'], '.js')
         ensure_resource('file', "/usr/share/xdmod/etl/js/config/supremm/dataset_maps/${datasetmap_name}.js", {
-          'ensure' => 'file',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
-          'source' => $r['datasetmap_source'],
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0644',
+            'source' => $r['datasetmap_source'],
         })
         if ! $r['datasetmap'] {
           $_datasetmap = $datasetmap_name
@@ -180,26 +181,26 @@ class xdmod::config {
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => to_json_pretty({'resources' => $supremm_resources}),
+      content => to_json_pretty({ 'resources' => $supremm_resources }),
     }
 
     exec { 'modw_supremm-schema':
       path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-      command => "mysql ${::xdmod::_mysql_remote_args} -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql",
-      onlyif  => "mysql -BN ${::xdmod::_mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
-      unless  => "mysql -BN ${::xdmod::_mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^job_name$'",# lint:ignore:140chars
+      command => "mysql ${mysql_remote_args} -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql",
+      onlyif  => "mysql -BN ${mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
+      unless  => "mysql -BN ${mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^job_name$'",# lint:ignore:140chars
     }
     exec { 'modw_etl-schema':
       path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-      command => "mysql ${::xdmod::_mysql_remote_args} -D modw_etl < /usr/share/xdmod/db/schema/modw_etl.sql",
+      command => "mysql ${mysql_remote_args} -D modw_etl < /usr/share/xdmod/db/schema/modw_etl.sql",
       onlyif  => [
-        "mysql ${::xdmod::_mysql_remote_args} -BN -e 'SHOW DATABASES' | egrep -q '^modw_etl$'",
-        "mysql ${::xdmod::_mysql_remote_args} -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'",# lint:ignore:140chars
+        "mysql ${mysql_remote_args} -BN -e 'SHOW DATABASES' | egrep -q '^modw_etl$'",
+        "mysql ${mysql_remote_args} -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'",# lint:ignore:140chars
       ],
     }
   }
 
-  if ! empty($::xdmod::storage_resources) {
+  if ! empty($xdmod::storage_resources) {
     $storage_file_ensure = 'file'
   } else {
     $storage_file_ensure = 'absent'
@@ -209,7 +210,7 @@ class xdmod::config {
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
-    source => $::xdmod::storage_roles_source,
+    source => $xdmod::storage_roles_source,
     notify => Exec['acl-refresh'],
   }
   file { '/usr/local/bin/xdmod-storage-ingest.sh':
@@ -221,16 +222,16 @@ class xdmod::config {
     before  => File['/etc/cron.d/xdmod-storage'],
   }
 
-  if $::xdmod::php_timezone and $::xdmod::web {
+  if $xdmod::php_timezone and $xdmod::web {
     ini_setting { 'php-timezone':
       ensure  => 'present',
       path    => '/etc/php.ini',
       section => 'Date',
       setting => 'date.timezone',
-      value   => $::xdmod::php_timezone,
+      value   => $xdmod::php_timezone,
       before  => Exec['etl-bootstrap'],
     }
-    if $::xdmod::manage_apache_vhost {
+    if $xdmod::manage_apache_vhost {
       Ini_setting['php-timezone'] ~> Service['httpd']
     }
   }
@@ -260,7 +261,7 @@ class xdmod::config {
   -> exec { 'acl-config':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
     command => '/usr/bin/acl-config && touch /etc/xdmod/.acl-config',
-    creates => '/etc/xdmod/.acl-config'
+    creates => '/etc/xdmod/.acl-config',
   }
   exec { 'acl-refresh':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
@@ -270,10 +271,10 @@ class xdmod::config {
     require     => Exec['acl-config'],
   }
 
-  if $::xdmod::organization_name and $::xdmod::organization_abbrev {
+  if $xdmod::organization_name and $xdmod::organization_abbrev {
     $organization = {
-      'name'   => $::xdmod::organization_name,
-      'abbrev' => $::xdmod::organization_abbrev
+      'name'   => $xdmod::organization_name,
+      'abbrev' => $xdmod::organization_abbrev,
     }
     file { '/etc/xdmod/organization.json':
       ensure  => 'file',
@@ -283,34 +284,34 @@ class xdmod::config {
       content => to_json_pretty($organization),
       #content => join([
       #  '{',
-      #  "    \"name\": \"${::xdmod::organization_name}\",",
-      #  "    \"abbrev\": \"${::xdmod::organization_abbrev}\"",
+      #  "    \"name\": \"${xdmod::organization_name}\",",
+      #  "    \"abbrev\": \"${xdmod::organization_abbrev}\"",
       #  '}',
       #], "\n"),
     }
   }
 
-  $resources = $::xdmod::resources.map |$r| {
+  $resources = $xdmod::resources.map |$r| {
     $resource_type = $r['resource_type'] ? {
       Undef   => 'HPC',
       default => $r['resource_type'],
     }
     if $resource_type == 'HPC' {
       $pi_column = $r['pi_column'] ? {
-        Undef   => $::xdmod::pi_column,
+        Undef   => $xdmod::pi_column,
         default => $r['pi_column'],
       }
     } else {
       $pi_column = undef
     }
     delete_undef_values({
-      'resource' => $r['resource'],
-      'name' => $r['name'],
-      'description' => $r['description'],
-      'resource_type' => $resource_type,
-      'pi_column' => $pi_column,
-      'timezone' => $r['timezone'],
-      'shared_jobs' => $r['shared_jobs'],
+        'resource' => $r['resource'],
+        'name' => $r['name'],
+        'description' => $r['description'],
+        'resource_type' => $resource_type,
+        'pi_column' => $pi_column,
+        'timezone' => $r['timezone'],
+        'shared_jobs' => $r['shared_jobs'],
     })
   }
   $ondemand_resource_specs = $xdmod::ondemand_resources.map |$r| {
@@ -341,7 +342,7 @@ class xdmod::config {
     content => to_json_pretty($resource_specs),
   }
 
-  $hierarchy_levels = $::xdmod::params::hierarchy_levels + $::xdmod::hierarchy_levels
+  $hierarchy_levels = $xdmod::params::hierarchy_levels + $xdmod::hierarchy_levels
   # Template uses:
   # - $hierarchy_levels
   file { '/etc/xdmod/hierarchy.json':
@@ -352,7 +353,7 @@ class xdmod::config {
     content => template('xdmod/hierarchy.json.erb'),
   }
 
-  if ! empty($::xdmod::hierarchies) {
+  if ! empty($xdmod::hierarchies) {
     $hierarchies_content = template('xdmod/hierarchy.csv.erb')
 
     exec { 'xdmod-import-csv-hierarchy':
@@ -361,7 +362,7 @@ class xdmod::config {
       refreshonly => true,
       subscribe   => File['/etc/xdmod/hierarchy.csv'],
     }
-    if ! empty($::xdmod::group_to_hierarchy) {
+    if ! empty($xdmod::group_to_hierarchy) {
       Exec['xdmod-import-csv-hierarchy'] -> Exec['xdmod-import-csv-group-to-hierarchy']
     }
   } else {
@@ -376,7 +377,7 @@ class xdmod::config {
     content => $hierarchies_content,
   }
 
-  if ! empty($::xdmod::group_to_hierarchy) {
+  if ! empty($xdmod::group_to_hierarchy) {
     $group_to_hierarchy_content = template('xdmod/group-to-hierarchy.csv.erb')
 
     exec { 'xdmod-import-csv-group-to-hierarchy':
@@ -397,7 +398,7 @@ class xdmod::config {
     content => $group_to_hierarchy_content,
   }
 
-  if ! empty($::xdmod::user_pi_names) {
+  if ! empty($xdmod::user_pi_names) {
     $user_pi_names_content = template('xdmod/names.csv.erb')
 
     exec { 'xdmod-import-csv-names':
@@ -437,12 +438,12 @@ class xdmod::config {
     }
   }
 
-  exec { "mkdir-p ${::xdmod::data_warehouse_export_directory}":
+  exec { "mkdir-p ${xdmod::data_warehouse_export_directory}":
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => "mkdir -p ${::xdmod::data_warehouse_export_directory}",
-    creates => $::xdmod::data_warehouse_export_directory,
+    command => "mkdir -p ${xdmod::data_warehouse_export_directory}",
+    creates => $xdmod::data_warehouse_export_directory,
   }
-  -> file { $::xdmod::data_warehouse_export_directory:
+  -> file { $xdmod::data_warehouse_export_directory:
     ensure => 'directory',
     owner  => 'apache',
     group  => 'xdmod',
@@ -482,5 +483,4 @@ class xdmod::config {
     create_group => 'apache',
     *            => $logrotate_defaults,
   }
-
 }

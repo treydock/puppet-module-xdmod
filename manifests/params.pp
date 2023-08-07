@@ -1,17 +1,16 @@
 # @summary XDMoD module defaults
 # @api private
 class xdmod::params {
-
   $version                  = '10.0.0'
   $xdmod_appkernels_version = '10.0.0'
   $xdmod_supremm_version    = '10.0.0'
-  $sender_email       = "xdmod@xdmod.${facts['domain']}"
-  $apache_vhost_name  = "xdmod.${facts['domain']}"
+  $sender_email       = "xdmod@xdmod.${facts['networking']['domain']}"
+  $apache_vhost_name  = "xdmod.${facts['networking']['domain']}"
   $portal_settings    = {}
   $hierarchy_levels  = {
-    'top'     => {'label' => 'Hierarchy Top Level', 'info' => ''},
-    'middle'  => {'label' => 'Hierarchy Middle Level', 'info' => ''},
-    'bottom'  => {'label' => 'Hierarchy Bottom Level', 'info' => ''}
+    'top'     => { 'label' => 'Hierarchy Top Level', 'info' => '' },
+    'middle'  => { 'label' => 'Hierarchy Middle Level', 'info' => '' },
+    'bottom'  => { 'label' => 'Hierarchy Bottom Level', 'info' => '' },
   }
   $hierarchies        = []
   $group_to_hierarchy = {}
@@ -22,9 +21,9 @@ class xdmod::params {
   $akrr_source_url          = 'https://github.com/ubccr/akrr/releases/download/vAKRR_VERSION/akrr-AKRR_VERSION.tar.gz'
   $supremm_version          = '1.4.1'
 
-  case $::osfamily {
+  case $facts['os']['family'] {
     'RedHat': {
-      case $::operatingsystemmajrelease {
+      case $facts['os']['release']['major'] {
         '7': {
           $rpm_release = 'el7'
           $supremm_rpm_release = 'el7'
@@ -38,7 +37,7 @@ class xdmod::params {
           $pcp_package_ensure = undef
         }
         default: {
-          fail("Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 7 and 8")
+          fail("Unsupported operatingsystemmajrelease: ${facts['os']['release']['major']}, module ${module_name} only supports 7 and 8")
         }
       }
       $package_name               = 'xdmod'
@@ -52,7 +51,7 @@ class xdmod::params {
     }
 
     default: {
-      fail("Unsupported osfamily: ${::osfamily}, module ${module_name} only support osfamily RedHat")
+      fail("Unsupported osfamily: ${facts['os']['family']}, module ${module_name} only support osfamily RedHat")
     }
   }
 
@@ -344,5 +343,4 @@ class xdmod::params {
     'nobody',
     'ganglia',
   ]
-
 }

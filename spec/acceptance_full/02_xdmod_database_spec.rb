@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance_full'
 
 describe 'xdmod class: databases' do
   node = find_only_one(:db)
 
-  context 'databases only' do
+  context 'when databases only' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       class { 'mysql::server':
         root_password    => 'secret',
         override_options => {
@@ -33,7 +35,7 @@ describe 'xdmod class: databases' do
           'pcp_log_dir' => '/data/pcp-data/example',
         }],
       }
-      EOS
+      PP
 
       apply_manifest_on(node, pp, catch_failures: true)
       # MongoDB password constantly changes on EL6
@@ -45,9 +47,9 @@ describe 'xdmod class: databases' do
     it_behaves_like 'databases', node
   end
 
-  context 'databases only - all' do
+  context 'when databases only - all' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       class { 'mysql::server':
         root_password    => 'secret',
         override_options => {
@@ -84,7 +86,7 @@ describe 'xdmod class: databases' do
           'pcp_log_dir' => '/data/pcp-data/example',
         }],
       }
-      EOS
+      PP
 
       apply_manifest_on(node, pp, catch_failures: true)
       # MongoDB password constantly changes on EL6

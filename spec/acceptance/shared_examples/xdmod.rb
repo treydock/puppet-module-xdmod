@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'xdmod-full' do |node|
   describe package('xdmod'), node: node do
     it { is_expected.to be_installed }

@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 shared_examples_for 'xdmod::supremm::config' do |_facts|
   it 'has valid JSON' do
     config = catalogue.resource('file', '/etc/supremm/config.json').send(:parameters)[:content]
     expect { JSON.parse(config) }.not_to raise_error
   end
 
-  context 'prometheus parameters' do
+  context 'with prometheus parameters' do
     let(:params) do
       default_params.merge(
         supremm_prometheus_url: 'http://example.com:9090',

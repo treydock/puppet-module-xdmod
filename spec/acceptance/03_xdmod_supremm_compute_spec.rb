@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'xdmod class:' do
-  context 'compute only enabled' do
+  context 'with compute only enabled' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       class { 'xdmod':
         web               => false,
         database          => false,
@@ -21,7 +23,7 @@ describe 'xdmod class:' do
         }],
         pcp_resource      => 'example',
       }
-      EOS
+      PP
 
       apply_manifest(pp, catch_failures: true)
       # Sleep for a bit to allow pmlogger to start

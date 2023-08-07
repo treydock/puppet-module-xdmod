@@ -1,7 +1,6 @@
 # @summary Manage XDMoD SUPReMM packages
 # @api private
 class xdmod::supremm::install {
-
   if $xdmod::local_repo_name {
     package { 'supremm':
       ensure  => $xdmod::supremm_package_ensure,
@@ -15,5 +14,4 @@ class xdmod::supremm::install {
       require => $xdmod::_package_require,
     }
   }
-
 }

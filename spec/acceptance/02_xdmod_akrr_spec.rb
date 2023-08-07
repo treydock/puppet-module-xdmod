@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'xdmod class:' do
-  context 'appkernel and akrr enabled', if: fact('os.release.major') == '7' do
+  context 'with appkernel and akrr enabled', if: fact('os.release.major') == '7' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       host { 'xdmod.localdomain': ip => '127.0.0.1' }
       class { 'mysql::server':
         root_password => 'secret',
@@ -19,7 +21,7 @@ describe 'xdmod class:' do
         manage_simplesamlphp => true,
         php_timezone => 'America/New_York',
       }
-      EOS
+      PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)

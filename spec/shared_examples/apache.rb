@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'xdmod::apache' do |_facts|
   it { is_expected.to contain_class('apache') }
   it { is_expected.to contain_class('apache::mod::php') }

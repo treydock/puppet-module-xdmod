@@ -25,9 +25,9 @@ fixtures:
     yum:
       repo: https://github.com/voxpupuli/puppet-yum.git
     augeasproviders_core:
-      repo: https://github.com/hercules-team/augeasproviders_core
+      repo: https://github.com/voxpupuli/puppet-augeasproviders_core
     augeasproviders_shellvar:
-      repo: https://github.com/hercules-team/augeasproviders_shellvar
+      repo: https://github.com/voxpupuli/puppet-augeasproviders_shellvar
     pcp:
       repo: https://github.com/treydock/puppet-module-pcp.git
     sudo:

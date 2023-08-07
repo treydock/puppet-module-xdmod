@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance_full'
 
 describe 'xdmod class: compute' do
   node = find_only_one(:compute)
 
-  context 'compute only enabled' do
+  context 'when compute only enabled' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       class { 'xdmod':
         web                   => false,
         database              => false,
@@ -30,7 +32,7 @@ describe 'xdmod class: compute' do
         }],
         pcp_resource          => 'example',
       }
-      EOS
+      PP
 
       apply_manifest_on(node, pp, catch_failures: true)
       # Sleep for a bit to allow pmlogger to start

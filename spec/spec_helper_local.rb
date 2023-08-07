@@ -1,4 +1,6 @@
-dir = File.expand_path(File.dirname(__FILE__))
+# frozen_string_literal: true
+
+dir = __dir__
 Dir["#{dir}/shared_examples/**/*.rb"].sort.each { |f| require f }
 
 def verify_exact_contents(subject, title, expected_lines)
@@ -7,7 +9,7 @@ def verify_exact_contents(subject, title, expected_lines)
 end
 
 require 'rspec-puppet-facts'
-include RspecPuppetFacts
+include RspecPuppetFacts # rubocop:disable Style/MixinUsage
 
 add_custom_fact :systemd_version, ->(os, _facts) {
   case os

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 Puppet::Type.newtype(:xdmod_supremm_setting) do
   ensurable
 
@@ -14,7 +16,7 @@ Puppet::Type.newtype(:xdmod_supremm_setting) do
   newproperty(:value) do
     desc 'The value of the setting to be defined.'
     munge do |v|
-      '"' + v.to_s.strip + '"'
+      "\"#{v.to_s.strip}\""
     end
 
     def is_to_s(currentvalue) # rubocop:disable Style/PredicateName
@@ -43,16 +45,14 @@ Puppet::Type.newtype(:xdmod_supremm_setting) do
   end
 
   validate do
-    if self[:ensure] == :present
-      if self[:value].nil?
-        raise Puppet::Error, "Property value must be set for #{self[:name]} when ensure is present"
-      end
+    if self[:ensure] == :present && self[:value].nil?
+      raise Puppet::Error, "Property value must be set for #{self[:name]} when ensure is present"
     end
   end
 
   autorequire(:file) do
     [
-      '/etc/xdmod/portal_settings.d/supremm.ini',
+      '/etc/xdmod/portal_settings.d/supremm.ini'
     ]
   end
 end

@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance_full'
 
 describe 'xdmod class: supremm' do
   node = find_only_one(:supremm)
 
-  context 'supremm only' do
+  context 'when supremm only' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       class { 'xdmod':
         web                   => false,
         database              => false,
@@ -29,7 +31,7 @@ describe 'xdmod class: supremm' do
           'pcp_log_dir' => '/data/pcp-data/example',
         }],
       }
-      EOS
+      PP
 
       apply_manifest_on(node, pp, catch_failures: true)
       apply_manifest_on(node, pp, catch_changes: true)

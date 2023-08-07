@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'xdmod' do
   on_supported_os(supported_os: [
                     {
                       'operatingsystem' => 'CentOS',
-                      'operatingsystemrelease' => ['7'],
-                    },
+                      'operatingsystemrelease' => ['7']
+                    }
                   ]).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
@@ -105,9 +107,9 @@ describe 'xdmod' do
               'resource_id' => 1,
               'enabled' => true,
               'datasetmap' => 'pcp',
-              'pcp_log_dir' => '/data/pcp-data/example',
+              'pcp_log_dir' => '/data/pcp-data/example'
             }],
-            pcp_resource: 'example',
+            pcp_resource: 'example'
           }
         end
         let(:params) { default_params }
@@ -117,7 +119,7 @@ describe 'xdmod' do
         it { is_expected.to create_class('xdmod::supremm::compute::pcp') }
         it { is_expected.to contain_class('xdmod::params') }
 
-        context 'xdmod::supremm::compute::pcp' do
+        describe 'xdmod::supremm::compute::pcp' do
           it do
             is_expected.to contain_pcp__pmlogger('supremm').with(ensure: 'present',
                                                                  hostname: 'LOCALHOSTNAME',
@@ -138,7 +140,7 @@ describe 'xdmod' do
             expect(config_content).to match(my_fixture_read('hotproc'))
           end
 
-          context 'pcp_pmlogger_date_path => true' do
+          context 'when pcp_pmlogger_date_path => true' do
             let(:params) { default_params.merge(pcp_pmlogger_path_suffix: '$(date +%Y/%m/%d)') }
 
             it do
@@ -152,7 +154,7 @@ describe 'xdmod' do
             {
               web: false,
               database: false,
-              compute: true,
+              compute: true
             }
           end
 
