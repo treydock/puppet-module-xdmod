@@ -34,7 +34,7 @@
     },
     {
       "name": "puppet/yum",
-      "version_requirement": ">= 1.0.0 <8.0.0"
+      "version_requirement": ">= 1.0.0 <7.0.0"
     },
     {
       "name": "puppet/archive",
@@ -54,7 +54,7 @@
     },
     {
       "name": "treydock/pcp",
-      "version_requirement": ">= 1.4.0 <3.0.0"
+      "version_requirement": ">= 1.4.0 <4.0.0"
     },
     {
       "name": "puppet/openssl",
