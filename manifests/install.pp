@@ -14,6 +14,13 @@ class xdmod::install {
     } else {
       Package['nodejs-module'] -> Yum::Install[$xdmod::package_name]
     }
+
+    php::extension { 'mongodb':
+      ensure     => 'installed',
+      provider   => 'pecl',
+      ini_prefix => '40-',
+      require    => Package['php-devel'],
+    }
   }
 
   if $xdmod::local_repo_name {

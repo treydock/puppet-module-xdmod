@@ -30,6 +30,8 @@
 #   Name of yum repo hosting RPMs
 # @param manage_epel
 #   Boolean that sets if EPEL should be managed
+# @param manage_php
+#   Boolean that sets if PHP should be managed
 # @param package_ensure
 #   XDMoD package ensure property
 # @param xdmod_supremm_package_ensure
@@ -282,6 +284,7 @@ class xdmod (
   Boolean $enable_ondemand                      = false,
   Optional[String] $local_repo_name             = undef,
   Boolean $manage_epel                          = true,
+  Boolean $manage_php                           = true,
   String $package_ensure                        = 'present',
   String $xdmod_supremm_package_ensure          = 'present',
   String $xdmod_appkernels_package_ensure       = 'present',
@@ -493,6 +496,14 @@ class xdmod (
     include epel
   } else {
     $epel = []
+  }
+
+  if $web and $manage_php {
+    class { 'php':
+      fpm      => false,
+      composer => false,
+      dev      => true,
+    }
   }
 
   if $local_repo_name {
