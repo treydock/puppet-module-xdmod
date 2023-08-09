@@ -6,6 +6,8 @@
 # @param geoip_licensekey
 #   The MaxMind GeoIP license key
 #   Must be set if you wish to use GeoIP database
+# @param version
+#   Version of XDMOD OnDemand to install
 # @param package_name
 #   The XDMOD OnDemand package name
 # @param package_ensure
@@ -22,6 +24,7 @@
 class xdmod::ondemand (
   Optional[String] $geoip_userid = undef,
   Optional[String] $geoip_licensekey = undef,
+  String $version   = $xdmod::params::xdmod_ondemand_version,
   String $package_name = 'xdmod-ondemand',
   String $package_ensure = 'installed',
   Stdlib::HTTPSUrl $package_url  = $xdmod::params::ondemand_package_url,
@@ -62,7 +65,7 @@ class xdmod::ondemand (
     }
     $package_resource = Package['xdmod-ondemand']
   } else {
-    $_package_url = regsubst($package_url, 'VERSION', $xdmod::version, 'G')
+    $_package_url = regsubst($package_url, 'VERSION', $version, 'G')
     yum::install { $package_name:
       ensure  => 'present',
       source  => $_package_url,
