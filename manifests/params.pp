@@ -50,7 +50,6 @@ class xdmod::params {
       $xdmod_supremm_package_url  = "https://github.com/ubccr/xdmod-supremm/releases/download/vVERSION/xdmod-supremm-VERSION-1.0.${rpm_release}.noarch.rpm"
       $supremm_package_url        = "https://github.com/ubccr/supremm/releases/download/SUPREMM_VERSION/supremm-SUPREMM_VERSION-1.${supremm_rpm_release}.x86_64.rpm"
       $ondemand_package_url       = "https://github.com/ubccr/xdmod-ondemand/releases/download/vVERSION/xdmod-ondemand-VERSION-1.0.${rpm_release}.noarch.rpm"
-
     }
 
     default: {
