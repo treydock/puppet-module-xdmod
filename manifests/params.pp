@@ -1,7 +1,7 @@
 # @summary XDMoD module defaults
 # @api private
 class xdmod::params {
-  $version                  = '10.0.0'
+  $version                  = '10.0.3'
   $xdmod_appkernels_version = '10.0.0'
   $xdmod_supremm_version    = '10.0.0'
   $sender_email       = "xdmod@xdmod.${facts['networking']['domain']}"
@@ -29,19 +29,20 @@ class xdmod::params {
           $supremm_rpm_release = 'el7'
           $compute_only = false
           $pcp_package_ensure = undef
+          $package_url = "https://github.com/ubccr/xdmod/releases/download/vVERSION/xdmod-VERSION-1.0.${rpm_release}.noarch.rpm"
         }
         '8': {
           $rpm_release = 'beta1.el8'
           $supremm_rpm_release = 'beta1.el8'
           $compute_only = false
           $pcp_package_ensure = undef
+          $package_url = "https://github.com/ubccr/xdmod/releases/download/vVERSION-${rpm_release}/xdmod-VERSION-1.0.${rpm_release}.noarch.rpm"
         }
         default: {
           fail("Unsupported operatingsystemmajrelease: ${facts['os']['release']['major']}, module ${module_name} only supports 7 and 8")
         }
       }
       $package_name               = 'xdmod'
-      $package_url                = "https://github.com/ubccr/xdmod/releases/download/vVERSION/xdmod-VERSION-1.0.${rpm_release}.noarch.rpm"
       $appkernels_package_name    = 'xdmod-appkernels'
       $appkernels_package_url     = "https://github.com/ubccr/xdmod-appkernels/releases/download/vVERSION/xdmod-appkernels-VERSION-1.0.${rpm_release}.noarch.rpm"
       $xdmod_supremm_package_name = 'xdmod-supremm'

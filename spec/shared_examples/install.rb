@@ -5,13 +5,13 @@ shared_examples_for 'xdmod::install' do |facts|
   when '7'
     rpm_release = 'el7'
   when '8'
-    rpm_release = 'beta1.el8'
+    rpm_release = 'el8'
   end
 
   it do
     is_expected.to contain_yum__install('xdmod').with(
       ensure: 'present',
-      source: "https://github.com/ubccr/xdmod/releases/download/v10.0.0/xdmod-10.0.0-1.0.#{rpm_release}.noarch.rpm",
+      source: "https://github.com/ubccr/xdmod/releases/download/v10.0.3/xdmod-10.0.3-1.0.#{rpm_release}.noarch.rpm",
       timeout: '0',
       require: ['Yumrepo[epel]'],
     )
