@@ -6,7 +6,7 @@
 <title>
   Defined Type: xdmod::akrr::setting
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -80,6 +80,7 @@
 </div>
 
 
+
 <div class="tags">
   <p class="tag_title">Parameters:</p>
 <ul class="param">
@@ -89,7 +90,7 @@
         <span class='name'>value</span>
       
       
-        <span class='type'>(<tt>Any</tt>)</span>
+        <span class='type'>(<tt>String[1]</tt>)</span>
       
       
       
@@ -105,7 +106,7 @@
         <span class='name'>quote</span>
       
       
-        <span class='type'>(<tt>Any</tt>)</span>
+        <span class='type'>(<tt>Optional[Any]</tt>)</span>
       
       
         <em class="default">(defaults to: <tt>undef</tt>)</em>
@@ -165,15 +166,16 @@
       <td>
         <pre class="code"><span class="info file"># File 'manifests/akrr/setting.pp', line 7</span>
 
-define xdmod::akrr::setting ($value, $quote = undef) {
-
-  include xdmod
-
-  $_config_path = &quot;${::xdmod::_akrr_home}/cfg/akrr.inp.py&quot;
+define xdmod::akrr::setting (
+  String[1] $value,
+  Optional[Any] $quote = undef,
+) {
+  $akrr_home = $xdmod::_akrr_home
+  $_config_path = &quot;${akrr_home}/cfg/akrr.inp.py&quot;
 
   if $quote != undef {
     $_quote = $quote
-  } elsif is_integer($value) {
+  } elsif $value =~ Integer {
     $_quote = false
   } else {
     $_quote = true
@@ -195,7 +197,6 @@ define xdmod::akrr::setting ($value, $quote = undef) {
     notify  =&gt; Exec[&#39;restart akrr&#39;],
     require =&gt; File[&#39;akrr.inp.py&#39;],
   }
-
 }</pre>
       </td>
     </tr>

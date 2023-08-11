@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::config::simplesamlphp
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -82,6 +82,7 @@
 </div>
 
 
+
 <div class="tags">
   
 
@@ -152,15 +153,12 @@
 59
 60
 61
-62
-63
-64</pre>
+62</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/config/simplesamlphp.pp', line 3</span>
 
 class xdmod::config::simplesamlphp {
-
   $dirs = [
     &#39;/etc/xdmod/simplesamlphp&#39;,
     &#39;/etc/xdmod/simplesamlphp/config&#39;,
@@ -169,7 +167,7 @@ class xdmod::config::simplesamlphp {
   ]
 
   if $xdmod::manage_simplesamlphp {
-    $simplesamlphp_cert_organization = pick($xdmod::simplesamlphp_cert_organization, $xdmod::organization_name, $facts[&#39;domain&#39;])
+    $simplesamlphp_cert_organization = pick($xdmod::simplesamlphp_cert_organization, $xdmod::organization_name, $facts[&#39;networking&#39;][&#39;domain&#39;])
     $simplesamlphp_cert_commonname = pick($xdmod::simplesamlphp_cert_commonname, $xdmod::apache_vhost_name)
 
     file { $dirs:
@@ -219,7 +217,6 @@ class xdmod::config::simplesamlphp {
       require      =&gt; File[&#39;/etc/xdmod/simplesamlphp/cert&#39;],
     }
   }
-
 }</pre>
       </td>
     </tr>

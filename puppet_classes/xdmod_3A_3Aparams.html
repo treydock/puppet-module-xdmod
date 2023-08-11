@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::params
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -91,6 +91,7 @@
     
   </div>
 </div>
+
 
 
 <div class="tags">
@@ -455,17 +456,17 @@
         <pre class="code"><span class="info file"># File 'manifests/params.pp', line 3</span>
 
 class xdmod::params {
-
-  $version                  = &#39;10.0.0&#39;
+  $version                  = &#39;10.0.3&#39;
   $xdmod_appkernels_version = &#39;10.0.0&#39;
   $xdmod_supremm_version    = &#39;10.0.0&#39;
-  $sender_email       = &quot;xdmod@xdmod.${facts[&#39;domain&#39;]}&quot;
-  $apache_vhost_name  = &quot;xdmod.${facts[&#39;domain&#39;]}&quot;
+  $xdmod_ondemand_version   = &#39;10.0.0&#39;
+  $sender_email       = &quot;xdmod@xdmod.${facts[&#39;networking&#39;][&#39;domain&#39;]}&quot;
+  $apache_vhost_name  = &quot;xdmod.${facts[&#39;networking&#39;][&#39;domain&#39;]}&quot;
   $portal_settings    = {}
   $hierarchy_levels  = {
-    &#39;top&#39;     =&gt; {&#39;label&#39; =&gt; &#39;Hierarchy Top Level&#39;, &#39;info&#39; =&gt; &#39;&#39;},
-    &#39;middle&#39;  =&gt; {&#39;label&#39; =&gt; &#39;Hierarchy Middle Level&#39;, &#39;info&#39; =&gt; &#39;&#39;},
-    &#39;bottom&#39;  =&gt; {&#39;label&#39; =&gt; &#39;Hierarchy Bottom Level&#39;, &#39;info&#39; =&gt; &#39;&#39;}
+    &#39;top&#39;     =&gt; { &#39;label&#39; =&gt; &#39;Hierarchy Top Level&#39;, &#39;info&#39; =&gt; &#39;&#39; },
+    &#39;middle&#39;  =&gt; { &#39;label&#39; =&gt; &#39;Hierarchy Middle Level&#39;, &#39;info&#39; =&gt; &#39;&#39; },
+    &#39;bottom&#39;  =&gt; { &#39;label&#39; =&gt; &#39;Hierarchy Bottom Level&#39;, &#39;info&#39; =&gt; &#39;&#39; },
   }
   $hierarchies        = []
   $group_to_hierarchy = {}
@@ -476,27 +477,28 @@ class xdmod::params {
   $akrr_source_url          = &#39;https://github.com/ubccr/akrr/releases/download/vAKRR_VERSION/akrr-AKRR_VERSION.tar.gz&#39;
   $supremm_version          = &#39;1.4.1&#39;
 
-  case $::osfamily {
+  case $facts[&#39;os&#39;][&#39;family&#39;] {
     &#39;RedHat&#39;: {
-      case $::operatingsystemmajrelease {
+      case $facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;] {
         &#39;7&#39;: {
           $rpm_release = &#39;el7&#39;
           $supremm_rpm_release = &#39;el7&#39;
           $compute_only = false
           $pcp_package_ensure = undef
+          $package_url = &quot;https://github.com/ubccr/xdmod/releases/download/vVERSION/xdmod-VERSION-1.0.${rpm_release}.noarch.rpm&quot;
         }
         &#39;8&#39;: {
           $rpm_release = &#39;beta1.el8&#39;
           $supremm_rpm_release = &#39;beta1.el8&#39;
           $compute_only = false
           $pcp_package_ensure = undef
+          $package_url = &#39;https://github.com/ubccr/xdmod/releases/download/vVERSION-el8/xdmod-VERSION-1.0.el8.noarch.rpm&#39;
         }
         default: {
-          fail(&quot;Unsupported operatingsystemmajrelease: ${::operatingsystemmajrelease}, module ${module_name} only supports 7 and 8&quot;)
+          fail(&quot;Unsupported operatingsystemmajrelease: ${facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;]}, module ${module_name} only supports 7 and 8&quot;)
         }
       }
       $package_name               = &#39;xdmod&#39;
-      $package_url                = &quot;https://github.com/ubccr/xdmod/releases/download/vVERSION/xdmod-VERSION-1.0.${rpm_release}.noarch.rpm&quot;
       $appkernels_package_name    = &#39;xdmod-appkernels&#39;
       $appkernels_package_url     = &quot;https://github.com/ubccr/xdmod-appkernels/releases/download/vVERSION/xdmod-appkernels-VERSION-1.0.${rpm_release}.noarch.rpm&quot;
       $xdmod_supremm_package_name = &#39;xdmod-supremm&#39;
@@ -506,7 +508,7 @@ class xdmod::params {
     }
 
     default: {
-      fail(&quot;Unsupported osfamily: ${::osfamily}, module ${module_name} only support osfamily RedHat&quot;)
+      fail(&quot;Unsupported osfamily: ${facts[&#39;os&#39;][&#39;family&#39;]}, module ${module_name} only support osfamily RedHat&quot;)
     }
   }
 
@@ -798,7 +800,6 @@ class xdmod::params {
     &#39;nobody&#39;,
     &#39;ganglia&#39;,
   ]
-
 }</pre>
       </td>
     </tr>

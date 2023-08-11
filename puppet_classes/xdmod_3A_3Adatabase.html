@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::database
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -80,6 +80,7 @@
     
   </div>
 </div>
+
 
 
 <div class="tags">
@@ -165,15 +166,12 @@
 72
 73
 74
-75
-76
-77</pre>
+75</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/database.pp', line 3</span>
 
 class xdmod::database {
-
   include mysql::server
 
   Mysql::Db {
@@ -245,7 +243,6 @@ class xdmod::database {
     }
     mysql::db { &#39;modw_jobefficiency&#39;: }
   }
-
 }</pre>
       </td>
     </tr>

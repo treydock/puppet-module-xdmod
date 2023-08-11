@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::install
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -82,6 +82,7 @@
 </div>
 
 
+
 <div class="tags">
   
 
@@ -141,12 +142,54 @@
 48
 49
 50
-51</pre>
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/install.pp', line 3</span>
 
 class xdmod::install {
+  if versioncmp($facts[&#39;os&#39;][&#39;release&#39;][&#39;major&#39;], &#39;8&#39;) == 0 {
+    package { &#39;nodejs-module&#39;:
+      ensure      =&gt; &#39;16&#39;,
+      name        =&gt; &#39;nodejs&#39;,
+      enable_only =&gt; true,
+      provider    =&gt; &#39;dnfmodule&#39;,
+    }
+
+    if $xdmod::local_repo_name {
+      Package[&#39;nodejs-module&#39;] -&gt; Package[&#39;xdmod&#39;]
+    } else {
+      Package[&#39;nodejs-module&#39;] -&gt; Yum::Install[$xdmod::package_name]
+    }
+
+    php::extension { &#39;mongodb&#39;:
+      ensure     =&gt; &#39;installed&#39;,
+      provider   =&gt; &#39;pecl&#39;,
+      ini_prefix =&gt; &#39;40-&#39;,
+      require    =&gt; Package[&#39;php-devel&#39;],
+    }
+  }
 
   if $xdmod::local_repo_name {
     package { &#39;xdmod&#39;:

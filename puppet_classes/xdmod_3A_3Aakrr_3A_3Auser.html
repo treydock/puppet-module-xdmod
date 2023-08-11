@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::akrr::user
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -82,6 +82,7 @@
 </div>
 
 
+
 <div class="tags">
   
 
@@ -132,15 +133,12 @@
 39
 40
 41
-42
-43
-44</pre>
+42</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/akrr/user.pp', line 3</span>
 
 class xdmod::akrr::user {
-
   if $xdmod::manage_akrr_user {
     if $xdmod::akrr_user_managehome {
       $_user_before = Exec[&#39;mk-akrr-home&#39;]
@@ -179,7 +177,6 @@ class xdmod::akrr::user {
       creates =&gt; $xdmod::_akrr_user_home,
     }
   }
-
 }</pre>
       </td>
     </tr>

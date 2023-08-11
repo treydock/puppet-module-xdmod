@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::supremm::database
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -82,6 +82,7 @@
 </div>
 
 
+
 <div class="tags">
   
 
@@ -108,22 +109,19 @@
 15
 16
 17
-18
-19
-20</pre>
+18</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/supremm/database.pp', line 3</span>
 
 class xdmod::supremm::database {
-
   include mongodb::server
   include mongodb::client
 
   if $xdmod::manage_epel {
     include epel
-    Yumrepo[&#39;epel&#39;]-&gt;Package[&#39;mongodb_client&#39;]
-    Yumrepo[&#39;epel&#39;]-&gt;Package[&#39;mongodb_server&#39;]
+    Yumrepo[&#39;epel&#39;] -&gt; Package[&#39;mongodb_client&#39;]
+    Yumrepo[&#39;epel&#39;] -&gt; Package[&#39;mongodb_server&#39;]
   }
 
   mongodb::db { &#39;supremm&#39;:
@@ -131,7 +129,6 @@ class xdmod::supremm::database {
     password =&gt; $xdmod::supremm_mongodb_password,
     roles    =&gt; [&#39;dbAdmin&#39;, &#39;readWrite&#39;],
   }
-
 }</pre>
       </td>
     </tr>

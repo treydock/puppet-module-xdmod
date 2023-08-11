@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -85,6 +85,7 @@
     
   </div>
 </div>
+
 
 
 <div class="tags">
@@ -363,6 +364,24 @@
   
     <li>
       
+        <span class='name'>manage_php</span>
+      
+      
+        <span class='type'>(<tt>Boolean</tt>)</span>
+      
+      
+        <em class="default">(defaults to: <tt>true</tt>)</em>
+      
+      
+        &mdash;
+        <div class='inline'>
+<p>Boolean that sets if PHP should be managed</p>
+</div>
+      
+    </li>
+  
+    <li>
+      
         <span class='name'>package_ensure</span>
       
       
@@ -482,8 +501,7 @@
       
         &mdash;
         <div class='inline'>
-<p>XDMoD appkernels package RPM URL, not used if <code>local_repo_name</code>
-is defined</p>
+<p>XDMoD appkernels package RPM URL, not used if <code>local_repo_name</code> is defined</p>
 </div>
       
     </li>
@@ -519,8 +537,7 @@ is defined</p>
       
         &mdash;
         <div class='inline'>
-<p>XDMoD supremm package RPM URL, not used if <code>local_repo_name</code> is
-defined</p>
+<p>XDMoD supremm package RPM URL, not used if <code>local_repo_name</code> is defined</p>
 </div>
       
     </li>
@@ -880,8 +897,7 @@ defined</p>
       
         &mdash;
         <div class='inline'>
-<p>Hash of portal_settings.ini settings to pass to
-<code>xdmod_portal_setting</code> resources</p>
+<p>Hash of portal_settings.ini settings to pass to <code>xdmod_portal_setting</code> resources</p>
 </div>
       
     </li>
@@ -1151,8 +1167,7 @@ defined</p>
       
         &mdash;
         <div class='inline'>
-<p>The value for <code>domains</code> in <code>cors</code> section of
-portal_settings.ini</p>
+<p>The value for <code>domains</code> in <code>cors</code> section of portal_settings.ini</p>
 </div>
       
     </li>
@@ -1242,8 +1257,7 @@ portal_settings.ini</p>
       
         &mdash;
         <div class='inline'>
-<p>portal_settings.ini section=data_warehouse_export
-setting=retention_duration_days</p>
+<p>portal_settings.ini section=data_warehouse_export setting=retention_duration_days</p>
 </div>
       
     </li>
@@ -1256,7 +1270,7 @@ setting=retention_duration_days</p>
         <span class='type'>(<tt>String</tt>)</span>
       
       
-        <em class="default">(defaults to: <tt>sha256($::fqdn)</tt>)</em>
+        <em class="default">(defaults to: <tt>sha256($facts[&#39;networking&#39;][&#39;fqdn&#39;])</tt>)</em>
       
       
         &mdash;
@@ -1495,8 +1509,7 @@ setting=retention_duration_days</p>
       
         &mdash;
         <div class='inline'>
-<p>The AKRR version. This version is used to build default
-<code>akrr_source_url</code>.</p>
+<p>The AKRR version. This version is used to build default <code>akrr_source_url</code>.</p>
 </div>
       
     </li>
@@ -1820,8 +1833,7 @@ setting=retention_duration_days</p>
       
         &mdash;
         <div class='inline'>
-<p>Version of SUPReMM to install, builds <code>supremm_package_url</code> if
-not defined</p>
+<p>Version of SUPReMM to install, builds <code>supremm_package_url</code> if not defined</p>
 </div>
       
     </li>
@@ -2467,8 +2479,6 @@ not defined</p>
         <pre class="lines">
 
 
-266
-267
 268
 269
 270
@@ -2826,10 +2836,19 @@ not defined</p>
 622
 623
 624
-625</pre>
+625
+626
+627
+628
+629
+630
+631
+632
+633
+634</pre>
       </td>
       <td>
-        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 266</span>
+        <pre class="code"><span class="info file"># File 'manifests/init.pp', line 268</span>
 
 class xdmod (
   String $version                  = $xdmod::params::version,
@@ -2850,18 +2869,19 @@ class xdmod (
   Boolean $enable_ondemand                      = false,
   Optional[String] $local_repo_name             = undef,
   Boolean $manage_epel                          = true,
+  Boolean $manage_php                           = true,
   String $package_ensure                        = &#39;present&#39;,
   String $xdmod_supremm_package_ensure          = &#39;present&#39;,
   String $xdmod_appkernels_package_ensure       = &#39;present&#39;,
   String $package_name                          = $xdmod::params::package_name,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
-    $package_url                                = $xdmod::params::package_url,
+  $package_url                                = $xdmod::params::package_url,
   String $appkernels_package_name               = $xdmod::params::appkernels_package_name,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
-    $appkernels_package_url                     = $xdmod::params::appkernels_package_url,
+  $appkernels_package_url                     = $xdmod::params::appkernels_package_url,
   String $xdmod_supremm_package_name            = $xdmod::params::xdmod_supremm_package_name,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
-    $xdmod_supremm_package_url                  = $xdmod::params::xdmod_supremm_package_url,
+  $xdmod_supremm_package_url                  = $xdmod::params::xdmod_supremm_package_url,
   String $database_host                   = &#39;localhost&#39;,
   Integer $database_port                   = 3306,
   String $database_user                         = &#39;xdmod&#39;,
@@ -2872,7 +2892,7 @@ class xdmod (
   String $akrr_host                       = &#39;localhost&#39;,
   Enum[&#39;slurm&#39;,&#39;torque&#39;,&#39;pbs&#39;,&#39;sge&#39;] $scheduler = &#39;slurm&#39;,
   Optional[Variant[String, Array]]
-    $shredder_command                           = undef,
+  $shredder_command                           = undef,
   Integer[0,23] $shred_hour_start               = 1,
   Integer $shred_minutes                        = 5,
   Optional[Integer[0,23]] $ingest_hour          = undef,
@@ -2892,7 +2912,7 @@ class xdmod (
   Array[Xdmod::Resource] $resources             = [],
   Array[Xdmod::Resource_Spec] $resource_specs   = [],
   String $sender_email                          = $xdmod::params::sender_email,
-  String $debug_recipient                       = &#39;&#39;,
+  String $debug_recipient                       = &#39;&#39;, # lint:ignore:params_empty_string_assignment
   Optional[String] $php_timezone                = undef,
   Optional[String] $center_logo_source          = undef,
   Optional[Integer] $center_logo_width          = undef,
@@ -2907,7 +2927,7 @@ class xdmod (
   # Batch export
   Stdlib::Absolutepath $data_warehouse_export_directory = &#39;/var/spool/xdmod/export&#39;,
   Integer $data_warehouse_export_retention_duration_days = 30,
-  String $data_warehouse_export_hash_salt = sha256($::fqdn),
+  String $data_warehouse_export_hash_salt = sha256($facts[&#39;networking&#39;][&#39;fqdn&#39;]),
   Array[Integer, 2 ,2] $batch_export_cron_times = [0,4],
 
   # simplesamlphp
@@ -2924,7 +2944,7 @@ class xdmod (
 
   # AKRR Install
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
-    $akrr_source_url                    = $xdmod::params::akrr_source_url,
+  $akrr_source_url                    = $xdmod::params::akrr_source_url,
   String $akrr_version                  = $xdmod::params::akrr_version,
   Optional[Stdlib::Unixpath] $akrr_home = undef,
 
@@ -2952,7 +2972,7 @@ class xdmod (
   String $supremm_version         = $xdmod::params::supremm_version,
   String $supremm_package_ensure  = &#39;present&#39;,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
-    $supremm_package_url          = $xdmod::params::supremm_package_url,
+  $supremm_package_url          = $xdmod::params::supremm_package_url,
   String $supremm_package_name    = &#39;supremm&#39;,
 
   # SUPReMM config
@@ -2994,7 +3014,6 @@ class xdmod (
   Boolean $manage_appkernel_cron = true,
   Boolean $manage_storage_cron = true,
 ) inherits xdmod::params {
-
   case $scheduler {
     &#39;slurm&#39;: {
       $scheduler_shredder_command = &#39;/usr/bin/xdmod-slurm-helper --quiet -r RESOURCE&#39;
@@ -3059,14 +3078,22 @@ class xdmod (
 
   if $manage_epel {
     $epel = [Yumrepo[&#39;epel&#39;]]
-    include ::epel
+    include epel
   } else {
     $epel = []
   }
 
+  if $web and $manage_php {
+    class { &#39;php&#39;:
+      fpm      =&gt; false,
+      composer =&gt; false,
+      dev      =&gt; true,
+    }
+  }
+
   if $local_repo_name {
     $_package_require = [Yumrepo[$local_repo_name]] + $epel
-  } else  {
+  } else {
     $_package_require = $epel
   }
 
@@ -3129,7 +3156,7 @@ class xdmod (
     -&gt; Class[&#39;xdmod::akrr::service&#39;]
 
     if $database {
-      Class[&#39;xdmod::database&#39;]-&gt;Class[&#39;xdmod::akrr::user&#39;]
+      Class[&#39;xdmod::database&#39;] -&gt; Class[&#39;xdmod::akrr::user&#39;]
     }
   }
 
@@ -3140,7 +3167,7 @@ class xdmod (
   if $supremm {
     if $web {
       $supremm_mysql_access = &#39;include&#39;
-      Class[&#39;xdmod::supremm::config&#39;]-&gt;Class[&#39;xdmod::config&#39;]
+      Class[&#39;xdmod::supremm::config&#39;] -&gt; Class[&#39;xdmod::config&#39;]
     } else {
       $supremm_mysql_access = &#39;defaultsfile&#39;
     }
@@ -3153,10 +3180,10 @@ class xdmod (
     if $use_pcp {
       case $xdmod::pcp_declare_method {
         &#39;include&#39;: {
-          include ::pcp
+          include pcp
         }
         &#39;resource&#39;: {
-          class { &#39;::pcp&#39;:
+          class { &#39;pcp&#39;:
             ensure =&gt; &#39;stopped&#39;,
           }
         }
@@ -3164,23 +3191,23 @@ class xdmod (
           # Do nothing
         }
       }
-      Class[&#39;::pcp&#39;]
+      Class[&#39;pcp&#39;]
       -&gt; Class[&#39;xdmod::supremm::install&#39;]
     }
 
     if $manage_epel {
-      Yumrepo[&#39;epel&#39;]-&gt;Package[&#39;mongodb_client&#39;]
+      Yumrepo[&#39;epel&#39;] -&gt; Package[&#39;mongodb_client&#39;]
     }
 
     Class[&#39;xdmod::supremm::install&#39;]
     -&gt; Class[&#39;xdmod::supremm::config&#39;]
 
     if $database {
-      Class[&#39;xdmod::database&#39;]-&gt;Class[&#39;xdmod::supremm::config&#39;]
+      Class[&#39;xdmod::database&#39;] -&gt; Class[&#39;xdmod::supremm::config&#39;]
     }
 
     if $supremm_database {
-      Class[&#39;xdmod::supremm::database&#39;]-&gt;Class[&#39;xdmod::supremm::install&#39;]
+      Class[&#39;xdmod::supremm::database&#39;] -&gt; Class[&#39;xdmod::supremm::install&#39;]
     }
   }
 
@@ -3189,7 +3216,6 @@ class xdmod (
       contain xdmod::supremm::compute::pcp
     }
   }
-
 }</pre>
       </td>
     </tr>

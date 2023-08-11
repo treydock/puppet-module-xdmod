@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::supremm::compute::pcp
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -80,6 +80,7 @@
     
   </div>
 </div>
+
 
 
 <div class="tags">
@@ -204,15 +205,12 @@
 111
 112
 113
-114
-115
-116</pre>
+114</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/supremm/compute/pcp.pp', line 3</span>
 
 class xdmod::supremm::compute::pcp {
-
   if $xdmod::pcp_merge_metrics {
     $pcp_static_metrics   = lookup(&#39;xdmod::pcp_static_metrics&#39;, Array, &#39;unique&#39;, $xdmod::pcp_static_metrics)
     $pcp_standard_metrics = lookup(&#39;xdmod::pcp_standard_metrics&#39;, Array, &#39;unique&#39;, $xdmod::pcp_standard_metrics)
@@ -233,10 +231,10 @@ class xdmod::supremm::compute::pcp {
 
   case $xdmod::pcp_declare_method {
     &#39;include&#39;: {
-      include ::pcp
+      include pcp
     }
     &#39;resource&#39;: {
-      class { &#39;::pcp&#39;:
+      class { &#39;pcp&#39;:
         include_default_pmlogger =&gt; false,
         pmlogger_daily_args      =&gt; &#39;-M -k forever&#39;,
         package_ensure           =&gt; $xdmod::params::pcp_package_ensure,
@@ -266,11 +264,11 @@ class xdmod::supremm::compute::pcp {
     group   =&gt; &#39;root&#39;,
     mode    =&gt; &#39;0644&#39;,
     content =&gt; join([
-      &#39;# File managed by Puppet&#39;,
-      &#39;$PMCD_CONNECT_TIMEOUT=150; export PMCD_CONNECT_TIMEOUT&#39;,
-      &#39;$PMCD_REQUEST_TIMEOUT=120; export PMCD_REQUEST_TIMEOUT&#39;,
+        &#39;# File managed by Puppet&#39;,
+        &#39;$PMCD_CONNECT_TIMEOUT=150; export PMCD_CONNECT_TIMEOUT&#39;,
+        &#39;$PMCD_REQUEST_TIMEOUT=120; export PMCD_REQUEST_TIMEOUT&#39;,
     ], &quot;\n&quot;),
-    require =&gt; Class[&#39;::pcp::config&#39;],
+    require =&gt; Class[&#39;pcp::config&#39;],
     notify  =&gt; Service[&#39;pmlogger&#39;],
   }
 
@@ -314,7 +312,7 @@ class xdmod::supremm::compute::pcp {
   }
 
   pcp::pmda { &#39;gpfs&#39;:
-    ensure =&gt; xdmod::member_substring($_all_metrics, &#39;^gpfs&#39;)
+    ensure =&gt; xdmod::member_substring($_all_metrics, &#39;^gpfs&#39;),
   }
 
   pcp::pmda { &#39;proc&#39;:
@@ -323,7 +321,6 @@ class xdmod::supremm::compute::pcp {
     config_content =&gt; template(&#39;xdmod/supremm/compute/pcp/hotproc.conf.erb&#39;),
     args           =&gt; &#39;-A&#39;,
   }
-
 }</pre>
       </td>
     </tr>

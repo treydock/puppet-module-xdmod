@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::user
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -82,6 +82,7 @@
 </div>
 
 
+
 <div class="tags">
   
 
@@ -123,15 +124,12 @@
 30
 31
 32
-33
-34
-35</pre>
+33</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/user.pp', line 3</span>
 
 class xdmod::user {
-
   if $xdmod::manage_user {
     group { &#39;xdmod&#39;:
       ensure     =&gt; &#39;present&#39;,
@@ -161,7 +159,6 @@ class xdmod::user {
       mode   =&gt; &#39;0700&#39;,
     }
   }
-
 }</pre>
       </td>
     </tr>

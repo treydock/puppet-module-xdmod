@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::akrr::service
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -82,6 +82,7 @@
 </div>
 
 
+
 <div class="tags">
   
 
@@ -129,49 +130,47 @@
 36
 37
 38
-39
-40</pre>
+39</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/akrr/service.pp', line 3</span>
 
 class xdmod::akrr::service {
-
-  $_base_cmd  = &quot;runuser -l ${::xdmod::akrr_user} -c&quot;
-  $_start_cmd = &quot;${_base_cmd} &#39;${::xdmod::_akrr_home}/bin/akrr.sh start&#39;&quot;
-  $_stop_cmd  = &quot;${_base_cmd} &#39;${::xdmod::_akrr_home}/bin/akrr.sh stop&#39;&quot;
+  $akrr_home = $xdmod::_akrr_home
+  $_base_cmd  = &quot;runuser -l ${xdmod::akrr_user} -c&quot;
+  $_start_cmd = &quot;${_base_cmd} &#39;${akrr_home}/bin/akrr.sh start&#39;&quot;
+  $_stop_cmd  = &quot;${_base_cmd} &#39;${akrr_home}/bin/akrr.sh stop&#39;&quot;
 
   exec { &#39;start akrr&#39;:
-    cwd     =&gt; $::xdmod::_akrr_home,
+    cwd     =&gt; $akrr_home,
     path    =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
-    user    =&gt; $::xdmod::akrr_user,
-    command =&gt; &quot;${::xdmod::_akrr_home}/bin/akrr.sh start&quot;,
-    unless  =&gt; &quot;pgrep -u ${::xdmod::akrr_user} -f &#39;akrrscheduler.py.*start&#39;&quot;,
+    user    =&gt; $xdmod::akrr_user,
+    command =&gt; &quot;${akrr_home}/bin/akrr.sh start&quot;,
+    unless  =&gt; &quot;pgrep -u ${xdmod::akrr_user} -f &#39;akrrscheduler.py.*start&#39;&quot;,
     returns =&gt; [0,1], # Work around since akrr.sh errors out when executed from Puppet - but service runs fine despite error
   }
 
   exec { &#39;restart akrr&#39;:
-    cwd         =&gt; $::xdmod::_akrr_home,
+    cwd         =&gt; $akrr_home,
     path        =&gt; &#39;/usr/bin:/bin:/usr/sbin:/sbin&#39;,
-    user        =&gt; $::xdmod::akrr_user,
-    command     =&gt; &quot;${::xdmod::_akrr_home}/bin/akrr.sh stop &amp;&amp; ${::xdmod::_akrr_home}/bin/akrr.sh start&quot;,
-    onlyif      =&gt; &quot;pgrep -u ${::xdmod::akrr_user} -f &#39;akrrscheduler.py.*start&#39;&quot;,
+    user        =&gt; $xdmod::akrr_user,
+    command     =&gt; &quot;${akrr_home}/bin/akrr.sh stop &amp;&amp; ${akrr_home}/bin/akrr.sh start&quot;,
+    onlyif      =&gt; &quot;pgrep -u ${xdmod::akrr_user} -f &#39;akrrscheduler.py.*start&#39;&quot;,
     refreshonly =&gt; true,
     returns     =&gt; [0,1], # Work around since akrr.sh errors out when executed from Puppet - but service runs fine despite error
   }
 
 #  service { &#39;akrr&#39;:
 #    ensure     =&gt; &#39;running&#39;,
-    #enable     =&gt; true,
+#    enable     =&gt; true,
 #    hasrestart =&gt; false,
 #    hasstatus  =&gt; false,
 #    start      =&gt; $_start_cmd,
 #    stop       =&gt; $_stop_cmd,
-#    status     =&gt; &quot;pgrep -u ${::xdmod::akrr_user} -f &#39;akrrscheduler.py startd&#39;&quot;,
-    #pattern    =&gt; &#39;akrrscheduler.py start&#39;,
+#    status     =&gt; &quot;pgrep -u ${xdmod::akrr_user} -f &#39;akrrscheduler.py startd&#39;&quot;,
+#    pattern    =&gt; &#39;akrrscheduler.py start&#39;,
 #    provider   =&gt; &#39;base&#39;,
 #  }
-
 }</pre>
       </td>
     </tr>

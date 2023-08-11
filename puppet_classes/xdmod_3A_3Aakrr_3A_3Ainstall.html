@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::akrr::install
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -82,6 +82,7 @@
 </div>
 
 
+
 <div class="tags">
   
 
@@ -118,24 +119,24 @@
         <pre class="code"><span class="info file"># File 'manifests/akrr/install.pp', line 3</span>
 
 class xdmod::akrr::install {
+  $akrr_home = $xdmod::_akrr_home
 
-  file { $::xdmod::_akrr_home:
+  file { $akrr_home:
     ensure =&gt; &#39;directory&#39;,
-    owner  =&gt; $::xdmod::akrr_user,
-    group  =&gt; $::xdmod::akrr_user_group,
+    owner  =&gt; $xdmod::akrr_user,
+    group  =&gt; $xdmod::akrr_user_group,
     mode   =&gt; &#39;0700&#39;,
   }
-  -&gt; archive { &quot;/tmp/akrr-${::xdmod::akrr_version}.tar.gz&quot;:
-    source          =&gt; $::xdmod::_akrr_source_url,
+  -&gt; archive { &quot;/tmp/akrr-${xdmod::akrr_version}.tar.gz&quot;:
+    source          =&gt; $xdmod::_akrr_source_url,
     extract         =&gt; true,
-    extract_path    =&gt; $::xdmod::_akrr_home,
+    extract_path    =&gt; $akrr_home,
     extract_command =&gt; &#39;tar xfz %s --strip-components=1&#39;,
-    creates         =&gt; &quot;${::xdmod::_akrr_home}/setup&quot;,
+    creates         =&gt; &quot;${akrr_home}/setup&quot;,
     cleanup         =&gt; true,
-    user            =&gt; $::xdmod::akrr_user,
-    group           =&gt; $::xdmod::akrr_user_group,
+    user            =&gt; $xdmod::akrr_user,
+    group           =&gt; $xdmod::akrr_user_group,
   }
-
 }</pre>
       </td>
     </tr>

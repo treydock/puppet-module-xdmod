@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::apache
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -82,6 +82,7 @@
 </div>
 
 
+
 <div class="tags">
   
 
@@ -108,30 +109,26 @@
 15
 16
 17
-18
-19
-20</pre>
+18</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/apache.pp', line 3</span>
 
 class xdmod::apache {
-
   if $xdmod::manage_apache_vhost {
-    include ::apache
-    include ::apache::mod::php
-    include ::apache::mod::ssl
-    include ::apache::mod::alias
-    include ::apache::mod::headers
+    include apache
+    include apache::mod::php
+    include apache::mod::ssl
+    include apache::mod::alias
+    include apache::mod::headers
 
     ensure_resource(&#39;apache::listen&#39;, 80)
     ensure_resource(&#39;apache::listen&#39;, 443)
 
-    ::apache::vhost::custom { &#39;xdmod&#39;:
+    apache::vhost::custom { &#39;xdmod&#39;:
       content =&gt; template(&#39;xdmod/xdmod_apache.erb&#39;),
     }
   }
-
 }</pre>
       </td>
     </tr>

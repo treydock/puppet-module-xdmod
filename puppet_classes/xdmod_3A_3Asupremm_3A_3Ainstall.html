@@ -6,7 +6,7 @@
 <title>
   Puppet Class: xdmod::supremm::install
   
-    &mdash; Documentation by YARD 0.9.27
+    &mdash; Documentation by YARD 0.9.34
   
 </title>
 
@@ -82,6 +82,7 @@
 </div>
 
 
+
 <div class="tags">
   
 
@@ -107,15 +108,12 @@
 14
 15
 16
-17
-18
-19</pre>
+17</pre>
       </td>
       <td>
         <pre class="code"><span class="info file"># File 'manifests/supremm/install.pp', line 3</span>
 
 class xdmod::supremm::install {
-
   if $xdmod::local_repo_name {
     package { &#39;supremm&#39;:
       ensure  =&gt; $xdmod::supremm_package_ensure,
@@ -129,7 +127,6 @@ class xdmod::supremm::install {
       require =&gt; $xdmod::_package_require,
     }
   }
-
 }</pre>
       </td>
     </tr>
