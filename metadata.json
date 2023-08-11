@@ -18,7 +18,7 @@
     },
     {
       "name": "puppetlabs/mysql",
-      "version_requirement": ">= 3.1.0 <13.0.0"
+      "version_requirement": ">= 3.1.0 <15.0.0"
     },
     {
       "name": "puppet/mongodb",
@@ -30,39 +30,43 @@
     },
     {
       "name": "puppet/logrotate",
-      "version_requirement": ">= 1.0.0 <7.0.0"
+      "version_requirement": ">= 1.0.0 <8.0.0"
     },
     {
       "name": "puppet/yum",
-      "version_requirement": ">= 1.0.0 <6.0.0"
+      "version_requirement": ">= 1.0.0 <7.0.0"
     },
     {
       "name": "puppet/archive",
-      "version_requirement": ">= 4.0.0 <7.0.0"
+      "version_requirement": ">= 4.0.0 <8.0.0"
     },
     {
       "name": "puppetlabs/apache",
-      "version_requirement": ">= 1.8.0 <8.0.0"
+      "version_requirement": ">= 1.8.0 <11.0.0"
     },
     {
-      "name": "herculesteam/augeasproviders_shellvar",
-      "version_requirement": ">= 2.0.0 <5.0.0"
+      "name": "puppet/augeasproviders_shellvar",
+      "version_requirement": ">= 5.0.0 <7.0.0"
     },
     {
       "name": "saz/sudo",
-      "version_requirement": ">= 3.0.0 <8.0.0"
+      "version_requirement": ">= 3.0.0 <9.0.0"
     },
     {
       "name": "treydock/pcp",
-      "version_requirement": ">= 1.4.0 <3.0.0"
+      "version_requirement": ">= 1.4.0 <4.0.0"
     },
     {
       "name": "puppet/openssl",
       "version_requirement": ">= 1.10.0 <3.0.0"
     },
     {
+      "name": "puppet/php",
+      "version_requirement": ">= 8.0.0 <10.0.0"
+    },
+    {
       "name": "trepasi/geoip",
-      "version_requirement": ">= 3.1.0 <5.0.0"
+      "version_requirement": ">= 3.1.0 <7.0.0"
     }
   ],
   "operatingsystem_support": [
@@ -84,19 +88,25 @@
       "operatingsystemrelease": [
         "8"
       ]
+    },
+    {
+      "operatingsystem": "AlmaLinux",
+      "operatingsystemrelease": [
+        "8"
+      ]
     }
   ],
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 6.0.0 < 8.0.0"
+      "version_requirement": ">= 7.0.0 < 9.0.0"
     }
   ],
   "tags": [
     "xdmod",
     "hpc"
   ],
-  "pdk-version": "2.1.0",
+  "pdk-version": "2.7.1",
   "template-url": "https://github.com/treydock/pdk-templates.git#master",
-  "template-ref": "heads/master-0-g3b13f94"
+  "template-ref": "heads/master-0-g70732db"
 }

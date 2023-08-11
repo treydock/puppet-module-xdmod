@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'xdmod class:' do
-  context 'default parameters' do
+  context 'with default parameters' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       host { 'xdmod.localdomain': ip => '127.0.0.1' }
       if versioncmp($facts['os']['release']['major'], '8') >= 0 {
         $gen_certs = [
@@ -36,7 +38,7 @@ describe 'xdmod class:' do
         php_timezone => 'America/New_York',
         enable_ondemand => true,
       }
-      EOS
+      PP
 
       apply_manifest(pp, catch_failures: true)
       apply_manifest(pp, catch_changes: true)

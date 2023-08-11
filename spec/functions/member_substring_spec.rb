@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'xdmod::member_substring' do
-  context 'array contains substring' do
+  context 'when array contains substring' do
     let(:array) { ['nfsclient.bytes.write.server', 'infiniband.hca.type'] }
 
     it 'returns present' do
@@ -9,7 +11,7 @@ describe 'xdmod::member_substring' do
     end
   end
 
-  context 'array does not contain substring' do
+  context 'when array does not contain substring' do
     let(:array) { ['nfsclient.bytes.write.server', 'nfsclient.bytes.write.server'] }
 
     it 'returns present' do

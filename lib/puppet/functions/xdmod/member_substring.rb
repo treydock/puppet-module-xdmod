@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Function to test member substring
 Puppet::Functions.create_function(:'xdmod::member_substring') do
   # Function to test member substring
@@ -20,6 +22,7 @@ Puppet::Functions.create_function(:'xdmod::member_substring') do
     end
 
     return 'present' if match
+
     'absent'
   end
 end

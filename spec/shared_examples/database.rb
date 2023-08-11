@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'xdmod::database' do |_facts|
   [
     'mod_hpcdb',
@@ -5,9 +7,9 @@ shared_examples_for 'xdmod::database' do |_facts|
     'mod_shredder',
     'moddb',
     'modw',
-    'modw_aggregates',
+    'modw_aggregates'
   ].each do |db|
-    it "should create Mysql::Db[#{db}]" do
+    it "creates Mysql::Db[#{db}]" do
       is_expected.to contain_mysql__db(db).with(ensure: 'present',
                                                 user: 'xdmod',
                                                 password: 'changeme',

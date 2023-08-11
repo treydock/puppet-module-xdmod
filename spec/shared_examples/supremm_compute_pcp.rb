@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'xdmod::supremm::compute::pcp' do |_facts|
   it do
     is_expected.to contain_pcp__pmlogger('supremm').with(ensure: 'present',
@@ -19,7 +21,7 @@ shared_examples_for 'xdmod::supremm::compute::pcp' do |_facts|
     expect(config_content).to include(my_fixture_read('hotproc'))
   end
 
-  context 'pcp_pmlogger_date_path => true' do
+  context 'when pcp_pmlogger_date_path => true' do
     let(:params) { default_params.merge(pcp_pmlogger_path_suffix: '$(date +%Y/%m/%d)') }
 
     it do

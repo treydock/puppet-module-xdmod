@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 shared_examples_for 'xdmod::config::simplesamlphp' do |_facts|
   dirs = [
     '/etc/xdmod/simplesamlphp',
     '/etc/xdmod/simplesamlphp/config',
     '/etc/xdmod/simplesamlphp/metadata',
-    '/etc/xdmod/simplesamlphp/cert',
+    '/etc/xdmod/simplesamlphp/cert'
   ]
 
   dirs.each do |dir|

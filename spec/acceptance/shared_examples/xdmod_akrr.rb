@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 shared_examples_for 'akrr' do |node|
   describe command('/home/akrr/akrr-1.0.0/bin/akrr.sh status'), node: node do
     its(:stdout) { is_expected.to match %r{AKRR Server is up} }

@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance_full'
 
 describe 'xdmod class: web' do
   node = find_only_one(:web)
 
-  context 'web only' do
+  context 'when web only' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       class { 'xdmod':
         web                   => true,
         database              => false,
@@ -27,7 +29,7 @@ describe 'xdmod class: web' do
           'pcp_log_dir' => '/data/pcp-data/example',
         }],
       }
-      EOS
+      PP
 
       apply_manifest_on(node, pp, catch_failures: true)
       apply_manifest_on(node, pp, catch_changes: true)
@@ -36,9 +38,9 @@ describe 'xdmod class: web' do
     it_behaves_like 'xdmod-default', node
   end
 
-  context 'web only - all' do
+  context 'when web only - all' do
     it 'runs successfully' do
-      pp = <<-EOS
+      pp = <<-PP
       class { 'xdmod':
         web                   => true,
         database              => false,
@@ -63,7 +65,7 @@ describe 'xdmod class: web' do
         manage_simplesamlphp => true,
         simplesamlphp_cert_organization => 'example.com',
       }
-      EOS
+      PP
 
       apply_manifest_on(node, pp, catch_failures: true)
       apply_manifest_on(node, pp, catch_changes: true)

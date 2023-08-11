@@ -1,7 +1,6 @@
 # @summary Manage XDMoD compute PCP
 # @api private
 class xdmod::supremm::compute::pcp {
-
   if $xdmod::pcp_merge_metrics {
     $pcp_static_metrics   = lookup('xdmod::pcp_static_metrics', Array, 'unique', $xdmod::pcp_static_metrics)
     $pcp_standard_metrics = lookup('xdmod::pcp_standard_metrics', Array, 'unique', $xdmod::pcp_standard_metrics)
@@ -22,10 +21,10 @@ class xdmod::supremm::compute::pcp {
 
   case $xdmod::pcp_declare_method {
     'include': {
-      include ::pcp
+      include pcp
     }
     'resource': {
-      class { '::pcp':
+      class { 'pcp':
         include_default_pmlogger => false,
         pmlogger_daily_args      => '-M -k forever',
         package_ensure           => $xdmod::params::pcp_package_ensure,
@@ -55,11 +54,11 @@ class xdmod::supremm::compute::pcp {
     group   => 'root',
     mode    => '0644',
     content => join([
-      '# File managed by Puppet',
-      '$PMCD_CONNECT_TIMEOUT=150; export PMCD_CONNECT_TIMEOUT',
-      '$PMCD_REQUEST_TIMEOUT=120; export PMCD_REQUEST_TIMEOUT',
+        '# File managed by Puppet',
+        '$PMCD_CONNECT_TIMEOUT=150; export PMCD_CONNECT_TIMEOUT',
+        '$PMCD_REQUEST_TIMEOUT=120; export PMCD_REQUEST_TIMEOUT',
     ], "\n"),
-    require => Class['::pcp::config'],
+    require => Class['pcp::config'],
     notify  => Service['pmlogger'],
   }
 
@@ -103,7 +102,7 @@ class xdmod::supremm::compute::pcp {
   }
 
   pcp::pmda { 'gpfs':
-    ensure => xdmod::member_substring($_all_metrics, '^gpfs')
+    ensure => xdmod::member_substring($_all_metrics, '^gpfs'),
   }
 
   pcp::pmda { 'proc':
@@ -112,5 +111,4 @@ class xdmod::supremm::compute::pcp {
     config_content => template('xdmod/supremm/compute/pcp/hotproc.conf.erb'),
     args           => '-A',
   }
-
 }

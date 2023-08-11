@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 shared_examples_for 'xdmod::config' do |_facts|
   [
     'logger',
     'database',
     'datawarehouse',
     'shredder',
-    'hpcdb',
+    'hpcdb'
   ].each do |section|
     it do
       is_expected.to contain_xdmod_portal_setting("#{section}/host").with(value: 'localhost',
@@ -12,27 +14,30 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                             'File[/etc/xdmod/hierarchy.csv]',
                                                                             'File[/etc/xdmod/group-to-hierarchy.csv]',
                                                                             'File[/etc/xdmod/names.csv]',
-                                                                            'Exec[acl-config]',
+                                                                            'Exec[acl-config]'
                                                                           ])
     end
+
     it do
       is_expected.to contain_xdmod_portal_setting("#{section}/port").with(value: '3306',
                                                                           before: [
                                                                             'File[/etc/xdmod/hierarchy.csv]',
                                                                             'File[/etc/xdmod/group-to-hierarchy.csv]',
                                                                             'File[/etc/xdmod/names.csv]',
-                                                                            'Exec[acl-config]',
+                                                                            'Exec[acl-config]'
                                                                           ])
     end
+
     it do
       is_expected.to contain_xdmod_portal_setting("#{section}/user").with(value: 'xdmod',
                                                                           before: [
                                                                             'File[/etc/xdmod/hierarchy.csv]',
                                                                             'File[/etc/xdmod/group-to-hierarchy.csv]',
                                                                             'File[/etc/xdmod/names.csv]',
-                                                                            'Exec[acl-config]',
+                                                                            'Exec[acl-config]'
                                                                           ])
     end
+
     it do
       is_expected.to contain_xdmod_portal_setting("#{section}/pass").with(value: 'changeme',
                                                                           secret: 'true',
@@ -40,7 +45,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                             'File[/etc/xdmod/hierarchy.csv]',
                                                                             'File[/etc/xdmod/group-to-hierarchy.csv]',
                                                                             'File[/etc/xdmod/names.csv]',
-                                                                            'Exec[acl-config]',
+                                                                            'Exec[acl-config]'
                                                                           ])
     end
   end
@@ -86,7 +91,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                             '  "middle_level_info": "",',
                             '  "bottom_level_label": "Hierarchy Bottom Level",',
                             '  "bottom_level_info": ""',
-                            '}',
+                            '}'
                           ])
   end
 
@@ -157,7 +162,7 @@ shared_examples_for 'xdmod::config' do |_facts|
     verify_contents(catalogue, '/etc/cron.d/xdmod', [
                       '# Every morning at 3:00 AM -- run the report scheduler',
                       '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
-                      '# Shred and ingest:',
+                      '# Shred and ingest:'
                     ])
   end
 
@@ -209,8 +214,8 @@ shared_examples_for 'xdmod::config' do |_facts|
     let(:params) do
       {
         resources: [
-          { 'resource' => 'example', 'name' => 'Example' },
-        ],
+          { 'resource' => 'example', 'name' => 'Example' }
+        ]
       }
     end
 
@@ -221,7 +226,7 @@ shared_examples_for 'xdmod::config' do |_facts|
         'resource' => 'example',
         'resource_type' => 'HPC',
         'name' => 'Example',
-        'pi_column' => 'account_name',
+        'pi_column' => 'account_name'
       }]
       expect(value).to eq(expected)
     end
@@ -232,7 +237,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                         '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
                         '# Shred and ingest:',
                         '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor',
+                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
                       ])
     end
   end
@@ -242,8 +247,8 @@ shared_examples_for 'xdmod::config' do |_facts|
       {
         resources: [
           { 'resource' => 'example1', 'name' => 'Example1' },
-          { 'resource' => 'example2', 'name' => 'Example2' },
-        ],
+          { 'resource' => 'example2', 'name' => 'Example2' }
+        ]
       }
     end
 
@@ -255,14 +260,14 @@ shared_examples_for 'xdmod::config' do |_facts|
           'resource' => 'example1',
           'resource_type' => 'HPC',
           'name' => 'Example1',
-          'pi_column' => 'account_name',
+          'pi_column' => 'account_name'
         },
         {
           'resource' => 'example2',
           'resource_type' => 'HPC',
           'name' => 'Example2',
-          'pi_column' => 'account_name',
-        },
+          'pi_column' => 'account_name'
+        }
       ]
       expect(value).to eq(expected)
     end
@@ -274,7 +279,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                         '# Shred and ingest:',
                         '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1',
                         '5 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor',
+                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
                       ])
     end
   end
@@ -283,8 +288,8 @@ shared_examples_for 'xdmod::config' do |_facts|
     let(:params) do
       {
         resource_specs: [
-          { 'resource' => 'example', 'processors' => 2, 'nodes' => 1, 'ppn' => 2 },
-        ],
+          { 'resource' => 'example', 'processors' => 2, 'nodes' => 1, 'ppn' => 2 }
+        ]
       }
     end
 
@@ -295,7 +300,7 @@ shared_examples_for 'xdmod::config' do |_facts|
         'resource' => 'example',
         'processors' => 2,
         'nodes' => 1,
-        'ppn' => 2,
+        'ppn' => 2
       ]
       expect(value).to eq(expected)
     end
@@ -304,7 +309,7 @@ shared_examples_for 'xdmod::config' do |_facts|
   context 'when shredder_command defined as String' do
     let(:params) do
       {
-        shredder_command: '/usr/bin/xdmod-slurm-helper --quiet -r example',
+        shredder_command: '/usr/bin/xdmod-slurm-helper --quiet -r example'
       }
     end
 
@@ -314,7 +319,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                         '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
                         '# Shred and ingest:',
                         '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor',
+                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
                       ])
     end
   end
@@ -324,8 +329,8 @@ shared_examples_for 'xdmod::config' do |_facts|
       {
         shredder_command: [
           '/usr/bin/xdmod-slurm-helper --quiet -r example1',
-          '/usr/bin/xdmod-slurm-helper --quiet -r example2',
-        ],
+          '/usr/bin/xdmod-slurm-helper --quiet -r example2'
+        ]
       }
     end
 
@@ -336,7 +341,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                         '# Shred and ingest:',
                         '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1',
                         '5 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor',
+                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
                       ])
     end
   end
@@ -379,7 +384,7 @@ shared_examples_for 'xdmod::config' do |_facts|
     let(:params) do
       {
         enable_supremm: true,
-        supremm_resources: [{ 'resource' => 'example', 'resource_id' => 1, 'pcp_log_dir' => '/dne' }],
+        supremm_resources: [{ 'resource' => 'example', 'resource_id' => 1, 'pcp_log_dir' => '/dne' }]
       }
     end
 
@@ -392,12 +397,12 @@ shared_examples_for 'xdmod::config' do |_facts|
       value = JSON.parse(content)
       expected = {
         'resources' => [
-          'resource'    => 'example',
+          'resource' => 'example',
           'resource_id' => 1,
-          'enabled'     => true,
-          'datasetmap'  => 'pcp',
-          'hardware'    => { 'gpfs' => '' },
-        ],
+          'enabled' => true,
+          'datasetmap' => 'pcp',
+          'hardware' => { 'gpfs' => '' }
+        ]
       }
       expect(value).to eq(expected)
     end
@@ -412,7 +417,7 @@ shared_examples_for 'xdmod::config' do |_facts|
     it do
       expected_onlyif = [
         "mysql -h localhost -u xdmod -pchangeme -BN -e 'SHOW DATABASES' | egrep -q '^modw_etl$'",
-        "mysql -h localhost -u xdmod -pchangeme -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'",
+        "mysql -h localhost -u xdmod -pchangeme -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'"
       ]
       is_expected.to contain_exec('modw_etl-schema').with(command: 'mysql -h localhost -u xdmod -pchangeme -D modw_etl < /usr/share/xdmod/db/schema/modw_etl.sql',
                                                           onlyif: expected_onlyif)
@@ -424,17 +429,17 @@ shared_examples_for 'xdmod::config' do |_facts|
           enable_supremm: true,
           supremm_resources: [
             { 'resource' => 'example', 'resource_id' => 1, 'pcp_log_dir' => '/dne', 'datasetmap_source' => 'puppet:///modules/site/pcp-test.js' },
-            { 'resource' => 'foo', 'resource_id' => 2, 'pcp_log_dir' => '/dne', 'datasetmap_source' => 'puppet:///modules/site/pcp-test.js' },
-          ],
+            { 'resource' => 'foo', 'resource_id' => 2, 'pcp_log_dir' => '/dne', 'datasetmap_source' => 'puppet:///modules/site/pcp-test.js' }
+          ]
         }
       end
 
       it do
         is_expected.to contain_file('/usr/share/xdmod/etl/js/config/supremm/dataset_maps/pcp-test.js').with(
           'ensure' => 'file',
-          'owner'  => 'root',
-          'group'  => 'root',
-          'mode'   => '0644',
+          'owner' => 'root',
+          'group' => 'root',
+          'mode' => '0644',
           'source' => 'puppet:///modules/site/pcp-test.js',
         )
       end
@@ -445,33 +450,33 @@ shared_examples_for 'xdmod::config' do |_facts|
         expected = {
           'resources' => [
             {
-              'resource'    => 'example',
+              'resource' => 'example',
               'resource_id' => 1,
-              'enabled'     => true,
-              'datasetmap'  => 'pcp-test',
-              'hardware'    => { 'gpfs' => '' },
+              'enabled' => true,
+              'datasetmap' => 'pcp-test',
+              'hardware' => { 'gpfs' => '' }
             },
             {
-              'resource'    => 'foo',
+              'resource' => 'foo',
               'resource_id' => 2,
-              'enabled'     => true,
-              'datasetmap'  => 'pcp-test',
-              'hardware'    => { 'gpfs' => '' },
-            },
-          ],
+              'enabled' => true,
+              'datasetmap' => 'pcp-test',
+              'hardware' => { 'gpfs' => '' }
+            }
+          ]
         }
         expect(value).to eq(expected)
       end
     end
   end
 
-  context 'partial hierarchy levels defined' do
+  context 'with partial hierarchy levels defined' do
     let(:params) do
       {
         hierarchy_levels: {
           'top' => { 'label' => 'Top', 'info' => 'Top' },
-          'middle' => { 'label' => 'Middle', 'info' => 'Middle' },
-        },
+          'middle' => { 'label' => 'Middle', 'info' => 'Middle' }
+        }
       }
     end
 
@@ -484,7 +489,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                               '  "middle_level_info": "Middle",',
                               '  "bottom_level_label": "Hierarchy Bottom Level",',
                               '  "bottom_level_info": ""',
-                              '}',
+                              '}'
                             ])
     end
   end
@@ -498,8 +503,8 @@ shared_examples_for 'xdmod::config' do |_facts|
           'div1,Division 1,ou1',
           '"div2","Division 2","ou2"',
           'dept1,Department 1,div1',
-          '"dept2","Department 2","div2"',
-        ],
+          '"dept2","Department 2","div2"'
+        ]
       }
     end
 
@@ -510,7 +515,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                               '"div1","Division 1","ou1"',
                               '"div2","Division 2","ou2"',
                               '"dept1","Department 1","div1"',
-                              '"dept2","Department 2","div2"',
+                              '"dept2","Department 2","div2"'
                             ])
     end
 
@@ -530,13 +535,13 @@ shared_examples_for 'xdmod::config' do |_facts|
             'div1,Division 1,ou1',
             '"div2","Division 2","ou2"',
             'dept1,Department 1,div1',
-            '"dept2","Department 2","div2"',
+            '"dept2","Department 2","div2"'
           ],
           group_to_hierarchy: {
             'group1' => 'dept1',
             'group2' => 'dept1',
-            'group3' => 'dept2',
-          },
+            'group3' => 'dept2'
+          }
         }
       end
 
@@ -550,8 +555,8 @@ shared_examples_for 'xdmod::config' do |_facts|
         group_to_hierarchy: {
           'group1' => 'dept1',
           'group2' => 'dept1',
-          'group3' => 'dept2',
-        },
+          'group3' => 'dept2'
+        }
       }
     end
 
@@ -559,7 +564,7 @@ shared_examples_for 'xdmod::config' do |_facts|
       verify_exact_contents(catalogue, '/etc/xdmod/group-to-hierarchy.csv', [
                               '"group1","dept1"',
                               '"group2","dept1"',
-                              '"group3","dept2"',
+                              '"group3","dept2"'
                             ])
     end
 
@@ -576,15 +581,15 @@ shared_examples_for 'xdmod::config' do |_facts|
       {
         user_pi_names: [
           'jdoe,John,Doe',
-          'mygroup,,"My Group"',
-        ],
+          'mygroup,,"My Group"'
+        ]
       }
     end
 
     it do
       verify_exact_contents(catalogue, '/etc/xdmod/names.csv', [
                               'jdoe,John,Doe',
-                              'mygroup,,"My Group"',
+                              'mygroup,,"My Group"'
                             ])
     end
 
@@ -600,17 +605,18 @@ shared_examples_for 'xdmod::config' do |_facts|
     let(:params) do
       {
         resources: [
-          { resource: 'home', name: 'Home', resource_type: 'Disk', shred_directory: '/shared/quotas/home' },
-        ],
+          { resource: 'home', name: 'Home', resource_type: 'Disk', shred_directory: '/shared/quotas/home' }
+        ]
       }
     end
 
     it { is_expected.to contain_file('/etc/xdmod/roles.d/storage.json').with_ensure('file') }
     it { is_expected.to contain_file('/usr/local/bin/xdmod-storage-ingest.sh').with_ensure('file') }
     it { is_expected.to contain_file('/etc/cron.d/xdmod-storage').with_ensure('file') }
+
     it 'has storage ingest contents' do
       verify_contents(catalogue, '/usr/local/bin/xdmod-storage-ingest.sh', [
-                        '  xdmod-shredder -f storage -r home -d /shared/quotas/home',
+                        '  xdmod-shredder -f storage -r home -d /shared/quotas/home'
                       ])
     end
   end
@@ -619,11 +625,11 @@ shared_examples_for 'xdmod::config' do |_facts|
     let(:params) do
       {
         resources: [
-          { 'resource' => 'ondemand', 'name' => 'OnDemand', 'resource_type' => 'Gateway' },
+          { 'resource' => 'ondemand', 'name' => 'OnDemand', 'resource_type' => 'Gateway' }
         ],
         resource_specs: [
-          { 'resource' => 'example', 'processors' => 2, 'nodes' => 1, 'ppn' => 2 },
-        ],
+          { 'resource' => 'example', 'processors' => 2, 'nodes' => 1, 'ppn' => 2 }
+        ]
       }
     end
 
@@ -633,10 +639,11 @@ shared_examples_for 'xdmod::config' do |_facts|
       expected = [{
         'resource' => 'ondemand',
         'resource_type' => 'Gateway',
-        'name' => 'OnDemand',
+        'name' => 'OnDemand'
       }]
       expect(value).to eq(expected)
     end
+
     it do
       content = catalogue.resource('file', '/etc/xdmod/resource_specs.json').send(:parameters)[:content]
       value = JSON.parse(content)
@@ -644,13 +651,13 @@ shared_examples_for 'xdmod::config' do |_facts|
         'resource' => 'example',
         'processors' => 2,
         'nodes' => 1,
-        'ppn' => 2,
+        'ppn' => 2
       },
                   {
                     'resource' => 'ondemand',
                     'processors' => 1,
                     'nodes' => 1,
-                    'ppn' => 1,
+                    'ppn' => 1
                   }]
       expect(value).to eq(expected)
     end

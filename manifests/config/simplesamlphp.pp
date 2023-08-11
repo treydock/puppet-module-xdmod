@@ -1,7 +1,6 @@
 # @summary Manage XDMoD simplesamlphp
 # @api private
 class xdmod::config::simplesamlphp {
-
   $dirs = [
     '/etc/xdmod/simplesamlphp',
     '/etc/xdmod/simplesamlphp/config',
@@ -10,7 +9,7 @@ class xdmod::config::simplesamlphp {
   ]
 
   if $xdmod::manage_simplesamlphp {
-    $simplesamlphp_cert_organization = pick($xdmod::simplesamlphp_cert_organization, $xdmod::organization_name, $facts['domain'])
+    $simplesamlphp_cert_organization = pick($xdmod::simplesamlphp_cert_organization, $xdmod::organization_name, $facts['networking']['domain'])
     $simplesamlphp_cert_commonname = pick($xdmod::simplesamlphp_cert_commonname, $xdmod::apache_vhost_name)
 
     file { $dirs:
@@ -60,5 +59,4 @@ class xdmod::config::simplesamlphp {
       require      => File['/etc/xdmod/simplesamlphp/cert'],
     }
   }
-
 }

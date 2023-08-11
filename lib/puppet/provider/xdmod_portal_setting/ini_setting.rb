@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 Puppet::Type.type(:xdmod_portal_setting).provide(
   :ini_setting,
   parent: Puppet::Type.type(:ini_setting).provider(:ruby),
 ) do
-
   def section
     resource[:name].split('/', 2).first
   end

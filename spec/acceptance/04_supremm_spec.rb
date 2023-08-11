@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'xdmod class:' do
-  context 'supremm enabled', if: fact('os.release.major') == '7' do
+  context 'with supremm enabled', if: fact('os.release.major') == '7' do
     it 'runs successfully' do
       pp_clean = "class { 'pcp': ensure => 'absent' }"
-      pp = <<-EOS
+      pp = <<-PP
       host { 'xdmod.localdomain': ip => '127.0.0.1' }
       class { 'mysql::server':
         root_password => 'secret',
@@ -32,7 +34,7 @@ describe 'xdmod class:' do
         manage_simplesamlphp => true,
         php_timezone => 'America/New_York',
       }
-      EOS
+      PP
 
       apply_manifest(pp_clean, catch_failures: true)
       apply_manifest(pp, catch_failures: true)

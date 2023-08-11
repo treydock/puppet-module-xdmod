@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe 'xdmod::ondemand' do
   on_supported_os(supported_os: [
                     {
                       'operatingsystem' => 'CentOS',
-                      'operatingsystemrelease' => ['7'],
+                      'operatingsystemrelease' => ['7']
                     },
                     {
                       'operatingsystem' => 'Rocky',
-                      'operatingsystemrelease' => ['8'],
-                    },
+                      'operatingsystemrelease' => ['8']
+                    }
                   ]).each do |os, facts|
     context "on #{os}" do
       let(:facts) { facts }
@@ -26,17 +28,19 @@ describe 'xdmod::ondemand' do
         let(:params) { { geoip_userid: '0001', geoip_licensekey: 'secret-key' } }
 
         it { is_expected.to compile.with_all_deps }
+
         it do
           is_expected.to contain_class('geoip').with(
             config: {
-              'userid'             => '0001',
-              'licensekey'         => 'secret-key',
+              'userid' => '0001',
+              'licensekey' => 'secret-key',
               'database_directory' => '/usr/share/GeoIP',
-              'productids'         => ['GeoLite2-City'],
+              'productids' => ['GeoLite2-City']
             },
             update_timers: ['*-*-* 06:00:00'],
           )
         end
+
         it { is_expected.to contain_file('/etc/GeoIP.conf').with_show_diff('false') }
         it { is_expected.to contain_xdmod_ondemand_setting('ondemand-general/geoip_database').with_value('/usr/share/GeoIP/GeoLite2-City.mmdb') }
       end

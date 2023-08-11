@@ -4,15 +4,16 @@
 #   Setting value
 # @param quote
 #   Should value be quoted
-define xdmod::akrr::setting ($value, $quote = undef) {
-
-  include xdmod
-
-  $_config_path = "${::xdmod::_akrr_home}/cfg/akrr.inp.py"
+define xdmod::akrr::setting (
+  String[1] $value,
+  Optional[Any] $quote = undef,
+) {
+  $akrr_home = $xdmod::_akrr_home
+  $_config_path = "${akrr_home}/cfg/akrr.inp.py"
 
   if $quote != undef {
     $_quote = $quote
-  } elsif is_integer($value) {
+  } elsif $value =~ Integer {
     $_quote = false
   } else {
     $_quote = true
@@ -34,5 +35,4 @@ define xdmod::akrr::setting ($value, $quote = undef) {
     notify  => Exec['restart akrr'],
     require => File['akrr.inp.py'],
   }
-
 }

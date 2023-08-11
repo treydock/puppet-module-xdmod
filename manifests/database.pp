@@ -1,7 +1,6 @@
 # @summary Manage XDMoD databases
 # @api private
 class xdmod::database {
-
   include mysql::server
 
   Mysql::Db {
@@ -73,5 +72,4 @@ class xdmod::database {
     }
     mysql::db { 'modw_jobefficiency': }
   }
-
 }

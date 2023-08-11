@@ -30,6 +30,8 @@
 #   Name of yum repo hosting RPMs
 # @param manage_epel
 #   Boolean that sets if EPEL should be managed
+# @param manage_php
+#   Boolean that sets if PHP should be managed
 # @param package_ensure
 #   XDMoD package ensure property
 # @param xdmod_supremm_package_ensure
@@ -282,18 +284,19 @@ class xdmod (
   Boolean $enable_ondemand                      = false,
   Optional[String] $local_repo_name             = undef,
   Boolean $manage_epel                          = true,
+  Boolean $manage_php                           = true,
   String $package_ensure                        = 'present',
   String $xdmod_supremm_package_ensure          = 'present',
   String $xdmod_appkernels_package_ensure       = 'present',
   String $package_name                          = $xdmod::params::package_name,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
-    $package_url                                = $xdmod::params::package_url,
+  $package_url                                = $xdmod::params::package_url,
   String $appkernels_package_name               = $xdmod::params::appkernels_package_name,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
-    $appkernels_package_url                     = $xdmod::params::appkernels_package_url,
+  $appkernels_package_url                     = $xdmod::params::appkernels_package_url,
   String $xdmod_supremm_package_name            = $xdmod::params::xdmod_supremm_package_name,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
-    $xdmod_supremm_package_url                  = $xdmod::params::xdmod_supremm_package_url,
+  $xdmod_supremm_package_url                  = $xdmod::params::xdmod_supremm_package_url,
   String $database_host                   = 'localhost',
   Integer $database_port                   = 3306,
   String $database_user                         = 'xdmod',
@@ -304,7 +307,7 @@ class xdmod (
   String $akrr_host                       = 'localhost',
   Enum['slurm','torque','pbs','sge'] $scheduler = 'slurm',
   Optional[Variant[String, Array]]
-    $shredder_command                           = undef,
+  $shredder_command                           = undef,
   Integer[0,23] $shred_hour_start               = 1,
   Integer $shred_minutes                        = 5,
   Optional[Integer[0,23]] $ingest_hour          = undef,
@@ -324,7 +327,7 @@ class xdmod (
   Array[Xdmod::Resource] $resources             = [],
   Array[Xdmod::Resource_Spec] $resource_specs   = [],
   String $sender_email                          = $xdmod::params::sender_email,
-  String $debug_recipient                       = '',
+  String $debug_recipient                       = '', # lint:ignore:params_empty_string_assignment
   Optional[String] $php_timezone                = undef,
   Optional[String] $center_logo_source          = undef,
   Optional[Integer] $center_logo_width          = undef,
@@ -339,7 +342,7 @@ class xdmod (
   # Batch export
   Stdlib::Absolutepath $data_warehouse_export_directory = '/var/spool/xdmod/export',
   Integer $data_warehouse_export_retention_duration_days = 30,
-  String $data_warehouse_export_hash_salt = sha256($::fqdn),
+  String $data_warehouse_export_hash_salt = sha256($facts['networking']['fqdn']),
   Array[Integer, 2 ,2] $batch_export_cron_times = [0,4],
 
   # simplesamlphp
@@ -356,7 +359,7 @@ class xdmod (
 
   # AKRR Install
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
-    $akrr_source_url                    = $xdmod::params::akrr_source_url,
+  $akrr_source_url                    = $xdmod::params::akrr_source_url,
   String $akrr_version                  = $xdmod::params::akrr_version,
   Optional[Stdlib::Unixpath] $akrr_home = undef,
 
@@ -384,7 +387,7 @@ class xdmod (
   String $supremm_version         = $xdmod::params::supremm_version,
   String $supremm_package_ensure  = 'present',
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
-    $supremm_package_url          = $xdmod::params::supremm_package_url,
+  $supremm_package_url          = $xdmod::params::supremm_package_url,
   String $supremm_package_name    = 'supremm',
 
   # SUPReMM config
@@ -426,7 +429,6 @@ class xdmod (
   Boolean $manage_appkernel_cron = true,
   Boolean $manage_storage_cron = true,
 ) inherits xdmod::params {
-
   case $scheduler {
     'slurm': {
       $scheduler_shredder_command = '/usr/bin/xdmod-slurm-helper --quiet -r RESOURCE'
@@ -491,14 +493,22 @@ class xdmod (
 
   if $manage_epel {
     $epel = [Yumrepo['epel']]
-    include ::epel
+    include epel
   } else {
     $epel = []
   }
 
+  if $web and $manage_php {
+    class { 'php':
+      fpm      => false,
+      composer => false,
+      dev      => true,
+    }
+  }
+
   if $local_repo_name {
     $_package_require = [Yumrepo[$local_repo_name]] + $epel
-  } else  {
+  } else {
     $_package_require = $epel
   }
 
@@ -561,7 +571,7 @@ class xdmod (
     -> Class['xdmod::akrr::service']
 
     if $database {
-      Class['xdmod::database']->Class['xdmod::akrr::user']
+      Class['xdmod::database'] -> Class['xdmod::akrr::user']
     }
   }
 
@@ -572,7 +582,7 @@ class xdmod (
   if $supremm {
     if $web {
       $supremm_mysql_access = 'include'
-      Class['xdmod::supremm::config']->Class['xdmod::config']
+      Class['xdmod::supremm::config'] -> Class['xdmod::config']
     } else {
       $supremm_mysql_access = 'defaultsfile'
     }
@@ -585,10 +595,10 @@ class xdmod (
     if $use_pcp {
       case $xdmod::pcp_declare_method {
         'include': {
-          include ::pcp
+          include pcp
         }
         'resource': {
-          class { '::pcp':
+          class { 'pcp':
             ensure => 'stopped',
           }
         }
@@ -596,23 +606,23 @@ class xdmod (
           # Do nothing
         }
       }
-      Class['::pcp']
+      Class['pcp']
       -> Class['xdmod::supremm::install']
     }
 
     if $manage_epel {
-      Yumrepo['epel']->Package['mongodb_client']
+      Yumrepo['epel'] -> Package['mongodb_client']
     }
 
     Class['xdmod::supremm::install']
     -> Class['xdmod::supremm::config']
 
     if $database {
-      Class['xdmod::database']->Class['xdmod::supremm::config']
+      Class['xdmod::database'] -> Class['xdmod::supremm::config']
     }
 
     if $supremm_database {
-      Class['xdmod::supremm::database']->Class['xdmod::supremm::install']
+      Class['xdmod::supremm::database'] -> Class['xdmod::supremm::install']
     }
   }
 
@@ -621,5 +631,4 @@ class xdmod (
       contain xdmod::supremm::compute::pcp
     }
   }
-
 }

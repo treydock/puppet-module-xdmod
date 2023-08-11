@@ -197,7 +197,7 @@ A MongoDB host needs to be setup for SUPReMM
 This module has been tested on:
 
 * RedHat/CentOS 7
-* RedHat/Rocky 8
+* RedHat/Rocky/AlmaLinux 8
 
 ## Development
 
