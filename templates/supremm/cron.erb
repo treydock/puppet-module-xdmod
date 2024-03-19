@@ -1,7 +1,13 @@
 # This file is managed by Puppet, do not edit!
+<%- threads = @facts['processors']['count'] - 2 -%>
+<%- threads = 1 if threads <= 0 -%>
 
 # Create job level summaries
+<% if scope['xdmod::supremm_cron_index_archives'] == true -%>
 <%= scope['xdmod::supremm_update_cron_times'][0] %> <%= scope['xdmod::supremm_update_cron_times'][1] %> * * * root /usr/bin/supremm_update 2>&1 | logger -t supremm_update
+<% else -%>
+<%= scope['xdmod::supremm_update_cron_times'][0] %> <%= scope['xdmod::supremm_update_cron_times'][1] %> * * * root /usr/bin/summarize_jobs.py -t <%= threads %> -q 2>&1 | logger -t supremm_update
+<% end -%>
 
 <%- if @ingest_jobscripts -%>
 # Ingest job scripts

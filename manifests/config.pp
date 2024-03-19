@@ -8,6 +8,8 @@ class xdmod::config {
       File['/etc/xdmod/hierarchy.csv'],
       File['/etc/xdmod/group-to-hierarchy.csv'],
       File['/etc/xdmod/names.csv'],
+      Exec['etl-bootstrap'],
+      Exec['etl-bootstrap-supremm'],
       Exec['acl-config'],
     ],
   }
@@ -183,21 +185,6 @@ class xdmod::config {
       mode    => '0644',
       content => to_json_pretty({ 'resources' => $supremm_resources }),
     }
-
-    exec { 'modw_supremm-schema':
-      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-      command => "mysql ${mysql_remote_args} -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql",
-      onlyif  => "mysql -BN ${mysql_remote_args} -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
-      unless  => "mysql -BN ${mysql_remote_args} -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^job_name$'",# lint:ignore:140chars
-    }
-    exec { 'modw_etl-schema':
-      path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-      command => "mysql ${mysql_remote_args} -D modw_etl < /usr/share/xdmod/db/schema/modw_etl.sql",
-      onlyif  => [
-        "mysql ${mysql_remote_args} -BN -e 'SHOW DATABASES' | egrep -q '^modw_etl$'",
-        "mysql ${mysql_remote_args} -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'",# lint:ignore:140chars
-      ],
-    }
   }
 
   if ! empty($xdmod::storage_resources) {
@@ -211,7 +198,7 @@ class xdmod::config {
     group  => 'root',
     mode   => '0644',
     source => $xdmod::storage_roles_source,
-    notify => Exec['acl-refresh'],
+    notify => Exec['acl-config'],
   }
   file { '/usr/local/bin/xdmod-storage-ingest.sh':
     ensure  => $storage_file_ensure,
@@ -229,46 +216,64 @@ class xdmod::config {
       section => 'Date',
       setting => 'date.timezone',
       value   => $xdmod::php_timezone,
-      before  => Exec['etl-bootstrap'],
+      before  => [
+        Exec['etl-bootstrap'],
+        Exec['etl-bootstrap-supremm'],
+      ],
     }
     if $xdmod::manage_apache_vhost {
       Ini_setting['php-timezone'] ~> Service['httpd']
     }
   }
 
-  file { '/root/xdmod-database-setup.sh':
-    ensure    => 'file',
-    owner     => 'root',
-    group     => 'root',
-    mode      => '0700',
-    content   => template('xdmod/xdmod-database-setup.sh.erb'),
-    show_diff => false,
+  # Hack until merged and released:
+  # https://github.com/ubccr/xdmod/pull/1827
+  file_line { 'etl_overseer-db-log':
+    ensure             => 'present',
+    path               => '/usr/share/xdmod/tools/etl/etl_overseer.php',
+    line               => "    'db' => false,",
+    after              => "\s+'emailSubject'.+",
+    append_on_no_match => false,
+    before             => [
+      Exec['etl-bootstrap'],
+      Exec['etl-bootstrap-supremm'],
+    ],
   }
 
-  exec { 'xdmod-database-setup.sh':
-    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => '/root/xdmod-database-setup.sh && touch /etc/xdmod/.database-setup',
-    creates => '/etc/xdmod/.database-setup',
-    require => File['/root/xdmod-database-setup.sh'],
-    before  => Exec['etl-bootstrap'],
-  }
+  # List from /usr/share/xdmod/classes/OpenXdmod/Setup/DatabaseSetup.php
+  # Under 'ETLv2 database bootstrap start'
+  $etl_bootstrap_sections = [
+    'xdb-bootstrap',
+    'jobs-xdw-bootstrap',
+    'xdw-bootstrap-storage',
+    'shredder-bootstrap',
+    'staging-bootstrap',
+    'hpcdb-bootstrap',
+    'acls-xdmod-management',
+    'logger-bootstrap',
+  ]
+  $etl_bootstrap_args = $etl_bootstrap_sections.map |$s| { "-p ${s}" }
 
   exec { 'etl-bootstrap':
-    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => '/usr/share/xdmod/tools/etl/etl_overseer.php -p xdb-bootstrap -p jobs-xdw-bootstrap -p xdw-bootstrap-storage -p shredder-bootstrap -p staging-bootstrap -p hpcdb-bootstrap -v debug && touch /etc/xdmod/.etl-bootstrap', # lint:ignore:140chars
-    creates => '/etc/xdmod/.etl-bootstrap',
+    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command     => "/usr/share/xdmod/tools/etl/etl_overseer.php ${etl_bootstrap_args.join(' ')}",
+    logoutput   => true,
+    refreshonly => true,
+    notify      => Exec['acl-config'],
   }
-  -> exec { 'acl-config':
-    path    => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command => '/usr/bin/acl-config && touch /etc/xdmod/.acl-config',
-    creates => '/etc/xdmod/.acl-config',
+  exec { 'etl-bootstrap-supremm':
+    path        => '/usr/bin:/bin:/usr/sbin:/sbin',
+    command     => '/usr/share/xdmod/tools/etl/etl_overseer.php -p supremm.bootstrap -p jobefficiency.bootstrap',
+    logoutput   => true,
+    refreshonly => true,
+    notify      => Exec['acl-config'],
   }
-  exec { 'acl-refresh':
+  exec { 'acl-config':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
     command     => '/usr/bin/acl-config',
     logoutput   => true,
     refreshonly => true,
-    require     => Exec['acl-config'],
+    require     => Exec['etl-bootstrap'],
   }
 
   if $xdmod::organization_name and $xdmod::organization_abbrev {
@@ -331,7 +336,7 @@ class xdmod::config {
     mode    => '0644',
     content => to_json_pretty($resources),
     notify  => [
-      Exec['acl-refresh'],
+      Exec['acl-config'],
     ],
   }
   file { '/etc/xdmod/resource_specs.json':

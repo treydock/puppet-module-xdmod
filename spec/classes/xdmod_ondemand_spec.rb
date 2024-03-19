@@ -5,15 +5,11 @@ require 'spec_helper'
 describe 'xdmod::ondemand' do
   on_supported_os(supported_os: [
                     {
-                      'operatingsystem' => 'CentOS',
-                      'operatingsystemrelease' => ['7']
-                    },
-                    {
-                      'operatingsystem' => 'Rocky',
-                      'operatingsystemrelease' => ['8']
+                      'operatingsystem' => 'RedHat',
+                      'operatingsystemrelease' => ['7', '8']
                     }
                   ]).each do |os, facts|
-    context "on #{os}" do
+    context "when #{os}" do
       let(:facts) { facts }
 
       it { is_expected.to compile.with_all_deps }

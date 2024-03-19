@@ -2,8 +2,8 @@
 # @api private
 class xdmod::supremm::config {
   $mysql_remote_args = $xdmod::_mysql_remote_args
-  $modw_supremm_sql = '/usr/lib64/python2.7/site-packages/supremm/assets/modw_supremm.sql'
-  $mongo_setup = '/usr/lib64/python2.7/site-packages/supremm/assets/mongo_setup.js'
+  $modw_supremm_sql = '/usr/lib64/python3.6/site-packages/supremm/assets/modw_supremm.sql'
+  $mongo_setup = '/usr/lib64/python3.6/site-packages/supremm/assets/mongo_setup.js'
 
   exec { 'update-modw_supremm':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
@@ -55,7 +55,7 @@ class xdmod::supremm::config {
 
   # Determine if job scripts are to be ingested
   $resources_with_script_dir = $xdmod::supremm_resources.filter |$r| {
-    has_key($r, 'script_dir')
+    $r.dig('batchscript', 'path')
   }
   if empty($resources_with_script_dir) {
     $ingest_jobscripts = false
@@ -70,5 +70,14 @@ class xdmod::supremm::config {
       mode    => '0644',
       content => template('xdmod/supremm/cron.erb'),
     }
+  }
+
+  $prometheus_mapping = deep_merge($xdmod::params::prometheus_mapping, $xdmod::supremm_prometheus_mapping)
+  file { '/etc/supremm/mapping.json':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => to_json_pretty($prometheus_mapping),
   }
 }

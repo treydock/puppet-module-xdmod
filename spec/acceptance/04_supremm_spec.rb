@@ -3,7 +3,7 @@
 require 'spec_helper_acceptance'
 
 describe 'xdmod class:' do
-  context 'with supremm enabled', if: fact('os.release.major') == '7' do
+  context 'with supremm enabled', if: fact('os.release.major') == '8' do
     it 'runs successfully' do
       pp_clean = "class { 'pcp': ensure => 'absent' }"
       pp = <<-PP
@@ -13,7 +13,6 @@ describe 'xdmod class:' do
       }
       class { 'mongodb::globals':
         manage_package_repo => true,
-        version             => '3.4.24',
       }
       class { 'xdmod':
         supremm             => true,
@@ -32,16 +31,14 @@ describe 'xdmod class:' do
           'pcp_log_dir' => '/data/pcp-data/example',
         }],
         manage_simplesamlphp => true,
+        simplesamlphp_cert_organization => 'localdomain',
         php_timezone => 'America/New_York',
       }
       PP
 
       apply_manifest(pp_clean, catch_failures: true)
       apply_manifest(pp, catch_failures: true)
-      # MongoDB password constantly changes on EL6
-      if fact('operatingsystemmajrelease') != '6'
-        apply_manifest(pp, catch_changes: true)
-      end
+      apply_manifest(pp, catch_changes: true)
     end
 
     it_behaves_like 'xdmod-supremm', default

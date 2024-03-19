@@ -27,7 +27,6 @@ class xdmod::supremm::compute::pcp {
       class { 'pcp':
         include_default_pmlogger => false,
         pmlogger_daily_args      => '-M -k forever',
-        package_ensure           => $xdmod::params::pcp_package_ensure,
       }
     }
     default: {
