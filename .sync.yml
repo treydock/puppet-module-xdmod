@@ -37,9 +37,9 @@ spec/acceptance/nodesets/el8.yml:
     - web
 spec/acceptance/nodesets/el9.yml:
   delete: true
-spec/acceptance/nodesets/debian-10.yml:
-  delete: true
 spec/acceptance/nodesets/debian-11.yml:
+  delete: true
+spec/acceptance/nodesets/debian-12.yml:
   delete: true
 spec/acceptance/nodesets/ubuntu-2004.yml:
   delete: true

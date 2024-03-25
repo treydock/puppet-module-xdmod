@@ -200,6 +200,8 @@
 #   The URL to download SUPReMM RPM from
 # @param supremm_package_name
 #   SUPReMM RPM package name
+# @param supremm_cron_index_archives
+#   SUPReMM whether to run indexarchives.py
 # @param supremm_mongodb_password
 #   SUPReMM mongodb password
 # @param supremm_mongodb_host
@@ -210,6 +212,8 @@
 #   SUPReMM mongodb replica set
 # @param supremm_resources
 #   SUPReMM resources
+# @param supremm_prometheus_mapping
+#   SUPReMM Prometheus mapping
 # @param supremm_update_cron_times
 #   The cron times to run supremm_update
 # @param ingest_jobscripts_cron_times
@@ -218,12 +222,6 @@
 #   The cron times to run supremm aggregation
 # @param supremm_archive_out_dir
 #   The path to supremm archive out
-# @param supremm_prometheus_url
-#   Prometheus URL to use with SUPREMM summarization
-# @param supremm_prometheus_step
-#   Prometheus step value for SUPREMM summarization
-# @param supremm_prometheus_rates
-#   Prometheus rate overrides for SUPREMM summarization
 # @param use_pcp
 #   Boolean that PCP should be used for SUPREMM
 # @param pcp_declare_method
@@ -297,7 +295,7 @@ class xdmod (
   String $xdmod_supremm_package_name            = $xdmod::params::xdmod_supremm_package_name,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
   $xdmod_supremm_package_url                  = $xdmod::params::xdmod_supremm_package_url,
-  String $database_host                   = 'localhost',
+  String $database_host                   = '127.0.0.1',
   Integer $database_port                   = 3306,
   String $database_user                         = 'xdmod',
   String $database_password                     = 'changeme',
@@ -396,13 +394,12 @@ class xdmod (
   Optional[String] $supremm_mongodb_uri         = undef,
   Optional[String] $supremm_mongodb_replica_set = undef,
   Array[Xdmod::Supremm_Resource] $supremm_resources = [],
+  Hash $supremm_prometheus_mapping = {},
+  Boolean $supremm_cron_index_archives = true,
   Array[Integer, 2, 2] $supremm_update_cron_times = [0,2],
   Array[Integer, 2, 2] $ingest_jobscripts_cron_times = [0,3],
   Array[Integer, 2, 2] $aggregate_supremm_cron_times = [0,4],
   Stdlib::Absolutepath $supremm_archive_out_dir = '/dev/shm/supremm_test',
-  Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]] $supremm_prometheus_url = undef,
-  Optional[String[1]] $supremm_prometheus_step = undef,
-  Optional[Hash] $supremm_prometheus_rates = undef,
 
   # SUPReMM compute
   Boolean $use_pcp                                = true,
@@ -552,6 +549,7 @@ class xdmod (
     contain xdmod::ondemand
     Class['xdmod::install']
     -> Class['xdmod::ondemand']
+    -> Class['xdmod::config']
     Class['xdmod::ondemand']
     -> Class['xdmod::apache']
   }

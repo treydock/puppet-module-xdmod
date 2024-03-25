@@ -1,10 +1,10 @@
 # @summary XDMoD module defaults
 # @api private
 class xdmod::params {
-  $version                  = '10.0.3'
-  $xdmod_appkernels_version = '10.0.0'
-  $xdmod_supremm_version    = '10.0.0'
-  $xdmod_ondemand_version   = '10.0.0'
+  $version                  = '10.5.0'
+  $xdmod_appkernels_version = '10.5.0'
+  $xdmod_supremm_version    = '10.5.0'
+  $xdmod_ondemand_version   = '10.5.0'
   $sender_email       = "xdmod@xdmod.${facts['networking']['domain']}"
   $apache_vhost_name  = "xdmod.${facts['networking']['domain']}"
   $portal_settings    = {}
@@ -20,36 +20,23 @@ class xdmod::params {
   $akrr_restapi_ro_password = fqdn_rand_string(16, undef, 'ro')
   $akrr_version             = '1.0.0'
   $akrr_source_url          = 'https://github.com/ubccr/akrr/releases/download/vAKRR_VERSION/akrr-AKRR_VERSION.tar.gz'
-  $supremm_version          = '1.4.1'
+  $supremm_version          = '2.0.0'
 
   case $facts['os']['family'] {
     'RedHat': {
-      case $facts['os']['release']['major'] {
-        '7': {
-          $rpm_release = 'el7'
-          $supremm_rpm_release = 'el7'
-          $compute_only = false
-          $pcp_package_ensure = undef
-          $package_url = "https://github.com/ubccr/xdmod/releases/download/vVERSION/xdmod-VERSION-1.0.${rpm_release}.noarch.rpm"
-        }
-        '8': {
-          $rpm_release = 'beta1.el8'
-          $supremm_rpm_release = 'beta1.el8'
-          $compute_only = false
-          $pcp_package_ensure = undef
-          $package_url = 'https://github.com/ubccr/xdmod/releases/download/vVERSION-el8/xdmod-VERSION-1.0.el8.noarch.rpm'
-        }
-        default: {
-          fail("Unsupported operatingsystemmajrelease: ${facts['os']['release']['major']}, module ${module_name} only supports 7 and 8")
-        }
+      if versioncmp($facts['os']['release']['major'], '8') > 0 {
+        $compute_only = true
+      } else {
+        $compute_only = false
       }
       $package_name               = 'xdmod'
+      $package_url                = "https://github.com/ubccr/xdmod/releases/download/vVERSION-1.0/xdmod-VERSION-1.0.el${facts['os']['release']['major']}.noarch.rpm"
       $appkernels_package_name    = 'xdmod-appkernels'
-      $appkernels_package_url     = "https://github.com/ubccr/xdmod-appkernels/releases/download/vVERSION/xdmod-appkernels-VERSION-1.0.${rpm_release}.noarch.rpm"
+      $appkernels_package_url     = "https://github.com/ubccr/xdmod-appkernels/releases/download/vVERSION-1.0/xdmod-appkernels-VERSION-1.0.el${facts['os']['release']['major']}.noarch.rpm"
       $xdmod_supremm_package_name = 'xdmod-supremm'
-      $xdmod_supremm_package_url  = "https://github.com/ubccr/xdmod-supremm/releases/download/vVERSION/xdmod-supremm-VERSION-1.0.${rpm_release}.noarch.rpm"
-      $supremm_package_url        = "https://github.com/ubccr/supremm/releases/download/SUPREMM_VERSION/supremm-SUPREMM_VERSION-1.${supremm_rpm_release}.x86_64.rpm"
-      $ondemand_package_url       = "https://github.com/ubccr/xdmod-ondemand/releases/download/vVERSION/xdmod-ondemand-VERSION-1.0.${rpm_release}.noarch.rpm"
+      $xdmod_supremm_package_url  = "https://github.com/ubccr/xdmod-supremm/releases/download/vVERSION-1.0/xdmod-supremm-VERSION-1.0.el${facts['os']['release']['major']}.noarch.rpm"
+      $supremm_package_url        = "https://github.com/ubccr/supremm/releases/download/SUPREMM_VERSION/supremm-SUPREMM_VERSION-1.el${facts['os']['release']['major']}.x86_64.rpm"
+      $ondemand_package_url       = "https://github.com/ubccr/xdmod-ondemand/releases/download/vVERSION-1.0/xdmod-ondemand-VERSION-1.0.el${facts['os']['release']['major']}.noarch.rpm"
     }
 
     default: {
@@ -345,4 +332,190 @@ class xdmod::params {
     'nobody',
     'ganglia',
   ]
+
+  $prometheus_mapping = {
+    'common' => {
+      'params' => ['host'],
+      'defaults' => { 'environment' => 'prod' },
+    },
+    'metrics' => {
+      'cgroup.memory.usage' => {
+        'name' => 'cgroup_memory_used_bytes',
+        'params' => ['cgroup'],
+        'groupby' => 'cgroup',
+      },
+      'cgroup.memory.limit' => {
+        'name' => 'cgroup_memory_total_bytes',
+        'params' => ['cgroup'],
+        'groupby' => 'cgroup',
+      },
+      'disk.dev.read' => {
+        'name' => 'node_disk_reads_completed_total',
+        'groupby' => 'device',
+      },
+      'disk.dev.read_bytes' => {
+        'name' => 'node_disk_read_bytes_total',
+        'scaling' => '0.0009765625',
+        'groupby' => 'device',
+      },
+      'disk.dev.write' => {
+        'name' => 'node_disk_writes_completed_total',
+        'groupby' => 'device',
+      },
+      'disk.dev.write_bytes' => {
+        'name' => 'node_disk_written_bytes_total',
+        'scaling' => '0.0009765625',
+        'groupby' => 'device',
+      },
+      'infiniband.port.switch.in.bytes' => {
+        'name' => 'node_infiniband_port_data_received_bytes_total',
+        'groupby' => 'port',
+        'out_fmt' => ['{}:{}', 'device', 'port'],
+      },
+      'infiniband.port.switch.in.packets' => {
+        'name' => 'node_infiniband_port_packets_received_total',
+        'groupby' => 'port',
+        'out_fmt' => ['{}:{}', 'device', 'port'],
+      },
+      'infiniband.port.switch.out.bytes' => {
+        'name' => 'node_infiniband_port_data_transmitted_bytes_total',
+        'groupby' => 'port',
+        'out_fmt' => ['{}:{}', 'device', 'port'],
+      },
+      'infiniband.port.switch.out.packets' => {
+        'name' => 'node_infiniband_port_packets_transmitted_total',
+        'groupby' => 'port',
+        'out_fmt' => ['{}:{}', 'device', 'port'],
+      },
+      'ipmi.dcmi.power' => {
+        'name' => 'ipmi_dcmi_power_consumption_watts',
+        'groupby' => 'host',
+      },
+      'kernel.all.load' => {
+        'name' => 'node_load1',
+        'groupby' => 'host',
+      },
+      'kernel.percpu.cpu.user' => {
+        'name' => 'node_cpu_seconds_total',
+        'defaults' => { 'mode'  => 'user' },
+        'scaling' => '1000',
+        'groupby' => 'cpu',
+        'out_fmt' => ['cpu{}', 'cpu'],
+      },
+      'kernel.percpu.cpu.idle' => {
+        'name' => 'node_cpu_seconds_total',
+        'defaults' => { 'mode'  => 'idle' },
+        'scaling' => '1000',
+        'groupby' => 'cpu',
+        'out_fmt' => ['cpu{}', 'cpu'],
+      },
+      'kernel.percpu.cpu.nice' => {
+        'name' => 'node_cpu_seconds_total',
+        'defaults' => { 'mode'  => 'nice' },
+        'scaling' => '1000',
+        'groupby' => 'cpu',
+        'out_fmt' => ['cpu{}', 'cpu'],
+      },
+      'kernel.percpu.cpu.sys' => {
+        'name' => 'node_cpu_seconds_total',
+        'defaults' => { 'mode'  => 'system' },
+        'scaling' => '1000',
+        'groupby' => 'cpu',
+        'out_fmt' => ['cpu{}', 'cpu'],
+      },
+      'kernel.percpu.cpu.wait.total' => {
+        'name' => 'node_cpu_seconds_total',
+        'defaults' => { 'mode'  => 'iowait' },
+        'scaling' => '1000',
+        'groupby' => 'cpu',
+        'out_fmt' => ['cpu{}', 'cpu'],
+      },
+      'kernel.percpu.cpu.irq.hard' => {
+        'name' => 'node_cpu_seconds_total',
+        'defaults' => { 'mode'  => 'irq' },
+        'scaling' => '1000',
+        'groupby' => 'cpu',
+        'out_fmt' => ['cpu{}', 'cpu'],
+      },
+      'kernel.percpu.cpu.irq.soft' => {
+        'name' => 'node_cpu_seconds_total',
+        'defaults' => { 'mode'  => 'softirq' },
+        'scaling' => '1000',
+        'groupby' => 'cpu',
+        'out_fmt' => ['cpu{}', 'cpu'],
+      },
+      'mem.numa.util.filePages' => {
+        'name' => 'node_memory_numa_FilePages',
+        'groupby' => 'node',
+      },
+      'mem.numa.util.slab' => {
+        'name' => 'node_memory_numa_Slab',
+        'groupby' => 'node',
+      },
+      'mem.numa.util.used' => {
+        'name' => 'node_memory_numa_MemUsed',
+        'groupby' => 'node',
+      },
+      'mem.freemem' => {
+        'name' => 'node_memory_MemFree_bytes',
+        'scaling' => '0.0009765625',
+        'groupby' => 'host',
+      },
+      'mem.physmem' => {
+        'name' => 'node_memory_MemTotal_bytes',
+        'scaling' => '0.0009765625',
+        'groupby' => 'host',
+      },
+      'network.interface.in.bytes' => {
+        'name' => 'node_network_receive_bytes_total',
+        'groupby' => 'device',
+      },
+      'network.interface.out.bytes' => {
+        'name' => 'node_network_transmit_bytes_total',
+        'groupby' => 'device',
+      },
+      'network.interface.in.packets' => {
+        'name' => 'node_network_receive_packets_total',
+        'groupby' => 'device',
+      },
+      'network.interface.out.packets' => {
+        'name' => 'node_network_transmit_packets_total',
+        'groupby' => 'device',
+      },
+      'nfsclient.bytes.read.normal' => {
+        'name' => 'node_mountstats_nfs_total_read_bytes_total',
+        'groupby' => 'export',
+      },
+      'nfsclient.bytes.write.normal' => {
+        'name' => 'node_mountstats_nfs_total_write_bytes_total',
+        'groupby' => 'export',
+      },
+      'nvidia.gpuactive' => {
+        'name' => 'DCGM_FI_DEV_GPU_UTIL',
+        'groupby' => 'gpu',
+        'out_fmt' => ['gpu{}', 'gpu'],
+      },
+      'nvidia.memused' => {
+        'name' => 'DCGM_FI_DEV_FB_USED',
+        'groupby' => 'gpu',
+        'out_fmt' => ['gpu{}', 'gpu'],
+      },
+      'nvidia.powerused' => {
+        'name' => 'DCGM_FI_DEV_POWER_USAGE',
+        'scaling' => '1000',
+        'groupby' => 'gpu',
+        'out_fmt' => ['gpu{}', 'gpu'],
+      },
+      'prom:cgroup_cpu_info' => {
+        'name' => 'cgroup_cpu_info',
+        'params' => ['cgroup'],
+        'groupby' => 'cpus',
+      },
+      'prom:cgroup_process_exec_count' => {
+        'name' => 'cgroup_process_exec_count',
+        'params' => ['cgroup'],
+        'groupby' => 'exec',
+      },
+    },
+  }
 }

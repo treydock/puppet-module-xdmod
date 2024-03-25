@@ -62,6 +62,7 @@ class xdmod::ondemand (
       name    => $package_name,
       require => $xdmod::_package_require,
       before  => File['/etc/xdmod/portal_settings.d/ondemand.ini'],
+      notify  => Exec['etl-bootstrap'],
     }
     $package_resource = Package['xdmod-ondemand']
   } else {
@@ -71,6 +72,7 @@ class xdmod::ondemand (
       source  => $_package_url,
       require => $xdmod::_package_require,
       before  => File['/etc/xdmod/portal_settings.d/ondemand.ini'],
+      notify  => Exec['etl-bootstrap'],
     }
     $package_resource = Yum::Install[$package_name]
   }

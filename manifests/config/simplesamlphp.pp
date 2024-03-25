@@ -48,15 +48,35 @@ class xdmod::config::simplesamlphp {
       source  => $xdmod::simplesamlphp_metadata_source,
     }
 
-    openssl::certificate::x509 { 'xdmod':
+    $_key = '/etc/xdmod/simplesamlphp/cert/xdmod.key'
+    $_cert = '/etc/xdmod/simplesamlphp/cert/xdmod.crt'
+    $_cnf = '/etc/xdmod/simplesamlphp/cert/xdmod.cnf'
+    ssl_pkey { $_key:
+      ensure => 'present',
+      size   => 3072,
+    }
+    file { $_key:
+      ensure  => 'file',
+      owner   => 'apache',
+      group   => 'root',
+      mode    => '0400',
+      require => Ssl_pkey[$_key],
+    }
+    openssl::config { $_cnf:
+      ensure       => 'present',
+      owner        => 'root',
+      group        => 'root',
+      commonname   => $simplesamlphp_cert_commonname,
       country      => $xdmod::simplesamlphp_cert_country,
       organization => $simplesamlphp_cert_organization,
-      commonname   => $simplesamlphp_cert_commonname,
-      base_dir     => '/etc/xdmod/simplesamlphp/cert',
-      key_owner    => 'apache',
-      key_mode     => '0400',
-      days         => 3652,
-      require      => File['/etc/xdmod/simplesamlphp/cert'],
+    }
+    exec { 'create-x509-cert':
+      command => "/usr/bin/openssl req -new -x509 -key ${_key} -out ${_cert} -days 3652 -config ${_cnf}",
+      creates => $_cert,
+      require => [
+        File[$_key],
+        Openssl::Config[$_cnf],
+      ],
     }
   }
 }

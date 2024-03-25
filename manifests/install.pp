@@ -16,7 +16,8 @@ class xdmod::install {
     }
 
     php::extension { 'mongodb':
-      ensure     => 'installed',
+      # 1.17+ requires newer PHP than what's default for RHEL8
+      ensure     => '1.16.2',
       provider   => 'pecl',
       ini_prefix => '40-',
       require    => Package['php-devel'],
@@ -28,6 +29,7 @@ class xdmod::install {
       ensure  => $xdmod::package_ensure,
       name    => $xdmod::package_name,
       require => $xdmod::_package_require,
+      notify  => Exec['etl-bootstrap'],
     }
 
     if $xdmod::enable_appkernel {
@@ -43,6 +45,7 @@ class xdmod::install {
         ensure  => $xdmod::xdmod_supremm_package_ensure,
         name    => $xdmod::xdmod_supremm_package_name,
         require => $xdmod::_package_require,
+        notify  => Exec['etl-bootstrap-supremm'],
       }
     }
   } else {
@@ -51,6 +54,7 @@ class xdmod::install {
       source  => $xdmod::_package_url,
       timeout => 0,
       require => $xdmod::_package_require,
+      notify  => Exec['etl-bootstrap'],
     }
     if $xdmod::enable_appkernel {
       yum::install { $xdmod::appkernels_package_name:
@@ -66,6 +70,7 @@ class xdmod::install {
         source  => $xdmod::_xdmod_supremm_package_url,
         timeout => 0,
         require => $xdmod::_package_require,
+        notify  => Exec['etl-bootstrap-supremm'],
       }
     }
   }
