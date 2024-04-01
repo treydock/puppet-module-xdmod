@@ -33,7 +33,7 @@ describe 'xdmod::ondemand' do
               'database_directory' => '/usr/share/GeoIP',
               'productids' => ['GeoLite2-City']
             },
-            update_timers: ['*-*-* 06:00:00'],
+            update_timers: ['*-*-* 00:00:00'],
           )
         end
 

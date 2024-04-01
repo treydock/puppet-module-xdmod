@@ -29,6 +29,7 @@ describe 'xdmod' do
       it_behaves_like 'xdmod::database', facts
       it_behaves_like 'xdmod::config', facts
       it_behaves_like 'xdmod::config::simplesamlphp', facts
+      it_behaves_like 'xdmod::cron', facts
       it_behaves_like 'xdmod::apache', facts
 
       context 'when akrr => true' do
@@ -85,6 +86,7 @@ describe 'xdmod' do
         it_behaves_like 'xdmod::install', facts
         it_behaves_like 'xdmod::config', facts
         it_behaves_like 'xdmod::config::simplesamlphp', facts
+        it_behaves_like 'xdmod::cron', facts
         it_behaves_like 'xdmod::apache', facts
       end
 

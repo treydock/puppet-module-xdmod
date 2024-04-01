@@ -132,8 +132,6 @@
 #   portal_settings.ini section=data_warehouse_export setting=retention_duration_days
 # @param data_warehouse_export_hash_salt
 #   portal_settings.ini section=data_warehouse_export setting=hash_salt
-# @param batch_export_cron_times
-#   cron times to run batch export
 # @param manage_simplesamlphp
 #   Boolean that sets if managing simplesamlphp
 # @param simplesamlphp_config_content
@@ -214,12 +212,6 @@
 #   SUPReMM resources
 # @param supremm_prometheus_mapping
 #   SUPReMM Prometheus mapping
-# @param supremm_update_cron_times
-#   The cron times to run supremm_update
-# @param ingest_jobscripts_cron_times
-#   The cron times to ingest job scripts
-# @param aggregate_supremm_cron_times
-#   The cron times to run supremm aggregation
 # @param supremm_archive_out_dir
 #   The path to supremm archive out
 # @param use_pcp
@@ -250,8 +242,8 @@
 #   Users to exclude from PCP hotproc
 # @param storage_roles_source
 #   The source of storage roles.json
-# @param storage_cron_times
-#   The cron times for storage shred/ingest
+# @param cron_times
+#   The cron times for XDMOD cron jobs
 # @param manage_cron
 #   Manage XDMOD cron files
 # @param manage_supremm_cron
@@ -341,7 +333,6 @@ class xdmod (
   Stdlib::Absolutepath $data_warehouse_export_directory = '/var/spool/xdmod/export',
   Integer $data_warehouse_export_retention_duration_days = 30,
   String $data_warehouse_export_hash_salt = sha256($facts['networking']['fqdn']),
-  Array[Integer, 2 ,2] $batch_export_cron_times = [0,4],
 
   # simplesamlphp
   Boolean $manage_simplesamlphp = false,
@@ -396,9 +387,6 @@ class xdmod (
   Array[Xdmod::Supremm_Resource] $supremm_resources = [],
   Hash $supremm_prometheus_mapping = {},
   Boolean $supremm_cron_index_archives = true,
-  Array[Integer, 2, 2] $supremm_update_cron_times = [0,2],
-  Array[Integer, 2, 2] $ingest_jobscripts_cron_times = [0,3],
-  Array[Integer, 2, 2] $aggregate_supremm_cron_times = [0,4],
   Stdlib::Absolutepath $supremm_archive_out_dir = '/dev/shm/supremm_test',
 
   # SUPReMM compute
@@ -418,8 +406,8 @@ class xdmod (
 
   # Storage
   String $storage_roles_source = 'puppet:///modules/xdmod/roles.d/storage.json',
-  Array[Integer, 2, 2] $storage_cron_times = [0,5],
 
+  Array[Integer, 2, 2] $cron_times = [1, 0],
   Boolean $manage_cron = true,
   Boolean $manage_supremm_cron = true,
   Boolean $manage_akrr_cron = true,
@@ -511,6 +499,22 @@ class xdmod (
 
   $_mysql_remote_args = "-h ${database_host} -u ${database_user} -p${database_password}"
 
+  # Determine if job scripts are to be ingested
+  $resources_with_script_dir = $supremm_resources.filter |$r| {
+    $r.dig('batchscript', 'path')
+  }
+  if empty($resources_with_script_dir) {
+    $ingest_jobscripts = false
+  } else {
+    $ingest_jobscripts = true
+  }
+
+  if ! empty($storage_resources) {
+    $storage_file_ensure = 'file'
+  } else {
+    $storage_file_ensure = 'absent'
+  }
+
   if $xdmod::params::compute_only and ($web or $database or $akrr or $supremm or $supremm_database) {
     fail('This operating system is only supported for compute resources.')
   }
@@ -521,6 +525,7 @@ class xdmod (
     contain xdmod::database
     contain xdmod::config
     contain xdmod::config::simplesamlphp
+    contain xdmod::cron
     include xdmod::apache
 
     Class['xdmod::user']
@@ -528,6 +533,7 @@ class xdmod (
     -> Class['xdmod::database']
     -> Class['xdmod::config']
     -> Class['xdmod::config::simplesamlphp']
+    -> Class['xdmod::cron']
     -> Class['xdmod::apache']
   } elsif $database {
     contain xdmod::database
@@ -536,12 +542,14 @@ class xdmod (
     contain xdmod::install
     contain xdmod::config
     contain xdmod::config::simplesamlphp
+    contain xdmod::cron
     contain xdmod::apache
 
     Class['xdmod::user']
     -> Class['xdmod::install']
     -> Class['xdmod::config']
     -> Class['xdmod::config::simplesamlphp']
+    -> Class['xdmod::cron']
     -> Class['xdmod::apache']
   }
 
@@ -589,6 +597,7 @@ class xdmod (
     include mongodb::client
     contain xdmod::supremm::install
     contain xdmod::supremm::config
+    contain xdmod::cron
 
     if $use_pcp {
       case $xdmod::pcp_declare_method {
@@ -614,6 +623,7 @@ class xdmod (
 
     Class['xdmod::supremm::install']
     -> Class['xdmod::supremm::config']
+    -> Class['xdmod::cron']
 
     if $database {
       Class['xdmod::database'] -> Class['xdmod::supremm::config']

@@ -182,22 +182,6 @@ shared_examples_for 'xdmod::config' do |_facts|
 
   it { is_expected.to contain_file('/etc/xdmod/roles.d/storage.json').with_ensure('absent') }
   it { is_expected.to contain_file('/usr/local/bin/xdmod-storage-ingest.sh').with_ensure('absent') }
-  it { is_expected.to contain_file('/etc/cron.d/xdmod-storage').with_ensure('absent') }
-
-  it do
-    is_expected.to contain_file('/etc/cron.d/xdmod').with(ensure: 'file',
-                                                          owner: 'root',
-                                                          group: 'root',
-                                                          mode: '0644')
-  end
-
-  it do
-    verify_contents(catalogue, '/etc/cron.d/xdmod', [
-                      '# Every morning at 3:00 AM -- run the report scheduler',
-                      '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
-                      '# Shred and ingest:'
-                    ])
-  end
 
   it do
     is_expected.to contain_logrotate__rule('xdmod').with(ensure: 'present',
@@ -263,16 +247,6 @@ shared_examples_for 'xdmod::config' do |_facts|
       }]
       expect(value).to eq(expected)
     end
-
-    it do
-      verify_contents(catalogue, '/etc/cron.d/xdmod', [
-                        '# Every morning at 3:00 AM -- run the report scheduler',
-                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
-                        '# Shred and ingest:',
-                        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
-                      ])
-    end
   end
 
   context 'when multiple resources defined' do
@@ -304,17 +278,6 @@ shared_examples_for 'xdmod::config' do |_facts|
       ]
       expect(value).to eq(expected)
     end
-
-    it do
-      verify_contents(catalogue, '/etc/cron.d/xdmod', [
-                        '# Every morning at 3:00 AM -- run the report scheduler',
-                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
-                        '# Shred and ingest:',
-                        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1',
-                        '5 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
-                      ])
-    end
   end
 
   context 'when resource_specs defined' do
@@ -336,46 +299,6 @@ shared_examples_for 'xdmod::config' do |_facts|
         'ppn' => 2
       ]
       expect(value).to eq(expected)
-    end
-  end
-
-  context 'when shredder_command defined as String' do
-    let(:params) do
-      {
-        shredder_command: '/usr/bin/xdmod-slurm-helper --quiet -r example'
-      }
-    end
-
-    it do
-      verify_contents(catalogue, '/etc/cron.d/xdmod', [
-                        '# Every morning at 3:00 AM -- run the report scheduler',
-                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
-                        '# Shred and ingest:',
-                        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
-                      ])
-    end
-  end
-
-  context 'when shredder_command defined as Array' do
-    let(:params) do
-      {
-        shredder_command: [
-          '/usr/bin/xdmod-slurm-helper --quiet -r example1',
-          '/usr/bin/xdmod-slurm-helper --quiet -r example2'
-        ]
-      }
-    end
-
-    it do
-      verify_contents(catalogue, '/etc/cron.d/xdmod', [
-                        '# Every morning at 3:00 AM -- run the report scheduler',
-                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
-                        '# Shred and ingest:',
-                        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1',
-                        '5 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
-                      ])
     end
   end
 
@@ -629,7 +552,6 @@ shared_examples_for 'xdmod::config' do |_facts|
 
     it { is_expected.to contain_file('/etc/xdmod/roles.d/storage.json').with_ensure('file') }
     it { is_expected.to contain_file('/usr/local/bin/xdmod-storage-ingest.sh').with_ensure('file') }
-    it { is_expected.to contain_file('/etc/cron.d/xdmod-storage').with_ensure('file') }
 
     it 'has storage ingest contents' do
       verify_contents(catalogue, '/usr/local/bin/xdmod-storage-ingest.sh', [

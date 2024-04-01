@@ -1,39 +1,52 @@
 # This file is managed by Puppet, do not edit!
 
-# Every morning at 3:00 AM -- run the report scheduler
-0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager
-
-# Process data warehouse batch export requests.
-<%= scope['xdmod::batch_export_cron_times'][0] %> <%= scope['xdmod::batch_export_cron_times'][1] %> * * * xdmod /usr/lib64/xdmod/batch_export_manager.php -q 2>&1 | logger -t xdmod-batch_export_manager
-
-<% if scope.lookupvar('xdmod::enable_update_check') -%>
-0 1 1 * * xdmod /usr/lib64/xdmod/update_check.php >/dev/null
-<% end -%>
+<% if scope['xdmod::web'] -%>
+/usr/lib64/xdmod/update_check.php >/dev/null
 
 # Shred and ingest:
-<%- shred_hour = scope['xdmod::shred_hour_start'] -%>
-<%- ingest_hour = nil %>
-<%- if scope['xdmod::shredder_command_real'].is_a?(String) -%>
-<%- ingest_hour = 2 %>
-0 <%= shred_hour %> * * * xdmod <%= scope.lookupvar('xdmod::shredder_command_real') %>
-<%- else -%>
-<%- scope['xdmod::shredder_command_real'].each_with_index do |cmd, i| -%>
-<%-
-shred_minute = i * scope['xdmod::shred_minutes']
-if shred_minute >= 60
-  shred_hour = shred_hour + 1
-  shred_minute = 0
-end
--%>
-<%= shred_minute %> <%= shred_hour %> * * * xdmod <%= cmd %>
-<%- end -%>
-<%- ingest_hour = (shred_hour + 1) %>
-<%- end -%>
-<%- if ! ingest_hour.nil? -%>
-0 <%= scope['xdmod::ingest_hour'] || ingest_hour %> * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor
-<%- end -%>
+  <%- if scope['xdmod::shredder_command_real'].is_a?(String) -%>
+<%= scope['xdmod::shredder_command_real'] %>
+  <%- else -%>
+    <%- scope['xdmod::shredder_command_real'].each do |cmd| -%>
+<%= cmd %>
+    <%- end -%>
+  <%- end -%>
+/usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor
+<% end -%>
 
-<%- if scope['xdmod::enable_supremm'] -%>
+<% if scope['xdmod::supremm'] && scope['xdmod::manage_supremm_cron'] -%>
+  <%- threads = @facts['processors']['count'] - 2 -%>
+  <%- threads = 1 if threads <= 0 -%>
+# Create job level summaries
+  <%- if scope['xdmod::supremm_cron_index_archives'] == true -%>
+/usr/bin/supremm_update 2>&1 | logger -t supremm_update
+  <%- else -%>
+/usr/bin/summarize_jobs.py -t <%= threads %> -q 2>&1 | logger -t supremm_update
+  <%- end -%>
+  <%- if scope['xdmod::ingest_jobscripts'] -%>
+# Ingest job scripts
+/usr/bin/ingest_jobscripts.py 2>&1 | logger -t ingest_jobscripts
+  <%- end -%>
+<% end -%>
+
+<% if scope['xdmod::enable_supremm'] && scope['xdmod::manage_supremm_cron'] -%>
 # Ingest job level sumamries into XDMoD and run aggregation
-<%= scope['xdmod::aggregate_supremm_cron_times'][0] %> <%= scope['xdmod::aggregate_supremm_cron_times'][1] %> * * * xdmod /usr/bin/aggregate_supremm.sh 2>&1 | logger -t aggregate_supremm
-<%- end -%>
+/usr/bin/aggregate_supremm.sh 2>&1 | logger -t aggregate_supremm
+<% end -%>
+
+<% if scope['xdmod::storage_file_ensure'] != 'absent' && scope['xdmod::manage_storage_cron'] -%>
+/usr/local/bin/xdmod-storage-ingest.sh 2>&1 | logger -t xdmod-storage-ingest
+<% end -%>
+
+<% if scope['xdmod::enable_ondemand'] && scope['xdmod::ondemand::manage_cron'] -%>
+# Ingest OnDemand data
+/usr/local/bin/xdmod-ondemand-ingest.sh 2>&1 | logger -t xdmod-ondemand-ingest
+<% end -%>
+
+<% if scope['xdmod::web'] -%>
+# run the report scheduler
+/usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager
+
+# Process data warehouse batch export requests.
+/usr/lib64/xdmod/batch_export_manager.php -q 2>&1 | logger -t xdmod-batch_export_manager
+<% end -%>

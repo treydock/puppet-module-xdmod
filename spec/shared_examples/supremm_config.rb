@@ -6,10 +6,6 @@ shared_examples_for 'xdmod::supremm::config' do |_facts|
     expect { JSON.parse(config) }.not_to raise_error
   end
 
-  it 'generates cron entry for summarize jobs' do
-    is_expected.to contain_file('/etc/cron.d/supremm').with_content(%r{0 4 * * * root /usr/bin/supremm_update 2>&1 | logger -t supremm_update})
-  end
-
   context 'with prometheus parameters' do
     let(:params) do
       default_params.merge(
@@ -32,10 +28,6 @@ shared_examples_for 'xdmod::supremm::config' do |_facts|
       config = catalogue.resource('file', '/etc/supremm/config.json').send(:parameters)[:content]
       puts "CONFIG: #{config}"
       expect { JSON.parse(config) }.not_to raise_error
-    end
-
-    it 'generates cron entry for summarize jobs' do
-      is_expected.to contain_file('/etc/cron.d/supremm').with_content(%r{0 4 * * * root /usr/bin/summarize_jobs.py -t 1 -q 2>&1 | logger -t supremm_update})
     end
   end
 end

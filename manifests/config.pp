@@ -187,13 +187,8 @@ class xdmod::config {
     }
   }
 
-  if ! empty($xdmod::storage_resources) {
-    $storage_file_ensure = 'file'
-  } else {
-    $storage_file_ensure = 'absent'
-  }
   file { '/etc/xdmod/roles.d/storage.json':
-    ensure => $storage_file_ensure,
+    ensure => $xdmod::storage_file_ensure,
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
@@ -201,12 +196,11 @@ class xdmod::config {
     notify => Exec['acl-config'],
   }
   file { '/usr/local/bin/xdmod-storage-ingest.sh':
-    ensure  => $storage_file_ensure,
+    ensure  => $xdmod::storage_file_ensure,
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
     content => template('xdmod/storage/ingest.sh.erb'),
-    before  => File['/etc/cron.d/xdmod-storage'],
   }
 
   if $xdmod::php_timezone and $xdmod::web {
@@ -422,25 +416,6 @@ class xdmod::config {
     group   => 'root',
     mode    => '0644',
     content => $user_pi_names_content,
-  }
-
-  if $xdmod::manage_cron {
-    file { '/etc/cron.d/xdmod':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => template('xdmod/xdmod_cron.erb'),
-    }
-  }
-  if $xdmod::manage_storage_cron {
-    file { '/etc/cron.d/xdmod-storage':
-      ensure  => $storage_file_ensure,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => template('xdmod/storage/cron.erb'),
-    }
   }
 
   exec { "mkdir-p ${xdmod::data_warehouse_export_directory}":

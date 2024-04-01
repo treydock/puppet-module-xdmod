@@ -53,25 +53,6 @@ class xdmod::supremm::config {
     show_diff => false,
   }
 
-  # Determine if job scripts are to be ingested
-  $resources_with_script_dir = $xdmod::supremm_resources.filter |$r| {
-    $r.dig('batchscript', 'path')
-  }
-  if empty($resources_with_script_dir) {
-    $ingest_jobscripts = false
-  } else {
-    $ingest_jobscripts = true
-  }
-  if $xdmod::manage_supremm_cron {
-    file { '/etc/cron.d/supremm':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => template('xdmod/supremm/cron.erb'),
-    }
-  }
-
   $prometheus_mapping = deep_merge($xdmod::params::prometheus_mapping, $xdmod::supremm_prometheus_mapping)
   file { '/etc/supremm/mapping.json':
     ensure  => 'file',

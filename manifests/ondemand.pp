@@ -16,10 +16,10 @@
 #   The URL of the XDMOD OnDemand package when not using local repo
 # @param log_format
 #   Log format to use for parsing access logs
-# @param cron_times
-#   The cron times for ondemand shred/ingest
 # @param manage_cron
 #   Manage OnDemand cron files
+# @param update_timer_hour
+#   The hour when to run geoip update timer
 #
 class xdmod::ondemand (
   Optional[String] $geoip_userid = undef,
@@ -29,15 +29,14 @@ class xdmod::ondemand (
   String $package_ensure = 'installed',
   Stdlib::HTTPSUrl $package_url  = $xdmod::params::ondemand_package_url,
   String $log_format = '%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"',
-  Array[Integer, 2, 2] $cron_times = [0,7],
   Boolean $manage_cron = true,
+  String[1] $update_timer_hour = '00'
 ) inherits xdmod::params {
   include xdmod
 
   if $geoip_userid and $geoip_licensekey {
     $geoip_directory = '/usr/share/GeoIP'
     $geoip_database = "${geoip_directory}/GeoLite2-City.mmdb"
-    $update_timer_hour = sprintf('%02d', ($cron_times[1] - 1))
     class { 'geoip':
       config        => {
         'userid'             => $geoip_userid,
@@ -94,14 +93,5 @@ class xdmod::ondemand (
     mode    => '0755',
     content => template('xdmod/ondemand/ingest.sh.erb'),
     before  => File['/etc/cron.d/xdmod-ondemand'],
-  }
-  if $manage_cron {
-    file { '/etc/cron.d/xdmod-ondemand':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => template('xdmod/ondemand/cron.erb'),
-    }
   }
 }
