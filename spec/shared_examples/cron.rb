@@ -14,6 +14,10 @@ shared_examples_for 'xdmod::cron' do |_facts|
     is_expected.to contain_file('/usr/local/bin/xdmod-cron.sh').without_content(%r{supremm})
   end
 
+  it 'does not collect ondemand' do
+    is_expected.to contain_file('/usr/local/bin/xdmod-cron.sh').without_content(%r{xdmod-ondemand-ingest})
+  end
+
   it do
     is_expected.to contain_file('/etc/cron.d/xdmod').with(
       ensure: 'file',
@@ -125,6 +129,18 @@ shared_examples_for 'xdmod::cron' do |_facts|
       it 'generates cron entry for summarize jobs' do
         is_expected.to contain_file('/usr/local/bin/xdmod-cron.sh').with_content(%r{/usr/bin/summarize_jobs.py -t 1 -q 2>&1 | logger -t supremm_update})
       end
+    end
+  end
+
+  context 'when enable_ondemand => true' do
+    let(:params) do
+      {
+        enable_ondemand: true
+      }
+    end
+
+    it 'generates cron entry for ondemand ingest' do
+      is_expected.to contain_file('/usr/local/bin/xdmod-cron.sh').with_content(%r{/usr/local/bin/xdmod-ondemand-ingest.sh 2>&1 | logger -t xdmod-ondemand-ingest})
     end
   end
 end

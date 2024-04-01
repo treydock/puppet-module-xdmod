@@ -525,6 +525,10 @@ class xdmod (
     contain xdmod::database
     contain xdmod::config
     contain xdmod::config::simplesamlphp
+    # Include ondemand before cron so cron can reference ondemand variable
+    if $enable_ondemand {
+      contain xdmod::ondemand
+    }
     contain xdmod::cron
     include xdmod::apache
 
@@ -542,6 +546,10 @@ class xdmod (
     contain xdmod::install
     contain xdmod::config
     contain xdmod::config::simplesamlphp
+    # Include ondemand before cron so cron can reference ondemand variable
+    if $enable_ondemand {
+      contain xdmod::ondemand
+    }
     contain xdmod::cron
     contain xdmod::apache
 
@@ -554,7 +562,6 @@ class xdmod (
   }
 
   if $web and $enable_ondemand {
-    contain xdmod::ondemand
     Class['xdmod::install']
     -> Class['xdmod::ondemand']
     -> Class['xdmod::config']
