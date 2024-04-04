@@ -214,6 +214,8 @@
 #   SUPReMM Prometheus mapping
 # @param supremm_archive_out_dir
 #   The path to supremm archive out
+# @param supremm_cron_summarize_command
+#   The path to summarize command for SUPREMM
 # @param use_pcp
 #   Boolean that PCP should be used for SUPREMM
 # @param pcp_declare_method
@@ -388,6 +390,7 @@ class xdmod (
   Hash $supremm_prometheus_mapping = {},
   Boolean $supremm_cron_index_archives = true,
   Stdlib::Absolutepath $supremm_archive_out_dir = '/dev/shm/supremm_test',
+  Optional[Stdlib::Absolutepath] $supremm_cron_summarize_command = undef,
 
   # SUPReMM compute
   Boolean $use_pcp                                = true,
@@ -513,6 +516,21 @@ class xdmod (
     $storage_file_ensure = 'file'
   } else {
     $storage_file_ensure = 'absent'
+  }
+
+  if $supremm_cron_summarize_command {
+    $cron_summarize_command = $supremm_cron_summarize_command
+  } else {
+    if $supremm_cron_index_archives {
+      $cron_summarize_command = '/usr/bin/supremm_update'
+    } else {
+      if $facts['processors']['count'] > 3 {
+        $threads = $facts['processors']['count'] - 2
+      } else {
+        $threads = 1
+      }
+      $cron_summarize_command = "/usr/bin/summarize_jobs.py -t ${threads} -q"
+    }
   }
 
   if $xdmod::params::compute_only and ($web or $database or $akrr or $supremm or $supremm_database) {
