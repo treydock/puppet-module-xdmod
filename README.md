@@ -9,6 +9,8 @@
 1. [Overview](#overview)
     * [Open XDMoD Compatibility](#open-xdmod-compatibility)
     * [Optional Dependencies](#optional-dependencies)
+    * [Handling upgrades](#handling-upgrades)
+    * [Version 10.x upgrade notes](#version-10x-upgrade-notes)
 2. [Usage - Configuration options](#usage)
 3. [Reference - Parameter and detailed reference to all options](#reference)
 4. [Limitations - OS compatibility, etc.](#limitations)
@@ -46,6 +48,18 @@ The general process with this module for upgrades is the following:
 1. Upgrade all XDMOD packages
 1. Run `xdmod-upgrade`
 1. Run Puppet with a version and changes specific to new XDMOD version
+
+### Version 10.x upgrade notes
+
+The mechanism to handle cron jobs was changed with 10.x of this module so that there is a single cron script that handles all the shreds and ingests.  This change to cron jobs does not apply to appkernel/AKRR.
+
+The single cron job is set using the `xdmod::cron_times` parameter.  The following parameters are removed as related to cron jobs:
+
+* xdmod::batch_export_cron_times
+* xdmod::supremm_update_cron_times
+* xdmod::ingest_jobscripts_cron_times
+* xdmod::aggregate_supremm_cron_times
+* xdmod::storage_cron_times
 
 ## Usage
 
@@ -102,15 +116,9 @@ xdmod::supremm_mongodb_password: 'some-password'
 xdmod::supremm_mongodb_host: 'mongodb.domain'
 xdmod::pcp_resource:
   - example
-xdmod::supremm_update_cron_times:
+xdmod::cron_times:
+  - 1
   - 0
-  - 4
-xdmod::ingest_jobscripts_cron_times:
-  - 0
-  - 5
-xdmod::aggregate_supremm_cron_times:
-  - 0
-  - 7
 # Ensure cron times are after the times scheduled to run app kernels
 xdmod::akrr_ingestor_cron_times:
   - 0
