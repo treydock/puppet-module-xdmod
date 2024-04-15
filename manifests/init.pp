@@ -447,8 +447,8 @@ class xdmod (
     }
   }
 
-  $storage_resources = $resources.filter |$r| { $r['resource_type'] == 'Disk' and $r['shred_directory'] }
-  $ondemand_resources = $resources.filter |$r| { $r['resource_type'] == 'Gateway' and $r['shred_directory'] }
+  $storage_resources = $resources.filter |$r| { $r['resource_type'] == 'Disk' }
+  $ondemand_resources = $resources.filter |$r| { $r['resource_type'] == 'Gateway' }
 
   $shredder_command_default = $resources.map |$r| {
     regsubst($scheduler_shredder_command, 'RESOURCE', $r['resource'], 'G')

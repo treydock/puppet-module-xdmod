@@ -13,6 +13,7 @@ if [ "x${OOD_HOSTNAME}" != "x" -a "x${RESOURCE}" != "x" -a "x${LOG_DIRECTORY}" !
   $BASE_CMD -d $LOG_DIRECTORY -r $RESOURCE -u $OOD_HOSTNAME
 else
 <% scope['xdmod::ondemand_resources'].each do |resource| -%>
+  <%- next if resource['shred_directory'].nil? -%>
   $BASE_CMD -d <%= resource['shred_directory'] %> -r <%= resource['resource'] %> -u <%= resource['hostname'] %>
 <%- end -%>
 fi
