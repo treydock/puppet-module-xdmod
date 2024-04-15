@@ -16,16 +16,16 @@
 
 <% if scope['xdmod::supremm'] && scope['xdmod::manage_supremm_cron'] -%>
 # Create job level summaries
-<%= scope['xdmod::cron_summarize_command'] %> 2>&1 | logger -t supremm_update
+<%= scope['xdmod::cron_summarize_command'] %> 2>&1 | logger -t xdmod-summarize-jobs
   <%- if scope['xdmod::ingest_jobscripts'] -%>
 # Ingest job scripts
-/usr/bin/ingest_jobscripts.py 2>&1 | logger -t ingest_jobscripts
+/usr/bin/ingest_jobscripts.py 2>&1 | logger -t xdmod-ingest-jobscripts
   <%- end -%>
 <% end -%>
 
 <% if scope['xdmod::enable_supremm'] && scope['xdmod::manage_supremm_cron'] -%>
 # Ingest job level sumamries into XDMoD and run aggregation
-/usr/bin/aggregate_supremm.sh 2>&1 | logger -t aggregate_supremm
+/usr/bin/aggregate_supremm.sh 2>&1 | logger -t xdmod-aggregate-supremm
 <% end -%>
 
 <% if scope['xdmod::storage_file_ensure'] != 'absent' && scope['xdmod::manage_storage_cron'] -%>
