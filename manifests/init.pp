@@ -120,6 +120,8 @@
 #   The value for `user_dashboard` in portal_settings.ini
 # @param cors_domains
 #   The value for `domains` in `cors` section of portal_settings.ini
+# @param chromium_path
+#   The value for `chromium_path` in `reporting` section of portal_settings.ini
 # @param manage_user
 #   Boolean that sets if managing XMDoD user
 # @param user_uid
@@ -325,6 +327,7 @@ class xdmod (
   Optional[Integer] $center_logo_width          = undef,
   Enum['on','off'] $user_dashboard              = 'off',
   Array $cors_domains                           = [],
+  Stdlib::Absolutepath $chromium_path           = '/usr/lib64/chromium-browser/headless_shell',
 
   # XDMoD user/group
   Boolean $manage_user = true,

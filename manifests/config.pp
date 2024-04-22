@@ -35,6 +35,8 @@ class xdmod::config {
 
   xdmod_portal_setting { 'cors/domains': value => join($xdmod::cors_domains, ',') }
 
+  xdmod_portal_setting { 'reporting/chromium_path': value => $xdmod::chromium_path }
+
   xdmod_portal_setting { 'logger/host': value => $xdmod::database_host }
   xdmod_portal_setting { 'logger/port': value => $xdmod::database_port }
   xdmod_portal_setting { 'logger/user': value => $xdmod::database_user }
