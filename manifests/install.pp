@@ -15,12 +15,24 @@ class xdmod::install {
       Package['nodejs-module'] -> Yum::Install[$xdmod::package_name]
     }
 
+    $mongodb_dependencies = [
+      'openssl-devel',
+    ]
+    $mongodb_dependencies.each |$p| {
+      package { $p:
+        ensure => 'installed',
+        before => Php::Extension['mongodb'],
+      }
+    }
     php::extension { 'mongodb':
       # 1.17+ requires newer PHP than what's default for RHEL8
       ensure     => $xdmod::php_mongodb_version,
       provider   => 'pecl',
       ini_prefix => '40-',
       require    => Package['php-devel'],
+    }
+    if $xdmod::manage_apache_vhost {
+      Php::Extension['mongodb'] ~> Service['httpd']
     }
   }
 
