@@ -50,6 +50,8 @@
 #   XDMoD supremm package name
 # @param xdmod_supremm_package_url
 #   XDMoD supremm package RPM URL, not used if `local_repo_name` is defined
+# @param php_mongodb_version
+#   The PHP MongoDB version
 # @param database_host
 #   XDMoD database host
 # @param database_port
@@ -291,6 +293,7 @@ class xdmod (
   String $xdmod_supremm_package_name            = $xdmod::params::xdmod_supremm_package_name,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
   $xdmod_supremm_package_url                  = $xdmod::params::xdmod_supremm_package_url,
+  String[1] $php_mongodb_version = '1.16.2',
   String $database_host                   = '127.0.0.1',
   Integer $database_port                   = 3306,
   String $database_user                         = 'xdmod',

@@ -17,7 +17,7 @@ class xdmod::install {
 
     php::extension { 'mongodb':
       # 1.17+ requires newer PHP than what's default for RHEL8
-      ensure     => '1.16.2',
+      ensure     => $xdmod::php_mongodb_version,
       provider   => 'pecl',
       ini_prefix => '40-',
       require    => Package['php-devel'],
