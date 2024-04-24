@@ -9,11 +9,13 @@ shared_examples_for 'xdmod::config' do |_facts|
     'hpcdb'
   ].each do |section|
     it do
-      is_expected.to contain_xdmod_portal_setting("#{section}/host").with(value: 'localhost',
+      is_expected.to contain_xdmod_portal_setting("#{section}/host").with(value: '127.0.0.1',
                                                                           before: [
                                                                             'File[/etc/xdmod/hierarchy.csv]',
                                                                             'File[/etc/xdmod/group-to-hierarchy.csv]',
                                                                             'File[/etc/xdmod/names.csv]',
+                                                                            'Exec[etl-bootstrap]',
+                                                                            'Exec[etl-bootstrap-supremm]',
                                                                             'Exec[acl-config]'
                                                                           ])
     end
@@ -24,6 +26,8 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                             'File[/etc/xdmod/hierarchy.csv]',
                                                                             'File[/etc/xdmod/group-to-hierarchy.csv]',
                                                                             'File[/etc/xdmod/names.csv]',
+                                                                            'Exec[etl-bootstrap]',
+                                                                            'Exec[etl-bootstrap-supremm]',
                                                                             'Exec[acl-config]'
                                                                           ])
     end
@@ -34,6 +38,8 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                             'File[/etc/xdmod/hierarchy.csv]',
                                                                             'File[/etc/xdmod/group-to-hierarchy.csv]',
                                                                             'File[/etc/xdmod/names.csv]',
+                                                                            'Exec[etl-bootstrap]',
+                                                                            'Exec[etl-bootstrap-supremm]',
                                                                             'Exec[acl-config]'
                                                                           ])
     end
@@ -45,6 +51,8 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                             'File[/etc/xdmod/hierarchy.csv]',
                                                                             'File[/etc/xdmod/group-to-hierarchy.csv]',
                                                                             'File[/etc/xdmod/names.csv]',
+                                                                            'Exec[etl-bootstrap]',
+                                                                            'Exec[etl-bootstrap-supremm]',
                                                                             'Exec[acl-config]'
                                                                           ])
     end
@@ -80,6 +88,47 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                   owner: 'root',
                                                                   group: 'root',
                                                                   mode: '0644')
+  end
+
+  it { is_expected.to contain_file_line('etl_overseer-db-log') }
+
+  it do
+    expected_cmd = [
+      '/usr/share/xdmod/tools/etl/etl_overseer.php',
+      '-p supremm.bootstrap', '-p jobefficiency.bootstrap'
+    ]
+    is_expected.to contain_exec('etl-bootstrap-supremm').with(
+      path: '/usr/bin:/bin:/usr/sbin:/sbin',
+      command: expected_cmd.join(' '),
+      logoutput: true,
+      refreshonly: true,
+      notify: 'Exec[acl-config]',
+    )
+  end
+
+  it do
+    expected_cmd = [
+      '/usr/share/xdmod/tools/etl/etl_overseer.php',
+      '-p xdb-bootstrap', '-p jobs-xdw-bootstrap', '-p xdw-bootstrap-storage',
+      '-p shredder-bootstrap', '-p staging-bootstrap', '-p hpcdb-bootstrap',
+      '-p acls-xdmod-management', '-p logger-bootstrap'
+    ]
+    is_expected.to contain_exec('etl-bootstrap').with(
+      path: '/usr/bin:/bin:/usr/sbin:/sbin',
+      command: expected_cmd.join(' '),
+      logoutput: true,
+      refreshonly: true,
+      notify: 'Exec[acl-config]',
+    )
+  end
+
+  it do
+    is_expected.to contain_exec('acl-config').with(
+      path: '/usr/bin:/bin:/usr/sbin:/sbin',
+      command: '/usr/bin/acl-config',
+      logoutput: true,
+      refreshonly: true,
+    )
   end
 
   it do
@@ -133,38 +182,6 @@ shared_examples_for 'xdmod::config' do |_facts|
 
   it { is_expected.to contain_file('/etc/xdmod/roles.d/storage.json').with_ensure('absent') }
   it { is_expected.to contain_file('/usr/local/bin/xdmod-storage-ingest.sh').with_ensure('absent') }
-  it { is_expected.to contain_file('/etc/cron.d/xdmod-storage').with_ensure('absent') }
-
-  it do
-    is_expected.to contain_file('/root/xdmod-database-setup.sh').with(ensure: 'file',
-                                                                      owner: 'root',
-                                                                      group: 'root',
-                                                                      mode: '0700',
-                                                                      show_diff: 'false')
-  end
-
-  # TODO: Test content of /root/xdmod-database-setup.sh
-
-  it do
-    is_expected.to contain_exec('xdmod-database-setup.sh').with(path: '/usr/bin:/bin:/usr/sbin:/sbin',
-                                                                command: '/root/xdmod-database-setup.sh && touch /etc/xdmod/.database-setup',
-                                                                creates: '/etc/xdmod/.database-setup')
-  end
-
-  it do
-    is_expected.to contain_file('/etc/cron.d/xdmod').with(ensure: 'file',
-                                                          owner: 'root',
-                                                          group: 'root',
-                                                          mode: '0644')
-  end
-
-  it do
-    verify_contents(catalogue, '/etc/cron.d/xdmod', [
-                      '# Every morning at 3:00 AM -- run the report scheduler',
-                      '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
-                      '# Shred and ingest:'
-                    ])
-  end
 
   it do
     is_expected.to contain_logrotate__rule('xdmod').with(ensure: 'present',
@@ -230,16 +247,6 @@ shared_examples_for 'xdmod::config' do |_facts|
       }]
       expect(value).to eq(expected)
     end
-
-    it do
-      verify_contents(catalogue, '/etc/cron.d/xdmod', [
-                        '# Every morning at 3:00 AM -- run the report scheduler',
-                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
-                        '# Shred and ingest:',
-                        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
-                      ])
-    end
   end
 
   context 'when multiple resources defined' do
@@ -271,17 +278,6 @@ shared_examples_for 'xdmod::config' do |_facts|
       ]
       expect(value).to eq(expected)
     end
-
-    it do
-      verify_contents(catalogue, '/etc/cron.d/xdmod', [
-                        '# Every morning at 3:00 AM -- run the report scheduler',
-                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
-                        '# Shred and ingest:',
-                        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1',
-                        '5 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
-                      ])
-    end
   end
 
   context 'when resource_specs defined' do
@@ -306,46 +302,6 @@ shared_examples_for 'xdmod::config' do |_facts|
     end
   end
 
-  context 'when shredder_command defined as String' do
-    let(:params) do
-      {
-        shredder_command: '/usr/bin/xdmod-slurm-helper --quiet -r example'
-      }
-    end
-
-    it do
-      verify_contents(catalogue, '/etc/cron.d/xdmod', [
-                        '# Every morning at 3:00 AM -- run the report scheduler',
-                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
-                        '# Shred and ingest:',
-                        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
-                      ])
-    end
-  end
-
-  context 'when shredder_command defined as Array' do
-    let(:params) do
-      {
-        shredder_command: [
-          '/usr/bin/xdmod-slurm-helper --quiet -r example1',
-          '/usr/bin/xdmod-slurm-helper --quiet -r example2'
-        ]
-      }
-    end
-
-    it do
-      verify_contents(catalogue, '/etc/cron.d/xdmod', [
-                        '# Every morning at 3:00 AM -- run the report scheduler',
-                        '0 3 * * * xdmod /usr/bin/php /usr/lib64/xdmod/report_schedule_manager.php 2>&1 | logger -t xdmod-report_schedule_manager',
-                        '# Shred and ingest:',
-                        '0 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example1',
-                        '5 1 * * * xdmod /usr/bin/xdmod-slurm-helper --quiet -r example2',
-                        '0 2 * * * xdmod /usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
-                      ])
-    end
-  end
-
   context 'when enable_appkernel => true' do
     let(:params) { { enable_appkernel: true } }
 
@@ -359,11 +315,11 @@ shared_examples_for 'xdmod::config' do |_facts|
     end
 
     it { is_expected.to contain_xdmod_appkernel_setting('features/appkernels').with_value('on') }
-    it { is_expected.to contain_xdmod_appkernel_setting('appkernel/host').with_value('localhost') }
+    it { is_expected.to contain_xdmod_appkernel_setting('appkernel/host').with_value('127.0.0.1') }
     it { is_expected.to contain_xdmod_appkernel_setting('appkernel/port').with_value('3306') }
     it { is_expected.to contain_xdmod_appkernel_setting('appkernel/user').with_value('akrr') }
     it { is_expected.to contain_xdmod_appkernel_setting('appkernel/pass').with_value('changeme').with_secret('true') }
-    it { is_expected.to contain_xdmod_appkernel_setting('akrr-db/host').with_value('localhost') }
+    it { is_expected.to contain_xdmod_appkernel_setting('akrr-db/host').with_value('127.0.0.1') }
     it { is_expected.to contain_xdmod_appkernel_setting('akrr-db/port').with_value('3306') }
     it { is_expected.to contain_xdmod_appkernel_setting('akrr-db/user').with_value('akrr') }
     it { is_expected.to contain_xdmod_appkernel_setting('akrr-db/pass').with_value('changeme').with_secret('true') }
@@ -405,22 +361,6 @@ shared_examples_for 'xdmod::config' do |_facts|
         ]
       }
       expect(value).to eq(expected)
-    end
-
-    it do
-      expected_unless = "mysql -BN -h localhost -u xdmod -pchangeme -e 'SELECT DISTINCT table_name FROM information_schema.columns WHERE table_schema=\"modw_supremm\"' | egrep -q '^job_name$'"
-      is_expected.to contain_exec('modw_supremm-schema').with(command: 'mysql -h localhost -u xdmod -pchangeme -D modw_supremm < /usr/share/xdmod/db/schema/modw_supremm.sql',
-                                                              onlyif: "mysql -BN -h localhost -u xdmod -pchangeme -e 'SHOW DATABASES' | egrep -q '^modw_supremm$'",
-                                                              unless: expected_unless)
-    end
-
-    it do
-      expected_onlyif = [
-        "mysql -h localhost -u xdmod -pchangeme -BN -e 'SHOW DATABASES' | egrep -q '^modw_etl$'",
-        "mysql -h localhost -u xdmod -pchangeme -BN -e 'SELECT COUNT(DISTINCT table_name) FROM information_schema.columns WHERE table_schema=\"modw_etl\"' | egrep -q '^0$'"
-      ]
-      is_expected.to contain_exec('modw_etl-schema').with(command: 'mysql -h localhost -u xdmod -pchangeme -D modw_etl < /usr/share/xdmod/db/schema/modw_etl.sql',
-                                                          onlyif: expected_onlyif)
     end
 
     context 'with supremm resource using datasetmap_source' do
@@ -612,7 +552,6 @@ shared_examples_for 'xdmod::config' do |_facts|
 
     it { is_expected.to contain_file('/etc/xdmod/roles.d/storage.json').with_ensure('file') }
     it { is_expected.to contain_file('/usr/local/bin/xdmod-storage-ingest.sh').with_ensure('file') }
-    it { is_expected.to contain_file('/etc/cron.d/xdmod-storage').with_ensure('file') }
 
     it 'has storage ingest contents' do
       verify_contents(catalogue, '/usr/local/bin/xdmod-storage-ingest.sh', [

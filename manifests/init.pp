@@ -50,6 +50,8 @@
 #   XDMoD supremm package name
 # @param xdmod_supremm_package_url
 #   XDMoD supremm package RPM URL, not used if `local_repo_name` is defined
+# @param php_mongodb_version
+#   The PHP MongoDB version
 # @param database_host
 #   XDMoD database host
 # @param database_port
@@ -120,6 +122,8 @@
 #   The value for `user_dashboard` in portal_settings.ini
 # @param cors_domains
 #   The value for `domains` in `cors` section of portal_settings.ini
+# @param chromium_path
+#   The value for `chromium_path` in `reporting` section of portal_settings.ini
 # @param manage_user
 #   Boolean that sets if managing XMDoD user
 # @param user_uid
@@ -132,8 +136,6 @@
 #   portal_settings.ini section=data_warehouse_export setting=retention_duration_days
 # @param data_warehouse_export_hash_salt
 #   portal_settings.ini section=data_warehouse_export setting=hash_salt
-# @param batch_export_cron_times
-#   cron times to run batch export
 # @param manage_simplesamlphp
 #   Boolean that sets if managing simplesamlphp
 # @param simplesamlphp_config_content
@@ -200,6 +202,8 @@
 #   The URL to download SUPReMM RPM from
 # @param supremm_package_name
 #   SUPReMM RPM package name
+# @param supremm_cron_index_archives
+#   SUPReMM whether to run indexarchives.py
 # @param supremm_mongodb_password
 #   SUPReMM mongodb password
 # @param supremm_mongodb_host
@@ -210,20 +214,12 @@
 #   SUPReMM mongodb replica set
 # @param supremm_resources
 #   SUPReMM resources
-# @param supremm_update_cron_times
-#   The cron times to run supremm_update
-# @param ingest_jobscripts_cron_times
-#   The cron times to ingest job scripts
-# @param aggregate_supremm_cron_times
-#   The cron times to run supremm aggregation
+# @param supremm_prometheus_mapping
+#   SUPReMM Prometheus mapping
 # @param supremm_archive_out_dir
 #   The path to supremm archive out
-# @param supremm_prometheus_url
-#   Prometheus URL to use with SUPREMM summarization
-# @param supremm_prometheus_step
-#   Prometheus step value for SUPREMM summarization
-# @param supremm_prometheus_rates
-#   Prometheus rate overrides for SUPREMM summarization
+# @param supremm_cron_summarize_command
+#   The path to summarize command for SUPREMM
 # @param use_pcp
 #   Boolean that PCP should be used for SUPREMM
 # @param pcp_declare_method
@@ -252,8 +248,8 @@
 #   Users to exclude from PCP hotproc
 # @param storage_roles_source
 #   The source of storage roles.json
-# @param storage_cron_times
-#   The cron times for storage shred/ingest
+# @param cron_times
+#   The cron times for XDMOD cron jobs
 # @param manage_cron
 #   Manage XDMOD cron files
 # @param manage_supremm_cron
@@ -297,7 +293,8 @@ class xdmod (
   String $xdmod_supremm_package_name            = $xdmod::params::xdmod_supremm_package_name,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
   $xdmod_supremm_package_url                  = $xdmod::params::xdmod_supremm_package_url,
-  String $database_host                   = 'localhost',
+  String[1] $php_mongodb_version = '1.16.2',
+  String $database_host                   = '127.0.0.1',
   Integer $database_port                   = 3306,
   String $database_user                         = 'xdmod',
   String $database_password                     = 'changeme',
@@ -333,6 +330,7 @@ class xdmod (
   Optional[Integer] $center_logo_width          = undef,
   Enum['on','off'] $user_dashboard              = 'off',
   Array $cors_domains                           = [],
+  Stdlib::Absolutepath $chromium_path           = '/usr/lib64/chromium-browser/headless_shell',
 
   # XDMoD user/group
   Boolean $manage_user = true,
@@ -343,7 +341,6 @@ class xdmod (
   Stdlib::Absolutepath $data_warehouse_export_directory = '/var/spool/xdmod/export',
   Integer $data_warehouse_export_retention_duration_days = 30,
   String $data_warehouse_export_hash_salt = sha256($facts['networking']['fqdn']),
-  Array[Integer, 2 ,2] $batch_export_cron_times = [0,4],
 
   # simplesamlphp
   Boolean $manage_simplesamlphp = false,
@@ -396,13 +393,10 @@ class xdmod (
   Optional[String] $supremm_mongodb_uri         = undef,
   Optional[String] $supremm_mongodb_replica_set = undef,
   Array[Xdmod::Supremm_Resource] $supremm_resources = [],
-  Array[Integer, 2, 2] $supremm_update_cron_times = [0,2],
-  Array[Integer, 2, 2] $ingest_jobscripts_cron_times = [0,3],
-  Array[Integer, 2, 2] $aggregate_supremm_cron_times = [0,4],
+  Hash $supremm_prometheus_mapping = {},
+  Boolean $supremm_cron_index_archives = true,
   Stdlib::Absolutepath $supremm_archive_out_dir = '/dev/shm/supremm_test',
-  Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]] $supremm_prometheus_url = undef,
-  Optional[String[1]] $supremm_prometheus_step = undef,
-  Optional[Hash] $supremm_prometheus_rates = undef,
+  Optional[Stdlib::Absolutepath] $supremm_cron_summarize_command = undef,
 
   # SUPReMM compute
   Boolean $use_pcp                                = true,
@@ -421,8 +415,8 @@ class xdmod (
 
   # Storage
   String $storage_roles_source = 'puppet:///modules/xdmod/roles.d/storage.json',
-  Array[Integer, 2, 2] $storage_cron_times = [0,5],
 
+  Array[Integer, 2, 2] $cron_times = [1, 0],
   Boolean $manage_cron = true,
   Boolean $manage_supremm_cron = true,
   Boolean $manage_akrr_cron = true,
@@ -514,6 +508,37 @@ class xdmod (
 
   $_mysql_remote_args = "-h ${database_host} -u ${database_user} -p${database_password}"
 
+  # Determine if job scripts are to be ingested
+  $resources_with_script_dir = $supremm_resources.filter |$r| {
+    $r.dig('batchscript', 'path')
+  }
+  if empty($resources_with_script_dir) {
+    $ingest_jobscripts = false
+  } else {
+    $ingest_jobscripts = true
+  }
+
+  if ! empty($storage_resources) {
+    $storage_file_ensure = 'file'
+  } else {
+    $storage_file_ensure = 'absent'
+  }
+
+  if $supremm_cron_summarize_command {
+    $cron_summarize_command = $supremm_cron_summarize_command
+  } else {
+    if $supremm_cron_index_archives {
+      $cron_summarize_command = '/usr/bin/supremm_update'
+    } else {
+      if $facts['processors']['count'] > 3 {
+        $threads = $facts['processors']['count'] - 2
+      } else {
+        $threads = 1
+      }
+      $cron_summarize_command = "/usr/bin/summarize_jobs.py -t ${threads} -q"
+    }
+  }
+
   if $xdmod::params::compute_only and ($web or $database or $akrr or $supremm or $supremm_database) {
     fail('This operating system is only supported for compute resources.')
   }
@@ -524,6 +549,11 @@ class xdmod (
     contain xdmod::database
     contain xdmod::config
     contain xdmod::config::simplesamlphp
+    # Include ondemand before cron so cron can reference ondemand variable
+    if $enable_ondemand {
+      contain xdmod::ondemand
+    }
+    contain xdmod::cron
     include xdmod::apache
 
     Class['xdmod::user']
@@ -531,6 +561,7 @@ class xdmod (
     -> Class['xdmod::database']
     -> Class['xdmod::config']
     -> Class['xdmod::config::simplesamlphp']
+    -> Class['xdmod::cron']
     -> Class['xdmod::apache']
   } elsif $database {
     contain xdmod::database
@@ -539,19 +570,25 @@ class xdmod (
     contain xdmod::install
     contain xdmod::config
     contain xdmod::config::simplesamlphp
+    # Include ondemand before cron so cron can reference ondemand variable
+    if $enable_ondemand {
+      contain xdmod::ondemand
+    }
+    contain xdmod::cron
     contain xdmod::apache
 
     Class['xdmod::user']
     -> Class['xdmod::install']
     -> Class['xdmod::config']
     -> Class['xdmod::config::simplesamlphp']
+    -> Class['xdmod::cron']
     -> Class['xdmod::apache']
   }
 
   if $web and $enable_ondemand {
-    contain xdmod::ondemand
     Class['xdmod::install']
     -> Class['xdmod::ondemand']
+    -> Class['xdmod::config']
     Class['xdmod::ondemand']
     -> Class['xdmod::apache']
   }
@@ -591,6 +628,7 @@ class xdmod (
     include mongodb::client
     contain xdmod::supremm::install
     contain xdmod::supremm::config
+    contain xdmod::cron
 
     if $use_pcp {
       case $xdmod::pcp_declare_method {
@@ -616,6 +654,7 @@ class xdmod (
 
     Class['xdmod::supremm::install']
     -> Class['xdmod::supremm::config']
+    -> Class['xdmod::cron']
 
     if $database {
       Class['xdmod::database'] -> Class['xdmod::supremm::config']

@@ -17,7 +17,7 @@ ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
 minor_version = ruby_version_segments[0..1].join('.')
 
 group :development do
-  gem "voxpupuli-test", '5.4.1',    require: false
+  gem "voxpupuli-test", '7.0.0',    require: false
   gem "faraday", '~> 1.0',          require: false
   gem "github_changelog_generator", require: false
   gem "puppet-blacksmith",          require: false
@@ -29,8 +29,8 @@ group :system_tests do
   gem "beaker-pe",                                                               require: false
   gem "beaker-hostgenerator"
   gem "beaker-rspec"
-  gem "beaker-docker"
-  gem "beaker-puppet"
+  gem "beaker-docker",               git: 'https://github.com/treydock/beaker-docker.git', branch: 'amazon-2023'
+  gem "beaker-puppet",               git: 'https://github.com/puppetlabs/beaker-puppet.git', ref: '6063d22b6c4449df795731f5853c3c75241240c4'
   gem "beaker-puppet_install_helper",                                            require: false
   gem "beaker-module_install_helper",                                            require: false
 end

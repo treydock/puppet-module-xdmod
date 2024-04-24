@@ -35,6 +35,7 @@ describe 'xdmod class:' do
           'name' => 'Example',
         }],
         manage_simplesamlphp => true,
+        simplesamlphp_cert_organization => 'localdomain',
         php_timezone => 'America/New_York',
         enable_ondemand => true,
       }

@@ -2,8 +2,8 @@
 # @api private
 class xdmod::supremm::config {
   $mysql_remote_args = $xdmod::_mysql_remote_args
-  $modw_supremm_sql = '/usr/lib64/python2.7/site-packages/supremm/assets/modw_supremm.sql'
-  $mongo_setup = '/usr/lib64/python2.7/site-packages/supremm/assets/mongo_setup.js'
+  $modw_supremm_sql = '/usr/lib64/python3.6/site-packages/supremm/assets/modw_supremm.sql'
+  $mongo_setup = '/usr/lib64/python3.6/site-packages/supremm/assets/mongo_setup.js'
 
   exec { 'update-modw_supremm':
     path    => '/usr/bin:/bin:/usr/sbin:/sbin',
@@ -43,32 +43,30 @@ class xdmod::supremm::config {
     content   => template('xdmod/supremm/supremm.my.cnf.erb'),
     show_diff => false,
   }
+  file { '/var/lib/xdmod/.supremm.my.cnf':
+    ensure    => $_defaults_file_ensure,
+    owner     => 'root',
+    group     => 'root',
+    mode      => '0600',
+    content   => template('xdmod/supremm/supremm.my.cnf.erb'),
+    show_diff => false,
+  }
 
   file { '/etc/supremm/config.json':
     ensure    => 'file',
     owner     => 'root',
-    group     => 'root',
+    group     => 'xdmod',
     mode      => '0640',
     content   => template('xdmod/supremm/config.json.erb'),
     show_diff => false,
   }
 
-  # Determine if job scripts are to be ingested
-  $resources_with_script_dir = $xdmod::supremm_resources.filter |$r| {
-    has_key($r, 'script_dir')
-  }
-  if empty($resources_with_script_dir) {
-    $ingest_jobscripts = false
-  } else {
-    $ingest_jobscripts = true
-  }
-  if $xdmod::manage_supremm_cron {
-    file { '/etc/cron.d/supremm':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => template('xdmod/supremm/cron.erb'),
-    }
+  $prometheus_mapping = deep_merge($xdmod::params::prometheus_mapping, $xdmod::supremm_prometheus_mapping)
+  file { '/etc/supremm/mapping.json':
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    content => to_json_pretty($prometheus_mapping),
   }
 }

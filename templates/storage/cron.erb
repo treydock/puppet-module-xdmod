@@ -1,3 +1,0 @@
-# This file is managed by Puppet, do not edit!
-
-<%= scope['xdmod::storage_cron_times'][0] %> <%= scope['xdmod::storage_cron_times'][1] %> * * * xdmod /usr/local/bin/xdmod-storage-ingest.sh 2>&1 | logger -t xdmod-storage-ingest

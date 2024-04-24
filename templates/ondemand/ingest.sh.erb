@@ -1,6 +1,6 @@
 #!/bin/bash
 # This file is managed by Puppet, do not edit!
-# Commands pulled from https://open.xdmod.org/8.1/storage.html
+# Commands pulled from https://ondemand.xdmod.org/10.5/usage.html
 
 set -e
 
@@ -13,6 +13,7 @@ if [ "x${OOD_HOSTNAME}" != "x" -a "x${RESOURCE}" != "x" -a "x${LOG_DIRECTORY}" !
   $BASE_CMD -d $LOG_DIRECTORY -r $RESOURCE -u $OOD_HOSTNAME
 else
 <% scope['xdmod::ondemand_resources'].each do |resource| -%>
+  <%- next if resource['shred_directory'].nil? -%>
   $BASE_CMD -d <%= resource['shred_directory'] %> -r <%= resource['resource'] %> -u <%= resource['hostname'] %>
 <%- end -%>
 fi

@@ -5,11 +5,11 @@ require 'spec_helper'
 describe 'xdmod' do
   on_supported_os(supported_os: [
                     {
-                      'operatingsystem' => 'CentOS',
-                      'operatingsystemrelease' => ['7']
+                      'operatingsystem' => 'RedHat',
+                      'operatingsystemrelease' => ['7', '8']
                     }
                   ]).each do |os, facts|
-    context "on #{os}" do
+    context "when #{os}" do
       let(:facts) { facts }
 
       it { is_expected.to compile.with_all_deps }
@@ -29,6 +29,7 @@ describe 'xdmod' do
       it_behaves_like 'xdmod::database', facts
       it_behaves_like 'xdmod::config', facts
       it_behaves_like 'xdmod::config::simplesamlphp', facts
+      it_behaves_like 'xdmod::cron', facts
       it_behaves_like 'xdmod::apache', facts
 
       context 'when akrr => true' do
@@ -38,7 +39,7 @@ describe 'xdmod' do
         it { is_expected.to compile }
       end
 
-      context 'when supremm => true', if: facts[:os]['release']['major'].to_s == '7' do
+      context 'when supremm => true' do
         let(:default_params) { { supremm: true, web: true } }
         let(:params) { default_params }
 
@@ -85,6 +86,7 @@ describe 'xdmod' do
         it_behaves_like 'xdmod::install', facts
         it_behaves_like 'xdmod::config', facts
         it_behaves_like 'xdmod::config::simplesamlphp', facts
+        it_behaves_like 'xdmod::cron', facts
         it_behaves_like 'xdmod::apache', facts
       end
 

@@ -1,9 +1,0 @@
-# This file is managed by Puppet, do not edit!
-
-# Create job level summaries
-<%= scope['xdmod::supremm_update_cron_times'][0] %> <%= scope['xdmod::supremm_update_cron_times'][1] %> * * * root /usr/bin/supremm_update 2>&1 | logger -t supremm_update
-
-<%- if @ingest_jobscripts -%>
-# Ingest job scripts
-<%= scope['xdmod::ingest_jobscripts_cron_times'][0] %> <%= scope['xdmod::ingest_jobscripts_cron_times'][1] %> * * * root /usr/bin/ingest_jobscripts.py 2>&1 | logger -t ingest_jobscripts
-<%- end -%>
