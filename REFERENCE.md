@@ -20,6 +20,7 @@
 * `xdmod::apache`: Manage XDMoD Apache configs
 * `xdmod::config`: Manage XDMoD configs
 * `xdmod::config::simplesamlphp`: Manage XDMoD simplesamlphp
+* `xdmod::cron`: Manage XDMOD cron resources
 * `xdmod::database`: Manage XDMoD databases
 * `xdmod::install`: Manage XDMoD packages
 * `xdmod::params`: XDMoD module defaults
@@ -86,6 +87,7 @@ The following parameters are available in the `xdmod` class:
 * [`appkernels_package_url`](#-xdmod--appkernels_package_url)
 * [`xdmod_supremm_package_name`](#-xdmod--xdmod_supremm_package_name)
 * [`xdmod_supremm_package_url`](#-xdmod--xdmod_supremm_package_url)
+* [`php_mongodb_version`](#-xdmod--php_mongodb_version)
 * [`database_host`](#-xdmod--database_host)
 * [`database_port`](#-xdmod--database_port)
 * [`database_user`](#-xdmod--database_user)
@@ -121,13 +123,13 @@ The following parameters are available in the `xdmod` class:
 * [`center_logo_width`](#-xdmod--center_logo_width)
 * [`user_dashboard`](#-xdmod--user_dashboard)
 * [`cors_domains`](#-xdmod--cors_domains)
+* [`chromium_path`](#-xdmod--chromium_path)
 * [`manage_user`](#-xdmod--manage_user)
 * [`user_uid`](#-xdmod--user_uid)
 * [`group_gid`](#-xdmod--group_gid)
 * [`data_warehouse_export_directory`](#-xdmod--data_warehouse_export_directory)
 * [`data_warehouse_export_retention_duration_days`](#-xdmod--data_warehouse_export_retention_duration_days)
 * [`data_warehouse_export_hash_salt`](#-xdmod--data_warehouse_export_hash_salt)
-* [`batch_export_cron_times`](#-xdmod--batch_export_cron_times)
 * [`manage_simplesamlphp`](#-xdmod--manage_simplesamlphp)
 * [`simplesamlphp_config_content`](#-xdmod--simplesamlphp_config_content)
 * [`simplesamlphp_config_source`](#-xdmod--simplesamlphp_config_source)
@@ -161,18 +163,15 @@ The following parameters are available in the `xdmod` class:
 * [`supremm_package_ensure`](#-xdmod--supremm_package_ensure)
 * [`supremm_package_url`](#-xdmod--supremm_package_url)
 * [`supremm_package_name`](#-xdmod--supremm_package_name)
+* [`supremm_cron_index_archives`](#-xdmod--supremm_cron_index_archives)
 * [`supremm_mongodb_password`](#-xdmod--supremm_mongodb_password)
 * [`supremm_mongodb_host`](#-xdmod--supremm_mongodb_host)
 * [`supremm_mongodb_uri`](#-xdmod--supremm_mongodb_uri)
 * [`supremm_mongodb_replica_set`](#-xdmod--supremm_mongodb_replica_set)
 * [`supremm_resources`](#-xdmod--supremm_resources)
-* [`supremm_update_cron_times`](#-xdmod--supremm_update_cron_times)
-* [`ingest_jobscripts_cron_times`](#-xdmod--ingest_jobscripts_cron_times)
-* [`aggregate_supremm_cron_times`](#-xdmod--aggregate_supremm_cron_times)
+* [`supremm_prometheus_mapping`](#-xdmod--supremm_prometheus_mapping)
 * [`supremm_archive_out_dir`](#-xdmod--supremm_archive_out_dir)
-* [`supremm_prometheus_url`](#-xdmod--supremm_prometheus_url)
-* [`supremm_prometheus_step`](#-xdmod--supremm_prometheus_step)
-* [`supremm_prometheus_rates`](#-xdmod--supremm_prometheus_rates)
+* [`supremm_cron_summarize_command`](#-xdmod--supremm_cron_summarize_command)
 * [`use_pcp`](#-xdmod--use_pcp)
 * [`pcp_declare_method`](#-xdmod--pcp_declare_method)
 * [`pcp_resource`](#-xdmod--pcp_resource)
@@ -187,7 +186,7 @@ The following parameters are available in the `xdmod` class:
 * [`pcp_merge_metrics`](#-xdmod--pcp_merge_metrics)
 * [`pcp_hotproc_exclude_users`](#-xdmod--pcp_hotproc_exclude_users)
 * [`storage_roles_source`](#-xdmod--storage_roles_source)
-* [`storage_cron_times`](#-xdmod--storage_cron_times)
+* [`cron_times`](#-xdmod--cron_times)
 * [`manage_cron`](#-xdmod--manage_cron)
 * [`manage_supremm_cron`](#-xdmod--manage_supremm_cron)
 * [`manage_akrr_cron`](#-xdmod--manage_akrr_cron)
@@ -394,13 +393,21 @@ XDMoD supremm package RPM URL, not used if `local_repo_name` is defined
 
 Default value: `$xdmod::params::xdmod_supremm_package_url`
 
+##### <a name="-xdmod--php_mongodb_version"></a>`php_mongodb_version`
+
+Data type: `String[1]`
+
+The PHP MongoDB version
+
+Default value: `'1.16.2'`
+
 ##### <a name="-xdmod--database_host"></a>`database_host`
 
 Data type: `String`
 
 XDMoD database host
 
-Default value: `'localhost'`
+Default value: `'127.0.0.1'`
 
 ##### <a name="-xdmod--database_port"></a>`database_port`
 
@@ -674,6 +681,14 @@ The value for `domains` in `cors` section of portal_settings.ini
 
 Default value: `[]`
 
+##### <a name="-xdmod--chromium_path"></a>`chromium_path`
+
+Data type: `Stdlib::Absolutepath`
+
+The value for `chromium_path` in `reporting` section of portal_settings.ini
+
+Default value: `'/usr/lib64/chromium-browser/headless_shell'`
+
 ##### <a name="-xdmod--manage_user"></a>`manage_user`
 
 Data type: `Boolean`
@@ -721,14 +736,6 @@ Data type: `String`
 portal_settings.ini section=data_warehouse_export setting=hash_salt
 
 Default value: `sha256($facts['networking']['fqdn'])`
-
-##### <a name="-xdmod--batch_export_cron_times"></a>`batch_export_cron_times`
-
-Data type: `Array[Integer, 2 ,2]`
-
-cron times to run batch export
-
-Default value: `[0,4]`
 
 ##### <a name="-xdmod--manage_simplesamlphp"></a>`manage_simplesamlphp`
 
@@ -994,6 +1001,14 @@ SUPReMM RPM package name
 
 Default value: `'supremm'`
 
+##### <a name="-xdmod--supremm_cron_index_archives"></a>`supremm_cron_index_archives`
+
+Data type: `Boolean`
+
+SUPReMM whether to run indexarchives.py
+
+Default value: `true`
+
 ##### <a name="-xdmod--supremm_mongodb_password"></a>`supremm_mongodb_password`
 
 Data type: `String`
@@ -1034,29 +1049,13 @@ SUPReMM resources
 
 Default value: `[]`
 
-##### <a name="-xdmod--supremm_update_cron_times"></a>`supremm_update_cron_times`
+##### <a name="-xdmod--supremm_prometheus_mapping"></a>`supremm_prometheus_mapping`
 
-Data type: `Array[Integer, 2, 2]`
+Data type: `Hash`
 
-The cron times to run supremm_update
+SUPReMM Prometheus mapping
 
-Default value: `[0,2]`
-
-##### <a name="-xdmod--ingest_jobscripts_cron_times"></a>`ingest_jobscripts_cron_times`
-
-Data type: `Array[Integer, 2, 2]`
-
-The cron times to ingest job scripts
-
-Default value: `[0,3]`
-
-##### <a name="-xdmod--aggregate_supremm_cron_times"></a>`aggregate_supremm_cron_times`
-
-Data type: `Array[Integer, 2, 2]`
-
-The cron times to run supremm aggregation
-
-Default value: `[0,4]`
+Default value: `{}`
 
 ##### <a name="-xdmod--supremm_archive_out_dir"></a>`supremm_archive_out_dir`
 
@@ -1066,27 +1065,11 @@ The path to supremm archive out
 
 Default value: `'/dev/shm/supremm_test'`
 
-##### <a name="-xdmod--supremm_prometheus_url"></a>`supremm_prometheus_url`
+##### <a name="-xdmod--supremm_cron_summarize_command"></a>`supremm_cron_summarize_command`
 
-Data type: `Optional[Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]]`
+Data type: `Optional[Stdlib::Absolutepath]`
 
-Prometheus URL to use with SUPREMM summarization
-
-Default value: `undef`
-
-##### <a name="-xdmod--supremm_prometheus_step"></a>`supremm_prometheus_step`
-
-Data type: `Optional[String[1]]`
-
-Prometheus step value for SUPREMM summarization
-
-Default value: `undef`
-
-##### <a name="-xdmod--supremm_prometheus_rates"></a>`supremm_prometheus_rates`
-
-Data type: `Optional[Hash]`
-
-Prometheus rate overrides for SUPREMM summarization
+The path to summarize command for SUPREMM
 
 Default value: `undef`
 
@@ -1202,13 +1185,13 @@ The source of storage roles.json
 
 Default value: `'puppet:///modules/xdmod/roles.d/storage.json'`
 
-##### <a name="-xdmod--storage_cron_times"></a>`storage_cron_times`
+##### <a name="-xdmod--cron_times"></a>`cron_times`
 
 Data type: `Array[Integer, 2, 2]`
 
-The cron times for storage shred/ingest
+The cron times for XDMOD cron jobs
 
-Default value: `[0,5]`
+Default value: `[1, 0]`
 
 ##### <a name="-xdmod--manage_cron"></a>`manage_cron`
 
@@ -1265,8 +1248,8 @@ The following parameters are available in the `xdmod::ondemand` class:
 * [`package_ensure`](#-xdmod--ondemand--package_ensure)
 * [`package_url`](#-xdmod--ondemand--package_url)
 * [`log_format`](#-xdmod--ondemand--log_format)
-* [`cron_times`](#-xdmod--ondemand--cron_times)
 * [`manage_cron`](#-xdmod--ondemand--manage_cron)
+* [`update_timer_hour`](#-xdmod--ondemand--update_timer_hour)
 
 ##### <a name="-xdmod--ondemand--geoip_userid"></a>`geoip_userid`
 
@@ -1326,14 +1309,6 @@ Log format to use for parsing access logs
 
 Default value: `'%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"'`
 
-##### <a name="-xdmod--ondemand--cron_times"></a>`cron_times`
-
-Data type: `Array[Integer, 2, 2]`
-
-The cron times for ondemand shred/ingest
-
-Default value: `[0,7]`
-
 ##### <a name="-xdmod--ondemand--manage_cron"></a>`manage_cron`
 
 Data type: `Boolean`
@@ -1341,6 +1316,14 @@ Data type: `Boolean`
 Manage OnDemand cron files
 
 Default value: `true`
+
+##### <a name="-xdmod--ondemand--update_timer_hour"></a>`update_timer_hour`
+
+Data type: `String[1]`
+
+The hour when to run geoip update timer
+
+Default value: `'00'`
 
 ## Defined types
 
@@ -1683,24 +1666,31 @@ Alias of
 
 ```puppet
 Struct[{
-  resource => String,
-  resource_id => Integer,
-  Optional[enabled] => Boolean,
-  Optional[datasetmap] => String,
-  Optional[datasetmap_source] => String,
-  Optional[hardware] => Struct[{
-    Optional[gpfs] => Variant[String, Array],
-    Optional[network] => Variant[String, Array],
-    Optional[mounts] => Hash,
-    Optional[block] => Variant[String, Array],
-    Optional[gpus] => Variant[String, Array],
-  }],
-  Optional[hostname_mode] => Enum['fqdn','hostname'],
-  Optional[pcp_log_dir] => Stdlib::Unixpath,
-  Optional[metric_system] => Enum['pcp','prometheus'],
-  Optional[script_dir] => Stdlib::Unixpath,
-  Optional[fast_index] => Boolean,
-  Optional[timezone] => String,
+    NotUndef[resource] => String[1],
+    Optional[enabled] => Boolean,
+    NotUndef[resource_id] => Integer,
+    Optional[datasource] => Enum['pcp','prometheus'],
+    Optional[datasetmap] => String[1],
+    Optional[datasetmap_source] => Stdlib::Filesource,
+    Optional[hardware] => Struct[{
+        Optional[gpfs] => Variant[String, Array],
+        Optional[network] => Variant[String, Array],
+        Optional[mounts] => Hash,
+        Optional[block] => Variant[String, Array],
+        Optional[gpus] => Variant[String, Array],
+    }],
+    Optional[batchscript] => Struct[{
+        NotUndef[path] => Stdlib::Absolutepath,
+        Optional[timestamp_mode] => Enum['start','submit','end','none'],
+    }],
+    Optional[pcp_log_dir] => Stdlib::Unixpath,
+    Optional[hostname_mode] => Enum['fqdn','hostname'],
+    Optional[host_name_ext] => String[1],
+    Optional[fast_index] => Boolean,
+    Optional[timezone] => String,
+    Optional[prom_host] => String[1],
+    Optional[prom_user] => String[1],
+    Optional[prom_password] => String[1],
 }]
 ```
 

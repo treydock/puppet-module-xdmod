@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v10.0.0](https://github.com/treydock/puppet-module-xdmod/tree/v10.0.0) (2024-04-24)
+
+[Full Changelog](https://github.com/treydock/puppet-module-xdmod/compare/v9.0.0...v10.0.0)
+
+### Changed
+
+- BREAKING: Support XDMOD 10.5 [\#31](https://github.com/treydock/puppet-module-xdmod/pull/31) ([treydock](https://github.com/treydock))
+
 ## [v9.0.0](https://github.com/treydock/puppet-module-xdmod/tree/v9.0.0) (2023-08-11)
 
 [Full Changelog](https://github.com/treydock/puppet-module-xdmod/compare/v8.0.0...v9.0.0)
