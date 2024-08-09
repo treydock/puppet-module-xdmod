@@ -2,6 +2,7 @@ type Xdmod::Supremm_Resource = Struct[{
     NotUndef[resource] => String[1],
     Optional[enabled] => Boolean,
     NotUndef[resource_id] => Integer,
+    Optional[collection] => String[1],
     Optional[datasource] => Enum['pcp','prometheus'],
     Optional[datasetmap] => String[1],
     Optional[datasetmap_source] => Stdlib::Filesource,

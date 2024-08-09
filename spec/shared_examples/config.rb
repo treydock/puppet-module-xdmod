@@ -408,6 +408,31 @@ shared_examples_for 'xdmod::config' do |_facts|
         expect(value).to eq(expected)
       end
     end
+
+    context 'when collection defined' do
+      let(:params) do
+        {
+          enable_supremm: true,
+          supremm_resources: [{ 'resource' => 'example', 'resource_id' => 1, 'collection' => 'resource_1', 'pcp_log_dir' => '/dne' }]
+        }
+      end
+
+      it do
+        content = catalogue.resource('file', '/etc/xdmod/supremm_resources.json').send(:parameters)[:content]
+        value = JSON.parse(content)
+        expected = {
+          'resources' => [
+            'resource' => 'example',
+            'resource_id' => 1,
+            'collection' => 'resource_1',
+            'enabled' => true,
+            'datasetmap' => 'pcp',
+            'hardware' => { 'gpfs' => '' }
+          ]
+        }
+        expect(value).to eq(expected)
+      end
+    end
   end
 
   context 'with partial hierarchy levels defined' do

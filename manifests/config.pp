@@ -174,10 +174,11 @@ class xdmod::config {
       $d = {
         'resource'    => $r['resource'],
         'resource_id' => $r['resource_id'],
+        'collection'  => $r['collection'],
         'enabled'     => $enabled,
         'datasetmap'  => $_datasetmap,
         'hardware'    => $hardware,
-      }
+      }.filter |$k,$v| { $v =~ NotUndef }
     }
 
     file { '/etc/xdmod/supremm_resources.json':
