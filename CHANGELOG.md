@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v10.1.0](https://github.com/treydock/puppet-module-xdmod/tree/v10.1.0) (2024-08-09)
+
+[Full Changelog](https://github.com/treydock/puppet-module-xdmod/compare/v10.0.0...v10.1.0)
+
+### Added
+
+- Allow 'collection' for SUPREMM resources [\#32](https://github.com/treydock/puppet-module-xdmod/pull/32) ([treydock](https://github.com/treydock))
+
 ## [v10.0.0](https://github.com/treydock/puppet-module-xdmod/tree/v10.0.0) (2024-04-24)
 
 [Full Changelog](https://github.com/treydock/puppet-module-xdmod/compare/v9.0.0...v10.0.0)
