@@ -67,6 +67,6 @@ class xdmod::supremm::config {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => to_json_pretty($prometheus_mapping),
+    content => stdlib::to_json_pretty($prometheus_mapping),
   }
 }
