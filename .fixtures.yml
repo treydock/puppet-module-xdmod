@@ -1,45 +1,45 @@
 fixtures:
-  repositories:
-    yumrepo_core:
-      repo: https://github.com/puppetlabs/puppetlabs-yumrepo_core.git
-    cron_core:
-      repo: https://github.com/puppetlabs/puppetlabs-cron_core.git
+  forge_modules:
     stdlib:
-      repo: https://github.com/puppetlabs/puppetlabs-stdlib.git
+      repo: puppetlabs/stdlib
+    yumrepo_core:
+      repo: puppetlabs/yumrepo_core
+    cron_core:
+      repo: puppetlabs/cron_core
     logrotate:
-      repo: https://github.com/voxpupuli/puppet-logrotate.git
+      repo: puppet/logrotate
     epel:
-      repo: https://github.com/voxpupuli/puppet-epel.git
+      repo: puppet/epel
     mysql: 
-      repo: https://github.com/puppetlabs/puppetlabs-mysql.git
+      repo: puppetlabs/mysql
     mongodb:
-      repo: https://github.com/puppetlabs/puppetlabs-mongodb.git
+      repo: puppet/mongodb
     inifile:
-      repo: https://github.com/puppetlabs/puppetlabs-inifile
+      repo: puppetlabs/inifile
     apache:
-      repo: https://github.com/puppetlabs/puppetlabs-apache
+      repo: puppetlabs/apache
     concat:
-      repo: https://github.com/puppetlabs/puppetlabs-concat.git
+      repo: puppetlabs/concat
     archive:
-      repo: https://github.com/voxpupuli/puppet-archive
+      repo: puppet/archive
     yum:
-      repo: https://github.com/voxpupuli/puppet-yum.git
+      repo: puppet/yum
     augeasproviders_core:
-      repo: https://github.com/voxpupuli/puppet-augeasproviders_core
+      repo: puppet/augeasproviders_core
     augeasproviders_shellvar:
-      repo: https://github.com/voxpupuli/puppet-augeasproviders_shellvar
+      repo: puppet/augeasproviders_shellvar
     pcp:
-      repo: https://github.com/treydock/puppet-module-pcp.git
+      repo: treydock/pcp
     sudo:
-      repo: https://github.com/saz/puppet-sudo.git
+      repo: saz/sudo
     openssl:
-      repo: https://github.com/voxpupuli/puppet-openssl
+      repo: puppet/openssl
     geoip:
-      repo: https://github.com/rtib/puppet-geoip
+      repo: trepasi/geoip
     # Needed by geoip
     systemd:
-      repo: https://github.com/voxpupuli/puppet-systemd
+      repo: puppet/systemd
     php:
-      repo: https://github.com/voxpupuli/puppet-php
+      repo: puppet/php
   symlinks:
     xdmod: "#{source_dir}"

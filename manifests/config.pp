@@ -186,7 +186,7 @@ class xdmod::config {
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => to_json_pretty({ 'resources' => $supremm_resources }),
+      content => stdlib::to_json_pretty({ 'resources' => $supremm_resources }),
     }
   }
 
@@ -283,7 +283,7 @@ class xdmod::config {
       owner   => 'root',
       group   => 'root',
       mode    => '0644',
-      content => to_json_pretty($organization),
+      content => stdlib::to_json_pretty($organization),
       #content => join([
       #  '{',
       #  "    \"name\": \"${xdmod::organization_name}\",",
@@ -331,7 +331,7 @@ class xdmod::config {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => to_json_pretty($resources),
+    content => stdlib::to_json_pretty($resources),
     notify  => [
       Exec['acl-config'],
     ],
@@ -341,7 +341,7 @@ class xdmod::config {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    content => to_json_pretty($resource_specs),
+    content => stdlib::to_json_pretty($resource_specs),
   }
 
   $hierarchy_levels = $xdmod::params::hierarchy_levels + $xdmod::hierarchy_levels

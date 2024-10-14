@@ -16,8 +16,8 @@ class xdmod::params {
   $hierarchies        = []
   $group_to_hierarchy = {}
   $user_pi_names      = []
-  $akrr_restapi_rw_password = fqdn_rand_string(16, undef, 'rw')
-  $akrr_restapi_ro_password = fqdn_rand_string(16, undef, 'ro')
+  $akrr_restapi_rw_password = stdlib::fqdn_rand_string(16, undef, 'rw')
+  $akrr_restapi_ro_password = stdlib::fqdn_rand_string(16, undef, 'ro')
   $akrr_version             = '1.0.0'
   $akrr_source_url          = 'https://github.com/ubccr/akrr/releases/download/vAKRR_VERSION/akrr-AKRR_VERSION.tar.gz'
   $supremm_version          = '2.0.0'
