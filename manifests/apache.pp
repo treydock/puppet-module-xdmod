@@ -1,110 +1,20 @@
-# Private class
-class xdmod::apache {
-
+# @summary Manage XDMoD Apache configs
+# @api private
+class xdmod::apache () inherits xdmod::params {
   if $xdmod::manage_apache_vhost {
-    include ::apache
-    include ::apache::mod::php
-
-    if $xdmod::apache_ssl {
-      $xdmod_ssl_rewrites = [
-        {
-          comment      => 'Redirect to HTTPS if not localhost',
-          rewrite_cond => ['%{REMOTE_ADDR} !=127.0.0.1', '%{REMOTE_ADDR} !=::1'],
-          rewrite_rule => ['^/?(.*) https://%{SERVER_NAME}/$1 [R,L]'],
-        },
-      ]
-      $xdmod_nonssl_order = 'deny,allow'
-      $xdmod_nonssl_deny  = 'from all'
-      $xdmod_nonssl_allow = 'from 127.0.0.0/255.0.0.0 ::1/128'
-
-      ::apache::mod { 'php':
-        path => 'modules/libphp5.so',
-        id   => 'php5_module',
-      }
-
-      ::apache::vhost { 'xdmod_ssl':
-        servername      => $xdmod::apache_vhost_name,
-        port            => $xdmod::apache_ssl_port,
-        ssl             => true,
-        docroot         => '/usr/share/xdmod/html',
-        manage_docroot  => false,
-        ssl_cert        => $xdmod::apache_ssl_cert,
-        ssl_key         => $xdmod::apache_ssl_key,
-        ssl_chain       => $xdmod::apache_ssl_chain,
-        custom_fragment => 'AddType application/x-httpd-php .php',
-        directories     => [
-          {
-            path           => '/usr/share/xdmod/html',
-            options        => ['FollowSymLinks'],
-            allow_override => ['All'],
-            directoryindex => 'index.php',
-          },
-          {
-            path     => '/usr/share/xdmod/html/rest',
-            rewrites => [
-              {
-                rewrite_rule => ['(.*) index.php [L]'],
-              }
-            ],
-          },
-          {
-            path     => '/usr/share/xdmod/html/extrest',
-            rewrites => [
-              {
-                rewrite_rule => ['(.*) index.php [L]']
-              }
-            ],
-          },
-          {
-            path     => '\.php$',
-            provider => 'filesmatch',
-            handler  => 'application/x-httpd-php'
-          }
-        ]
-      }
-    } else {
-      $xdmod_ssl_rewrites = undef
-      $xdmod_nonssl_order = 'allow,deny'
-      $xdmod_nonssl_deny  = undef
-      $xdmod_nonssl_allow = 'from all'
+    include apache
+    include apache::mod::php
+    if $xdmod::params::ssl {
+      include apache::mod::ssl
+      ensure_resource('apache::listen', 443)
     }
+    include apache::mod::alias
+    include apache::mod::headers
 
-    ::apache::vhost { 'xdmod':
-      servername     => $xdmod::apache_vhost_name,
-      port           => $xdmod::apache_port,
-      ssl            => false,
-      docroot        => '/usr/share/xdmod/html',
-      manage_docroot => false,
-      rewrites       => $xdmod_ssl_rewrites,
-      directories    => [
-        {
-          path           => '/usr/share/xdmod/html',
-          options        => ['FollowSymLinks'],
-          allow_override => ['All'],
-          directoryindex => 'index.php',
-          order          => $xdmod_nonssl_order,
-          deny           => $xdmod_nonssl_deny,
-          allow          => $xdmod_nonssl_allow,
-        },
-        {
-          path     => '/usr/share/xdmod/html/rest',
-          rewrites => [
-            {
-              rewrite_rule => ['(.*) index.php [L]'],
-            }
-          ],
-        },
-        {
-          path     => '/usr/share/xdmod/html/extrest',
-          rewrites => [
-            {
-              rewrite_rule => ['(.*) index.php [L]']
-            }
-          ],
-        },
-      ]
+    ensure_resource('apache::listen', 80)
+
+    apache::vhost::custom { 'xdmod':
+      content => template('xdmod/xdmod_apache.erb'),
     }
-
   }
-
 }

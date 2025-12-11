@@ -1,24 +1,45 @@
 fixtures:
-  repositories:
+  forge_modules:
     stdlib:
-      repo: git://github.com/puppetlabs/puppetlabs-stdlib.git
-      ref: 4.3.1
+      repo: puppetlabs/stdlib
+    yumrepo_core:
+      repo: puppetlabs/yumrepo_core
+    cron_core:
+      repo: puppetlabs/cron_core
     logrotate:
-      repo: git://github.com/rodjek/puppet-logrotate.git
-      ref: 1.1.1
+      repo: puppet/logrotate
     epel:
-      repo: git://github.com/stahnma/puppet-module-epel.git
-      ref: 0.1.0
+      repo: puppet/epel
     mysql: 
-      repo: git://github.com/puppetlabs/puppetlabs-mysql.git
-      ref: 2.3.1
+      repo: puppetlabs/mysql
+    mongodb:
+      repo: puppet/mongodb
     inifile:
-      repo: git://github.com/puppetlabs/puppetlabs-inifile
-      ref: 1.1.3
+      repo: puppetlabs/inifile
     apache:
-      repo: git://github.com/puppetlabs/puppetlabs-apache
-      ref: 1.2.0
+      repo: puppetlabs/apache
     concat:
-      repo: git://github.com/puppetlabs/puppetlabs-concat.git
+      repo: puppetlabs/concat
+    archive:
+      repo: puppet/archive
+    yum:
+      repo: puppet/yum
+    augeasproviders_core:
+      repo: puppet/augeasproviders_core
+    augeasproviders_shellvar:
+      repo: puppet/augeasproviders_shellvar
+    pcp:
+      repo: treydock/pcp
+    sudo:
+      repo: saz/sudo
+    openssl:
+      repo: puppet/openssl
+    geoip:
+      repo: trepasi/geoip
+    # Needed by geoip
+    systemd:
+      repo: puppet/systemd
+    php:
+      repo: puppet/php
   symlinks:
     xdmod: "#{source_dir}"

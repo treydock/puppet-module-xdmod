@@ -1,0 +1,10 @@
+<% hierarchy_levels = @hierarchy_levels || {} -%>
+<%-
+levels = {}
+hierarchy_levels.each_pair do |level, data|
+  data.each_pair do |k, v|
+    levels["#{level}_level_#{k}"] = v
+  end
+end
+%>
+<%= JSON.pretty_generate(levels) %>

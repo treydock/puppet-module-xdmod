@@ -1,0 +1,86 @@
+{
+    // Configuration settings for job data input
+    // The database configuration below assumes everything on the same host and
+    // XDMoD is installed on the host too.
+    //
+    // It is not necessary for all databases to run locally. A more complex
+    // configuration could have multiple hosts and different credentials for
+    // each DB.
+    "xdmodroot": "/etc/xdmod",
+    "datawarehouse": {
+<% if scope.lookupvar('xdmod::supremm_mysql_access') == 'defaultsfile' -%>
+        "db_engine": "MySQLDB",
+        "host": "<%= scope.lookupvar('xdmod::database_host') %>",
+        "defaultsfile": "/root/.supremm.my.cnf"
+<% end -%>
+<% if scope.lookupvar('xdmod::supremm_mysql_access') == 'include' -%>
+        "include": "xdmod://datawarehouse"
+<% end -%>
+    },
+    // Configuration setting for summary document output
+    "outputdatabase": {
+        "db_engine": "mongodb",
+        "uri": "<%= scope['xdmod::_supremm_mongodb_uri'] %>",
+        //"uri": "mongodb://username:password@localhost/supremm",
+        //"uri": "mongodb://mongodb-server1:27017,mongodb-server2:27017/supremm?replicaSet=foo",
+        //"uri": "mongodb://username:password@mongodb-server1:27017,mongodb-server2:27017/supremm?replicaSet=foo",
+        "dbname": "supremm"
+    },
+    "summary": {
+        // The archive out directory should be writable by the process that runs
+        // the summaries.
+        "archive_out_dir": "<%= scope['xdmod::supremm_archive_out_dir'] %>",
+        // The following substitutions are defined for the job archive subdirectory:
+        //  %r means the resource name
+        //  %j the local job id
+        //  the rest is sent to strftime with the end time of the job
+        //  Common examples:
+        //  %Y-%m-%d/%r/%j  includes the date/resource/jobid in the path
+        "subdir_out_format": "%r/%j"
+    },
+    "resources": {
+<% scope['xdmod::supremm_resources'].each_with_index do |resource, i| -%>
+<% datasource = resource['datasource'] || 'pcp' %>
+        "<%= resource['resource'] %>": {
+            "enabled": <%= resource['enabled'].nil? ? true : resource['enabled'] %>,
+            "resource_id": <%= resource['resource_id'] %>,
+            "batch_system": "XDMoD",
+<% if resource['batchscript'] -%>
+            "batchscript": {
+              <%- if resource['batchscript']['timestamp_mode'] -%>
+                "timestamp_mode": "<%= resource['batchscript']['timestamp_mode'] %>",
+              <%- end -%>
+                "path": "<%= resource['batchscript']['path'] %>"
+            },
+<% end -%>
+            "hostname_mode": "<%= resource['hostname_mode'] || 'hostname' %>",
+<% if datasource == 'pcp' -%>
+          <%- if resource['pcp_log_dir'] -%>
+            "pcp_log_dir": "<%= resource['pcp_log_dir'] %>",
+          <%- end -%>
+          <%- if resource['host_name_ext'] -%>
+            "host_name_ext": "<%= resource['host_name_ext'] %>",
+          <%- end -%>
+          <%- if resource['timezone'] -%>
+            "timezone": "<%= resource['timezone'] %>",
+          <%- end -%>
+          <%- if resource['fast_index'].nil? -%>
+            "fast_index": true,
+          <%- else -%>
+            "fast_index": <%= resource['fast_index'] %>,
+          <%- end -%>
+<% end -%>
+<% if datasource == 'prometheus' -%>
+          <%- if resource['prom_host'] -%>
+            "prom_host": "<%= resource['prom_host'] %>",
+          <%- end -%>
+            "prom_user": "<%= resource['prom_user'] || '' %>",
+          <%- if resource['prom_password'] -%>
+            "prom_password": "<%= resource['prom_password'] %>",
+          <%- end -%>
+<% end -%>
+            "datasource": "<%= datasource %>"
+        }<%= (scope['xdmod::supremm_resources'].size - 1) == i ? '' : ',' %>
+<%- end -%>
+    }
+}

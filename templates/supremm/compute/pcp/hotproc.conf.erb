@@ -1,0 +1,6 @@
+#pmdahotproc
+Version 1.0
+
+<% pcp_hotproc_exclude_users = scope.lookupvar('xdmod::pcp_hotproc_exclude_users') -%>
+<% excluded_unames = pcp_hotproc_exclude_users.map { |uname| "(uname != \"#{uname}\")" } -%>
+( <%= excluded_unames.join(' && ') %> ) || cpuburn > 0.1

@@ -1,0 +1,33 @@
+# frozen_string_literal: true
+
+require 'spec_helper_acceptance'
+
+describe 'xdmod class:' do
+  context 'with appkernel and akrr enabled', if: fact('os.release.major') == '7' do
+    it 'runs successfully' do
+      pp = <<-PP
+      host { 'xdmod.localdomain': ip => '127.0.0.1' }
+      class { 'mysql::server':
+        root_password => 'secret',
+      }
+      class { 'xdmod':
+        apache_vhost_name => 'xdmod.localdomain',
+        enable_appkernel  => true,
+        akrr              => true,
+        resources         => [{
+          'resource' => 'example',
+          'name' => 'Example',
+        }],
+        manage_simplesamlphp => true,
+        php_timezone => 'America/New_York',
+      }
+      PP
+
+      apply_manifest(pp, catch_failures: true)
+      apply_manifest(pp, catch_changes: true)
+    end
+
+    it_behaves_like 'xdmod-appkernels', default
+    it_behaves_like 'akrr', default
+  end
+end

@@ -1,0 +1,28 @@
+type Xdmod::Supremm_Resource = Struct[{
+    NotUndef[resource] => String[1],
+    Optional[enabled] => Boolean,
+    NotUndef[resource_id] => Integer,
+    Optional[collection] => String[1],
+    Optional[datasource] => Enum['pcp','prometheus'],
+    Optional[datasetmap] => String[1],
+    Optional[datasetmap_source] => Stdlib::Filesource,
+    Optional[hardware] => Struct[{
+        Optional[gpfs] => Variant[String, Array],
+        Optional[network] => Variant[String, Array],
+        Optional[mounts] => Hash,
+        Optional[block] => Variant[String, Array],
+        Optional[gpus] => Variant[String, Array],
+    }],
+    Optional[batchscript] => Struct[{
+        NotUndef[path] => Stdlib::Absolutepath,
+        Optional[timestamp_mode] => Enum['start','submit','end','none'],
+    }],
+    Optional[pcp_log_dir] => Stdlib::Unixpath,
+    Optional[hostname_mode] => Enum['fqdn','hostname'],
+    Optional[host_name_ext] => String[1],
+    Optional[fast_index] => Boolean,
+    Optional[timezone] => String,
+    Optional[prom_host] => String[1],
+    Optional[prom_user] => String[1],
+    Optional[prom_password] => String[1],
+}]

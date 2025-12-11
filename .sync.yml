@@ -1,6 +1,54 @@
-.travis.yml:
-  allow_failures:
-    - PUPPET_GEM_VERSION="~> 2.7.0"
-spec/spec_helper.rb:
-  requires:
-    - lib/module_spec_helper
+---
+.github/workflows/ci.yaml:
+  acceptance_matrix:
+      set:
+        - ---el7
+        - el8
+        - ---el9
+      puppet:
+        - puppet7
+        - puppet8
+  acceptance_env_vars:
+    GEOIP_USERID: '${{ secrets.GEOIP_USERID }}'
+    GEOIP_LICENSEKEY: '${{ secrets.GEOIP_LICENSEKEY }}'
+.gitlab-ci.yml:
+  delete: true
+appveyor.yml:
+  delete: true
+.rubocop.yml:
+  profiles:
+    strict:
+      configs:
+        RSpec/RepeatedExampleGroupBody:
+          Enabled: false
+spec/acceptance/nodesets/el7.yml:
+  roles:
+    - compute
+    - db
+    - akrr
+    - supremm
+    - web
+spec/acceptance/nodesets/el8.yml:
+  roles:
+    - compute
+    - db
+    - akrr
+    - supremm
+    - web
+spec/acceptance/nodesets/el9.yml:
+  delete: true
+spec/acceptance/nodesets/debian-11.yml:
+  delete: true
+spec/acceptance/nodesets/debian-12.yml:
+  delete: true
+spec/acceptance/nodesets/ubuntu-2004.yml:
+  delete: true
+spec/acceptance/nodesets/ubuntu-2204.yml:
+  delete: true
+Rakefile:
+  extras:
+    - "desc 'Run beaker full acceptance tests'"
+    - "RSpec::Core::RakeTask.new(:beaker_full) do |t|"
+    - "  t.rspec_opts = ['--color']"
+    - "  t.pattern = 'spec/acceptance_full'"
+    - "end"

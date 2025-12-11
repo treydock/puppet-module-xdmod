@@ -1,0 +1,20 @@
+#!/bin/bash
+# This file is managed by Puppet, do not edit!
+# Commands pulled from https://open.xdmod.org/10.5/storage.html
+
+set -e
+
+RESOURCE="$1"
+STORAGE_LOG_DIRECTORY="$2"
+if [ "x${RESOURCE}" != "x" -a "x${STORAGE_LOG_DIRECTORY}" != "x" ]; then
+  xdmod-shredder -f storage -r $RESOURCE -d $STORAGE_LOG_DIRECTORY
+else
+<% scope['xdmod::storage_resources'].each do |resource| -%>
+  <%- next if resource['shred_directory'].nil? -%>
+  xdmod-shredder -f storage -r <%= resource['resource'] %> -d <%= resource['shred_directory'] %>
+<%- end -%>
+fi
+
+last_modified_start_date=$(date +'%F %T')
+xdmod-ingestor --datatype storage
+xdmod-ingestor --aggregate=storage --last-modified-start-date "$last_modified_start_date"
