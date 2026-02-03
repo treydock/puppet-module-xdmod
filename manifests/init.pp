@@ -66,6 +66,8 @@
 #   AKRR database password
 # @param web_host
 #   FQDN of web host
+# @param db_host
+#   FQDN of db host
 # @param akrr_host
 #   FQDN of AKRR host
 # @param scheduler
@@ -301,6 +303,7 @@ class xdmod (
   String $akrr_database_user                    = 'akrr',
   String $akrr_database_password                = 'changeme',
   String $web_host                        = 'localhost',
+  String $db_host                         = 'localhost',
   String $akrr_host                       = 'localhost',
   Enum['slurm','torque','pbs','sge'] $scheduler = 'slurm',
   Optional[Variant[String, Array]]

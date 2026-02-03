@@ -7,7 +7,7 @@ class xdmod::database {
     ensure    => 'present',
     user      => $xdmod::database_user,
     password  => $xdmod::database_password,
-    host      => $xdmod::web_host,
+    host      => $xdmod::db_host,
     charset   => 'latin1',
     collate   => 'latin1_swedish_ci',
     grant     => ['ALL'],
