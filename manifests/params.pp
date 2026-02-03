@@ -8,7 +8,8 @@ class xdmod::params {
   $sender_email       = "xdmod@xdmod.${facts['networking']['domain']}"
   $apache_vhost_name  = "xdmod.${facts['networking']['domain']}"
   $portal_settings    = {}
-  $hierarchy_levels  = {
+  $db_host            = 'localhost'
+  $hierarchy_levels   = {
     'top'     => { 'label' => 'Hierarchy Top Level', 'info' => '' },
     'middle'  => { 'label' => 'Hierarchy Middle Level', 'info' => '' },
     'bottom'  => { 'label' => 'Hierarchy Bottom Level', 'info' => '' },
