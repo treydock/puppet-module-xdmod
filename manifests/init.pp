@@ -303,7 +303,7 @@ class xdmod (
   String $akrr_database_user                    = 'akrr',
   String $akrr_database_password                = 'changeme',
   String $web_host                        = 'localhost',
-  String $db_host                         = 'localhost',
+  String $db_host                         = $xdmod::params::db_host,
   String $akrr_host                       = 'localhost',
   Enum['slurm','torque','pbs','sge'] $scheduler = 'slurm',
   Optional[Variant[String, Array]]
