@@ -1,7 +1,12 @@
 # @summary Manage XDMoD databases
 # @api private
 class xdmod::database {
-  include mysql::server
+  if $xdmod::db_host = 'localhost' {
+    include mysql::server
+    } else {
+    include mysql::client
+  }
+
 
   Mysql::Db {
     ensure    => 'present',
