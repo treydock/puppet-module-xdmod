@@ -1,7 +1,7 @@
 # @summary Manage XDMoD databases
 # @api private
 class xdmod::database {
-  if $xdmod::db_host = 'localhost' {
+  if $xdmod::db_host.match(/'localhost'|'127.0.0.1'/) {
     include mysql::server
     } else {
     include mysql::client
