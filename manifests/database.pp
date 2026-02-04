@@ -12,7 +12,7 @@ class xdmod::database inherits xdmod::params {
     ensure    => 'present',
     user      => $xdmod::database_user,
     password  => $xdmod::database_password,
-    host      => $xdmod::db_host,
+    host      => $xdmod::db_grant_host,
     charset   => 'latin1',
     collate   => 'latin1_swedish_ci',
     grant     => ['ALL'],
