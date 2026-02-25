@@ -6,8 +6,8 @@ describe 'xdmod::ondemand' do
   on_supported_os(supported_os: [
                     {
                       'operatingsystem' => 'RedHat',
-                      'operatingsystemrelease' => ['7', '8']
-                    }
+                      'operatingsystemrelease' => ['7', '8'],
+                    },
                   ]).each do |os, facts|
     context "when #{os}" do
       let(:facts) { facts }
@@ -31,7 +31,7 @@ describe 'xdmod::ondemand' do
               'userid' => '0001',
               'licensekey' => 'secret-key',
               'database_directory' => '/usr/share/GeoIP',
-              'productids' => ['GeoLite2-City']
+              'productids' => ['GeoLite2-City'],
             },
             update_timers: ['*-*-* 00:00:00'],
           )

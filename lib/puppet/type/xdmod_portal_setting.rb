@@ -52,7 +52,7 @@ Puppet::Type.newtype(:xdmod_portal_setting) do
 
   autorequire(:file) do
     [
-      '/etc/xdmod/portal_settings.ini'
+      '/etc/xdmod/portal_settings.ini',
     ]
   end
 end

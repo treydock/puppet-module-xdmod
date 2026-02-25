@@ -52,7 +52,7 @@ Puppet::Type.newtype(:xdmod_supremm_setting) do
 
   autorequire(:file) do
     [
-      '/etc/xdmod/portal_settings.d/supremm.ini'
+      '/etc/xdmod/portal_settings.d/supremm.ini',
     ]
   end
 end

@@ -8,12 +8,12 @@ shared_examples_for 'xdmod::supremm::compute::pcp' do |_facts|
                                                          socks: 'false',
                                                          log_dir: '/data/pcp-data/example/LOCALHOSTNAME',
                                                          args: '-r',
-                                                         config_path: '/etc/pcp/pmlogger/pmlogger-supremm.config')
+                                                         config_path: '/etc/pcp/pmlogger/pmlogger-supremm.config',)
   end
 
   it do
     is_expected.to contain_pcp__pmda('proc').with(has_package: 'false',
-                                                  config_path: '/var/lib/pcp/pmdas/proc/hotproc.conf')
+                                                  config_path: '/var/lib/pcp/pmdas/proc/hotproc.conf',)
   end
 
   it do
