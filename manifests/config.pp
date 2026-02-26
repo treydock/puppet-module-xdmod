@@ -223,20 +223,6 @@ class xdmod::config {
     }
   }
 
-  # Hack until merged and released:
-  # https://github.com/ubccr/xdmod/pull/1827
-  file_line { 'etl_overseer-db-log':
-    ensure             => 'present',
-    path               => '/usr/share/xdmod/tools/etl/etl_overseer.php',
-    line               => "    'db' => false,",
-    after              => "\s+'emailSubject'.+",
-    append_on_no_match => false,
-    before             => [
-      Exec['etl-bootstrap'],
-      Exec['etl-bootstrap-supremm'],
-    ],
-  }
-
   # List from /usr/share/xdmod/classes/OpenXdmod/Setup/DatabaseSetup.php
   # Under 'ETLv2 database bootstrap start'
   $etl_bootstrap_sections = [
@@ -253,14 +239,14 @@ class xdmod::config {
 
   exec { 'etl-bootstrap':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command     => "/usr/share/xdmod/tools/etl/etl_overseer.php ${etl_bootstrap_args.join(' ')}",
+    command     => "/usr/share/xdmod/tools/etl/etl_overseer.php --log-to-database no ${etl_bootstrap_args.join(' ')}",
     logoutput   => true,
     refreshonly => true,
     notify      => Exec['acl-config'],
   }
   exec { 'etl-bootstrap-supremm':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command     => '/usr/share/xdmod/tools/etl/etl_overseer.php -p supremm.bootstrap -p jobefficiency.bootstrap',
+    command     => '/usr/share/xdmod/tools/etl/etl_overseer.php --log-to-database no -p supremm.bootstrap -p jobefficiency.bootstrap',
     logoutput   => true,
     refreshonly => true,
     notify      => Exec['acl-config'],

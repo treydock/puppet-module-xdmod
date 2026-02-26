@@ -90,11 +90,9 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                   mode: '0644',)
   end
 
-  it { is_expected.to contain_file_line('etl_overseer-db-log') }
-
   it do
     expected_cmd = [
-      '/usr/share/xdmod/tools/etl/etl_overseer.php',
+      '/usr/share/xdmod/tools/etl/etl_overseer.php --log-to-database no',
       '-p supremm.bootstrap', '-p jobefficiency.bootstrap',
     ]
     is_expected.to contain_exec('etl-bootstrap-supremm').with(
@@ -108,7 +106,7 @@ shared_examples_for 'xdmod::config' do |_facts|
 
   it do
     expected_cmd = [
-      '/usr/share/xdmod/tools/etl/etl_overseer.php',
+      '/usr/share/xdmod/tools/etl/etl_overseer.php --log-to-database no',
       '-p xdb-bootstrap', '-p jobs-xdw-bootstrap', '-p xdw-bootstrap-storage',
       '-p shredder-bootstrap', '-p staging-bootstrap', '-p hpcdb-bootstrap',
       '-p acls-xdmod-management', '-p logger-bootstrap',
