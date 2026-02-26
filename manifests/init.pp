@@ -66,6 +66,10 @@
 #   AKRR database password
 # @param web_host
 #   FQDN of web host
+# @param db_host
+#   FQDN of db host
+# @param db_grant_host
+#   host part when assigning db grants
 # @param akrr_host
 #   FQDN of AKRR host
 # @param scheduler
@@ -291,16 +295,17 @@ class xdmod (
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
   $appkernels_package_url                     = $xdmod::params::appkernels_package_url,
   String $xdmod_supremm_package_name            = $xdmod::params::xdmod_supremm_package_name,
-  Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
-  $xdmod_supremm_package_url                  = $xdmod::params::xdmod_supremm_package_url,
+  Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl] $xdmod_supremm_package_url     = $xdmod::params::xdmod_supremm_package_url,
   String[1] $php_mongodb_version = '1.16.2',
-  String $database_host                   = '127.0.0.1',
-  Integer $database_port                   = 3306,
-  String $database_user                         = 'xdmod',
-  String $database_password                     = 'changeme',
-  String $akrr_database_user                    = 'akrr',
-  String $akrr_database_password                = 'changeme',
-  String $web_host                        = 'localhost',
+  String $database_host          = '127.0.0.1',
+  Integer $database_port         = 3306,
+  String $database_user          = 'xdmod',
+  String $database_password      = 'changeme',
+  String $akrr_database_user     = 'akrr',
+  String $akrr_database_password = 'changeme',
+  String $web_host               = 'localhost',
+  String $db_host                = $xdmod::params::db_host,
+  String $db_grant_host          = '%',
   String $akrr_host                       = 'localhost',
   Enum['slurm','torque','pbs','sge'] $scheduler = 'slurm',
   Optional[Variant[String, Array]]

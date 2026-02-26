@@ -1,13 +1,18 @@
 # @summary Manage XDMoD databases
 # @api private
-class xdmod::database {
-  include mysql::server
+class xdmod::database inherits xdmod::params {
+  if $xdmod::params::db_host.match(/'localhost'|'127.0.0.1'/) {
+    include mysql::server
+    } else {
+    include mysql::client
+  }
+
 
   Mysql::Db {
     ensure    => 'present',
     user      => $xdmod::database_user,
     password  => $xdmod::database_password,
-    host      => $xdmod::web_host,
+    host      => $xdmod::db_grant_host,
     charset   => 'latin1',
     collate   => 'latin1_swedish_ci',
     grant     => ['ALL'],
