@@ -31,8 +31,8 @@ This module is designed so that different hosts can run the various components o
 * puppet-module-xdmod **6.x** supports Open XDMoD **9.0.x**
 * puppet-module-xdmod **7.x** supports Open XDMoD **9.5.x**
 * puppet-module-xdmod **8.x** and **9.x** supports Open XDMoD **10.0.x**
-* puppet-module-xdmod **10.x** supports Open XDMoD **10.5.x**
-* puppet-module-xdmod **11.x** supports Open XDMoD **11.0.x**
+* puppet-module-xdmod **10.x** and **11.x** supports Open XDMoD **10.5.x**
+* puppet-module-xdmod **12.x** supports Open XDMoD **11.0.x**
 
 ### Optional Dependencies
 
