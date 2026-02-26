@@ -6,8 +6,8 @@ describe 'xdmod' do
   on_supported_os(supported_os: [
                     {
                       'operatingsystem' => 'RedHat',
-                      'operatingsystemrelease' => ['7', '8']
-                    }
+                      'operatingsystemrelease' => ['7', '8'],
+                    },
                   ]).each do |os, facts|
     context "when #{os}" do
       let(:facts) { facts }
@@ -109,9 +109,9 @@ describe 'xdmod' do
               'resource_id' => 1,
               'enabled' => true,
               'datasetmap' => 'pcp',
-              'pcp_log_dir' => '/data/pcp-data/example'
+              'pcp_log_dir' => '/data/pcp-data/example',
             }],
-            pcp_resource: 'example'
+            pcp_resource: 'example',
           }
         end
         let(:params) { default_params }
@@ -129,12 +129,12 @@ describe 'xdmod' do
                                                                  socks: 'false',
                                                                  log_dir: '/data/pcp-data/example/LOCALHOSTNAME',
                                                                  args: '-r',
-                                                                 config_path: '/etc/pcp/pmlogger/pmlogger-supremm.config')
+                                                                 config_path: '/etc/pcp/pmlogger/pmlogger-supremm.config',)
           end
 
           it do
             is_expected.to contain_pcp__pmda('proc').with(has_package: 'false',
-                                                          config_path: '/var/lib/pcp/pmdas/proc/hotproc.conf')
+                                                          config_path: '/var/lib/pcp/pmdas/proc/hotproc.conf',)
           end
 
           it do
@@ -156,7 +156,7 @@ describe 'xdmod' do
             {
               web: false,
               database: false,
-              compute: true
+              compute: true,
             }
           end
 

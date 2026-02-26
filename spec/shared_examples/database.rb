@@ -7,7 +7,7 @@ shared_examples_for 'xdmod::database' do |_facts|
     'mod_shredder',
     'moddb',
     'modw',
-    'modw_aggregates'
+    'modw_aggregates',
   ].each do |db|
     it "creates Mysql::Db[#{db}]" do
       is_expected.to contain_mysql__db(db).with(ensure: 'present',
@@ -16,7 +16,7 @@ shared_examples_for 'xdmod::database' do |_facts|
                                                 host: 'localhost',
                                                 charset: 'latin1',
                                                 collate: 'latin1_swedish_ci',
-                                                grant: ['ALL'])
+                                                grant: ['ALL'],)
     end
   end
 
@@ -67,7 +67,7 @@ shared_examples_for 'xdmod::database' do |_facts|
                                                              host: 'localhost',
                                                              charset: 'latin1',
                                                              collate: 'latin1_swedish_ci',
-                                                             grant: ['ALL'])
+                                                             grant: ['ALL'],)
     end
 
     it do
@@ -77,7 +77,7 @@ shared_examples_for 'xdmod::database' do |_facts|
                                                         host: 'localhost',
                                                         charset: 'latin1',
                                                         collate: 'latin1_swedish_ci',
-                                                        grant: ['ALL'])
+                                                        grant: ['ALL'],)
     end
 
     it do
@@ -88,7 +88,7 @@ shared_examples_for 'xdmod::database' do |_facts|
                                                          host: 'localhost',
                                                          charset: 'latin1',
                                                          collate: 'latin1_swedish_ci',
-                                                         grant: ['SELECT'])
+                                                         grant: ['SELECT'],)
     end
 
     context 'when akrr_host != web_host' do

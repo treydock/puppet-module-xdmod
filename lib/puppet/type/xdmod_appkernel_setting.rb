@@ -52,7 +52,7 @@ Puppet::Type.newtype(:xdmod_appkernel_setting) do
 
   autorequire(:file) do
     [
-      '/etc/xdmod/portal_settings.d/appkernels.ini'
+      '/etc/xdmod/portal_settings.d/appkernels.ini',
     ]
   end
 end

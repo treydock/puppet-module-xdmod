@@ -29,8 +29,8 @@ shared_examples_for 'xdmod::cron' do |_facts|
 
   it do
     verify_contents(catalogue, '/etc/cron.d/xdmod', [
-                      '1 0 * * * xdmod /usr/local/bin/xdmod-cron.sh'
-                    ])
+                      '1 0 * * * xdmod /usr/local/bin/xdmod-cron.sh',
+                    ],)
   end
 
   it { is_expected.to contain_file('/etc/cron.d/xdmod-storage').with_ensure('absent') }
@@ -41,16 +41,16 @@ shared_examples_for 'xdmod::cron' do |_facts|
     let(:params) do
       {
         resources: [
-          { 'resource' => 'example', 'name' => 'Example' }
-        ]
+          { 'resource' => 'example', 'name' => 'Example' },
+        ],
       }
     end
 
     it do
       verify_contents(catalogue, '/usr/local/bin/xdmod-cron.sh', [
                         '/usr/bin/xdmod-slurm-helper --quiet -r example',
-                        '/usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
-                      ])
+                        '/usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor',
+                      ],)
     end
   end
 
@@ -59,8 +59,8 @@ shared_examples_for 'xdmod::cron' do |_facts|
       {
         resources: [
           { 'resource' => 'example1', 'name' => 'Example1' },
-          { 'resource' => 'example2', 'name' => 'Example2' }
-        ]
+          { 'resource' => 'example2', 'name' => 'Example2' },
+        ],
       }
     end
 
@@ -68,23 +68,23 @@ shared_examples_for 'xdmod::cron' do |_facts|
       verify_contents(catalogue, '/usr/local/bin/xdmod-cron.sh', [
                         '/usr/bin/xdmod-slurm-helper --quiet -r example1',
                         '/usr/bin/xdmod-slurm-helper --quiet -r example2',
-                        '/usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
-                      ])
+                        '/usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor',
+                      ],)
     end
   end
 
   context 'when shredder_command defined as String' do
     let(:params) do
       {
-        shredder_command: '/usr/bin/xdmod-slurm-helper --quiet -r example'
+        shredder_command: '/usr/bin/xdmod-slurm-helper --quiet -r example',
       }
     end
 
     it do
       verify_contents(catalogue, '/usr/local/bin/xdmod-cron.sh', [
                         '/usr/bin/xdmod-slurm-helper --quiet -r example',
-                        '/usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
-                      ])
+                        '/usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor',
+                      ],)
     end
   end
 
@@ -93,8 +93,8 @@ shared_examples_for 'xdmod::cron' do |_facts|
       {
         shredder_command: [
           '/usr/bin/xdmod-slurm-helper --quiet -r example1',
-          '/usr/bin/xdmod-slurm-helper --quiet -r example2'
-        ]
+          '/usr/bin/xdmod-slurm-helper --quiet -r example2',
+        ],
       }
     end
 
@@ -102,15 +102,15 @@ shared_examples_for 'xdmod::cron' do |_facts|
       verify_contents(catalogue, '/usr/local/bin/xdmod-cron.sh', [
                         '/usr/bin/xdmod-slurm-helper --quiet -r example1',
                         '/usr/bin/xdmod-slurm-helper --quiet -r example2',
-                        '/usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor'
-                      ])
+                        '/usr/bin/xdmod-ingestor --quiet 2>&1 | logger -t xdmod-ingestor',
+                      ],)
     end
   end
 
   context 'when supremm enabled' do
     let(:params) do
       {
-        supremm: true
+        supremm: true,
       }
     end
 
@@ -122,7 +122,7 @@ shared_examples_for 'xdmod::cron' do |_facts|
       let(:params) do
         {
           supremm: true,
-          supremm_cron_index_archives: false
+          supremm_cron_index_archives: false,
         }
       end
 
@@ -135,7 +135,7 @@ shared_examples_for 'xdmod::cron' do |_facts|
   context 'when enable_ondemand => true' do
     let(:params) do
       {
-        enable_ondemand: true
+        enable_ondemand: true,
       }
     end
 

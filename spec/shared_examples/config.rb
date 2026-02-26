@@ -6,7 +6,7 @@ shared_examples_for 'xdmod::config' do |_facts|
     'database',
     'datawarehouse',
     'shredder',
-    'hpcdb'
+    'hpcdb',
   ].each do |section|
     it do
       is_expected.to contain_xdmod_portal_setting("#{section}/host").with(value: '127.0.0.1',
@@ -16,8 +16,8 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                             'File[/etc/xdmod/names.csv]',
                                                                             'Exec[etl-bootstrap]',
                                                                             'Exec[etl-bootstrap-supremm]',
-                                                                            'Exec[acl-config]'
-                                                                          ])
+                                                                            'Exec[acl-config]',
+                                                                          ],)
     end
 
     it do
@@ -28,8 +28,8 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                             'File[/etc/xdmod/names.csv]',
                                                                             'Exec[etl-bootstrap]',
                                                                             'Exec[etl-bootstrap-supremm]',
-                                                                            'Exec[acl-config]'
-                                                                          ])
+                                                                            'Exec[acl-config]',
+                                                                          ],)
     end
 
     it do
@@ -40,8 +40,8 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                             'File[/etc/xdmod/names.csv]',
                                                                             'Exec[etl-bootstrap]',
                                                                             'Exec[etl-bootstrap-supremm]',
-                                                                            'Exec[acl-config]'
-                                                                          ])
+                                                                            'Exec[acl-config]',
+                                                                          ],)
     end
 
     it do
@@ -53,8 +53,8 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                             'File[/etc/xdmod/names.csv]',
                                                                             'Exec[etl-bootstrap]',
                                                                             'Exec[etl-bootstrap-supremm]',
-                                                                            'Exec[acl-config]'
-                                                                          ])
+                                                                            'Exec[acl-config]',
+                                                                          ],)
     end
   end
 
@@ -80,14 +80,14 @@ shared_examples_for 'xdmod::config' do |_facts|
     is_expected.to contain_file('/etc/xdmod/portal_settings.ini').with(ensure: 'file',
                                                                        owner: 'apache',
                                                                        group: 'xdmod',
-                                                                       mode: '0440')
+                                                                       mode: '0440',)
   end
 
   it do
     is_expected.to contain_file('/etc/xdmod/hierarchy.json').with(ensure: 'file',
                                                                   owner: 'root',
                                                                   group: 'root',
-                                                                  mode: '0644')
+                                                                  mode: '0644',)
   end
 
   it { is_expected.to contain_file_line('etl_overseer-db-log') }
@@ -95,7 +95,7 @@ shared_examples_for 'xdmod::config' do |_facts|
   it do
     expected_cmd = [
       '/usr/share/xdmod/tools/etl/etl_overseer.php',
-      '-p supremm.bootstrap', '-p jobefficiency.bootstrap'
+      '-p supremm.bootstrap', '-p jobefficiency.bootstrap',
     ]
     is_expected.to contain_exec('etl-bootstrap-supremm').with(
       path: '/usr/bin:/bin:/usr/sbin:/sbin',
@@ -111,7 +111,7 @@ shared_examples_for 'xdmod::config' do |_facts|
       '/usr/share/xdmod/tools/etl/etl_overseer.php',
       '-p xdb-bootstrap', '-p jobs-xdw-bootstrap', '-p xdw-bootstrap-storage',
       '-p shredder-bootstrap', '-p staging-bootstrap', '-p hpcdb-bootstrap',
-      '-p acls-xdmod-management', '-p logger-bootstrap'
+      '-p acls-xdmod-management', '-p logger-bootstrap',
     ]
     is_expected.to contain_exec('etl-bootstrap').with(
       path: '/usr/bin:/bin:/usr/sbin:/sbin',
@@ -140,8 +140,8 @@ shared_examples_for 'xdmod::config' do |_facts|
                             '  "middle_level_info": "",',
                             '  "bottom_level_label": "Hierarchy Bottom Level",',
                             '  "bottom_level_info": ""',
-                            '}'
-                          ])
+                            '}',
+                          ],)
   end
 
   it do
@@ -149,7 +149,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                  owner: 'xdmod',
                                                                  group: 'root',
                                                                  mode: '0644',
-                                                                 content: nil)
+                                                                 content: nil,)
   end
 
   it do
@@ -161,7 +161,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                           owner: 'xdmod',
                                                                           group: 'root',
                                                                           mode: '0644',
-                                                                          content: nil)
+                                                                          content: nil,)
   end
 
   it do
@@ -173,7 +173,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                              owner: 'xdmod',
                                                              group: 'root',
                                                              mode: '0644',
-                                                             content: nil)
+                                                             content: nil,)
   end
 
   it do
@@ -196,7 +196,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                          rotate_every: 'week',
                                                          missingok: 'true',
                                                          compress: 'true',
-                                                         dateext: 'true')
+                                                         dateext: 'true',)
   end
 
   it do
@@ -212,7 +212,7 @@ shared_examples_for 'xdmod::config' do |_facts|
                                                                          rotate_every: 'week',
                                                                          missingok: 'true',
                                                                          compress: 'true',
-                                                                         dateext: 'true')
+                                                                         dateext: 'true',)
   end
 
   context 'when php_timezone defined' do
@@ -231,8 +231,8 @@ shared_examples_for 'xdmod::config' do |_facts|
     let(:params) do
       {
         resources: [
-          { 'resource' => 'example', 'name' => 'Example' }
-        ]
+          { 'resource' => 'example', 'name' => 'Example' },
+        ],
       }
     end
 
@@ -243,7 +243,7 @@ shared_examples_for 'xdmod::config' do |_facts|
         'resource' => 'example',
         'resource_type' => 'HPC',
         'name' => 'Example',
-        'pi_column' => 'account_name'
+        'pi_column' => 'account_name',
       }]
       expect(value).to eq(expected)
     end
@@ -254,8 +254,8 @@ shared_examples_for 'xdmod::config' do |_facts|
       {
         resources: [
           { 'resource' => 'example1', 'name' => 'Example1' },
-          { 'resource' => 'example2', 'name' => 'Example2' }
-        ]
+          { 'resource' => 'example2', 'name' => 'Example2' },
+        ],
       }
     end
 
@@ -267,14 +267,14 @@ shared_examples_for 'xdmod::config' do |_facts|
           'resource' => 'example1',
           'resource_type' => 'HPC',
           'name' => 'Example1',
-          'pi_column' => 'account_name'
+          'pi_column' => 'account_name',
         },
         {
           'resource' => 'example2',
           'resource_type' => 'HPC',
           'name' => 'Example2',
-          'pi_column' => 'account_name'
-        }
+          'pi_column' => 'account_name',
+        },
       ]
       expect(value).to eq(expected)
     end
@@ -284,8 +284,8 @@ shared_examples_for 'xdmod::config' do |_facts|
     let(:params) do
       {
         resource_specs: [
-          { 'resource' => 'example', 'processors' => 2, 'nodes' => 1, 'ppn' => 2 }
-        ]
+          { 'resource' => 'example', 'processors' => 2, 'nodes' => 1, 'ppn' => 2 },
+        ],
       }
     end
 
@@ -296,7 +296,7 @@ shared_examples_for 'xdmod::config' do |_facts|
         'resource' => 'example',
         'processors' => 2,
         'nodes' => 1,
-        'ppn' => 2
+        'ppn' => 2,
       ]
       expect(value).to eq(expected)
     end
@@ -311,7 +311,7 @@ shared_examples_for 'xdmod::config' do |_facts|
       is_expected.to contain_file('/etc/xdmod/portal_settings.d/appkernels.ini').with(ensure: 'file',
                                                                                       owner: 'xdmod',
                                                                                       group: 'apache',
-                                                                                      mode: '0640')
+                                                                                      mode: '0640',)
     end
 
     it { is_expected.to contain_xdmod_appkernel_setting('features/appkernels').with_value('on') }
@@ -332,7 +332,7 @@ shared_examples_for 'xdmod::config' do |_facts|
       is_expected.to contain_file('/etc/cron.d/xdmod-appkernels').with(ensure: 'file',
                                                                        owner: 'root',
                                                                        group: 'root',
-                                                                       mode: '0644')
+                                                                       mode: '0644',)
     end
   end
 
@@ -340,7 +340,7 @@ shared_examples_for 'xdmod::config' do |_facts|
     let(:params) do
       {
         enable_supremm: true,
-        supremm_resources: [{ 'resource' => 'example', 'resource_id' => 1, 'pcp_log_dir' => '/dne' }]
+        supremm_resources: [{ 'resource' => 'example', 'resource_id' => 1, 'pcp_log_dir' => '/dne' }],
       }
     end
 
@@ -357,8 +357,8 @@ shared_examples_for 'xdmod::config' do |_facts|
           'resource_id' => 1,
           'enabled' => true,
           'datasetmap' => 'pcp',
-          'hardware' => { 'gpfs' => '' }
-        ]
+          'hardware' => { 'gpfs' => '' },
+        ],
       }
       expect(value).to eq(expected)
     end
@@ -369,8 +369,8 @@ shared_examples_for 'xdmod::config' do |_facts|
           enable_supremm: true,
           supremm_resources: [
             { 'resource' => 'example', 'resource_id' => 1, 'pcp_log_dir' => '/dne', 'datasetmap_source' => 'puppet:///modules/site/pcp-test.js' },
-            { 'resource' => 'foo', 'resource_id' => 2, 'pcp_log_dir' => '/dne', 'datasetmap_source' => 'puppet:///modules/site/pcp-test.js' }
-          ]
+            { 'resource' => 'foo', 'resource_id' => 2, 'pcp_log_dir' => '/dne', 'datasetmap_source' => 'puppet:///modules/site/pcp-test.js' },
+          ],
         }
       end
 
@@ -394,16 +394,16 @@ shared_examples_for 'xdmod::config' do |_facts|
               'resource_id' => 1,
               'enabled' => true,
               'datasetmap' => 'pcp-test',
-              'hardware' => { 'gpfs' => '' }
+              'hardware' => { 'gpfs' => '' },
             },
             {
               'resource' => 'foo',
               'resource_id' => 2,
               'enabled' => true,
               'datasetmap' => 'pcp-test',
-              'hardware' => { 'gpfs' => '' }
-            }
-          ]
+              'hardware' => { 'gpfs' => '' },
+            },
+          ],
         }
         expect(value).to eq(expected)
       end
@@ -413,7 +413,7 @@ shared_examples_for 'xdmod::config' do |_facts|
       let(:params) do
         {
           enable_supremm: true,
-          supremm_resources: [{ 'resource' => 'example', 'resource_id' => 1, 'collection' => 'resource_1', 'pcp_log_dir' => '/dne' }]
+          supremm_resources: [{ 'resource' => 'example', 'resource_id' => 1, 'collection' => 'resource_1', 'pcp_log_dir' => '/dne' }],
         }
       end
 
@@ -427,8 +427,8 @@ shared_examples_for 'xdmod::config' do |_facts|
             'collection' => 'resource_1',
             'enabled' => true,
             'datasetmap' => 'pcp',
-            'hardware' => { 'gpfs' => '' }
-          ]
+            'hardware' => { 'gpfs' => '' },
+          ],
         }
         expect(value).to eq(expected)
       end
@@ -440,8 +440,8 @@ shared_examples_for 'xdmod::config' do |_facts|
       {
         hierarchy_levels: {
           'top' => { 'label' => 'Top', 'info' => 'Top' },
-          'middle' => { 'label' => 'Middle', 'info' => 'Middle' }
-        }
+          'middle' => { 'label' => 'Middle', 'info' => 'Middle' },
+        },
       }
     end
 
@@ -454,8 +454,8 @@ shared_examples_for 'xdmod::config' do |_facts|
                               '  "middle_level_info": "Middle",',
                               '  "bottom_level_label": "Hierarchy Bottom Level",',
                               '  "bottom_level_info": ""',
-                              '}'
-                            ])
+                              '}',
+                            ],)
     end
   end
 
@@ -468,8 +468,8 @@ shared_examples_for 'xdmod::config' do |_facts|
           'div1,Division 1,ou1',
           '"div2","Division 2","ou2"',
           'dept1,Department 1,div1',
-          '"dept2","Department 2","div2"'
-        ]
+          '"dept2","Department 2","div2"',
+        ],
       }
     end
 
@@ -480,15 +480,15 @@ shared_examples_for 'xdmod::config' do |_facts|
                               '"div1","Division 1","ou1"',
                               '"div2","Division 2","ou2"',
                               '"dept1","Department 1","div1"',
-                              '"dept2","Department 2","div2"'
-                            ])
+                              '"dept2","Department 2","div2"',
+                            ],)
     end
 
     it do
       is_expected.to contain_exec('xdmod-import-csv-hierarchy').with(path: '/sbin:/bin:/usr/sbin:/usr/bin',
                                                                      command: 'xdmod-import-csv -t hierarchy -i /etc/xdmod/hierarchy.csv',
                                                                      refreshonly: 'true',
-                                                                     subscribe: 'File[/etc/xdmod/hierarchy.csv]')
+                                                                     subscribe: 'File[/etc/xdmod/hierarchy.csv]',)
     end
 
     context 'when group_to_hierarchy defined' do
@@ -500,13 +500,13 @@ shared_examples_for 'xdmod::config' do |_facts|
             'div1,Division 1,ou1',
             '"div2","Division 2","ou2"',
             'dept1,Department 1,div1',
-            '"dept2","Department 2","div2"'
+            '"dept2","Department 2","div2"',
           ],
           group_to_hierarchy: {
             'group1' => 'dept1',
             'group2' => 'dept1',
-            'group3' => 'dept2'
-          }
+            'group3' => 'dept2',
+          },
         }
       end
 
@@ -520,8 +520,8 @@ shared_examples_for 'xdmod::config' do |_facts|
         group_to_hierarchy: {
           'group1' => 'dept1',
           'group2' => 'dept1',
-          'group3' => 'dept2'
-        }
+          'group3' => 'dept2',
+        },
       }
     end
 
@@ -529,15 +529,15 @@ shared_examples_for 'xdmod::config' do |_facts|
       verify_exact_contents(catalogue, '/etc/xdmod/group-to-hierarchy.csv', [
                               '"group1","dept1"',
                               '"group2","dept1"',
-                              '"group3","dept2"'
-                            ])
+                              '"group3","dept2"',
+                            ],)
     end
 
     it do
       is_expected.to contain_exec('xdmod-import-csv-group-to-hierarchy').with(path: '/sbin:/bin:/usr/sbin:/usr/bin',
                                                                               command: 'xdmod-import-csv -t group-to-hierarchy -i /etc/xdmod/group-to-hierarchy.csv',
                                                                               refreshonly: 'true',
-                                                                              subscribe: 'File[/etc/xdmod/group-to-hierarchy.csv]')
+                                                                              subscribe: 'File[/etc/xdmod/group-to-hierarchy.csv]',)
     end
   end
 
@@ -546,23 +546,23 @@ shared_examples_for 'xdmod::config' do |_facts|
       {
         user_pi_names: [
           'jdoe,John,Doe',
-          'mygroup,,"My Group"'
-        ]
+          'mygroup,,"My Group"',
+        ],
       }
     end
 
     it do
       verify_exact_contents(catalogue, '/etc/xdmod/names.csv', [
                               'jdoe,John,Doe',
-                              'mygroup,,"My Group"'
-                            ])
+                              'mygroup,,"My Group"',
+                            ],)
     end
 
     it do
       is_expected.to contain_exec('xdmod-import-csv-names').with(path: '/sbin:/bin:/usr/sbin:/usr/bin',
                                                                  command: 'xdmod-import-csv -t names -i /etc/xdmod/names.csv',
                                                                  refreshonly: 'true',
-                                                                 subscribe: 'File[/etc/xdmod/names.csv]')
+                                                                 subscribe: 'File[/etc/xdmod/names.csv]',)
     end
   end
 
@@ -570,8 +570,8 @@ shared_examples_for 'xdmod::config' do |_facts|
     let(:params) do
       {
         resources: [
-          { resource: 'home', name: 'Home', resource_type: 'Disk', shred_directory: '/shared/quotas/home' }
-        ]
+          { resource: 'home', name: 'Home', resource_type: 'Disk', shred_directory: '/shared/quotas/home' },
+        ],
       }
     end
 
@@ -580,8 +580,8 @@ shared_examples_for 'xdmod::config' do |_facts|
 
     it 'has storage ingest contents' do
       verify_contents(catalogue, '/usr/local/bin/xdmod-storage-ingest.sh', [
-                        '  xdmod-shredder -f storage -r home -d /shared/quotas/home'
-                      ])
+                        '  xdmod-shredder -f storage -r home -d /shared/quotas/home',
+                      ],)
     end
   end
 
@@ -589,11 +589,11 @@ shared_examples_for 'xdmod::config' do |_facts|
     let(:params) do
       {
         resources: [
-          { 'resource' => 'ondemand', 'name' => 'OnDemand', 'resource_type' => 'Gateway' }
+          { 'resource' => 'ondemand', 'name' => 'OnDemand', 'resource_type' => 'Gateway' },
         ],
         resource_specs: [
-          { 'resource' => 'example', 'processors' => 2, 'nodes' => 1, 'ppn' => 2 }
-        ]
+          { 'resource' => 'example', 'processors' => 2, 'nodes' => 1, 'ppn' => 2 },
+        ],
       }
     end
 
@@ -603,7 +603,7 @@ shared_examples_for 'xdmod::config' do |_facts|
       expected = [{
         'resource' => 'ondemand',
         'resource_type' => 'Gateway',
-        'name' => 'OnDemand'
+        'name' => 'OnDemand',
       }]
       expect(value).to eq(expected)
     end
@@ -615,14 +615,14 @@ shared_examples_for 'xdmod::config' do |_facts|
         'resource' => 'example',
         'processors' => 2,
         'nodes' => 1,
-        'ppn' => 2
+        'ppn' => 2,
       },
                   {
                     'resource' => 'ondemand',
                     'processors' => 1,
                     'nodes' => 1,
-                    'ppn' => 1
-                  }]
+                    'ppn' => 1,
+                  },]
       expect(value).to eq(expected)
     end
   end

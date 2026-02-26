@@ -1,5 +1,5 @@
 HOSTS:
-  rocky-8:
+  el8:
     roles:
       - agent
       - compute

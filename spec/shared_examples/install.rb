@@ -49,7 +49,7 @@ shared_examples_for 'xdmod::install' do |facts|
       is_expected.to contain_package('xdmod').only_with(ensure: 'present',
                                                         name: 'xdmod',
                                                         require: ['Yumrepo[local]', 'Yumrepo[epel]'],
-                                                        notify: 'Exec[etl-bootstrap]')
+                                                        notify: 'Exec[etl-bootstrap]',)
     end
 
     it { is_expected.not_to contain_package('xdmod-appkernels') }
@@ -60,7 +60,7 @@ shared_examples_for 'xdmod::install' do |facts|
       it do
         is_expected.to contain_package('xdmod-appkernels').only_with(ensure: 'present',
                                                                      name: 'xdmod-appkernels',
-                                                                     require: ['Yumrepo[local]', 'Yumrepo[epel]'])
+                                                                     require: ['Yumrepo[local]', 'Yumrepo[epel]'],)
       end
     end
 
@@ -71,7 +71,7 @@ shared_examples_for 'xdmod::install' do |facts|
         is_expected.to contain_package('xdmod-supremm').only_with(ensure: 'present',
                                                                   name: 'xdmod-supremm',
                                                                   require: ['Yumrepo[local]', 'Yumrepo[epel]'],
-                                                                  notify: 'Exec[etl-bootstrap-supremm]')
+                                                                  notify: 'Exec[etl-bootstrap-supremm]',)
       end
     end
   end

@@ -5,7 +5,7 @@ shared_examples_for 'xdmod::config::simplesamlphp' do |_facts|
     '/etc/xdmod/simplesamlphp',
     '/etc/xdmod/simplesamlphp/config',
     '/etc/xdmod/simplesamlphp/metadata',
-    '/etc/xdmod/simplesamlphp/cert'
+    '/etc/xdmod/simplesamlphp/cert',
   ]
 
   dirs.each do |dir|

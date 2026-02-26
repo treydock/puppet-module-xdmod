@@ -18,8 +18,8 @@ shared_examples_for 'xdmod::supremm::config' do |_facts|
             datasource: 'prometheus',
             hardware: { gpfs: 'ess', network: 'em1' },
             batchscript: { path: '/scripts', timestamp_mode: 'start' },
-            prom_host: 'foo.example.com:9090'
-          }
+            prom_host: 'foo.example.com:9090',
+          },
         ],
       )
     end

@@ -52,7 +52,7 @@ Puppet::Type.newtype(:xdmod_ondemand_setting) do
 
   autorequire(:file) do
     [
-      '/etc/xdmod/portal_settings.d/ondemand.ini'
+      '/etc/xdmod/portal_settings.d/ondemand.ini',
     ]
   end
 end

@@ -251,5 +251,4 @@ xdmod::supremm_database: true
 
 This module has been tested on:
 
-* RedHat/CentOS 7
 * RedHat/Rocky/AlmaLinux 8
