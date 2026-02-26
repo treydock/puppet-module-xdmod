@@ -1,10 +1,10 @@
 # @summary XDMoD module defaults
 # @api private
 class xdmod::params {
-  $version                  = '10.5.0'
-  $xdmod_appkernels_version = '10.5.0'
-  $xdmod_supremm_version    = '10.5.0'
-  $xdmod_ondemand_version   = '10.5.0'
+  $version                  = '11.0.2'
+  $xdmod_appkernels_version = '11.0.0'
+  $xdmod_supremm_version    = '11.0.1'
+  $xdmod_ondemand_version   = '11.0.1'
   $sender_email       = "xdmod@xdmod.${facts['networking']['domain']}"
   $apache_vhost_name  = "xdmod.${facts['networking']['domain']}"
   $portal_settings    = {}
@@ -30,13 +30,13 @@ class xdmod::params {
         $compute_only = false
       }
       $package_name               = 'xdmod'
-      $package_url                = "https://github.com/ubccr/xdmod/releases/download/vVERSION-1.0/xdmod-VERSION-1.0.el${facts['os']['release']['major']}.noarch.rpm"
+      $package_url                = "https://github.com/ubccr/xdmod/releases/download/vVERSION-3/xdmod-VERSION-3.el${facts['os']['release']['major']}.noarch.rpm"
       $appkernels_package_name    = 'xdmod-appkernels'
       $appkernels_package_url     = "https://github.com/ubccr/xdmod-appkernels/releases/download/vVERSION-1.0/xdmod-appkernels-VERSION-1.0.el${facts['os']['release']['major']}.noarch.rpm"
       $xdmod_supremm_package_name = 'xdmod-supremm'
-      $xdmod_supremm_package_url  = "https://github.com/ubccr/xdmod-supremm/releases/download/vVERSION-1.0/xdmod-supremm-VERSION-1.0.el${facts['os']['release']['major']}.noarch.rpm"
+      $xdmod_supremm_package_url  = "https://github.com/ubccr/xdmod-supremm/releases/download/vVERSION-1/xdmod-supremm-VERSION-1.el${facts['os']['release']['major']}.noarch.rpm"
       $supremm_package_url        = "https://github.com/ubccr/supremm/releases/download/SUPREMM_VERSION/supremm-SUPREMM_VERSION-1.el${facts['os']['release']['major']}.x86_64.rpm"
-      $ondemand_package_url       = "https://github.com/ubccr/xdmod-ondemand/releases/download/vVERSION-1.0/xdmod-ondemand-VERSION-1.0.el${facts['os']['release']['major']}.noarch.rpm"
+      $ondemand_package_url       = "https://github.com/ubccr/xdmod-ondemand/releases/download/vVERSION-1/xdmod-ondemand-VERSION-1.el${facts['os']['release']['major']}.noarch.rpm"
     }
 
     default: {

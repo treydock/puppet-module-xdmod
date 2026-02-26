@@ -32,6 +32,7 @@ This module is designed so that different hosts can run the various components o
 * puppet-module-xdmod **7.x** supports Open XDMoD **9.5.x**
 * puppet-module-xdmod **8.x** and **9.x** supports Open XDMoD **10.0.x**
 * puppet-module-xdmod **10.x** supports Open XDMoD **10.5.x**
+* puppet-module-xdmod **11.x** supports Open XDMoD **11.0.x**
 
 ### Optional Dependencies
 
@@ -72,7 +73,7 @@ include xdmod
 Examples of some hiera values that may be useful to set globally
 
 ```yaml
-xdmod::version: '10.5.0'
+xdmod::version: '11.0.2'
 # Disable roles that are enabled by default
 xdmod::web: false
 xdmod::database: false

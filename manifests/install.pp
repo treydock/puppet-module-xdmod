@@ -8,11 +8,19 @@ class xdmod::install {
       enable_only => true,
       provider    => 'dnfmodule',
     }
+    package { 'php-module':
+      ensure      => '7.4',
+      name        => 'php',
+      enable_only => true,
+      provider    => 'dnfmodule',
+    }
 
     if $xdmod::local_repo_name {
       Package['nodejs-module'] -> Package['xdmod']
+      Package['php-module'] -> Package['xdmod']
     } else {
       Package['nodejs-module'] -> Yum::Install[$xdmod::package_name]
+      Package['php-module'] -> Yum::Install[$xdmod::package_name]
     }
 
     $mongodb_dependencies = [
@@ -25,7 +33,6 @@ class xdmod::install {
       }
     }
     php::extension { 'mongodb':
-      # 1.17+ requires newer PHP than what's default for RHEL8
       ensure     => $xdmod::php_mongodb_version,
       provider   => 'pecl',
       ini_prefix => '40-',
