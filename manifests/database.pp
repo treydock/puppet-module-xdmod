@@ -20,9 +20,7 @@ class xdmod::database {
   mysql::db { 'modw': }
   mysql::db { 'modw_aggregates': }
   mysql::db { 'modw_filters': }
-  if $xdmod::enable_cloud_realm {
-    mysql::db { 'modw_cloud': }
-  }
+  mysql::db { 'modw_cloud': }
   if $xdmod::enable_ondemand {
     mysql::db { 'modw_ondemand': }
   }
