@@ -8,8 +8,8 @@ class xdmod::database {
     user      => $xdmod::database_user,
     password  => $xdmod::database_password,
     host      => $xdmod::web_host,
-    charset   => 'latin1',
-    collate   => 'latin1_swedish_ci',
+    charset   => 'utf8',
+    collate   => 'utf8_unicode_ci',
     grant     => ['ALL'],
   }
 

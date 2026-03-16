@@ -15,8 +15,8 @@ shared_examples_for 'xdmod::database' do |_facts|
                                                 user: 'xdmod',
                                                 password: 'changeme',
                                                 host: 'localhost',
-                                                charset: 'latin1',
-                                                collate: 'latin1_swedish_ci',
+                                                charset: 'utf8',
+                                                collate: 'utf8_unicode_ci',
                                                 grant: ['ALL'],)
     end
   end
@@ -34,8 +34,8 @@ shared_examples_for 'xdmod::database' do |_facts|
         user: 'xdmod',
         password: 'changeme',
         host: 'localhost',
-        charset: 'latin1',
-        collate: 'latin1_swedish_ci',
+        charset: 'utf8',
+        collate: 'utf8_unicode_ci',
         grant: ['ALL'],
       )
     end
@@ -49,8 +49,8 @@ shared_examples_for 'xdmod::database' do |_facts|
                                                              user: 'akrr',
                                                              password: 'changeme',
                                                              host: 'localhost',
-                                                             charset: 'latin1',
-                                                             collate: 'latin1_swedish_ci',
+                                                             charset: 'utf8',
+                                                             collate: 'utf8_unicode_ci',
                                                              grant: ['ALL'],)
     end
 
@@ -59,8 +59,8 @@ shared_examples_for 'xdmod::database' do |_facts|
                                                         user: 'akrr',
                                                         password: 'changeme',
                                                         host: 'localhost',
-                                                        charset: 'latin1',
-                                                        collate: 'latin1_swedish_ci',
+                                                        charset: 'utf8',
+                                                        collate: 'utf8_unicode_ci',
                                                         grant: ['ALL'],)
     end
 
@@ -70,8 +70,8 @@ shared_examples_for 'xdmod::database' do |_facts|
                                                          user: 'akrr',
                                                          password: 'changeme',
                                                          host: 'localhost',
-                                                         charset: 'latin1',
-                                                         collate: 'latin1_swedish_ci',
+                                                         charset: 'utf8',
+                                                         collate: 'utf8_unicode_ci',
                                                          grant: ['SELECT'],)
     end
 
