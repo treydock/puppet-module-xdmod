@@ -3,6 +3,7 @@ type Xdmod::Resource = Struct[{
   name => String,
   Optional[description] => String,
   Optional[resource_type] => String,
+  Optional[resource_allocation_type] => String,
   Optional[pi_column] => String,
   Optional[timezone] => String,
   Optional[shared_jobs] => Boolean,

@@ -284,6 +284,11 @@ class xdmod::config {
       Undef   => 'HPC',
       default => $r['resource_type'],
     }
+    if $r['resource_allocation_type'] =~ Undef {
+      $resource_allocation_type = 'CPU'
+    } else {
+      $resource_allocation_type = $r['resource_allocation_type']
+    }
     if $resource_type == 'HPC' {
       $pi_column = $r['pi_column'] ? {
         Undef   => $xdmod::pi_column,
@@ -297,6 +302,7 @@ class xdmod::config {
         'name' => $r['name'],
         'description' => $r['description'],
         'resource_type' => $resource_type,
+        'resource_allocation_type' => $resource_allocation_type,
         'pi_column' => $pi_column,
         'timezone' => $r['timezone'],
         'shared_jobs' => $r['shared_jobs'],
@@ -310,7 +316,37 @@ class xdmod::config {
       'ppn' => 1,
     }
   }
-  $resource_specs = $xdmod::resource_specs + $ondemand_resource_specs
+  $resource_specs = $xdmod::resource_specs.map |$r| {
+    if $r['gpu_node_count'] =~ Undef {
+      $gpu_node_count = 0
+    } else {
+      $gpu_node_count = $r['gpu_node_count']
+    }
+    if $r['gpu_processor_count'] =~ Undef {
+      $gpu_processor_count = 0
+    } else {
+      $gpu_processor_count = $r['gpu_processor_count']
+    }
+    if $r['gpu_ppn'] =~ Undef {
+      $gpu_ppn = 0
+    } else {
+      $gpu_ppn = $r['gpu_ppn']
+    }
+    $data = {
+      'resource' => $r['resource'],
+      'start_date' => $r['start_date'],
+      'end_date' => $r['end_date'],
+      'processors' => $r['processors'],
+      'nodes' => $r['nodes'],
+      'ppn' => $r['ppn'],
+      'cpu_node_count' => $r['cpu_node_count'],
+      'cpu_processor_count' => $r['cpu_processor_count'],
+      'cpu_ppn' => $r['cpu_ppn'],
+      'gpu_node_count' => $gpu_node_count,
+      'gpu_processor_count' => $gpu_processor_count,
+      'gpu_ppn' => $gpu_ppn,
+    }
+  } + $ondemand_resource_specs
 
   file { '/etc/xdmod/resources.json':
     ensure  => 'file',

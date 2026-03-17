@@ -240,6 +240,7 @@ shared_examples_for 'xdmod::config' do |_facts|
       expected = [{
         'resource' => 'example',
         'resource_type' => 'HPC',
+        'resource_allocation_type' => 'CPU',
         'name' => 'Example',
         'pi_column' => 'account_name',
       }]
@@ -264,12 +265,14 @@ shared_examples_for 'xdmod::config' do |_facts|
         {
           'resource' => 'example1',
           'resource_type' => 'HPC',
+          'resource_allocation_type' => 'CPU',
           'name' => 'Example1',
           'pi_column' => 'account_name',
         },
         {
           'resource' => 'example2',
           'resource_type' => 'HPC',
+          'resource_allocation_type' => 'CPU',
           'name' => 'Example2',
           'pi_column' => 'account_name',
         },
@@ -292,9 +295,17 @@ shared_examples_for 'xdmod::config' do |_facts|
       value = JSON.parse(content)
       expected = [
         'resource' => 'example',
+        'start_date' => nil,
+        'end_date' => nil,
         'processors' => 2,
         'nodes' => 1,
         'ppn' => 2,
+        'cpu_node_count' => nil,
+        'cpu_ppn' => nil,
+        'cpu_processor_count' => nil,
+        'gpu_node_count' => 0,
+        'gpu_ppn' => 0,
+        'gpu_processor_count' => 0,
       ]
       expect(value).to eq(expected)
     end
@@ -601,6 +612,7 @@ shared_examples_for 'xdmod::config' do |_facts|
       expected = [{
         'resource' => 'ondemand',
         'resource_type' => 'Gateway',
+        'resource_allocation_type' => 'CPU',
         'name' => 'OnDemand',
       }]
       expect(value).to eq(expected)
@@ -609,18 +621,28 @@ shared_examples_for 'xdmod::config' do |_facts|
     it do
       content = catalogue.resource('file', '/etc/xdmod/resource_specs.json').send(:parameters)[:content]
       value = JSON.parse(content)
-      expected = [{
-        'resource' => 'example',
-        'processors' => 2,
-        'nodes' => 1,
-        'ppn' => 2,
-      },
-                  {
-                    'resource' => 'ondemand',
-                    'processors' => 1,
-                    'nodes' => 1,
-                    'ppn' => 1,
-                  },]
+      expected = [
+        {
+          'resource' => 'example',
+          'start_date' => nil,
+          'end_date' => nil,
+          'processors' => 2,
+          'nodes' => 1,
+          'ppn' => 2,
+          'cpu_node_count' => nil,
+          'cpu_ppn' => nil,
+          'cpu_processor_count' => nil,
+          'gpu_node_count' => 0,
+          'gpu_ppn' => 0,
+          'gpu_processor_count' => 0,
+        },
+        {
+          'resource' => 'ondemand',
+          'processors' => 1,
+          'nodes' => 1,
+          'ppn' => 1,
+        },
+      ]
       expect(value).to eq(expected)
     end
   end
