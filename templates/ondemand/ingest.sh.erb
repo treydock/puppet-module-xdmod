@@ -6,14 +6,13 @@ set -e
 
 BASE_CMD="xdmod-ondemand-ingestor"
 
-OOD_HOSTNAME="$1"
-RESOURCE="$2"
-LOG_DIRECTORY="$3"
-if [ "x${OOD_HOSTNAME}" != "x" -a "x${RESOURCE}" != "x" -a "x${LOG_DIRECTORY}" != "x" ]; then
-  $BASE_CMD -d $LOG_DIRECTORY -r $RESOURCE -u $OOD_HOSTNAME
+RESOURCE="$1"
+LOG_DIRECTORY="$2"
+if [ "x${RESOURCE}" != "x" -a "x${LOG_DIRECTORY}" != "x" ]; then
+  $BASE_CMD -d $LOG_DIRECTORY -r $RESOURCE
 else
 <% scope['xdmod::ondemand_resources'].each do |resource| -%>
   <%- next if resource['shred_directory'].nil? -%>
-  $BASE_CMD -d <%= resource['shred_directory'] %> -r <%= resource['resource'] %> -u <%= resource['hostname'] %>
+  $BASE_CMD -d <%= resource['shred_directory'] %> -r <%= resource['resource'] %>
 <%- end -%>
 fi

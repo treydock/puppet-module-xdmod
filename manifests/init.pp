@@ -22,8 +22,6 @@
 #   Enable XDMoD AppKernel support
 # @param enable_supremm
 #   Enable XDMod SUPReMM support
-# @param enable_cloud_realm
-#   Enable the XDMoD cloud realm by adding the necessary database
 # @param enable_ondemand
 #   Enable the XDMOD OnDemand plugin and necessary database
 # @param local_repo_name
@@ -276,7 +274,6 @@ class xdmod (
 
   Boolean $enable_appkernel                     = false,
   Boolean $enable_supremm                       = false,
-  Boolean $enable_cloud_realm                   = false,
   Boolean $enable_ondemand                      = false,
   Optional[String] $local_repo_name             = undef,
   Boolean $manage_epel                          = true,
@@ -293,7 +290,7 @@ class xdmod (
   String $xdmod_supremm_package_name            = $xdmod::params::xdmod_supremm_package_name,
   Variant[Stdlib::HTTPSUrl, Stdlib::HTTPUrl]
   $xdmod_supremm_package_url                  = $xdmod::params::xdmod_supremm_package_url,
-  String[1] $php_mongodb_version = '1.16.2',
+  String[1] $php_mongodb_version = '1.18.1',
   String $database_host                   = '127.0.0.1',
   Integer $database_port                   = 3306,
   String $database_user                         = 'xdmod',

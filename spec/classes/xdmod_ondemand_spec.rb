@@ -6,7 +6,7 @@ describe 'xdmod::ondemand' do
   on_supported_os(supported_os: [
                     {
                       'operatingsystem' => 'RedHat',
-                      'operatingsystemrelease' => ['7', '8'],
+                      'operatingsystemrelease' => ['8'],
                     },
                   ]).each do |os, facts|
     context "when #{os}" do

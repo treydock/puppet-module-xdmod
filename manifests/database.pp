@@ -8,8 +8,8 @@ class xdmod::database {
     user      => $xdmod::database_user,
     password  => $xdmod::database_password,
     host      => $xdmod::web_host,
-    charset   => 'latin1',
-    collate   => 'latin1_swedish_ci',
+    charset   => 'utf8',
+    collate   => 'utf8_unicode_ci',
     grant     => ['ALL'],
   }
 
@@ -20,9 +20,7 @@ class xdmod::database {
   mysql::db { 'modw': }
   mysql::db { 'modw_aggregates': }
   mysql::db { 'modw_filters': }
-  if $xdmod::enable_cloud_realm {
-    mysql::db { 'modw_cloud': }
-  }
+  mysql::db { 'modw_cloud': }
   if $xdmod::enable_ondemand {
     mysql::db { 'modw_ondemand': }
   }

@@ -223,20 +223,6 @@ class xdmod::config {
     }
   }
 
-  # Hack until merged and released:
-  # https://github.com/ubccr/xdmod/pull/1827
-  file_line { 'etl_overseer-db-log':
-    ensure             => 'present',
-    path               => '/usr/share/xdmod/tools/etl/etl_overseer.php',
-    line               => "    'db' => false,",
-    after              => "\s+'emailSubject'.+",
-    append_on_no_match => false,
-    before             => [
-      Exec['etl-bootstrap'],
-      Exec['etl-bootstrap-supremm'],
-    ],
-  }
-
   # List from /usr/share/xdmod/classes/OpenXdmod/Setup/DatabaseSetup.php
   # Under 'ETLv2 database bootstrap start'
   $etl_bootstrap_sections = [
@@ -253,14 +239,14 @@ class xdmod::config {
 
   exec { 'etl-bootstrap':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command     => "/usr/share/xdmod/tools/etl/etl_overseer.php ${etl_bootstrap_args.join(' ')}",
+    command     => "/usr/share/xdmod/tools/etl/etl_overseer.php --log-to-database no ${etl_bootstrap_args.join(' ')}",
     logoutput   => true,
     refreshonly => true,
     notify      => Exec['acl-config'],
   }
   exec { 'etl-bootstrap-supremm':
     path        => '/usr/bin:/bin:/usr/sbin:/sbin',
-    command     => '/usr/share/xdmod/tools/etl/etl_overseer.php -p supremm.bootstrap -p jobefficiency.bootstrap',
+    command     => '/usr/share/xdmod/tools/etl/etl_overseer.php --log-to-database no -p supremm.bootstrap -p jobefficiency.bootstrap',
     logoutput   => true,
     refreshonly => true,
     notify      => Exec['acl-config'],
@@ -298,6 +284,11 @@ class xdmod::config {
       Undef   => 'HPC',
       default => $r['resource_type'],
     }
+    if $r['resource_allocation_type'] =~ Undef {
+      $resource_allocation_type = 'CPU'
+    } else {
+      $resource_allocation_type = $r['resource_allocation_type']
+    }
     if $resource_type == 'HPC' {
       $pi_column = $r['pi_column'] ? {
         Undef   => $xdmod::pi_column,
@@ -311,6 +302,7 @@ class xdmod::config {
         'name' => $r['name'],
         'description' => $r['description'],
         'resource_type' => $resource_type,
+        'resource_allocation_type' => $resource_allocation_type,
         'pi_column' => $pi_column,
         'timezone' => $r['timezone'],
         'shared_jobs' => $r['shared_jobs'],
@@ -324,7 +316,37 @@ class xdmod::config {
       'ppn' => 1,
     }
   }
-  $resource_specs = $xdmod::resource_specs + $ondemand_resource_specs
+  $resource_specs = $xdmod::resource_specs.map |$r| {
+    if $r['gpu_node_count'] =~ Undef {
+      $gpu_node_count = 0
+    } else {
+      $gpu_node_count = $r['gpu_node_count']
+    }
+    if $r['gpu_processor_count'] =~ Undef {
+      $gpu_processor_count = 0
+    } else {
+      $gpu_processor_count = $r['gpu_processor_count']
+    }
+    if $r['gpu_ppn'] =~ Undef {
+      $gpu_ppn = 0
+    } else {
+      $gpu_ppn = $r['gpu_ppn']
+    }
+    $data = {
+      'resource' => $r['resource'],
+      'start_date' => $r['start_date'],
+      'end_date' => $r['end_date'],
+      'processors' => $r['processors'],
+      'nodes' => $r['nodes'],
+      'ppn' => $r['ppn'],
+      'cpu_node_count' => $r['cpu_node_count'],
+      'cpu_processor_count' => $r['cpu_processor_count'],
+      'cpu_ppn' => $r['cpu_ppn'],
+      'gpu_node_count' => $gpu_node_count,
+      'gpu_processor_count' => $gpu_processor_count,
+      'gpu_ppn' => $gpu_ppn,
+    }
+  } + $ondemand_resource_specs
 
   file { '/etc/xdmod/resources.json':
     ensure  => 'file',
