@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v12.0.0](https://github.com/treydock/puppet-module-xdmod/tree/v12.0.0) (2026-03-24)
+
+[Full Changelog](https://github.com/treydock/puppet-module-xdmod/compare/v11.0.0...v12.0.0)
+
+### Changed
+
+- Support XDMOD 11.0.x [\#37](https://github.com/treydock/puppet-module-xdmod/pull/37) ([treydock](https://github.com/treydock))
+- Drop Puppet 7 and EL7 support [\#36](https://github.com/treydock/puppet-module-xdmod/pull/36) ([treydock](https://github.com/treydock))
+
 ## [v11.0.0](https://github.com/treydock/puppet-module-xdmod/tree/v11.0.0) (2024-10-14)
 
 [Full Changelog](https://github.com/treydock/puppet-module-xdmod/compare/v10.1.0...v11.0.0)

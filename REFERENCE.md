@@ -73,7 +73,6 @@ The following parameters are available in the `xdmod` class:
 * [`compute`](#-xdmod--compute)
 * [`enable_appkernel`](#-xdmod--enable_appkernel)
 * [`enable_supremm`](#-xdmod--enable_supremm)
-* [`enable_cloud_realm`](#-xdmod--enable_cloud_realm)
 * [`enable_ondemand`](#-xdmod--enable_ondemand)
 * [`local_repo_name`](#-xdmod--local_repo_name)
 * [`manage_epel`](#-xdmod--manage_epel)
@@ -281,14 +280,6 @@ Enable XDMod SUPReMM support
 
 Default value: `false`
 
-##### <a name="-xdmod--enable_cloud_realm"></a>`enable_cloud_realm`
-
-Data type: `Boolean`
-
-Enable the XDMoD cloud realm by adding the necessary database
-
-Default value: `false`
-
 ##### <a name="-xdmod--enable_ondemand"></a>`enable_ondemand`
 
 Data type: `Boolean`
@@ -399,7 +390,7 @@ Data type: `String[1]`
 
 The PHP MongoDB version
 
-Default value: `'1.16.2'`
+Default value: `'1.18.1'`
 
 ##### <a name="-xdmod--database_host"></a>`database_host`
 
@@ -1633,11 +1624,11 @@ Struct[{
   name => String,
   Optional[description] => String,
   Optional[resource_type] => String,
+  Optional[resource_allocation_type] => String,
   Optional[pi_column] => String,
   Optional[timezone] => String,
   Optional[shared_jobs] => Boolean,
   Optional[shred_directory] => Stdlib::Absolutepath,
-  Optional[hostname] => Stdlib::HTTPSUrl,
 }]
 ```
 
@@ -1655,6 +1646,12 @@ Struct[{
   processors => Integer,
   nodes => Integer,
   ppn => Integer,
+  cpu_node_count => Optional[Integer],
+  cpu_processor_count => Optional[Integer],
+  cpu_ppn => Optional[Integer],
+  gpu_node_count => Optional[Integer],
+  gpu_processor_count => Optional[Integer],
+  gpu_ppn => Optional[Integer],
 }]
 ```
 
