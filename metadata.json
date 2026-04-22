@@ -63,6 +63,10 @@
     {
       "name": "puppet/php",
       "version_requirement": ">= 8.0.0 <13.0.0"
+    },
+    {
+      "name": "puppet/systemd",
+      "version_requirement": ">= 6.5.0 <10.0.0"
     }
   ],
   "operatingsystem_support": [

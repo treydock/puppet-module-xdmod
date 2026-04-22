@@ -249,7 +249,7 @@
 # @param cron_times
 #   The cron times for XDMOD cron jobs
 # @param manage_cron
-#   Manage XDMOD cron files
+#   Manage XDMOD cron files and systemd timer
 # @param manage_supremm_cron
 #   Manage SUPREMM cron files
 # @param manage_akrr_cron
