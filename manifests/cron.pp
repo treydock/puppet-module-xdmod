@@ -26,7 +26,8 @@ class xdmod::cron {
       service_overrides => {
         'Group'            => 'xdmod',
         'SyslogIdentifier' => 'xdmod-cron',
-      },
+      } + $xdmod::cron_service_overrides,
+      timer_overrides   => $xdmod::cron_timer_overrides,
     }
 
     # Remove previous cron jobs
