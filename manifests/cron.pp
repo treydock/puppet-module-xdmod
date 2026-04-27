@@ -5,8 +5,8 @@ class xdmod::cron {
   assert_private()
 
   if $xdmod::manage_cron {
-    $minute = $xdmod::cron_times[0]
-    $hour   = $xdmod::cron_times[1]
+    $minute = sprintf('%02d', $xdmod::cron_times[0])
+    $hour   = sprintf('%02d', $xdmod::cron_times[1])
     file { '/usr/local/bin/xdmod-cron.sh':
       ensure  => 'file',
       owner   => 'root',
@@ -14,16 +14,20 @@ class xdmod::cron {
       mode    => '0755',
       content => template('xdmod/xdmod_cron.erb'),
     }
+    # Remove packaged cron job
     file { '/etc/cron.d/xdmod':
-      ensure  => 'file',
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => join([
-          '# File managed by Puppet, DO NOT EDIT',
-          "${minute} ${hour} * * * xdmod /usr/local/bin/xdmod-cron.sh",
-          '',
-      ], "\n"),
+      ensure => 'absent',
+    }
+    systemd::timer_wrapper { 'xdmod-cron':
+      ensure            => 'present',
+      command           => '/usr/local/bin/xdmod-cron.sh',
+      on_calendar       => "*-*-* ${hour}:${minute}:00",
+      user              => 'xdmod',
+      service_overrides => {
+        'Group'            => 'xdmod',
+        'SyslogIdentifier' => 'xdmod-cron',
+      } + $xdmod::cron_service_overrides,
+      timer_overrides   => $xdmod::cron_timer_overrides,
     }
 
     # Remove previous cron jobs

@@ -248,8 +248,12 @@
 #   The source of storage roles.json
 # @param cron_times
 #   The cron times for XDMOD cron jobs
+# @param cron_service_overrides
+#   The cron service unit overrides
+# @param cron_timer_overrides
+#   The cron timer unit overrides
 # @param manage_cron
-#   Manage XDMOD cron files
+#   Manage XDMOD cron files and systemd timer
 # @param manage_supremm_cron
 #   Manage SUPREMM cron files
 # @param manage_akrr_cron
@@ -414,6 +418,8 @@ class xdmod (
   String $storage_roles_source = 'puppet:///modules/xdmod/roles.d/storage.json',
 
   Array[Integer, 2, 2] $cron_times = [1, 0],
+  Hash $cron_service_overrides = {},
+  Optional[Hash] $cron_timer_overrides = undef,
   Boolean $manage_cron = true,
   Boolean $manage_supremm_cron = true,
   Boolean $manage_akrr_cron = true,
