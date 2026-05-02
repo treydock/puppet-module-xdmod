@@ -186,6 +186,8 @@ The following parameters are available in the `xdmod` class:
 * [`pcp_hotproc_exclude_users`](#-xdmod--pcp_hotproc_exclude_users)
 * [`storage_roles_source`](#-xdmod--storage_roles_source)
 * [`cron_times`](#-xdmod--cron_times)
+* [`cron_service_overrides`](#-xdmod--cron_service_overrides)
+* [`cron_timer_overrides`](#-xdmod--cron_timer_overrides)
 * [`manage_cron`](#-xdmod--manage_cron)
 * [`manage_supremm_cron`](#-xdmod--manage_supremm_cron)
 * [`manage_akrr_cron`](#-xdmod--manage_akrr_cron)
@@ -1184,11 +1186,27 @@ The cron times for XDMOD cron jobs
 
 Default value: `[1, 0]`
 
+##### <a name="-xdmod--cron_service_overrides"></a>`cron_service_overrides`
+
+Data type: `Hash`
+
+The cron service unit overrides
+
+Default value: `{}`
+
+##### <a name="-xdmod--cron_timer_overrides"></a>`cron_timer_overrides`
+
+Data type: `Optional[Hash]`
+
+The cron timer unit overrides
+
+Default value: `undef`
+
 ##### <a name="-xdmod--manage_cron"></a>`manage_cron`
 
 Data type: `Boolean`
 
-Manage XDMOD cron files
+Manage XDMOD cron files and systemd timer
 
 Default value: `true`
 
