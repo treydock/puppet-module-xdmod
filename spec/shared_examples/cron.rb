@@ -20,17 +20,21 @@ shared_examples_for 'xdmod::cron' do |_facts|
 
   it do
     is_expected.to contain_file('/etc/cron.d/xdmod').with(
-      ensure: 'file',
-      owner: 'root',
-      group: 'root',
-      mode: '0644',
+      ensure: 'absent',
     )
   end
 
   it do
-    verify_contents(catalogue, '/etc/cron.d/xdmod', [
-                      '1 0 * * * xdmod /usr/local/bin/xdmod-cron.sh',
-                    ],)
+    is_expected.to contain_systemd__timer_wrapper('xdmod-cron').with(
+      ensure: 'present',
+      command: '/usr/local/bin/xdmod-cron.sh',
+      on_calendar: '*-*-* 00:01:00',
+      user: 'xdmod',
+      service_overrides: {
+        'Group' => 'xdmod',
+        'SyslogIdentifier' => 'xdmod-cron',
+      },
+    )
   end
 
   it { is_expected.to contain_file('/etc/cron.d/xdmod-storage').with_ensure('absent') }

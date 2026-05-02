@@ -41,5 +41,7 @@ fixtures:
       repo: puppet/systemd
     php:
       repo: puppet/php
+    systemd:
+      repo: puppet/systemd
   symlinks:
     xdmod: "#{source_dir}"
